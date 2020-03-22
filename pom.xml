@@ -8,17 +8,9 @@
   <artifactId>AM1</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.3.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <name>AM01</name>
-  <url>https://github.com/LucaDanelutti/ing-sw-2020-Danelutti-DeSanti-DiDioLavore</url>
+  <name>AM1</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,7 +18,14 @@
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
-
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -73,6 +72,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
-
 </project>
