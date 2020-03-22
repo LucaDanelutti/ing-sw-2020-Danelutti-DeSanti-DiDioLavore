@@ -13,7 +13,7 @@ public class BlockTypeTest {
      * This function creates a BlockType object and checks that getValue returns the correct value
      */
     @Test
-    public void getLevelTest() {
+    public void getLevel() {
         BlockType tester = BlockType.LEVEL1;
         assertEquals(1, tester.getLevel(),"Should return the value of LEVEL1, which is 1");
     }
