@@ -21,6 +21,7 @@ public class Pawn {
     }
 
     /**
+     * Set method of the variable position, it also updates the value of previousPosition if possible.
      * @param position is the new position of the pawn
      */
     public void setPosition(Position position) {
@@ -31,6 +32,7 @@ public class Pawn {
     }
 
     /**
+     * Set method of the variable lastBuildPosition
      * @param lastBuildPosition is the position where the last building has been built by the considered pawn
      */
     public void setLastBuildPosition(Position lastBuildPosition) {
@@ -38,6 +40,7 @@ public class Pawn {
     }
 
     /**
+     * Set method of the variable deltaHeight
      * @param deltaHeight is the difference in height between the last position and current position of the pawn
      */
     public void setDeltaHeight(int deltaHeight) {
@@ -45,6 +48,7 @@ public class Pawn {
     }
 
     /**
+     * Get method of the variable color
      * @return pawn color
      */
     public int getColor() {
@@ -52,6 +56,7 @@ public class Pawn {
     }
 
     /**
+     * Get method of the variable position
      * @return current position of the pawn
      */
     public Position getPosition() {
@@ -59,6 +64,7 @@ public class Pawn {
     }
 
     /**
+     * Get method of the variable previousPosition
      * @return previous position of the pawn
      */
     public Position getPreviousPosition() {
@@ -66,6 +72,7 @@ public class Pawn {
     }
 
     /**
+     * Get method of the variable lastBuildPosition
      * @return position of the last block built by the pawn
      */
     public Position getLastBuildPosition() {
@@ -73,6 +80,7 @@ public class Pawn {
     }
 
     /**
+     * Get method of the variable deltaHeight
      * @return the difference in height between the last position and current position of the pawn
      */
     public int getDeltaHeight() {
