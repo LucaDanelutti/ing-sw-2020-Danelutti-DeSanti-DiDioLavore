@@ -8,10 +8,10 @@ import java.awt.font.GlyphVector;
  * LEVEL1 -> 1, LEVEL2 -> 2, LEVEL3 -> 3 or DOME -> 4
  */
 enum BlockType {
-    LEVEL1((byte)1),
-    LEVEL2((byte)2),
-    LEVEL3((byte)3),
-    DOME((byte)4);
+    LEVEL1(1),
+    LEVEL2(2),
+    LEVEL3(3),
+    DOME(4);
 
     private final int level;
 
