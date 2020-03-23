@@ -6,8 +6,8 @@ package it.polimi.ingsw.model;
  * represent the position of a pawn in the board
  */
 public class Position {
-    private final byte x;
-    private final byte y;
+    private byte x;
+    private byte y;
 
     /**
      * Default constructor
@@ -31,5 +31,19 @@ public class Position {
      */
     public byte getY() {
         return y;
+    }
+
+    /**
+     * @param x This is the abscissa
+     */
+    public void setX(byte x) {
+        this.x = x;
+    }
+
+    /**
+     * @param y This is the ordinate
+     */
+    public void setY(byte y) {
+        this.y = y;
     }
 }
