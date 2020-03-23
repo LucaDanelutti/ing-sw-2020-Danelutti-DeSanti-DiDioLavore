@@ -13,13 +13,13 @@ enum BlockType {
     LEVEL3((byte)3),
     DOME((byte)4);
 
-    private final byte level;
+    private final int level;
 
     /**
      * This is the constructor for the BlockType enum.
      * @param level This is the type of the block  (1°floor->1| 2 | 3 |4 <- DOME).
      */
-    BlockType(byte level){
+    BlockType(int level){
         this.level=level;
     }
 
@@ -27,7 +27,7 @@ enum BlockType {
      * This function is used to retrieve the level of the block selected.
      * @return byte This is the level of the block selected.
      */
-    byte getLevel(){
+    int getLevel(){
         return this.level;
     }
 }
