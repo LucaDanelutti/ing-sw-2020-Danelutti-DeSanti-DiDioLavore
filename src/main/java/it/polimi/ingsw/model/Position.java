@@ -6,15 +6,15 @@ package it.polimi.ingsw.model;
  * represent the position of a pawn in the board
  */
 public class Position {
-    private byte x;
-    private byte y;
+    private int x;
+    private int y;
 
     /**
      * Default constructor
      * @param x This is the abscissa
      * @param y  This is the ordinate
      */
-    public Position(byte x, byte y) {
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -22,28 +22,28 @@ public class Position {
     /**
      * @return Abscissa
      */
-    public byte getX() {
+    public int getX() {
         return x;
     }
 
     /**
      * @return Ordinate
      */
-    public byte getY() {
+    public int getY() {
         return y;
     }
 
     /**
      * @param x This is the abscissa
      */
-    public void setX(byte x) {
+    public void setX(int x) {
         this.x = x;
     }
 
     /**
      * @param y This is the ordinate
      */
-    public void setY(byte y) {
+    public void setY(int y) {
         this.y = y;
     }
 }
