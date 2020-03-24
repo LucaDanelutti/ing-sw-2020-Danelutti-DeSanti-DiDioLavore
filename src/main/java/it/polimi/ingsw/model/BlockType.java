@@ -8,6 +8,7 @@ import java.awt.font.GlyphVector;
  * LEVEL1 -> 1, LEVEL2 -> 2, LEVEL3 -> 3 or DOME -> 4
  */
 enum BlockType {
+    TERRAIN(0),
     LEVEL1(1),
     LEVEL2(2),
     LEVEL3(3),
