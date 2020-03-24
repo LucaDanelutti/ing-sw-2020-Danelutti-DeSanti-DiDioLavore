@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -18,6 +20,7 @@ class Cell{
      */
     Cell(){
         this.blockStack=new Stack<>();
+        this.blockStack.push(new Block(BlockType.TERRAIN));
         pawn = null;
     }
 
@@ -99,8 +102,18 @@ class Cell{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return Objects.equals(blockStack, cell.blockStack) &&
-                Objects.equals(pawn, cell.pawn);
+        if(!Objects.equals(pawn, cell.pawn))
+            return false;
+        Object[] temp1=blockStack.toArray();
+        Object[] temp2=cell.blockStack.toArray();
+        Block appo1,appo2;
+        for(int i=0; i<temp1.length; i++){
+            appo1=(Block)temp1[i];
+            appo2=(Block)temp2[i];
+            if(appo1.getType()!=appo2.getType())
+                return false;
+        }
+        return true;
     }
 
     @Override
