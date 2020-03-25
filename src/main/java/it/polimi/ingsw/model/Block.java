@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 /**
- * <h1>Block</h1>
  * This class is one of the basic elements of the game, it represent one of the concrete blocks in the game to be
  * stacked together
  */

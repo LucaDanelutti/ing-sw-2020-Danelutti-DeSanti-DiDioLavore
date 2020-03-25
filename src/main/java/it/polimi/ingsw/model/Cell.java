@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Stack;
 
 /**
- * <h1>Cell</h1>
  * The board is composed of Cells, each Cells contains a Stack of Blocks, like the real game, each one with its characteristics.
  * If a pawn is present on a Cell its reference is stored on the variable pawn.
  */

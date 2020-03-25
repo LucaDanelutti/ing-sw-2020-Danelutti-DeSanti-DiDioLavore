@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * <h1>CellTest</h1>
  * This is the test class for Cell class
  */
 class CellTest {

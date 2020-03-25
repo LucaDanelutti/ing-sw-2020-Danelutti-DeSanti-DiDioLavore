@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * <H1>BlockTest</H1>
  * This class is the tester class for Block
  */
 class BlockTest {

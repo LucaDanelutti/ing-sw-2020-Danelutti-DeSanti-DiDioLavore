@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 
 /**
- * <h1>Pawn</h1>
  * This class represents the element Pawn of the game
  */
 public class Pawn {

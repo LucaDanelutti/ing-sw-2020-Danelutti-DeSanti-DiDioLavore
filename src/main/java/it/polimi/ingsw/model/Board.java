@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 
 /**
- * <h1>Board</h1>
  * This class represent the actual board of the concrete game.
  * It is composed of a matrix 5x5 of cells, each one containing a stack of blocks and/or a Pawn.
  */

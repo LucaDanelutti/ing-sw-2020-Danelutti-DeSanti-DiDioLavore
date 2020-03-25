@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * <H1>BlockTypeTest</H1>
  * This class is used to test the BlockType enumeration
  */
 public class BlockTypeTest {

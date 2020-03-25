@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import java.util.Objects;
 
 /**
- * <h1>Position</h1>
  * The Position class is used as a Type to
  * represent the position of a pawn in the board
  */

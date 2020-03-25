@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * <H1>PawnTest</H1>
  * This class is used to test the Pawn class
  */
 class PawnTest {
