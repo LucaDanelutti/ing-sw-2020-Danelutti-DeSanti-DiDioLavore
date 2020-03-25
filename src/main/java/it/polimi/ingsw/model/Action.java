@@ -40,7 +40,10 @@ public abstract class Action {
             this.notAvailableCell = null;
         }
     }
-
+    /**
+     * Abstract method which returns a duplicate of this. Implemented in the concrete classes.
+     * @return Action
+     */
     public abstract Action duplicate();
 
     public void setChosenPosition(Position chosenPosition) {
