@@ -22,6 +22,16 @@ public class Position {
     }
 
     /**
+     * This function is the copy constructor for the class Position.
+     * By using this method, there is no need to implement Clonable.
+     * @param toBeCopied this is the original Position to be copied.
+     */
+    public Position(Position toBeCopied) {
+        this.x = toBeCopied.x;
+        this.y = toBeCopied.y;
+    }
+
+    /**
      * @return Abscissa
      */
     public int getX() {
