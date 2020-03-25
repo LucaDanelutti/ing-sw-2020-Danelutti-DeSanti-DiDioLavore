@@ -25,9 +25,7 @@ public class Pawn {
      * @param position is the new position of the pawn
      */
     public void setPosition(Position position) {
-        if (this.position != null) {
-            this.previousPosition = this.position;
-        }
+        this.previousPosition = this.position;
         this.position = position;
     }
 
