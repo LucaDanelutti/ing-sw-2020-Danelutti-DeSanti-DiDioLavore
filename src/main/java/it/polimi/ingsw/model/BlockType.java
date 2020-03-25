@@ -5,7 +5,7 @@ import java.awt.font.GlyphVector;
 /**
  *<h1>BlockType</h1>
  * This enum is used to represent the level of a block, each block will have its own "type" from one of the following:
- * LEVEL1 -> 1, LEVEL2 -> 2, LEVEL3 -> 3 or DOME -> 4
+ * TERRAIN :- 0, LEVEL1 :- 1, LEVEL2 :- 2, LEVEL3 :- 3 or DOME :- 4
  */
 enum BlockType {
     TERRAIN(0),
