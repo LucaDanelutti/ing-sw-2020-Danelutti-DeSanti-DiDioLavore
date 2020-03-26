@@ -15,7 +15,7 @@ class PlayerTest {
      */
     @Test
     void addPawn() {
-        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState(PlayerStateType.WaitingOtherPlayers));
+        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState());
         assertEquals(0, testPlayer.getPawnList().size());
         Pawn testPawn = new Pawn("ffffff");
         testPlayer.addPawn(testPawn);
@@ -28,7 +28,7 @@ class PlayerTest {
      */
     @Test
     void removePawn() {
-        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState(PlayerStateType.WaitingOtherPlayers));
+        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState());
         Pawn testPawn = new Pawn("ffffff");
         testPlayer.addPawn(testPawn);
         assertEquals(1, testPlayer.getPawnList().size());
