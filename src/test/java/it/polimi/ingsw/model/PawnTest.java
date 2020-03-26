@@ -14,7 +14,7 @@ class PawnTest {
     @Test
     void getColor() {
         Pawn pawnTester = new Pawn("ffffff");
-        assertEquals(1, pawnTester.getColor());
+        assertEquals("ffffff", pawnTester.getColor());
     }
 
     /**
