@@ -16,7 +16,7 @@ class CellTest {
     @Test
     void copyConstructorShouldReturnACopy(){
         Cell originalCell=new Cell();
-        Pawn originalPawn=new Pawn(1);
+        Pawn originalPawn=new Pawn("ffffff");
 
         Cell copiedCell=new Cell(originalCell);
 

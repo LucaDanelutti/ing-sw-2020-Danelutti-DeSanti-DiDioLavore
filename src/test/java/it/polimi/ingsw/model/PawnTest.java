@@ -13,7 +13,7 @@ class PawnTest {
      */
     @Test
     void getColor() {
-        Pawn pawnTester = new Pawn(1);
+        Pawn pawnTester = new Pawn("ffffff");
         assertEquals(1, pawnTester.getColor());
     }
 
@@ -22,7 +22,7 @@ class PawnTest {
      */
     @Test
     void getPosition() {
-        Pawn pawnTester = new Pawn(1);
+        Pawn pawnTester = new Pawn("ffffff");
         pawnTester.setPosition(new Position(2,3));
         assertEquals(2, pawnTester.getPosition().getX());
         assertEquals(3, pawnTester.getPosition().getY());
@@ -33,7 +33,7 @@ class PawnTest {
      */
     @Test
     void getPreviousPosition() {
-        Pawn pawnTester = new Pawn(1);
+        Pawn pawnTester = new Pawn("ffffff");
         pawnTester.setPosition(new Position(2,3));
         pawnTester.setPosition(new Position(4,5));
         assertEquals(2, pawnTester.getPreviousPosition().getX());
@@ -45,7 +45,7 @@ class PawnTest {
      */
     @Test
     void getLastBuildPosition() {
-        Pawn pawnTester = new Pawn(1);
+        Pawn pawnTester = new Pawn("ffffff");
         pawnTester.setLastBuildPosition(new Position(3,4));
         assertEquals(3, pawnTester.getLastBuildPosition().getX());
         assertEquals(4, pawnTester.getLastBuildPosition().getY());
@@ -56,7 +56,7 @@ class PawnTest {
      */
     @Test
     void getDeltaHeight() {
-        Pawn pawnTester = new Pawn(1);
+        Pawn pawnTester = new Pawn("ffffff");
         pawnTester.setDeltaHeight(3);
         assertEquals(3, pawnTester.getDeltaHeight());
     }

@@ -43,7 +43,7 @@ class BoardTest {
     void updatePawnPosition() {
         Board tester = new Board();
         tester.pawnConstruct(new Position(0,1), BlockType.LEVEL1);
-        tester.setPawnPosition(new Pawn(1),new Position(0,0));
+        tester.setPawnPosition(new Pawn("ffffff"),new Position(0,0));
         Cell[][] original=tester.getMatrixCopy();
         tester.updatePawnPosition(new Position(0,0), new Position(0,1));
         Cell[][] mod=tester.getMatrixCopy();
@@ -59,7 +59,7 @@ class BoardTest {
     @Test
     void setPawnPosition() {
         Board tester = new Board();
-        Pawn pwn = new Pawn(1);
+        Pawn pwn = new Pawn("ffffff");
         tester.setPawnPosition(pwn,new Position(0,0));
         Cell[][] matrix=tester.getMatrixCopy();
         assertSame(pwn,matrix[0][0].getPawn(),"we have to set the shallow copy of the pawn");
@@ -72,7 +72,7 @@ class BoardTest {
     @Test
     void pawnConstruct() {
         Board tester = new Board();
-        tester.setPawnPosition(new Pawn(1),new Position(0,0));
+        tester.setPawnPosition(new Pawn("ffffff"),new Position(0,0));
         Cell[][] original=tester.getMatrixCopy();
         tester.pawnConstruct(new Position(0,1),BlockType.LEVEL1);
         Cell[][] mod=tester.getMatrixCopy();
