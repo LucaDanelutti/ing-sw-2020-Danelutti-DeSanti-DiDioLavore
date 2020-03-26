@@ -16,8 +16,8 @@ public class MoveAction extends Action {
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
-    MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn) {
-        super(isOptional, notAvailableCell);
+    MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, ActionType actionType, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn) {
+        super(isOptional, notAvailableCell,actionType);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
         this.moveOnOpponentEnable = moveOnOpponentEnable;
@@ -31,12 +31,13 @@ public class MoveAction extends Action {
         }
 
     }
+
     /**
      * This function is the copy constructor for the class MoveAction
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.actionType, toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn);
     }
 
     /**
