@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class ConstructAction extends Action {
     BlockType selectedBlockType;
 
-    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, ActionType actionType){
+    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell){
         //TODO: expand
-        super(isOptional,notAvailableCell,actionType);
+        super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
         this.selectedBlockType=null;
     }
 
