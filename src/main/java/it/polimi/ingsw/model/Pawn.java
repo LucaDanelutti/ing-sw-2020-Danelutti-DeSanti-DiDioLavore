@@ -5,7 +5,7 @@ package it.polimi.ingsw.model;
  * This class represents the element Pawn of the game
  */
 public class Pawn {
-    private int color;
+    private String color;
     private Position position;
     private Position previousPosition;
     private Position lastBuildPosition;
@@ -15,7 +15,7 @@ public class Pawn {
      * Constructor of this class
      * @param color defines the color of a pawn
      */
-    public Pawn(int color) {
+    public Pawn(String color) {
         this.color = color;
     }
 
@@ -48,7 +48,7 @@ public class Pawn {
      * Get method of the variable color
      * @return pawn color
      */
-    public int getColor() {
+    public String getColor() {
         return color;
     }
 
