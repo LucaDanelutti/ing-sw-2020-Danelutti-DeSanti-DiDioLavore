@@ -11,7 +11,7 @@ public abstract class Action {
     protected Pawn selectedPawn;
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
-    protected ActionType actionType;
+    protected final ActionType actionType;
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
@@ -79,6 +79,10 @@ public abstract class Action {
 
     public Position getChosenPosition() {
         return chosenPosition;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
     }
 
 }
