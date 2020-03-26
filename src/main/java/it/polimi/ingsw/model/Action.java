@@ -11,11 +11,13 @@ public abstract class Action {
     protected Pawn selectedPawn;
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
+    protected ActionType actionType;
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
      */
-    Action(Boolean isOptional, ArrayList<Position> notAvailableCell) {
+    Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType) {
+        this.actionType=actionType;
         this.isOptional = isOptional;
         if (notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(notAvailableCell);
@@ -34,6 +36,7 @@ public abstract class Action {
         this.selectedPawn = toBeCopied.selectedPawn;
         this.notSelectedPawn = toBeCopied.notSelectedPawn;
         this.chosenPosition = toBeCopied.chosenPosition;
+        this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(toBeCopied.notAvailableCell);
         } else {
