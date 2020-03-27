@@ -27,7 +27,7 @@ public class Board{
      * This is the getter for the matrix
      * @return the variable matrix
      */
-    protected Cell[][] getMatrixCopy(){
+    public Cell[][] getMatrixCopy(){
         Cell[][] clonedMatrix=new Cell[5][5];
         for (int i=0; i<clonedMatrix.length; i++){
             for(int j=0; j<clonedMatrix[0].length; j++){
