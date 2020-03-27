@@ -1,10 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.playerstate;
 
 /**
  * Setup state ChoosePawnsPositionState: every player
  * has to place his pawns in the game board
  */
-class ChoosePawnsPositionState extends PlayerState {
+public class ChoosePawnsPositionState extends PlayerState {
     public ChoosePawnsPositionState() {
         super(PlayerStateType.ChoosePawnsPositionState);
     }

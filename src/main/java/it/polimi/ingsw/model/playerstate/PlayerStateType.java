@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.playerstate;
 
 /**
  * This enum is used to represent the state of a player
@@ -7,7 +7,7 @@ package it.polimi.ingsw.model;
  * IdleState, ActionState are match states
  * LoserState, WinnerState are final states
  */
-enum PlayerStateType {
+public enum PlayerStateType {
         WaitingOtherPlayers(),
         SelectGameCardsState(),
         ChooseCardState(),
