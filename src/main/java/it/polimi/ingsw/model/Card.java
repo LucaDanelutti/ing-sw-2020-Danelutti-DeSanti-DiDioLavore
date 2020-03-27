@@ -26,15 +26,15 @@ public class Card {
 
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
-    public ArrayList<Action> getActionList() {
+    ArrayList<Action> getActionList() {
         if (actionList != null) {
             ArrayList<Action> copiedActionList = new ArrayList<>();
             for (Action action : actionList) {
