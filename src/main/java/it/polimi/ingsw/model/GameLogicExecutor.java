@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.util.Observable;
+import it.polimi.ingsw.model.action.Action;
+import it.polimi.ingsw.model.action.ConstructAction;
 
 public class GameLogicExecutor implements Observer {
     //TODO: maybe the GameLogicExecutor could be the only access for the controller to the model, giving a
