@@ -4,7 +4,7 @@ package it.polimi.ingsw.model;
 /**
  * This class represents the element Pawn of the game
  */
-public class Pawn {
+class Pawn {
     private String color;
     private Position position;
     private Position previousPosition;
@@ -15,7 +15,7 @@ public class Pawn {
      * Constructor of this class
      * @param color defines the color of a pawn
      */
-    public Pawn(String color) {
+    Pawn(String color) {
         this.color = color;
     }
 
@@ -23,7 +23,7 @@ public class Pawn {
      * Set method of the variable position, it also updates the value of previousPosition if possible.
      * @param position is the new position of the pawn
      */
-    public void setPosition(Position position) {
+    void setPosition(Position position) {
         this.previousPosition = this.position;
         this.position = position;
     }
@@ -32,7 +32,7 @@ public class Pawn {
      * Set method of the variable lastBuildPosition
      * @param lastBuildPosition is the position where the last building has been built by the considered pawn
      */
-    public void setLastBuildPosition(Position lastBuildPosition) {
+    void setLastBuildPosition(Position lastBuildPosition) {
         this.lastBuildPosition = lastBuildPosition;
     }
 
@@ -40,7 +40,7 @@ public class Pawn {
      * Set method of the variable deltaHeight
      * @param deltaHeight is the difference in height between the last position and current position of the pawn
      */
-    public void setDeltaHeight(int deltaHeight) {
+    void setDeltaHeight(int deltaHeight) {
         this.deltaHeight = deltaHeight;
     }
 
@@ -48,7 +48,7 @@ public class Pawn {
      * Get method of the variable color
      * @return pawn color
      */
-    public String getColor() {
+    String getColor() {
         return color;
     }
 
@@ -56,7 +56,7 @@ public class Pawn {
      * Get method of the variable position
      * @return current position of the pawn
      */
-    public Position getPosition() {
+    Position getPosition() {
         return position;
     }
 
@@ -64,7 +64,7 @@ public class Pawn {
      * Get method of the variable previousPosition
      * @return previous position of the pawn
      */
-    public Position getPreviousPosition() {
+    Position getPreviousPosition() {
         return previousPosition;
     }
 
@@ -72,7 +72,7 @@ public class Pawn {
      * Get method of the variable lastBuildPosition
      * @return position of the last block built by the pawn
      */
-    public Position getLastBuildPosition() {
+    Position getLastBuildPosition() {
         return lastBuildPosition;
     }
 
@@ -80,7 +80,7 @@ public class Pawn {
      * Get method of the variable deltaHeight
      * @return the difference in height between the last position and current position of the pawn
      */
-    public int getDeltaHeight() {
+    int getDeltaHeight() {
         return deltaHeight;
     }
 }
