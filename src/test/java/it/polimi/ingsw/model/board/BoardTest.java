@@ -1,8 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
-
-import javax.print.attribute.standard.PrinterIsAcceptingJobs;
 
 import static org.junit.jupiter.api.Assertions.*;
 

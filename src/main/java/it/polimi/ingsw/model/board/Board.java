@@ -1,17 +1,20 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
+
+import it.polimi.ingsw.model.Pawn;
+import it.polimi.ingsw.model.Position;
 
 /**
  * This class represent the actual board of the concrete game.
  * It is composed of a matrix 5x5 of cells, each one containing a stack of blocks and/or a Pawn.
  */
-class Board{
+public class Board{
     private Cell[][] matrix;
 
     /**
      * This is the constructor for this class;
      */
-    Board(){
+    public Board(){
         this.matrix=new Cell[5][5];
         for(int i=0; i<this.matrix.length; i++){
             for(int j=0; j<this.matrix[0].length; j++){
@@ -24,7 +27,7 @@ class Board{
      * This is the getter for the matrix
      * @return the variable matrix
      */
-    Cell[][] getMatrixCopy(){
+    protected Cell[][] getMatrixCopy(){
         Cell[][] clonedMatrix=new Cell[5][5];
         for (int i=0; i<clonedMatrix.length; i++){
             for(int j=0; j<clonedMatrix[0].length; j++){
@@ -40,7 +43,7 @@ class Board{
      * @param prevPosition previous position
      * @param newPosition new position
      */
-    void updatePawnPosition(Position prevPosition, Position newPosition){
+    public void updatePawnPosition(Position prevPosition, Position newPosition){
         Cell prevCell=matrix[prevPosition.getX()][prevPosition.getY()];
         Cell newCell=matrix[newPosition.getX()][newPosition.getY()];
         newCell.setPawn(prevCell.getPawn());
@@ -54,7 +57,7 @@ class Board{
      * @param pawn the pawn to be set
      * @param position the position to set the pawn
      */
-    void setPawnPosition(Pawn pawn, Position position){
+    public void setPawnPosition(Pawn pawn, Position position){
         pawn.setPosition(position);
         pawn.setDeltaHeight(0);
         matrix[position.getX()][position.getY()].setPawn(pawn);
@@ -65,30 +68,8 @@ class Board{
      * @param constructPosition the position where the block will be constructed
      * @param type The type of the Block to be added
      */
-    void pawnConstruct(Position constructPosition, BlockType type){
+    public void pawnConstruct(Position constructPosition, BlockType type){
         matrix[constructPosition.getX()][constructPosition.getY()].pushBlock(new Block(type));
     }
 }
 
-//    /**
-//     * This is the copy constructor for the class Board
-//     * @param toBeCopied The origin Board
-//     */
-//    Board(Board toBeCopied){
-//        this.matrix=new Cell[5][5];
-//        for (int i=0; i<5; i++){
-//            for(int j=0; j<5; j++){
-//                this.matrix[i][j]=new Cell(toBeCopied.matrix[i][j]);
-//            }
-//        }
-//    }
-
-//
-//
-//    /**
-//     * This function returns a deep copy of the board, excluding the pawns which are shallow copy
-//     * @return cloned board
-//     */
-//    Board getBoardCopy(){
-//        return new Board(this);
-//    }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
 /**
  * This class is one of the basic elements of the game, it represent one of the concrete blocks in the game to be
@@ -20,7 +20,7 @@ public class Block {
      * This is the getter for the variable type
      * @return Blocktype
      */
-    BlockType getType() {
+    protected BlockType getType() {
         return type;
     }
 }

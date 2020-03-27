@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.action;
 
-import it.polimi.ingsw.model.BlockType;
+import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.Observer;
 import it.polimi.ingsw.model.Position;
 

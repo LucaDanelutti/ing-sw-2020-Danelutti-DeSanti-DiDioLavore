@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.Pawn;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

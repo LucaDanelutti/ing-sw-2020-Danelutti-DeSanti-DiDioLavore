@@ -1,7 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import it.polimi.ingsw.model.Pawn;
+
 import java.util.Objects;
 import java.util.Stack;
 
@@ -9,7 +9,7 @@ import java.util.Stack;
  * The board is composed of Cells, each Cells contains a Stack of Blocks, like the real game, each one with its characteristics.
  * If a pawn is present on a Cell its reference is stored on the variable pawn.
  */
-class Cell{
+public class Cell{
     private Stack<Block> blockStack;
     private Pawn pawn;
 
@@ -52,7 +52,7 @@ class Cell{
      * This provides access to the Stack peek function.
      * @return It returns the peek of the Stack
      */
-    Block peekBlock(){
+    protected Block peekBlock(){
         return blockStack.peek();
     }
 
@@ -84,7 +84,7 @@ class Cell{
      * This is the getter for the variable pawn
      * @return the variable pawn
      */
-    Pawn getPawn(){
+    protected Pawn getPawn(){
         return pawn;
     }
 

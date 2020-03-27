@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.action.Action;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
 

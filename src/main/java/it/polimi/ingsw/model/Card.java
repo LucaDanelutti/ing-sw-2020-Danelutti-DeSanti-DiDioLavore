@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.action.Action;
+
 import java.util.ArrayList;
 
 //TODO: gestire meglio/correttamente le NullPointerException nel costruttore e in getActionList
