@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
 
+import java.util.Objects;
+
 /**
  * This class represents the element Pawn of the game
  */
-class Pawn {
+public class Pawn {
     private String color;
     private Position position;
     private Position previousPosition;
@@ -83,4 +85,6 @@ class Pawn {
     int getDeltaHeight() {
         return deltaHeight;
     }
+
+
 }
