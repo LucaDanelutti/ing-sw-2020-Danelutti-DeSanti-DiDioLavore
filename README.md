@@ -1,4 +1,4 @@
-# Santorini
+# Santorini (Softeng Project 2020)
 Java implementation of the table game Santorini by Cranio Creations
 
 ### Team AM01 - Prof. Margara
