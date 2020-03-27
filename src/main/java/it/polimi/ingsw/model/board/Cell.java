@@ -52,7 +52,7 @@ public class Cell{
      * This provides access to the Stack peek function.
      * @return It returns the peek of the Stack
      */
-    protected Block peekBlock(){
+    public Block peekBlock(){
         return blockStack.peek();
     }
 
@@ -68,7 +68,7 @@ public class Cell{
      * This provides access to the Stack size function.
      * @return It returns the size of the stack
      */
-    int getSize(){
+    public int getSize(){
         return this.blockStack.size();
     }
 
@@ -84,7 +84,7 @@ public class Cell{
      * This is the getter for the variable pawn
      * @return the variable pawn
      */
-    protected Pawn getPawn(){
+    public Pawn getPawn(){
         return pawn;
     }
 
