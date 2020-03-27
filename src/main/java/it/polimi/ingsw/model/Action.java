@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 //TODO: capire se e come gestire le NullPointerException nei costruttori
@@ -12,6 +13,7 @@ public abstract class Action {
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
     protected final ActionType actionType;
+    protected List<Observer> observers = new ArrayList<>();
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
@@ -36,6 +38,7 @@ public abstract class Action {
         this.selectedPawn = toBeCopied.selectedPawn;
         this.notSelectedPawn = toBeCopied.notSelectedPawn;
         this.chosenPosition = toBeCopied.chosenPosition;
+        this.observers=toBeCopied.observers;
         this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(toBeCopied.notAvailableCell);
@@ -49,8 +52,27 @@ public abstract class Action {
      */
     public abstract Action duplicate();
 
+
+    public void addObserver(Observer observer){
+        this.observers.add(observer);
+    }
+    public void removeObserver(Observer observer){
+        this.observers.remove(observer);
+    }
+
+    /**
+     * Notify GameLogic only if this is an MoveAction, for ConstructAction you have to notify the observer once
+     * chosenBlockType is set!
+     * @param chosenPosition the position where to MOVE/CONSTRUCT
+     */
     public void setChosenPosition(Position chosenPosition) {
         this.chosenPosition = chosenPosition;
+        //TODO: call update function only inside of the sub-classes (remove setChosenPos from here)
+        if(this.actionType==ActionType.MOVE){
+            for(Observer observer : this.observers){
+                observer.update(this);
+            }
+        }
     }
 
     public void setSelectedPawn(Pawn selectedPawn) {

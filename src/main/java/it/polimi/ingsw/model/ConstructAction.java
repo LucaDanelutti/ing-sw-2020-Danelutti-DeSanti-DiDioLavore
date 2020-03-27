@@ -21,7 +21,15 @@ public class ConstructAction extends Action {
         return selectedBlockType;
     }
 
+    /**
+     * we are in a Construct Action, so once chosenPosition and blockType are set, an update should be thrown
+     * to the GameLogic
+     * @param selectedBlockType the selected blocktype returned by avaiableBlockTypes
+     */
     public void setSelectedBlockType(BlockType selectedBlockType) {
         this.selectedBlockType = selectedBlockType;
+        for(Observer observer: this.observers){
+            observer.update(this);
+        }
     }
 }
