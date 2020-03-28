@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.action;
 
+import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.Observer;
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
@@ -110,5 +111,7 @@ public abstract class Action {
     public ActionType getActionType() {
         return actionType;
     }
+
+    public abstract ArrayList<Position> availableCells(Cell[][] matrixCopy);
 
 }
