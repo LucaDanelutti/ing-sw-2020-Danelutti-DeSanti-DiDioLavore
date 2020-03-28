@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.action;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.Observer;
 import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
 
@@ -35,5 +36,9 @@ public class ConstructAction extends Action {
         for(Observer observer: this.observers){
             observer.update(this);
         }
+    }
+
+    public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
+        return new ArrayList<Position>();
     }
 }
