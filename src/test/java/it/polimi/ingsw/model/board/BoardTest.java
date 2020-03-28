@@ -75,6 +75,6 @@ class BoardTest {
         Cell[][] original=tester.getMatrixCopy();
         tester.pawnConstruct(new Position(0,1),BlockType.LEVEL1);
         Cell[][] mod=tester.getMatrixCopy();
-        assertEquals(BlockType.LEVEL1,mod[0][1].peekBlock().getType(),"The block constructed should be correct");
+        assertEquals(BlockType.LEVEL1,mod[0][1].peekBlock(),"The block constructed should be correct");
     }
 }

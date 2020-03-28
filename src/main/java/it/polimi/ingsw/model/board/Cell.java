@@ -10,7 +10,7 @@ import java.util.Stack;
  * If a pawn is present on a Cell its reference is stored on the variable pawn.
  */
 public class Cell{
-    private Stack<Block> blockStack;
+    private Stack<BlockType> blockStack;
     private Pawn pawn;
 
     /**
@@ -19,7 +19,7 @@ public class Cell{
      */
     Cell(){
         this.blockStack=new Stack<>();
-        this.blockStack.push(new Block(BlockType.TERRAIN));
+        this.blockStack.push(BlockType.TERRAIN);
         pawn = null;
     }
 
@@ -33,26 +33,26 @@ public class Cell{
         this.pawn=toBeCopied.pawn;
         this.blockStack= new Stack<>();
         Object[] temp= toBeCopied.blockStack.toArray();
-        Block appo;
+        BlockType appo;
         for (Object i : temp){
-            appo=(Block)i;
-            this.blockStack.push(new Block(appo.getType()));
+            appo=(BlockType)i;
+            this.blockStack.push(appo);
         }
     }
 
     /**
      * This provides access to the Stack push function.
-     * @param block The block to be pushed into the Stack
+     * @param type The block to be pushed into the Stack
      */
-    void pushBlock(Block block){
-        blockStack.push(block);
+    void pushBlock(BlockType type){
+        blockStack.push(type);
     }
 
     /**
      * This provides access to the Stack peek function.
      * @return It returns the peek of the Stack
      */
-    public Block peekBlock(){
+    public BlockType peekBlock(){
         return blockStack.peek();
     }
 
@@ -60,7 +60,7 @@ public class Cell{
      * This provides access to the Stack pop function.
      * @return It returns the peek of the Stack and removes it from the stack
      */
-    Block popBlock(){
+    BlockType popBlock(){
         return blockStack.pop();
     }
 
@@ -105,11 +105,11 @@ public class Cell{
             return false;
         Object[] temp1=blockStack.toArray();
         Object[] temp2=cell.blockStack.toArray();
-        Block appo1,appo2;
+        BlockType appo1,appo2;
         for(int i=0; i<temp1.length; i++){
-            appo1=(Block)temp1[i];
-            appo2=(Block)temp2[i];
-            if(appo1.getType()!=appo2.getType())
+            appo1=(BlockType)temp1[i];
+            appo2=(BlockType)temp2[i];
+            if(appo1!=appo2)
                 return false;
         }
         return true;

@@ -69,7 +69,7 @@ public class Board{
      * @param type The type of the Block to be added
      */
     public void pawnConstruct(Position constructPosition, BlockType type){
-        matrix[constructPosition.getX()][constructPosition.getY()].pushBlock(new Block(type));
+        matrix[constructPosition.getX()][constructPosition.getY()].pushBlock(type);
     }
 }
 
