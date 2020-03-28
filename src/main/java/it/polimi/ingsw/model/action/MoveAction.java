@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.action;
 
+import java.lang.Math;
 import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
 
@@ -80,6 +83,67 @@ public class MoveAction extends Action {
 
     public void setMoveUpEnable(Boolean moveUpEnable) {
         this.moveUpEnable = moveUpEnable;
+    }
+
+
+    /**
+     * Computes a boolean value expressing whether the pawn can move on a cell occupied by an enemy pawn
+     * @param matrixCopy is a copy of the matrix within board selectedPawnPosition
+     * @return the list of available cells to which the pawn selected can move
+     */
+    private Boolean canMoveOnOpponent(Cell[][] matrixCopy, Position selectedPawnPosition, Position enemyPawnPosition, Boolean swapEnable, Boolean pushEnable) {
+        if (!swapEnable && !pushEnable) return false;
+        if (swapEnable) return true;
+        //relativePosition expresses the position of enemyPawn wrt the position of selectedPawn: its coordinates can value '0', '1' or '-1'
+        Position relativePosition = new Position(enemyPawnPosition.getX() - selectedPawnPosition.getX(), enemyPawnPosition.getY() - selectedPawnPosition.getY());
+        //relativePosition times 2 expresses the relative position wrt the position of selectedPawn that has to be checked. The absolute position that has to be checked is obtained by adding the relative position to the selectedPawnPosition
+        Position positionToCheck = new Position(selectedPawnPosition.getX() + 2 * relativePosition.getX(), selectedPawnPosition.getY() + 2 * relativePosition.getY());
+        Cell cellToCheck = matrixCopy[positionToCheck.getX()][positionToCheck.getY()];
+        if (cellToCheck.peekBlock() == BlockType.DOME || cellToCheck.getPawn() != null) return false;
+        else return true;
+    }
+
+    /**
+     * Computes the list of cells to which a pawn can move
+     * @param matrixCopy is a copy of the matrix within board
+     * @return the list of available cells to which the pawn selected can move
+     */
+    public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
+        ArrayList<Position> availableCells = new ArrayList<>();
+        for (int i=0; i<matrixCopy.length; i++) {
+            for (int j=0; j<matrixCopy[0].length; j++) {
+                Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
+//              Selects only the cells adjacent to the selectedPawn (excluding the one occupied by the selectedPawn)
+                if (!(selectedPawnPosition.getX() == i && selectedPawnPosition.getY() == j) && Math.abs(selectedPawnPosition.getX() - i) <= 1  && Math.abs(selectedPawnPosition.getY() - j) <= 1 ) {
+//                  Computes the deltaHeight between the cell in which the selectedPawn is currently located and the prospective one
+                    int signedDeltaHeight = matrixCopy[i][j].getSize() - matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].getSize();
+                    if ((signedDeltaHeight < 1 || (signedDeltaHeight == 1 && moveUpEnable)) && matrixCopy[i][j].peekBlock() != BlockType.DOME ) {
+//                      Manages the presence of a pawn on the prospective cell
+                        if (matrixCopy[i][j].getPawn() == null || (matrixCopy[i][j].getPawn() != notSelectedPawn && canMoveOnOpponent(matrixCopy, selectedPawnPosition, new Position(i,j), swapEnable, pushEnable))) {
+                            if (!notAvailableCell.contains(new Position(i, j))) {
+                                availableCells.add(new Position(i,j));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return availableCells;
+    }
+
+
+    /**
+     * Checks whether the last moveAction executed upon the selectedPawn makes the player win. This can happen in two cases:
+     * (1)the pawn has reached a level3 cell or (2) winDownEnable = true and the pawn went down at least 2 levels during the moveAction.
+     * @param matrixCopy is a copy of the matrix within board
+     * @return the list of available cells to which the pawn selected can move
+     */
+    public Boolean checkwin(Cell[][] matrixCopy) {
+        Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
+        if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3) return true;
+        if (winDownEnable && selectedPawn.getDeltaHeight() <= -2) return true;
+        return false;
     }
 
 }
