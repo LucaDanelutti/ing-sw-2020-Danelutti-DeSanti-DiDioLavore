@@ -8,13 +8,34 @@ import it.polimi.ingsw.model.board.Cell;
 import java.util.ArrayList;
 
 public class ConstructAction extends Action {
-    BlockType selectedBlockType;
+    private BlockType selectedBlockType;
+    private Position onlyAvailableCell;
+    private Boolean buildBelowEnable;
+    private ArrayList<BlockType> alwaysAvailableBlockType;
+    private Boolean enableMoveUp;
 
-    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell){
-        //TODO: expand
+    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Position onlyAvailableCell, Boolean enableMoveUp){
         super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
-        this.selectedBlockType=null;
+        this.selectedBlockType=selectedBlockType;
+        this.onlyAvailableCell=onlyAvailableCell;
+        this.buildBelowEnable=buildBelowEnable;
+        this.alwaysAvailableBlockType=alwaysAvailableBlockType;
+        this.enableMoveUp=enableMoveUp;
     }
+
+    public Position getOnlyAvailableCell() {
+        return onlyAvailableCell;
+    }
+    public Boolean getBuildBelowEnable() {
+        return buildBelowEnable;
+    }
+    public ArrayList<BlockType> getAlwaysAvailableBlockType() {
+        return alwaysAvailableBlockType;
+    }
+    public Boolean getEnableMoveUp() {
+        return enableMoveUp;
+    }
+
 
     @Override
     public Action duplicate() {
@@ -39,6 +60,7 @@ public class ConstructAction extends Action {
     }
 
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
-        return new ArrayList<Position>();
+        return new ArrayList<>();
     }
+
 }
