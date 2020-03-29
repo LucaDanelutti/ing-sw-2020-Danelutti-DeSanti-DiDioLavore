@@ -83,6 +83,6 @@ class MoveActionTest {
 //      Checks whether the player wins if its DeltaHeight is <=-2
         selectedPawnTester.setDeltaHeight(-2);
 
-        assertEquals(true, moveActionTester.checkwin(boardTester.getMatrixCopy()), "Internal values should be the equals");
+        assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
     }
 }
