@@ -34,7 +34,6 @@ public class MoveAction extends Action {
         } else {
             this.addMoveIfOn = null;
         }
-
     }
 
     /**
@@ -91,7 +90,7 @@ public class MoveAction extends Action {
      * @param matrixCopy is a copy of the matrix within board selectedPawnPosition
      * @return the list of available cells to which the pawn selected can move
      */
-    private Boolean canMoveOnOpponent(Cell[][] matrixCopy, Position selectedPawnPosition, Position enemyPawnPosition, Boolean swapEnable, Boolean pushEnable) {
+    private Boolean canMoveOnOpponent(Cell[][] matrixCopy, Position selectedPawnPosition, Position enemyPawnPosition) {
         if (!swapEnable && !pushEnable) return false;
         if (swapEnable) return true;
         //relativePosition expresses the position of enemyPawn wrt the position of selectedPawn: its coordinates can value '0', '1' or '-1'
@@ -118,7 +117,7 @@ public class MoveAction extends Action {
                     int signedDeltaHeight = matrixCopy[i][j].getSize() - matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].getSize();
                     if ((signedDeltaHeight < 1 || (signedDeltaHeight == 1 && moveUpEnable)) && matrixCopy[i][j].peekBlock() != BlockType.DOME ) {
 //                      Manages the presence of a pawn on the prospective cell
-                        if (matrixCopy[i][j].getPawn() == null || (matrixCopy[i][j].getPawn() != notSelectedPawn && canMoveOnOpponent(matrixCopy, selectedPawnPosition, new Position(i,j), swapEnable, pushEnable))) {
+                        if (matrixCopy[i][j].getPawn() == null || (matrixCopy[i][j].getPawn() != notSelectedPawn && canMoveOnOpponent(matrixCopy, selectedPawnPosition, new Position(i,j)))) {
                             if (!notAvailableCell.contains(new Position(i, j))) {
                                 availableCells.add(new Position(i,j));
                             }
