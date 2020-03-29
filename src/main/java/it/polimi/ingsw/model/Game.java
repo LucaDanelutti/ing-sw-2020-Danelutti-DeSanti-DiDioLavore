@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.playerstate.PlayerStateType;
 import it.polimi.ingsw.model.playerstate.WaitingOtherPlayersState;
 
 import java.util.ArrayList;
@@ -58,6 +59,19 @@ class Game {
      */
     void removePlayer(Player player) {
         inGamePlayers.remove(player);
+    }
+
+    /**
+     * getNextCurrentPlayer method to get the Player that is going to be in ActionState
+     */
+    Player getNextActionStatePlayer() {
+        //TODO
+        return new Player("TODO", new WaitingOtherPlayersState());
+    }
+
+    ArrayList<Player> getPlayersIn(PlayerStateType playerstate) {
+        //TODO
+        return new ArrayList<Player>();
     }
 
 }
