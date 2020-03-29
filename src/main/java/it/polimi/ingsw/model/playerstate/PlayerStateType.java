@@ -8,15 +8,12 @@ package it.polimi.ingsw.model.playerstate;
  * LoserState, WinnerState are final states
  */
 public enum PlayerStateType {
-        WaitingOtherPlayers(),
-        SelectGameCardsState(),
-        ChooseCardState(),
-        ChoosePawnsPositionState(),
-        LoserState(),
-        WinnerState(),
-        IdleState(),
-        ActionState();
-
-        PlayerStateType(){
-        }
+        WaitingOtherPlayers,
+        SelectGameCardsState,
+        ChooseCardState,
+        ChoosePawnsPositionState,
+        LoserState,
+        WinnerState,
+        IdleState,
+        ActionState
 }
