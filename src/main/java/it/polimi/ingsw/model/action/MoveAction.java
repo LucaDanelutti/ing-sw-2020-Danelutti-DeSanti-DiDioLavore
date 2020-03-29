@@ -99,8 +99,7 @@ public class MoveAction extends Action {
         //relativePosition times 2 expresses the relative position wrt the position of selectedPawn that has to be checked. The absolute position that has to be checked is obtained by adding the relative position to the selectedPawnPosition
         Position positionToCheck = new Position(selectedPawnPosition.getX() + 2 * relativePosition.getX(), selectedPawnPosition.getY() + 2 * relativePosition.getY());
         Cell cellToCheck = matrixCopy[positionToCheck.getX()][positionToCheck.getY()];
-        if (cellToCheck.peekBlock() == BlockType.DOME || cellToCheck.getPawn() != null) return false;
-        else return true;
+        return cellToCheck.peekBlock() != BlockType.DOME && cellToCheck.getPawn() == null;
     }
 
     /**
@@ -139,11 +138,10 @@ public class MoveAction extends Action {
      * @param matrixCopy is a copy of the matrix within board
      * @return the list of available cells to which the pawn selected can move
      */
-    public Boolean checkwin(Cell[][] matrixCopy) {
+    public Boolean checkWin(Cell[][] matrixCopy) {
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
         if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3) return true;
-        if (winDownEnable && selectedPawn.getDeltaHeight() <= -2) return true;
-        return false;
+        return winDownEnable && selectedPawn.getDeltaHeight() <= -2;
     }
 
 }
