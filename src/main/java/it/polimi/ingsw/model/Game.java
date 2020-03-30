@@ -65,13 +65,32 @@ class Game {
      * getNextCurrentPlayer method to get the Player that is going to be in ActionState
      */
     Player getNextActionStatePlayer() {
-        //TODO
-        return new Player("TODO", new WaitingOtherPlayersState());
+        Iterator<Player> iterator = inGamePlayers.iterator();
+        while (iterator.hasNext()) {
+            Player tempPlayer = iterator.next();
+            if (tempPlayer.getState().getType() == PlayerStateType.ActionState) {
+                if (iterator.hasNext()) {
+                    return iterator.next(); //Return the next player in the arrayList
+                }
+                else {
+                    return inGamePlayers.iterator().next(); //Return the first player of the arrayList
+                }
+            }
+        }
+        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: GameNotStartedException
     }
 
-    ArrayList<Player> getPlayersIn(PlayerStateType playerstate) {
-        //TODO
-        return new ArrayList<Player>();
+    /**
+     * getNextCurrentPlayer method to get the Players in the provided playerState
+     */
+    ArrayList<Player> getPlayersIn(PlayerStateType playerState) {
+        ArrayList<Player> tempPlayerList = new ArrayList<Player>();
+        for (Player player : inGamePlayers) {
+            if (player.getState().getType() == playerState) {
+                tempPlayerList.add(player);
+            }
+        }
+        return tempPlayerList;
     }
 
 }
