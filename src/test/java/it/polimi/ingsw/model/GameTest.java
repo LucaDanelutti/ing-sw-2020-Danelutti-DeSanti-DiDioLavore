@@ -54,20 +54,28 @@ class GameTest {
      * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
      */
     @Test
-    void getNextActionStatePlayer() {
-        //Case 1
+    void getNextActionStatePlayer_3PlayersInGame() {
         assertSame(testPlayer1, testGame.getNextActionStatePlayer());
+    }
 
-        //Case 2
-        testPlayer3.setState(new IdleState());
-        testPlayer1.setState(new ActionState(new ArrayList<Action>()));
+    /**
+     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
+     */
+    @Test
+    void getNextActionStatePlayer_2PlayersInGame() {
+        testGame.removePlayer(testPlayer1);
         assertSame(testPlayer2, testGame.getNextActionStatePlayer());
+    }
 
-        //Case 3
-        testPlayer1.setState(new IdleState());
-        testPlayer2.setState(new ActionState(new ArrayList<Action>()));
-        assertSame(testPlayer3, testGame.getNextActionStatePlayer());
-        //TODO: GameNotStartedException
+    /**
+     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
+     */
+    @Test
+    void getNextActionStatePlayer_NoPlayerAvailable() {
+        testPlayer1.setState(new WaitingOtherPlayersState());
+        testPlayer2.setState(new WaitingOtherPlayersState());
+        testPlayer3.setState(new WaitingOtherPlayersState());
+        assertTrue(testGame.getNextActionStatePlayer().getName() == "TODO");
     }
 
     /**
