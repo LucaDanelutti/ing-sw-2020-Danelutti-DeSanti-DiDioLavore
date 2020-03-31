@@ -65,19 +65,30 @@ class Game {
      * getNextCurrentPlayer method to get the Player that is going to be in ActionState
      */
     Player getNextActionStatePlayer() {
-        Iterator<Player> iterator = inGamePlayers.iterator();
-        while (iterator.hasNext()) {
-            Player tempPlayer = iterator.next();
-            if (tempPlayer.getState().getType() == PlayerStateType.ActionState) {
-                if (iterator.hasNext()) {
-                    return iterator.next(); //Return the next player in the arrayList
+        if (inGamePlayers.size() == 2) {
+            for (int i=0; i<2; i++) {
+                if (inGamePlayers.get(i%2).getState().getType() == PlayerStateType.ActionState) {
+                    if (inGamePlayers.get((i+1)%2).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+1)%2);
+                    } else {
+                        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
+                    }
                 }
-                else {
-                    return inGamePlayers.iterator().next(); //Return the first player of the arrayList
+            }
+        } else if (inGamePlayers.size() == 3) {
+            for (int i=0; i<3; i++) {
+                if (inGamePlayers.get(i%3).getState().getType() == PlayerStateType.ActionState) {
+                    if (inGamePlayers.get((i+1)%3).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+1)%3);
+                    } else if (inGamePlayers.get((i+2)%3).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+2)%3);
+                    } else {
+                        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
+                    }
                 }
             }
         }
-        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: GameNotStartedException
+        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
     }
 
     /**
