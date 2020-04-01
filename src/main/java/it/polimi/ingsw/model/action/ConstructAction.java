@@ -23,6 +23,10 @@ public class ConstructAction extends Action {
         this.enableMoveUp=enableMoveUp;
     }
 
+    public void accept(ActionVisitor actionVisitor){
+        actionVisitor.executeAction(this);
+    }
+
     public Position getOnlyAvailableCell() {
         return onlyAvailableCell;
     }
@@ -54,8 +58,8 @@ public class ConstructAction extends Action {
      */
     public void setSelectedBlockType(BlockType selectedBlockType) {
         this.selectedBlockType = selectedBlockType;
-        for(Observer observer: this.observers){
-            observer.update(this);
+        for(ActionObserver actionObserver: this.actionObservers){
+            actionObserver.update(this);
         }
     }
 

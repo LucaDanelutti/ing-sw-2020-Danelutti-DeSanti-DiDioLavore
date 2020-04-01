@@ -18,7 +18,7 @@ public abstract class Action {
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
     protected final ActionType actionType;
-    protected List<Observer> observers = new ArrayList<>();
+    protected List<ActionObserver> actionObservers = new ArrayList<>();
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
@@ -43,7 +43,7 @@ public abstract class Action {
         this.selectedPawn = toBeCopied.selectedPawn;
         this.notSelectedPawn = toBeCopied.notSelectedPawn;
         this.chosenPosition = toBeCopied.chosenPosition;
-        this.observers=toBeCopied.observers;
+        this.actionObservers=toBeCopied.actionObservers;
         this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(toBeCopied.notAvailableCell);
@@ -57,12 +57,17 @@ public abstract class Action {
      */
     public abstract Action duplicate();
 
+    /**
+     * This is the function needed to implement the visitor pattern for GameLogicExecutor
+     * @param actionVisitor the visitor
+     */
+    public abstract  void accept(ActionVisitor actionVisitor);
 
-    public void addObserver(Observer observer){
-        this.observers.add(observer);
+    public void addObserver(ActionObserver actionObserver){
+        this.actionObservers.add(actionObserver);
     }
-    public void removeObserver(Observer observer){
-        this.observers.remove(observer);
+    public void removeObserver(ActionObserver actionObserver){
+        this.actionObservers.remove(actionObserver);
     }
 
     /**
@@ -74,8 +79,8 @@ public abstract class Action {
         this.chosenPosition = chosenPosition;
         //TODO: call update function only inside of the sub-classes (remove setChosenPos from here)
         if(this.actionType==ActionType.MOVE){
-            for(Observer observer : this.observers){
-                observer.update(this);
+            for(ActionObserver actionObserver : this.actionObservers){
+                actionObserver.update(this);
             }
         }
     }

@@ -44,7 +44,7 @@ public class Cell{
      * This provides access to the Stack push function.
      * @param type The block to be pushed into the Stack
      */
-    void pushBlock(BlockType type){
+    public void pushBlock(BlockType type){
         blockStack.push(type);
     }
 
@@ -60,7 +60,7 @@ public class Cell{
      * This provides access to the Stack pop function.
      * @return It returns the peek of the Stack and removes it from the stack
      */
-    BlockType popBlock(){
+    public BlockType popBlock(){
         return blockStack.pop();
     }
 
@@ -76,7 +76,7 @@ public class Cell{
      * This provides access to the Stack isEmpty function.
      * @return It returns a boolean as a response to the "isEmpty" query on the stack
      */
-    boolean isEmpty(){
+    public boolean isEmpty(){
         return blockStack.isEmpty();
     }
 
@@ -92,7 +92,7 @@ public class Cell{
      * This is the setter for the variable pawn
      * @param pawn the variable to assign to pawn
      */
-    void setPawn(Pawn pawn){
+    public void setPawn(Pawn pawn){
         this.pawn=pawn;
     }
 

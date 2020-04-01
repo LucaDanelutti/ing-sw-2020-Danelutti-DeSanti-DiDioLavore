@@ -44,6 +44,10 @@ public class MoveAction extends Action {
         this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn);
     }
 
+    public void accept(ActionVisitor visitor){
+        visitor.executeAction(this);
+    }
+
     /**
      * This function creates a duplicate of this.
      * @return MoveAction

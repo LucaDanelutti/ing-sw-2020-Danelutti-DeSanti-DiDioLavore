@@ -10,7 +10,6 @@ import java.util.ArrayList;
  */
 public class IdleState extends PlayerState {
 
-
     private ArrayList<Action> actionList;
     public IdleState() {
         super(PlayerStateType.IdleState);
