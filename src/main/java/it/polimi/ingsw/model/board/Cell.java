@@ -30,7 +30,7 @@ public class Cell{
      * @param toBeCopied this is the original Cell to be copied.
      */
     Cell(Cell toBeCopied){
-        this.pawn=toBeCopied.pawn;
+        this.pawn=new Pawn(toBeCopied.pawn);
         this.blockStack= new Stack<>();
         Object[] temp= toBeCopied.blockStack.toArray();
         BlockType appo;

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
+import javafx.geometry.Pos;
 
 /**
  * This class represent the actual board of the concrete game.
@@ -50,6 +51,36 @@ public class Board{
         prevCell.setPawn(null);
         newCell.getPawn().setPosition(newPosition);
         newCell.getPawn().setDeltaHeight(newCell.getSize()-prevCell.getSize());
+    }
+
+    /**
+     * this function updates the position of the pawn on the board, and it is used when in the newPosition an opponent pawn is present
+     * the opponent pawn will be placed in the opponentPawnNewPos
+     * @param prevPosition current position of the pawn
+     * @param newPosition new position of the pawn (and the position of the opponentPawn)
+     * @param opponentPawnNewPos the position to place the opponentPawn
+     */
+    public void updatePawnPosition(Position prevPosition, Position newPosition, Position opponentPawnNewPos){
+        Cell prevCell=matrix[prevPosition.getX()][prevPosition.getY()];
+        Cell newCell=matrix[newPosition.getX()][newPosition.getY()];
+        Cell opponentPawnCell=matrix[opponentPawnNewPos.getX()][opponentPawnNewPos.getY()];
+
+        //prepare the opponent Pawn to be moved
+        Pawn opponentPawn=newCell.getPawn();
+        opponentPawn.setPosition(opponentPawnNewPos);
+        opponentPawn.setDeltaHeight(0);
+
+        //move the pawn in prevPosition to newPosition
+        newCell.setPawn(prevCell.getPawn());
+        newCell.getPawn().setPosition(newPosition);
+        newCell.getPawn().setDeltaHeight(newCell.getSize()-prevCell.getSize());
+
+        //set the prevCell to have no Pawn
+        prevCell.setPawn(null);
+
+        //opponentPawn still holds the reference to the pawn in newCell
+        //by postponing this set, if prevPos and opponentPawnNewPos are the same, no problem occurs.
+        opponentPawnCell.setPawn(opponentPawn);
     }
 
     /**
