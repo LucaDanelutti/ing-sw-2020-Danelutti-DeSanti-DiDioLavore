@@ -30,27 +30,26 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
     public void executeAction(MoveAction moveAction){
         Position oldPos =moveAction.getSelectedPawn().getPosition();
-        Position newPos=moveAction.getChosenPosition();
+        Position newPos =moveAction.getChosenPosition();
+
+        //let's search if in the newPos a pawn is present
         Pawn opponentPawn = game.getBoard().getMatrixCopy()[newPos.getX()][newPos.getY()].getPawn();
 
-        if(opponentPawn==null){
+        if(opponentPawn==null){ //no pawn is detected in newPos
             game.getBoard().updatePawnPosition(oldPos,newPos);
             if(moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight()>0)
                 disableMoveUpOfOtherPlayers();
         }
-        else if(moveAction.getSwapEnable()){
-            game.getBoard().updatePawnPosition(moveAction.getSelectedPawn().getPosition(),moveAction.getChosenPosition());
-            game.getBoard().setPawnPosition(opponentPawn,oldPos);
+        else if(moveAction.getSwapEnable()){ //an opponent pawn is present && you have to swap the pawns
+            game.getBoard().updatePawnPosition(oldPos,newPos,oldPos);
         }
-        else if (moveAction.getPushEnable()){
+        else if (moveAction.getPushEnable()){ //an opponent pawn is present && you have to push him
             Position opponentPawnNewPos;
             int deltaX=newPos.getX()-oldPos.getX();
             int deltaY=newPos.getY()-oldPos.getY();
             opponentPawnNewPos=new Position(newPos.getX()+deltaX,newPos.getY()+deltaY);
-            game.getBoard().updatePawnPosition(oldPos,newPos);
-            game.getBoard().setPawnPosition(opponentPawn,opponentPawnNewPos);
+            game.getBoard().updatePawnPosition(oldPos,newPos,opponentPawnNewPos);
         }
-
 
         //after a move action is executed always check if the payer won
         if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
