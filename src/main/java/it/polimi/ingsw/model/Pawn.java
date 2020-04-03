@@ -22,6 +22,19 @@ public class Pawn {
     }
 
     /**
+     * this is the copy constructor for Pawn class
+     * @param toBeCopied the pawn to be copied
+     */
+    public Pawn(Pawn toBeCopied){
+        this.color=toBeCopied.color;
+        this.position=new Position(toBeCopied.position.getX(),toBeCopied.position.getY());
+        this.previousPosition=new Position(toBeCopied.previousPosition.getX(),toBeCopied.previousPosition.getY());
+        this.lastBuildPosition=new Position(toBeCopied.lastBuildPosition.getX(),toBeCopied.lastBuildPosition.getY());
+        this.deltaHeight=toBeCopied.deltaHeight;
+
+    }
+
+    /**
      * Set method of the variable position, it also updates the value of previousPosition if possible.
      * @param position is the new position of the pawn
      */
