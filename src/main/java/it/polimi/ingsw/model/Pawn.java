@@ -27,9 +27,12 @@ public class Pawn {
      */
     public Pawn(Pawn toBeCopied){
         this.color=toBeCopied.color;
-        this.position=new Position(toBeCopied.position.getX(),toBeCopied.position.getY());
-        this.previousPosition=new Position(toBeCopied.previousPosition.getX(),toBeCopied.previousPosition.getY());
-        this.lastBuildPosition=new Position(toBeCopied.lastBuildPosition.getX(),toBeCopied.lastBuildPosition.getY());
+        if(toBeCopied.position!=null)
+            this.position=new Position(toBeCopied.position.getX(),toBeCopied.position.getY());
+        if(toBeCopied.previousPosition!=null)
+            this.previousPosition=new Position(toBeCopied.previousPosition.getX(),toBeCopied.previousPosition.getY());
+        if(toBeCopied.lastBuildPosition!=null)
+            this.lastBuildPosition=new Position(toBeCopied.lastBuildPosition.getX(),toBeCopied.lastBuildPosition.getY());
         this.deltaHeight=toBeCopied.deltaHeight;
 
     }

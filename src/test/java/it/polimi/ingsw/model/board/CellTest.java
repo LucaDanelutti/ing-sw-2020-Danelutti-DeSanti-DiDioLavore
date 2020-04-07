@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
+import it.polimi.ingsw.model.Position;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,11 +19,13 @@ class CellTest {
     void copyConstructorShouldReturnACopy(){
         Cell originalCell=new Cell();
         Pawn originalPawn=new Pawn("ffffff");
+        originalCell.setPawn(originalPawn);
 
         Cell copiedCell=new Cell(originalCell);
 
+
         assertNotSame(originalCell,copiedCell,"Original and Copied should not refer to the same object");
-        assertSame(originalCell.getPawn(),copiedCell.getPawn(),"pawn variable should be a shallow copy");
+        assertNotSame(originalCell.getPawn(),copiedCell.getPawn(),"pawn variable should not refer to the same onject");
     }
 
 }

@@ -46,7 +46,7 @@ class BoardTest {
         Cell[][] original=tester.getMatrixCopy();
         tester.updatePawnPosition(new Position(0,0), new Position(0,1));
         Cell[][] mod=tester.getMatrixCopy();
-        assertSame(original[0][0].getPawn(),mod[0][1].getPawn(),"the same reference to the pawn should be present");
+        assertNotSame(original[0][0].getPawn(),mod[0][1].getPawn(),"the same reference to the pawn should not be present");
         assertEquals(mod[0][1].getPawn().getDeltaHeight(),1,"the deltaHeight should be 1");
     }
 
@@ -61,7 +61,7 @@ class BoardTest {
         Pawn pwn = new Pawn("ffffff");
         tester.setPawnPosition(pwn,new Position(0,0));
         Cell[][] matrix=tester.getMatrixCopy();
-        assertSame(pwn,matrix[0][0].getPawn(),"we have to set the shallow copy of the pawn");
+        assertNotSame(pwn,matrix[0][0].getPawn(),"we have to copy the pawn");
         assertEquals(pwn.getPosition(),new Position(0,0),"the position of the pawn should be set correctly");
     }
 

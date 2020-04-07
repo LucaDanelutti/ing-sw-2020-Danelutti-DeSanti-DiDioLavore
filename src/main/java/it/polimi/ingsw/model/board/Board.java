@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
-import javafx.geometry.Pos;
 
 /**
  * This class represent the actual board of the concrete game.
