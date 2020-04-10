@@ -106,30 +106,81 @@ public class MoveAction extends Action {
     }
 
     /**
+     * Removes from availableCells the positions present within notAvailableCell
+     * @param availableCells is the current list of cells where the selectedPawn can move
+     */
+    private void checkNotAvailableCells(ArrayList<Position> availableCells) {
+        for (Position position : notAvailableCell) {
+            if (availableCells.contains(position)) availableCells.remove(position);
+        }
+    }
+
+    /**
+     * Removes from availableCells the positions where a dome is placed
+     * @param availableCells is the current list of cells where the selectedPawn can move
+     * @param matrixCopy is a copy of the matrix within board selectedPawnPosition
+     */
+    private void checkDomePresence(ArrayList<Position> availableCells, Cell[][] matrixCopy) {
+        for (int i=0; i<matrixCopy.length; i++) {
+            for (int j = 0; j < matrixCopy[0].length; j++) {
+                if (availableCells.contains(new Position(i, j))) {
+                    if (matrixCopy[i][j].peekBlock() == BlockType.DOME) availableCells.remove(new Position(i, j));
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes from availableCells the positions where the selectedPawn can't move because of an height threshold
+     * @param availableCells is the current list of cells where the selectedPawn can move
+     * @param matrixCopy is a copy of the matrix within board selectedPawnPosition
+     */
+    private void checkDeltaHeight(ArrayList<Position> availableCells, Cell[][] matrixCopy) {
+        for (int i=0; i<matrixCopy.length; i++) {
+            for (int j = 0; j < matrixCopy[0].length; j++) {
+                if (availableCells.contains(new Position(i, j))) {
+                    int signedDeltaHeight = matrixCopy[i][j].getSize() - matrixCopy[selectedPawn.getPosition().getX()][selectedPawn.getPosition().getY()].getSize();
+                    if (signedDeltaHeight > 1 || (signedDeltaHeight == 1 && !moveUpEnable)) availableCells.remove(new Position(i, j));
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes from availableCells the position where selectedPawn can't move because of the presence of another pawn
+     * @param availableCells is the current list of cells where the selectedPawn can move
+     * @param matrixCopy is a copy of the matrix within board selectedPawnPosition
+     */
+    private void checkPawnPresence(ArrayList<Position> availableCells, Cell[][] matrixCopy) {
+        for (int i=0; i<matrixCopy.length; i++) {
+            for (int j = 0; j < matrixCopy[0].length; j++) {
+                if (availableCells.contains(new Position(i, j))) {
+                    if (matrixCopy[i][j].getPawn() != null && (matrixCopy[i][j].getPawn().getPosition().equals(notSelectedPawn.getPosition()) || !canMoveOnOpponent(matrixCopy, selectedPawn.getPosition(), new Position(i,j)))) availableCells.remove(new Position(i, j));
+                }
+            }
+        }
+    }
+
+    /**
      * Computes the list of cells to which a pawn can move
      * @param matrixCopy is a copy of the matrix within board
      * @return the list of available cells to which the pawn selected can move
      */
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
         ArrayList<Position> availableCells = new ArrayList<>();
+        Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
         for (int i=0; i<matrixCopy.length; i++) {
             for (int j=0; j<matrixCopy[0].length; j++) {
-                Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
-//              Selects only the cells adjacent to the selectedPawn (excluding the one occupied by the selectedPawn)
+//              Adds to availableCells the cells adjacent to the selectedPawn
                 if (!(selectedPawnPosition.getX() == i && selectedPawnPosition.getY() == j) && Math.abs(selectedPawnPosition.getX() - i) <= 1  && Math.abs(selectedPawnPosition.getY() - j) <= 1 ) {
-//                  Computes the deltaHeight between the cell in which the selectedPawn is currently located and the prospective one
-                    int signedDeltaHeight = matrixCopy[i][j].getSize() - matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].getSize();
-                    if ((signedDeltaHeight < 1 || (signedDeltaHeight == 1 && moveUpEnable)) && matrixCopy[i][j].peekBlock() != BlockType.DOME ) {
-//                      Manages the presence of a pawn on the prospective cell
-                        if (matrixCopy[i][j].getPawn() == null || (matrixCopy[i][j].getPawn() != notSelectedPawn && canMoveOnOpponent(matrixCopy, selectedPawnPosition, new Position(i,j)))) {
-                            if (!notAvailableCell.contains(new Position(i, j))) {
-                                availableCells.add(new Position(i,j));
-                            }
-                        }
-                    }
+                    availableCells.add(new Position(i, j));
                 }
             }
         }
+        checkNotAvailableCells(availableCells);
+        checkDomePresence(availableCells, matrixCopy);
+        checkDeltaHeight(availableCells, matrixCopy);
+        checkPawnPresence(availableCells, matrixCopy);
 
         return availableCells;
     }

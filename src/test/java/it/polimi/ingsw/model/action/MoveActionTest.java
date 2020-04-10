@@ -33,8 +33,8 @@ class MoveActionTest {
     void availableCellsTest() {
         ArrayList<Position> notAvailableCellsTester = new ArrayList<>();
         notAvailableCellsTester.add(new Position(1,1));
-        notAvailableCellsTester.add(new Position(1,2));
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, false, false, true, true, true, true, null);
+        notAvailableCellsTester.add(new Position(1,3));
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, true, true, null);
 
         Pawn selectedPawnTester = new Pawn("white");
         Pawn notSelectedPawnTester = new Pawn("white");
@@ -48,15 +48,17 @@ class MoveActionTest {
         Board boardTester = new Board();
 
 //        boardTester.pawnConstruct(new Position(1,1), BlockType.DOME);
-//        boardTester.setPawnPosition(notSelectedPawnTester, new Position(1,4));
+        boardTester.setPawnPosition(notSelectedPawnTester, new Position(2,2));
 
-        Pawn enemyPawn = new Pawn("grey");
-        boardTester.setPawnPosition(enemyPawn, new Position(2,3));
+//        Pawn enemyPawn = new Pawn("grey");
+//        boardTester.setPawnPosition(enemyPawn, new Position(4,3));
 
 
-//        boardTester.pawnConstruct(new Position(3,4), BlockType.DOME);
-//        boardTester.pawnConstruct(new Position(1,4), BlockType.LEVEL2);
-//        boardTester.pawnConstruct(new Position(1,4), BlockType.LEVEL3);
+//        boardTester.pawnConstruct(new Position(0,1), BlockType.LEVEL1);
+//        boardTester.pawnConstruct(new Position(0,1), BlockType.LEVEL2);
+//        boardTester.pawnConstruct(new Position(0,1), BlockType.LEVEL3);
+//
+//        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
 
 
 
