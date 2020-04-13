@@ -93,6 +93,11 @@ public class Board{
         matrix[position.getX()][position.getY()].setPawn(pawn);
     }
 
+    public void removePawnFromGame(Pawn pawn){
+        matrix[pawn.getPosition().getX()][pawn.getPosition().getY()].setPawn(null);
+
+    }
+
     /**
      * This function is used when an construct action is run on the board, it pushes a new legal block on top
      * @param constructPosition the position where the block will be constructed
