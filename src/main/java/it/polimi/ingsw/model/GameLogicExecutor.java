@@ -122,7 +122,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
 
     private void enableMoveUpForCurrentPlayer() {
         ArrayList<Player> actionStatePlayers = game.getPlayersIn(PlayerStateType.ActionState);
-        //TODO: error should be thrown by getPlayersIn-> exception!
         Player currentPlayer = actionStatePlayers.get(0);
         for (Action action : ((ActionState) currentPlayer.getState()).getActionList()) {
             if (action.getActionType() == ActionType.MOVE) {
@@ -132,9 +131,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
 
     }
     private void disableMoveUpOfOtherPlayers() {
-        //TODO: should we use a visitor pattern to do this thing? so that we can remove the check for the ActionType.MOVE?
         for (Player player : game.getPlayersIn(PlayerStateType.IdleState)) {
-            for (Action action : ((IdleState) player.getState()).getActionList()) {
+            for (Action action : player.getCurrentCard().getCurrentActionList()) {
                 if (action.getActionType() == ActionType.MOVE) {
                     ((MoveAction) action).setMoveUpEnable(false);
                 }
@@ -143,7 +141,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
     private void loadNextAction(){
         ArrayList<Player> actionStatePlayers=game.getPlayersIn(PlayerStateType.ActionState);
-        //TODO: error should be thrown by getPlayersIn -> exception!
         Player currentPlayer = actionStatePlayers.get(0);
         //TODO: add this line of code when @luca implements setCurrentAction and getCurrentAction
         //((ActionState)currentPlayer.getState() ).setCurrentAction();
@@ -153,12 +150,11 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     private void passTurnToNextPlayer() {
         Player nextPlayer = game.getNextActionStatePlayer();
         ArrayList<Player> currentPlayers = game.getPlayersIn(PlayerStateType.ActionState);
-        //TODO: error should be thrown by getPlayersIn-> exception!
         Player currentPlayer = currentPlayers.get(0);
         ArrayList<Action> toBeLoaded;
         toBeLoaded = ((IdleState) nextPlayer.getState()).getActionList();
         nextPlayer.setState(new ActionState(toBeLoaded));
-        toBeLoaded = currentPlayer.getCurrentCard().getActionList();
+        toBeLoaded = currentPlayer.getCurrentCard().getDefaultActionList();
         //TODO: it would be usefull to have a parametric initialize of IdleState with the actionList
         IdleState i = new IdleState();
         i.setActionList(toBeLoaded);

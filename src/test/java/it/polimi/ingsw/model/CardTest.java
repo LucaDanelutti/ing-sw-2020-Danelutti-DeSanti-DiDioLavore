@@ -13,6 +13,6 @@ class CardTest {
     @Test
     void getActionList() {
         Card cardTester = new Card("Apollo", 1, null);
-        ArrayList<Action> actionListTest = cardTester.getActionList();
+        ArrayList<Action> actionListTest = cardTester.getDefaultActionList();
     }
 }

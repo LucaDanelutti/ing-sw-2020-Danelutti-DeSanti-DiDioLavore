@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.playerstate.InvalidGameException;
 import it.polimi.ingsw.model.playerstate.PlayerStateType;
 import it.polimi.ingsw.model.playerstate.WaitingOtherPlayersState;
 
@@ -62,7 +63,8 @@ class Game {
     }
 
     /**
-     * getNextCurrentPlayer method to get the Player that is going to be in ActionState
+     * getNextCurrentPlayer method to get the Player that is going to be in ActionState.
+     * Throws InvalidGameException if no next ActionStatePlayer is available.
      */
     Player getNextActionStatePlayer() {
         if (inGamePlayers.size() == 2) {
@@ -71,7 +73,7 @@ class Game {
                     if (inGamePlayers.get((i+1)%2).getState().getType() == PlayerStateType.IdleState) {
                         return inGamePlayers.get((i+1)%2);
                     } else {
-                        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
+                        throw new InvalidGameException("Next ActionStatePlayer not available");
                     }
                 }
             }
@@ -83,16 +85,18 @@ class Game {
                     } else if (inGamePlayers.get((i+2)%3).getState().getType() == PlayerStateType.IdleState) {
                         return inGamePlayers.get((i+2)%3);
                     } else {
-                        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
+                        throw new InvalidGameException("Next ActionStatePlayer not available");
                     }
                 }
             }
         }
-        return new Player("TODO", new WaitingOtherPlayersState()); //TODO: Exception
+        throw new InvalidGameException("Next ActionStatePlayer not available");
     }
 
     /**
-     * getNextCurrentPlayer method to get the Players in the provided playerState
+     * getNextCurrentPlayer method to get the Players in the provided playerState. If there are no
+     * players in the provided playerStateType returns an empty arrayList. If more than one player
+     * is found in actionState throws an exception
      */
     ArrayList<Player> getPlayersIn(PlayerStateType playerState) {
         ArrayList<Player> tempPlayerList = new ArrayList<Player>();
@@ -100,6 +104,9 @@ class Game {
             if (player.getState().getType() == playerState) {
                 tempPlayerList.add(player);
             }
+        }
+        if (playerState == PlayerStateType.ActionState && tempPlayerList.size() != 1) {
+            throw new InvalidGameException("No player/more than one player in ActionState found");
         }
         return tempPlayerList;
     }
