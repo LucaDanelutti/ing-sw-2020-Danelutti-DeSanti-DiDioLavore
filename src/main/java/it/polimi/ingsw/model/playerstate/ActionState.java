@@ -17,15 +17,49 @@ public class ActionState extends PlayerState {
 
     public ActionState(ArrayList<Action> actionList) {
         super(PlayerStateType.ActionState);
-        this.actionList = actionList;
+        this.setActionList(actionList);
     }
 
+    /**
+     * Get method of the variable currentAction, returns a copy of the currentAction
+     */
+    public Action getCurrentAction() {
+        return currentAction.duplicate();
+    }
+
+    /**
+     * Set method of the variable currentAction, sets a copy of provided currentAction
+     */
+    public void setCurrentAction(Action currentAction) {
+        this.currentAction = currentAction.duplicate();
+    }
+
+    /**
+     * Get method of the variable actionList, returns a copy of the actionList
+     */
     public ArrayList<Action> getActionList() {
-        return actionList;
+        if (actionList == null) {
+            return null;
+        } else {
+            ArrayList<Action> copiedActionList = new ArrayList<>();
+            for (Action action : actionList) {
+                copiedActionList.add(action.duplicate());
+            }
+            return copiedActionList;
+        }
     }
 
+    /**
+     * Get method of the variable actionList, sets a copy of provided actionList
+     */
     public void setActionList(ArrayList<Action> actionList) {
-        this.actionList = actionList;
+        if (actionList != null) {
+            for (Action action : actionList) {
+                this.actionList.add(action.duplicate());
+            }
+        } else {
+            this.actionList = null;
+        }
     }
 
     public Pawn getSelectedPawn() {
