@@ -75,7 +75,7 @@ class GameTest {
         testPlayer1.setState(new WaitingOtherPlayersState());
         testPlayer2.setState(new WaitingOtherPlayersState());
         testPlayer3.setState(new WaitingOtherPlayersState());
-        assertTrue(testGame.getNextActionStatePlayer().getName() == "TODO");
+        assertThrows(InvalidGameException.class, () -> {testGame.getNextActionStatePlayer();});
     }
 
     /**
