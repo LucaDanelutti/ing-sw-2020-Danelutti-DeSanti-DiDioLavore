@@ -82,15 +82,28 @@ class GameTest {
      * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
      */
     @Test
-    void getPlayersIn() {
-        //Case 1
+    void getPlayersIn_MultipleIdleState() {
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer1));
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer2));
         assertFalse(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer3));
+    }
 
-        //Case 2
+    /**
+     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
+     */
+    @Test
+    void getPlayersIn_ActionState() {
         assertFalse(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer1));
         assertFalse(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer2));
         assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer3));
+    }
+
+    /**
+     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
+     */
+    @Test
+    void getPlayersIn_MultipleActionState() {
+        testPlayer1.setState(new ActionState(new ArrayList<Action>()));
+        assertThrows(InvalidGameException.class, () -> {testGame.getPlayersIn(PlayerStateType.ActionState);});
     }
 }
