@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+
 import java.awt.font.GlyphVector;
 
 /**
@@ -29,5 +30,27 @@ public enum BlockType {
      */
     protected int getLevel(){
         return this.level;
+    }
+
+    /**
+     * This function is used to retrieve the BlockType of the block above the block selected.
+     * @return BlockType This is the BlockType of the block above the block selected.
+     */
+    public BlockType getLevelAbove() {
+        BlockType blockTypeAbove = BlockType.TERRAIN;
+        switch (this) {
+            case TERRAIN:
+                blockTypeAbove =  BlockType.LEVEL1;
+                break;
+            case LEVEL1:
+                blockTypeAbove =  BlockType.LEVEL2;
+                break;
+            case LEVEL2:
+                blockTypeAbove =  BlockType.LEVEL3;
+                break;
+            case LEVEL3:
+                blockTypeAbove = BlockType.DOME;
+        }
+        return blockTypeAbove;
     }
 }
