@@ -158,7 +158,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         ArrayList<Action> toBeLoaded;
         toBeLoaded = ((IdleState) nextPlayer.getState()).getActionList();
         nextPlayer.setState(new ActionState(toBeLoaded));
-        toBeLoaded = currentPlayer.getCurrentCard().getActionList();
+        toBeLoaded = currentPlayer.getCurrentCard().getDefaultActionList();
         //TODO: it would be usefull to have a parametric initialize of IdleState with the actionList
         IdleState i = new IdleState();
         i.setActionList(toBeLoaded);

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public class Card {
     private String name;
     private int id;
-    private ArrayList<Action> actionList;
+    private ArrayList<Action> defaultActionList;
+    private ArrayList<Action> currentActionList;
 
     /**
      This is the constructor of the class Card
@@ -18,10 +19,11 @@ public class Card {
         this.id = id;
         if (actionList != null) {
             for (Action action : actionList) {
-                this.actionList.add(action.duplicate());
+                this.defaultActionList.add(action.duplicate());
+                this.currentActionList.add(action.duplicate());
             }
         } else {
-            this.actionList = null;
+            this.defaultActionList = null;
         }
 
     }
@@ -34,10 +36,22 @@ public class Card {
         return id;
     }
 
-    ArrayList<Action> getActionList() {
-        if (actionList != null) {
+    ArrayList<Action> getDefaultActionList() {
+        if (defaultActionList != null) {
             ArrayList<Action> copiedActionList = new ArrayList<>();
-            for (Action action : actionList) {
+            for (Action action : defaultActionList) {
+                copiedActionList.add(action.duplicate());
+            }
+            return copiedActionList;
+        } else {
+            return null;
+        }
+    }
+
+    ArrayList<Action> getCurrentActionList() {
+        if (currentActionList != null) {
+            ArrayList<Action> copiedActionList = new ArrayList<>();
+            for (Action action : currentActionList) {
                 copiedActionList.add(action.duplicate());
             }
             return copiedActionList;
