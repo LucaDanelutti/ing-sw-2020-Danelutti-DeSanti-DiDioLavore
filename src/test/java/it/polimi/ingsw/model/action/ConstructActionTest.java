@@ -50,4 +50,30 @@ class ConstructActionTest {
         ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
         availableCellsTester.forEach(value -> System.out.println(value.getX() + " " + value.getY()));
     }
+
+    /**
+     * This test checks whether the availableBlockTypes() function of ConstructAction works properly
+     */
+    @Test
+    void availableBlockTypes() {
+        ArrayList<Position> notAvailableCellsTester = new ArrayList<>();
+        notAvailableCellsTester.add(new Position(0,0));
+        ArrayList<BlockType> alwaysAvailableBlockType = new ArrayList<>();
+//        alwaysAvailableBlockType.add(BlockType.DOME);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, alwaysAvailableBlockType, null, true);
+
+        Pawn selectedPawnTester = new Pawn("white");
+        selectedPawnTester.setPosition(new Position(1,1));
+
+        Board boardTester = new Board();
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
+
+        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
+        Position selectedPosition = new Position(1,2);
+
+        ArrayList<BlockType> availableBlockTypes = constructActionTester.availableBlockTypes(selectedPosition, boardTester.getMatrixCopy());
+        availableBlockTypes.forEach(value -> System.out.println(value));
+
+        assertEquals(BlockType.LEVEL3, availableBlockTypes.get(0), "The block type should be the same");
+    }
 }

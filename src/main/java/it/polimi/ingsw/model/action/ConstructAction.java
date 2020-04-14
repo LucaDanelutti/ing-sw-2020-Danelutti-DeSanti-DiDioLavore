@@ -132,4 +132,19 @@ public class ConstructAction extends Action {
         return availableCells;
     }
 
+    /**
+     * Computes the list of BlockType that can be selected by the player to build in the selected position
+     * @param selectedPosition is a position where the player may decide to build one of the returned block types
+     * @param matrixCopy is a copy of the matrix within board
+     * @return the list of available block types that can be selected by the player to build in the selected position
+     */
+    public ArrayList<BlockType> availableBlockTypes(Position selectedPosition, Cell[][] matrixCopy) {
+        ArrayList<BlockType> availableBlockTypes = new ArrayList<>();
+        availableBlockTypes.add(matrixCopy[selectedPosition.getX()][selectedPosition.getY()].peekBlock().getLevelAbove());
+        for (BlockType blockType : alwaysAvailableBlockType) {
+            if (!availableBlockTypes.contains(blockType)) availableBlockTypes.add(blockType);
+        }
+        return availableBlockTypes;
+    }
+
 }
