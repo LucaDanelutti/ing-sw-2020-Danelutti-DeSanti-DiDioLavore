@@ -166,6 +166,7 @@ public class MoveAction extends Action {
      * @param matrixCopy is a copy of the matrix within board
      * @return the list of available cells to which the pawn selected can move
      */
+    @Override
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
         ArrayList<Position> availableCells = new ArrayList<>();
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
