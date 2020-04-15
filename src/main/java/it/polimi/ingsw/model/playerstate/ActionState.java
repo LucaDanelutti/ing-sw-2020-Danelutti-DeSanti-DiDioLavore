@@ -50,7 +50,7 @@ public class ActionState extends PlayerState {
     }
 
     /**
-     * Get method of the variable actionList, sets a copy of provided actionList
+     * Set method of the variable actionList, sets a copy of provided actionList
      */
     public void setActionList(ArrayList<Action> actionList) {
         if (actionList != null) {
@@ -62,12 +62,18 @@ public class ActionState extends PlayerState {
         }
     }
 
+    /**
+     * Get method of the variable selectedPawn, returns a copy of the selectedPawn
+     */
     public Pawn getSelectedPawn() {
-        return selectedPawn;
+        return selectedPawn.duplicate();
     }
 
+    /**
+     * Set method of the variable selectedPawn, sets a copy of provided selectedPawn
+     */
     public void setSelectedPawn(Pawn selectedPawn) {
-        this.selectedPawn = selectedPawn;
+        this.selectedPawn = selectedPawn.duplicate();
     }
 
     public ArrayList<Pawn> availablePawns(Cell[][] matrixCopy, ArrayList<Pawn> playerPawnList) {

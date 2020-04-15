@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.action.ConstructAction;
+
 import java.util.Objects;
 
 /**
@@ -35,6 +37,10 @@ public class Pawn {
             this.lastBuildPosition=new Position(toBeCopied.lastBuildPosition.getX(),toBeCopied.lastBuildPosition.getY());
         this.deltaHeight=toBeCopied.deltaHeight;
 
+    }
+
+    public Pawn duplicate() {
+        return new Pawn(this);
     }
 
     /**
