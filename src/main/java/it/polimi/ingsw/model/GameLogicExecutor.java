@@ -152,12 +152,12 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         ArrayList<Player> currentPlayers = game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = currentPlayers.get(0);
         ArrayList<Action> toBeLoaded;
-        toBeLoaded = ((IdleState) nextPlayer.getState()).getActionList();
-        nextPlayer.setState(new ActionState(toBeLoaded));
-        toBeLoaded = currentPlayer.getCurrentCard().getDefaultActionList();
+        //toBeLoaded = ((IdleState) nextPlayer.getState()).getActionList();
+        //nextPlayer.setState(new ActionState(toBeLoaded));
+        //toBeLoaded = currentPlayer.getCurrentCard().getDefaultActionList();
         //TODO: it would be usefull to have a parametric initialize of IdleState with the actionList
         IdleState i = new IdleState();
-        i.setActionList(toBeLoaded);
+        //i.setActionList(toBeLoaded);
         currentPlayer.setState(i);
     }
 
