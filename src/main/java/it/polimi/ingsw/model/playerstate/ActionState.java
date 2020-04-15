@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.playerstate;
 
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.action.Action;
-import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
 
@@ -74,10 +73,5 @@ public class ActionState extends PlayerState {
      */
     public void setSelectedPawn(Pawn selectedPawn) {
         this.selectedPawn = selectedPawn.duplicate();
-    }
-
-    public ArrayList<Pawn> availablePawns(Cell[][] matrixCopy, ArrayList<Pawn> playerPawnList) {
-        //TODO
-        return new ArrayList<Pawn>();
     }
 }
