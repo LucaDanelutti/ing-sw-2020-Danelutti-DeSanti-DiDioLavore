@@ -523,22 +523,36 @@ class MoveActionTest {
 
 
     /**
-     * This test checks whether the availableCells() function of MoveAction works properly
+     * This test checks whether the checkwin() function works properly when winDownEnable = true and the moved pawn went down of at least 2 levels.
      */
     @Test
-    void checkwin() {
+    void checkwinMoveDown() {
         MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null);
         Board boardTester = new Board();
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,2));
-//      Checks whether the player wins if it is on a Level3 cell
-//        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
-//        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
-//        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL3);
+
         moveActionTester.setSelectedPawn(selectedPawnTester);
 
-//      Checks whether the player wins if its DeltaHeight is <=-2
         selectedPawnTester.setDeltaHeight(-2);
+
+        assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
+    }
+
+    /**
+     * This test checks whether the checkwin() function works properly when the moved pawn has reached a level 3 cell
+     */
+    @Test
+    void checkwinReachedLevel3() {
+        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null);
+        Board boardTester = new Board();
+        Pawn selectedPawnTester = new Pawn("white");
+        selectedPawnTester.setPosition(new Position(1,2));
+
+        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL3);
+        moveActionTester.setSelectedPawn(selectedPawnTester);
 
         assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
     }
