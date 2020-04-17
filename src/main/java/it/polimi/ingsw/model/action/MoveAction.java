@@ -17,6 +17,7 @@ public class MoveAction extends Action {
     private Boolean denyMoveUpEnable;
     private Boolean winDownEnable;
     private ArrayList<Position> addMoveIfOn;
+    private Boolean denyMoveBackInNextMove;
 
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
