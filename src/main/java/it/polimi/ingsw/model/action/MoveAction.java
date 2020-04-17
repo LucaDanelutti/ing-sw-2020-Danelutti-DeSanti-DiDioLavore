@@ -101,6 +101,7 @@ public class MoveAction extends Action {
         Position relativePosition = new Position(enemyPawnPosition.getX() - selectedPawnPosition.getX(), enemyPawnPosition.getY() - selectedPawnPosition.getY());
         //relativePosition times 2 expresses the relative position wrt the position of selectedPawn that has to be checked. The absolute position that has to be checked is obtained by adding the relative position to the selectedPawnPosition
         Position positionToCheck = new Position(selectedPawnPosition.getX() + 2 * relativePosition.getX(), selectedPawnPosition.getY() + 2 * relativePosition.getY());
+        if (positionToCheck.getX() < 0 || positionToCheck.getX() > 4 || positionToCheck.getY() < 0 || positionToCheck.getY() > 4) return false;
         Cell cellToCheck = matrixCopy[positionToCheck.getX()][positionToCheck.getY()];
         return cellToCheck.peekBlock() != BlockType.DOME && cellToCheck.getPawn() == null;
     }
