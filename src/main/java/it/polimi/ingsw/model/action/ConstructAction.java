@@ -9,30 +9,30 @@ import java.util.ArrayList;
 
 public class ConstructAction extends Action {
     private BlockType selectedBlockType;
-    private Position onlyAvailableCell;
+    private Boolean constructOnLastBuilt;
     private Boolean buildBelowEnable;
     private ArrayList<BlockType> alwaysAvailableBlockType;
     private Boolean enableMoveUp;
 
-    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Position onlyAvailableCell, Boolean enableMoveUp){
+    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp){
         super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
         this.selectedBlockType=selectedBlockType;
-        this.onlyAvailableCell=onlyAvailableCell;
+        this.constructOnLastBuilt=constructOnLastBuilt;
         this.buildBelowEnable=buildBelowEnable;
         this.alwaysAvailableBlockType=alwaysAvailableBlockType;
         this.enableMoveUp=enableMoveUp;
     }
 
     ConstructAction(ConstructAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.onlyAvailableCell, toBeCopied.enableMoveUp);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp);
     }
 
     public void accept(ActionVisitor actionVisitor){
         actionVisitor.executeAction(this);
     }
 
-    public Position getOnlyAvailableCell() {
-        return onlyAvailableCell;
+    public Boolean getConstructOnLastBuilt() {
+        return constructOnLastBuilt;
     }
     public Boolean getBuildBelowEnable() {
         return buildBelowEnable;
@@ -117,6 +117,11 @@ public class ConstructAction extends Action {
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
         ArrayList<Position> availableCells = new ArrayList<>();
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
+        if (constructOnLastBuilt) {
+            availableCells.add(selectedPawn.getLastBuildPosition());
+            return availableCells;
+        }
+
         for (int i=0; i<matrixCopy.length; i++) {
             for (int j=0; j<matrixCopy[0].length; j++) {
                 //Adds to availableCells the cells adjacent to the selectedPawn including the one occupied by the selectedPawn
