@@ -106,5 +106,9 @@ public class Board{
     public void pawnConstruct(Position constructPosition, BlockType type){
         matrix[constructPosition.getX()][constructPosition.getY()].pushBlock(type);
     }
+
+    public Pawn getPawnCopy(Position pawnPosition){
+        return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
+    }
 }
 
