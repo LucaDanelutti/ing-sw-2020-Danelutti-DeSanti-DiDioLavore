@@ -35,7 +35,7 @@ class MoveActionTest {
 
 
     @BeforeEach
-    void setBoardAndPawn() {
+    void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
         selectedPawnTester = new Pawn("white");
         notSelectedPawnTester = new Pawn("white");
