@@ -78,7 +78,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             someoneWon(game.getPlayersIn(PlayerStateType.ActionState).get(0));
         }
         else{
-            //TODO: if denyMoveBackInNextMove is set, we have to set NotAvaiableCell in the next optional move to the currentPos of the selectedPawn
             loadNextAction();
         }
     }
@@ -232,7 +231,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      */
     public Boolean setChosenBlockType(BlockType blockType){
         ActionState actionState=getActionStateForCurrentPlayer();
-        //TODO: cambiare in getCurrentAction
         if(actionState.getCurrentAction().getActionType()==ActionType.CONSTRUCT) {
             ((ConstructAction) actionState.getCurrentAction()).setSelectedBlockType(blockType);
             return true;
@@ -242,10 +240,20 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
 
     public Boolean setInGameCards(ArrayList<Card> cards){
+        //TODO: how do we handle the creation of cards? will the user just send the card IDs?
         return true;
     }
 
     public Boolean setChosenCard(){
+        //TODO: how do we handle the selection of a card? will the user just send the card ID?
+        return true;
+    }
+
+    public Boolean setPawnsPositions(ArrayList<Position> positions){
+        //TODO: we could check if the positions are ok, but nah?
+        Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
+        game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
+        game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
         return true;
     }
 }
