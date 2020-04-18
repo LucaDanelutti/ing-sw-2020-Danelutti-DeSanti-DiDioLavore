@@ -12,6 +12,8 @@ import java.util.Iterator;
  */
 class Game {
     ArrayList<Player> inGamePlayers = new ArrayList<Player>();
+    ArrayList<Card> inGameCards=new ArrayList<>();
+
     Board board;
 
     Game(){
@@ -99,7 +101,7 @@ class Game {
      * is found in actionState throws an exception
      */
     ArrayList<Player> getPlayersIn(PlayerStateType playerState) {
-        ArrayList<Player> tempPlayerList = new ArrayList<Player>();
+        ArrayList<Player> tempPlayerList = new ArrayList<>();
         for (Player player : inGamePlayers) {
             if (player.getState().getType() == playerState) {
                 tempPlayerList.add(player);
@@ -109,6 +111,22 @@ class Game {
             throw new InvalidGameException("No player/more than one player in ActionState found");
         }
         return tempPlayerList;
+    }
+
+    void setInGameCards(ArrayList<Card> cards){
+        this.inGameCards=cards;
+    }
+    ArrayList<Card> getInGameCards(){
+        return this.inGameCards;
+    }
+    ArrayList<Card> getAvailableCards(){
+        ArrayList<Card> availableCards=new ArrayList<>(this.inGameCards);
+        for(Player p : this.inGamePlayers){
+            if(p.getCurrentCard()!=null){
+                availableCards.removeIf(i -> i.getId() == p.getCurrentCard().getId());
+            }
+        }
+        return availableCards;
     }
 
 }
