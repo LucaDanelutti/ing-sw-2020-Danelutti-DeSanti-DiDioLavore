@@ -147,7 +147,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         Player currentPlayer = actionStatePlayers.get(0);
         //TODO: @luca setCurrentAction should not require any input
         //((ActionState)currentPlayer.getState() ).setCurrentAction();
-        if(((ActionState)currentPlayer.getState()).getCurrentAction()==null)
+        if(((ActionState)currentPlayer.getState()).getCurrentActionCopy()==null)
             passTurnToNextPlayer();
     }
     private void passTurnToNextPlayer() {

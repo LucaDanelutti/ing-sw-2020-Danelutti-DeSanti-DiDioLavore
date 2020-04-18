@@ -22,21 +22,21 @@ public class ActionState extends PlayerState {
     /**
      * Get method of the variable currentAction, returns a copy of the currentAction
      */
-    public Action getCurrentAction() {
+    public Action getCurrentActionCopy() {
         return currentAction.duplicate();
     }
 
     /**
      * Set method of the variable currentAction, sets a copy of provided currentAction
      */
-    public void setCurrentAction(Action currentAction) {
+    public void setCurrentActionCopy(Action currentAction) {
         this.currentAction = currentAction.duplicate();
     }
 
     /**
      * Get method of the variable actionList, returns a copy of the actionList
      */
-    public ArrayList<Action> getActionList() {
+    public ArrayList<Action> getActionListCopy() {
         if (actionList == null) {
             return null;
         } else {
@@ -46,6 +46,13 @@ public class ActionState extends PlayerState {
             }
             return copiedActionList;
         }
+    }
+
+    /**
+     * Get method of the variable actionList, returns the reference of the actionList
+     */
+    public ArrayList<Action> getActionList() {
+        return actionList;
     }
 
     /**
