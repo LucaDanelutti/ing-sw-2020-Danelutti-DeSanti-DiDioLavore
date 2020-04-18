@@ -32,7 +32,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             game.getBoard().pawnConstruct(constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
         }
         //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
-        updateSelectedPawnInActionState(constructAction.getSelectedPawn().getPosition());
+        //TODO: call updatepawns inside of ActionState
+
         //generally we will load the next action or switch to the next player if turn ends
         loadNextAction();
     }
@@ -54,8 +55,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
                 //in this case we have to add another instance of moveAction to the actionList
                 if(moveAction.getAddMoveIfOn().contains(newPos)){
                     ActionState actionState = (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
-                    //TODO: implement addActionAfterCurrentOne inside of ActionState
-                    //actionState.addActionAfterCurrentOne(moveAction.duplicate());
+                    actionState.addActionAfterCurrentOne(moveAction.duplicate());
                 }
             }
         }
@@ -70,8 +70,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             game.getBoard().updatePawnPosition(oldPos,newPos,opponentPawnNewPos);
         }
 
-        updateSelectedPawnInActionState(newPos);
-        updateSelectedPawnInCurrentAction(newPos);
+        //TODO: chiamare updatePawns dentro actionState
+
 
         //after a move action is executed always check if the payer won
         if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
@@ -157,9 +157,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         ArrayList<Player> actionStatePlayers=game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = actionStatePlayers.get(0);
         ((ActionState)currentPlayer.getState() ).setCurrentAction();
-        //TODO: change to getCurrentAction
         if(((ActionState)currentPlayer.getState()).getCurrentAction()==null)
-            passTurnToNextPlayer();
+           passTurnToNextPlayer();
     }
     private void passTurnToNextPlayer() {
         Player nextPlayer = game.getNextActionStatePlayer();
@@ -171,22 +170,82 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         currentPlayer.getCurrentCard().resetCurrentActionList();
         currentPlayer.setState(new IdleState());
     }
-    private void updateSelectedPawnInActionState(Position selectedPawnPos){
-        ArrayList<Player> players = game.getPlayersIn(PlayerStateType.ActionState);
-        ActionState actionState=(ActionState)players.get(0).getState();
-        actionState.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
-    }
-    private void updateSelectedPawnInCurrentAction(Position selectedPawnPos){
-        ArrayList<Player> players = game.getPlayersIn(PlayerStateType.ActionState);
-        ActionState actionState=(ActionState)players.get(0).getState();
-        Action currentAction = actionState.getCurrentAction();
-        currentAction.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
-    }
     private void someoneWon(Player winner){
         winner.setState(new WinnerState());
         for(Player loser : game.getPlayersIn(PlayerStateType.IdleState)){
             loser.setState(new LoserState());
         }
     }
+    private ActionState getActionStateForCurrentPlayer(){
+        return (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
+    }
 
+    //INTERFACE EXPOSED TO THE CONTROLLER
+
+    /**
+     * This function is called once the player enters the ActionState; currentAction and selectedPawn are null by default
+     * we have to set the selectedPawn/unselectedPawn and load the first action by calling setCurrentAction
+     * once setCurrentAction has done it's job the view will receive the notification that an action is ready to be run
+     * @param selectedPawnPosition the selectedPawn
+     * @param unselectedPawnPosition UnselectedPawn
+     * @return the success of the operation
+     */
+    public Boolean setSelectedPawn(Position selectedPawnPosition, Position unselectedPawnPosition){
+        ActionState actionState= getActionStateForCurrentPlayer();
+        //TODO: call actionState.updatePawns(selected, unselected)
+        //load the first action to be executed
+        actionState.setCurrentAction();
+        return true;
+    }
+
+    /**
+     * This function is called when the view pass to the controller the position for the current action
+     * if this is moveAction setChosenPosition will call back the gameLogicExecutor to execute the action
+     * if this is constructAction setChosenPosition will wait to call back the gameLogicExecutor because it will
+     * execute the action when the BlockType is selected
+     * if this is a generalAction setChosenPosition will call back the gameLogicExecutor to execute the action
+     * this function is used with chosenPos set to null when special generalAction are run, or when the user wants
+     * to skip an optionalAction
+     * @param chosenPos the chosen position
+     * @return the success of the operation
+     */
+    public Boolean setChosenPosition(Position chosenPos){
+        ActionState actionState= getActionStateForCurrentPlayer();
+        if(chosenPos==null) {
+            if (!actionState.getCurrentAction().getIsOptional()) {
+                //TODO: throw an expection! only optional action can have chosenPos set to null
+            }
+            else if(actionState.getCurrentAction().getActionType()!=ActionType.GENERAL){
+                //TODO: throw an expetion! only a general action can have chosenPos set to null (medusa)
+            }
+        }
+        actionState.getCurrentAction().setChosenPosition(chosenPos);
+        return true;
+    }
+
+    /**
+     * This function sets the ChosenBlockType if the action is a ConstructAction or else it will return false
+     * This will launch the execution of that specific ConstructAction via visitor pattern activated by the
+     * setSelectedBlockType
+     * @param blockType the block type
+     * @return the success of the operation
+     */
+    public Boolean setChosenBlockType(BlockType blockType){
+        ActionState actionState=getActionStateForCurrentPlayer();
+        //TODO: cambiare in getCurrentAction
+        if(actionState.getCurrentAction().getActionType()==ActionType.CONSTRUCT) {
+            ((ConstructAction) actionState.getCurrentAction()).setSelectedBlockType(blockType);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public Boolean setInGameCards(ArrayList<Card> cards){
+        return true;
+    }
+
+    public Boolean setChosenCard(){
+        return true;
+    }
 }
