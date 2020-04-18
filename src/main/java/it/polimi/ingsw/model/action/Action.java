@@ -78,7 +78,7 @@ public abstract class Action {
     public void setChosenPosition(Position chosenPosition) {
         this.chosenPosition = chosenPosition;
         //TODO: call update function only inside of the sub-classes (remove setChosenPos from here)
-        if(this.actionType==ActionType.MOVE){
+        if(this.actionType==ActionType.MOVE || this.actionType==ActionType.GENERAL){
             for(ActionObserver actionObserver : this.actionObservers){
                 actionObserver.update(this);
             }
