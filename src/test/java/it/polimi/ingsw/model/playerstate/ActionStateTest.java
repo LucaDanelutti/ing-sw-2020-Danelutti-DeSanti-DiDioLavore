@@ -41,7 +41,7 @@ class ActionStateTest {
         testActionList.add(testMoveAction);
         testState = new ActionState(testActionList);
         testState.setCurrentAction();
-        assertEquals(testMoveAction, testState.getCurrentActionCopy());
+        assertEquals(testMoveAction, testState.getCurrentAction());
     }
 
     /**
@@ -55,9 +55,9 @@ class ActionStateTest {
         testActionList.add(testMoveAction2);
         testState = new ActionState(testActionList);
         testState.setCurrentAction();
-        assertEquals(testMoveAction1, testState.getCurrentActionCopy());
+        assertEquals(testMoveAction1, testState.getCurrentAction());
         testState.setCurrentAction();
-        assertEquals(testMoveAction2, testState.getCurrentActionCopy());
+        assertEquals(testMoveAction2, testState.getCurrentAction());
     }
 
     /**
@@ -71,11 +71,11 @@ class ActionStateTest {
         testActionList.add(testMoveAction2);
         testState = new ActionState(testActionList);
         testState.setCurrentAction();
-        assertEquals(testMoveAction1, testState.getCurrentActionCopy());
+        assertEquals(testMoveAction1, testState.getCurrentAction());
         testState.setCurrentAction();
-        assertEquals(testMoveAction2, testState.getCurrentActionCopy());
+        assertEquals(testMoveAction2, testState.getCurrentAction());
         testState.setCurrentAction();
-        assertTrue(testState.getCurrentActionCopy() == null);
+        assertTrue(testState.getCurrentAction() == null);
     }
 
     @Test

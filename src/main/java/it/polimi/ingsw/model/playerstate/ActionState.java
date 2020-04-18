@@ -20,14 +20,10 @@ public class ActionState extends PlayerState {
     }
 
     /**
-     * Get method of the variable currentAction, returns a copy of the currentAction
+     * Get method of the variable currentAction, returns the reference of the currentAction
      */
-    public Action getCurrentActionCopy() {
-        if (currentAction != null) {
-            return currentAction.duplicate();
-        } else {
-            return null;
-        }
+    public Action getCurrentAction() {
+        return currentAction;
     }
 
     /**

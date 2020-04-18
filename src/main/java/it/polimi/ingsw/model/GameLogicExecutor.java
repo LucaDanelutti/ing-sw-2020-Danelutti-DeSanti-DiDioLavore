@@ -158,7 +158,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         Player currentPlayer = actionStatePlayers.get(0);
         ((ActionState)currentPlayer.getState() ).setCurrentAction();
         //TODO: change to getCurrentAction
-        if(((ActionState)currentPlayer.getState()).getCurrentActionCopy()==null)
+        if(((ActionState)currentPlayer.getState()).getCurrentAction()==null)
             passTurnToNextPlayer();
     }
     private void passTurnToNextPlayer() {
@@ -179,7 +179,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     private void updateSelectedPawnInCurrentAction(Position selectedPawnPos){
         ArrayList<Player> players = game.getPlayersIn(PlayerStateType.ActionState);
         ActionState actionState=(ActionState)players.get(0).getState();
-        Action currentAction = actionState.getCurrentActionCopy();
+        Action currentAction = actionState.getCurrentAction();
         currentAction.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
     }
     private void someoneWon(Player winner){
