@@ -32,7 +32,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             game.getBoard().pawnConstruct(constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
         }
         //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
-        updatePawnsInActionState(constructAction.getSelectedPawn().getPosition());
+        updateSelectedPawnInActionState(constructAction.getSelectedPawn().getPosition());
         //generally we will load the next action or switch to the next player if turn ends
         loadNextAction();
     }
@@ -45,14 +45,22 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
 
         if(opponentPawn==null){ //no pawn is detected in newPos
             game.getBoard().updatePawnPosition(oldPos,newPos);
-            updatePawnsInActionState(newPos);
             //Special case for Athena
-            if(moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight()>0)
+            if(moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight()>0) {
                 disableMoveUpOfOtherPlayers();
+            }
+            //special case for Triton
+            else if (moveAction.getAddMoveIfOn()!=null){
+                //in this case we have to add another instance of moveAction to the actionList
+                if(moveAction.getAddMoveIfOn().contains(newPos)){
+                    ActionState actionState = (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
+                    //TODO: implement addActionAfterCurrentOne inside of ActionState
+                    //actionState.addActionAfterCurrentOne(moveAction.duplicate());
+                }
+            }
         }
         else if(moveAction.getSwapEnable()){ //an opponent pawn is present && you have to swap the pawns
             game.getBoard().updatePawnPosition(oldPos,newPos,oldPos);
-            updatePawnsInActionState(newPos);
         }
         else if (moveAction.getPushEnable()){ //an opponent pawn is present && you have to push him
             Position opponentPawnNewPos;
@@ -60,14 +68,17 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             int deltaY=newPos.getY()-oldPos.getY();
             opponentPawnNewPos=new Position(newPos.getX()+deltaX,newPos.getY()+deltaY);
             game.getBoard().updatePawnPosition(oldPos,newPos,opponentPawnNewPos);
-            updatePawnsInActionState(newPos);
         }
+
+        updateSelectedPawnInActionState(newPos);
+        updateSelectedPawnInCurrentAction(newPos);
 
         //after a move action is executed always check if the payer won
         if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
             someoneWon(game.getPlayersIn(PlayerStateType.ActionState).get(0));
         }
         else{
+            //TODO: if denyMoveBackInNextMove is set, we have to set NotAvaiableCell in the next optional move to the currentPos of the selectedPawn
             loadNextAction();
         }
     }
@@ -145,8 +156,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     private void loadNextAction(){
         ArrayList<Player> actionStatePlayers=game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = actionStatePlayers.get(0);
-        //TODO: @luca setCurrentAction should not require any input
-        //((ActionState)currentPlayer.getState() ).setCurrentAction();
+        ((ActionState)currentPlayer.getState() ).setCurrentAction();
+        //TODO: change to getCurrentAction
         if(((ActionState)currentPlayer.getState()).getCurrentActionCopy()==null)
             passTurnToNextPlayer();
     }
@@ -157,21 +168,19 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         ArrayList<Action> toBeLoadedInNextPlayer=nextPlayer.getCurrentCard().getCurrentActionList();
         nextPlayer.setState(new ActionState(toBeLoadedInNextPlayer));
 
-        //TODO: @luca implement this function in Card
-        //currentPlayer.getCurrentCard().resetCurrentActionList();
+        currentPlayer.getCurrentCard().resetCurrentActionList();
         currentPlayer.setState(new IdleState());
     }
-    private void updatePawnsInActionState(Position selectedPawnPos, Position unselectedPawnPos){
+    private void updateSelectedPawnInActionState(Position selectedPawnPos){
         ArrayList<Player> players = game.getPlayersIn(PlayerStateType.ActionState);
         ActionState actionState=(ActionState)players.get(0).getState();
         actionState.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
-        //TODO: manca il setUnselectedPawn dentro ActionState
-        //actionState.setUnselectedPawn(game.getBoard().getPawnCopy(unselectedPawnPos);
     }
-    private void updatePawnsInActionState(Position selectedPawnPos){
+    private void updateSelectedPawnInCurrentAction(Position selectedPawnPos){
         ArrayList<Player> players = game.getPlayersIn(PlayerStateType.ActionState);
         ActionState actionState=(ActionState)players.get(0).getState();
-        actionState.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
+        Action currentAction = actionState.getCurrentActionCopy();
+        currentAction.setSelectedPawn(game.getBoard().getPawnCopy(selectedPawnPos));
     }
     private void someoneWon(Player winner){
         winner.setState(new WinnerState());
