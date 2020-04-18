@@ -23,7 +23,7 @@ public class MoveAction extends Action {
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
-    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn) {
+    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBackInNextMove) {
         super(isOptional, notAvailableCell, ActionType.MOVE);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
@@ -36,6 +36,7 @@ public class MoveAction extends Action {
         } else {
             this.addMoveIfOn = null;
         }
+        this.denyMoveBackInNextMove = denyMoveBackInNextMove;
     }
 
     /**
@@ -43,7 +44,7 @@ public class MoveAction extends Action {
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn, toBeCopied.denyMoveBackInNextMove);
     }
 
     @Override
@@ -109,6 +110,10 @@ public class MoveAction extends Action {
     public void setMoveUpEnable(Boolean moveUpEnable) {
         this.moveUpEnable = moveUpEnable;
     }
+
+    public Boolean getDenyMoveBackInNextMove() { return denyMoveBackInNextMove; }
+
+    public void setDenyMoveBackInNextMove(Boolean denyMoveBackInNextMove) { this.denyMoveBackInNextMove = denyMoveBackInNextMove; }
 
 
     /**
