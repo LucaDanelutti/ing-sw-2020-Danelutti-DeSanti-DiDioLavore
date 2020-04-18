@@ -35,25 +35,38 @@ public class ActionState extends PlayerState {
      * based on the current currentAction
      */
     public void setCurrentAction() {
-        int index = 0;
-        if (currentAction == null) {
-            index = 0;
-        } else {
-            for (int i=0; i < actionList.size(); i++) {
-                if (actionList.get(i) == currentAction) {
-                    index = i + 1;
-                    break;
-                }
-            }
-            if (index == 0) {
-                throw new InvalidGameException("Invalid actionState!");
-            }
-        }
+        int index = getCurrentActionIndex() + 1;
         if (0 <= index & index < actionList.size()) {
             currentAction = actionList.get(index);
         } else {
             currentAction = null;
         }
+    }
+
+    /**
+     * addActionAfterCurrentOne method: adds the provided Action after the current one
+     */
+    public void addActionAfterCurrentOne(Action action) {
+        int index = getCurrentActionIndex() + 1;
+        actionList.add(index, action.duplicate());
+    }
+
+    private int getCurrentActionIndex() {
+        int index = -1;
+        if (currentAction == null) {
+            index = -1;
+        } else {
+            for (int i=0; i < actionList.size(); i++) {
+                if (actionList.get(i) == currentAction) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1) {
+                throw new InvalidGameException("Invalid actionState!");
+            }
+        }
+        return index;
     }
 
     /**
