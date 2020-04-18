@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * playing his turn is in this state, the other players are in IdleState
  */
 public class ActionState extends PlayerState {
-    private ArrayList<Action> actionList;
+    private ArrayList<Action> actionList = new ArrayList<>();
     private Action currentAction;
     private Pawn selectedPawn;
 
@@ -23,14 +23,37 @@ public class ActionState extends PlayerState {
      * Get method of the variable currentAction, returns a copy of the currentAction
      */
     public Action getCurrentActionCopy() {
-        return currentAction.duplicate();
+        if (currentAction != null) {
+            return currentAction.duplicate();
+        } else {
+            return null;
+        }
     }
 
     /**
-     * Set method of the variable currentAction, sets a copy of provided currentAction
+     * setCurrentAction method of the variable currentAction, sets the next currentAction
+     * based on the current currentAction
      */
-    public void setCurrentActionCopy(Action currentAction) {
-        this.currentAction = currentAction.duplicate();
+    public void setCurrentAction() {
+        int index = 0;
+        if (currentAction == null) {
+            index = 0;
+        } else {
+            for (int i=0; i < actionList.size(); i++) {
+                if (actionList.get(i) == currentAction) {
+                    index = i + 1;
+                    break;
+                }
+            }
+            if (index == 0) {
+                throw new InvalidGameException("Invalid actionState!");
+            }
+        }
+        if (0 <= index & index < actionList.size()) {
+            currentAction = actionList.get(index);
+        } else {
+            currentAction = null;
+        }
     }
 
     /**
@@ -64,7 +87,7 @@ public class ActionState extends PlayerState {
                 this.actionList.add(action.duplicate());
             }
         } else {
-            this.actionList = null;
+            throw new InvalidGameException("Invalid actionState!");
         }
     }
 
