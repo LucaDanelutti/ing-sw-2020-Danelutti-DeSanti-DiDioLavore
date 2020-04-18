@@ -23,7 +23,7 @@ class ConstructActionTest {
      */
     @Test
     void duplicate() {
-        ConstructAction originalConstructAction = new ConstructAction(true, null, null, true, null, false, true);
+        ConstructAction originalConstructAction = new ConstructAction(true, null, null, true, null, false, true, false);
         ConstructAction copiedConstructAction = originalConstructAction.duplicate();
 
         assertNotSame(originalConstructAction, copiedConstructAction, "Original and Copied should not refer to the same object");
@@ -46,7 +46,7 @@ class ConstructActionTest {
     @Test
     void availableCellsTestSchema() {
 //        notAvailableCellsTester.add(new Position(0,0));
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -73,11 +73,40 @@ class ConstructActionTest {
     }
 
     /**
-     * This test checks whether the availableCells() function works properly the pawn is next to a board border
+     * This test checks whether the availableCells() function doesn't let the pawn build on its setLastBuildPosition if notBuildOnLastBuilt = true
+     */
+    @Test
+    void availableCellsTestCheckNotBuildOnLastBuilt() {
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, true);
+        selectedPawnTester.setLastBuildPosition(new Position(1,2));
+
+        constructActionTester.setSelectedPawn(selectedPawnTester);
+        constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
+
+        Board boardTester = new Board();
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
+        boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
+
+        ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
+
+        ArrayList<Position> expectedList = new ArrayList<Position>() {{
+            add(new Position(0,0));
+            add(new Position(0,1));
+            add(new Position(0,2));
+            add(new Position(1,0));
+            add(new Position(2,0));
+            add(new Position(2,1));
+            add(new Position(2,2));
+        }};
+        assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
+    }
+
+    /**
+     * This test checks whether the availableCells() function works properly when the pawn is next to a board border
      */
     @Test
     void availableCellsTestCheckBorders() {
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -102,7 +131,7 @@ class ConstructActionTest {
      */
     @Test
     void availableCellsTestCheckConstructOnLastBuilt() {
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, true, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, true, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -127,7 +156,7 @@ class ConstructActionTest {
     void availableCellsCheckNotAvailableCells() {
         notAvailableCellsTester.add(new Position(0,0));
         notAvailableCellsTester.add(new Position(0,1));
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -149,15 +178,13 @@ class ConstructActionTest {
         assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
     }
 
-
-
         /**
          * This test checks whether the availableCells() function checks correctly that a pawn can build on a cell with an higher level
          * than the one of the cell where the pawn is placed
          */
     @Test
     void availableCellsCheckDeltaHeight() {
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -189,7 +216,7 @@ class ConstructActionTest {
      */
     @Test
     void availableCellsCheckPawnPresence() {
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -217,7 +244,7 @@ class ConstructActionTest {
      */
     @Test
     void availableCellsCheckDomePresence() {
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, null, false, true, false);
 
         constructActionTester.setSelectedPawn(selectedPawnTester);
         constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -252,7 +279,7 @@ class ConstructActionTest {
         notAvailableCellsTester.add(new Position(0,0));
         ArrayList<BlockType> alwaysAvailableBlockType = new ArrayList<>();
 //        alwaysAvailableBlockType.add(BlockType.DOME);
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, alwaysAvailableBlockType, false, true);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, null, false, alwaysAvailableBlockType, false, true, false);
 
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,1));
