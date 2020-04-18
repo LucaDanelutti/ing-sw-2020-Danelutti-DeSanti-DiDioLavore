@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 //TODO: capire se e come gestire le NullPointerException nei costruttori
 //TODO: implementare le funzioni mancanti
@@ -22,7 +23,7 @@ public class MoveAction extends Action {
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
-    MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn) {
+    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn) {
         super(isOptional, notAvailableCell, ActionType.MOVE);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
@@ -43,6 +44,26 @@ public class MoveAction extends Action {
      */
     MoveAction(MoveAction toBeCopied) {
         this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoveAction that = (MoveAction) o;
+        return Objects.equals(moveUpEnable, that.moveUpEnable) &&
+                Objects.equals(swapEnable, that.swapEnable) &&
+                Objects.equals(moveOnOpponentEnable, that.moveOnOpponentEnable) &&
+                Objects.equals(pushEnable, that.pushEnable) &&
+                Objects.equals(denyMoveUpEnable, that.denyMoveUpEnable) &&
+                Objects.equals(winDownEnable, that.winDownEnable) &&
+                Objects.equals(addMoveIfOn, that.addMoveIfOn) &&
+                Objects.equals(denyMoveBackInNextMove, that.denyMoveBackInNextMove);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBackInNextMove);
     }
 
     public void accept(ActionVisitor visitor){

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ConstructAction extends Action {
     private BlockType selectedBlockType;
@@ -25,6 +26,23 @@ public class ConstructAction extends Action {
 
     ConstructAction(ConstructAction toBeCopied) {
         this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConstructAction that = (ConstructAction) o;
+        return selectedBlockType == that.selectedBlockType &&
+                Objects.equals(constructOnLastBuilt, that.constructOnLastBuilt) &&
+                Objects.equals(buildBelowEnable, that.buildBelowEnable) &&
+                Objects.equals(alwaysAvailableBlockType, that.alwaysAvailableBlockType) &&
+                Objects.equals(enableMoveUp, that.enableMoveUp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(selectedBlockType, constructOnLastBuilt, buildBelowEnable, alwaysAvailableBlockType, enableMoveUp);
     }
 
     public void accept(ActionVisitor actionVisitor){

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GeneralAction extends Action{
     private Boolean pushEnable;
@@ -18,9 +19,25 @@ public class GeneralAction extends Action{
     GeneralAction(GeneralAction toBeCopied){
        this(toBeCopied.isOptional,toBeCopied.notAvailableCell,toBeCopied.pushEnable,toBeCopied.destroyPawnAndBuildEnable);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeneralAction that = (GeneralAction) o;
+        return Objects.equals(pushEnable, that.pushEnable) &&
+                Objects.equals(destroyPawnAndBuildEnable, that.destroyPawnAndBuildEnable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pushEnable, destroyPawnAndBuildEnable);
+    }
+
     public GeneralAction duplicate(){
         return new GeneralAction(this);
     }
+
     public void accept(ActionVisitor visitor){
         visitor.executeAction(this);
     }
