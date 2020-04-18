@@ -4,12 +4,14 @@ import it.polimi.ingsw.model.action.Action;
 
 import java.util.ArrayList;
 
-//TODO: gestire meglio/correttamente le NullPointerException nel costruttore e in getActionList
+/**
+ * Card: represents a power up card, has a name and an id
+ */
 public class Card {
     private String name;
     private int id;
-    private ArrayList<Action> defaultActionList;
-    private ArrayList<Action> currentActionList;
+    private ArrayList<Action> defaultActionList = new ArrayList<>();
+    private ArrayList<Action> currentActionList = new ArrayList<>();
 
     /**
      This is the constructor of the class Card
@@ -36,7 +38,7 @@ public class Card {
         return id;
     }
 
-    ArrayList<Action> getDefaultActionList() {
+    ArrayList<Action> getDefaultActionListCopy() {
         if (defaultActionList != null) {
             ArrayList<Action> copiedActionList = new ArrayList<>();
             for (Action action : defaultActionList) {
@@ -48,15 +50,24 @@ public class Card {
         }
     }
 
+    /**
+     * Get method of the variable currentActionList, returns the reference of currentActionList
+     */
     ArrayList<Action> getCurrentActionList() {
-        if (currentActionList != null) {
-            ArrayList<Action> copiedActionList = new ArrayList<>();
-            for (Action action : currentActionList) {
-                copiedActionList.add(action.duplicate());
+        return currentActionList;
+    }
+
+    /**
+     * resetCurrentActionList method: copies the defaultActionList to currentActionList
+     */
+    void resetCurrentActionList() {
+        currentActionList = new ArrayList<>();
+        if (defaultActionList != null) {
+            for (Action action : defaultActionList) {
+                currentActionList.add(action.duplicate());
             }
-            return copiedActionList;
         } else {
-            return null;
+            currentActionList = null;
         }
     }
 }
