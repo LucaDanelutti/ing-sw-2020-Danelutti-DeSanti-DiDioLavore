@@ -14,18 +14,20 @@ public class ConstructAction extends Action {
     private Boolean buildBelowEnable;
     private ArrayList<BlockType> alwaysAvailableBlockType;
     private Boolean enableMoveUp;
+    private Boolean notBuildOnLastBuilt;
 
-    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp){
+    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp, Boolean notBuildOnLastBuilt){
         super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
         this.selectedBlockType=selectedBlockType;
         this.constructOnLastBuilt=constructOnLastBuilt;
         this.buildBelowEnable=buildBelowEnable;
         this.alwaysAvailableBlockType=alwaysAvailableBlockType;
         this.enableMoveUp=enableMoveUp;
+        this.notBuildOnLastBuilt=notBuildOnLastBuilt;
     }
 
     ConstructAction(ConstructAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp, toBeCopied.notBuildOnLastBuilt);
     }
 
     @Override
@@ -37,7 +39,8 @@ public class ConstructAction extends Action {
                 Objects.equals(constructOnLastBuilt, that.constructOnLastBuilt) &&
                 Objects.equals(buildBelowEnable, that.buildBelowEnable) &&
                 Objects.equals(alwaysAvailableBlockType, that.alwaysAvailableBlockType) &&
-                Objects.equals(enableMoveUp, that.enableMoveUp);
+                Objects.equals(enableMoveUp, that.enableMoveUp) &&
+                Objects.equals(notBuildOnLastBuilt, that.notBuildOnLastBuilt);
     }
 
     @Override
@@ -126,6 +129,10 @@ public class ConstructAction extends Action {
         }
     }
 
+    private void checkNotBuildOnLastBuilt(ArrayList<Position> availableCells) {
+        if (notBuildOnLastBuilt) availableCells.remove(selectedPawn.getLastBuildPosition());
+    }
+
     /**
      * Computes the list of cells in which a pawn can construct
      * @param matrixCopy is a copy of the matrix within board
@@ -152,6 +159,7 @@ public class ConstructAction extends Action {
         checkNotAvailableCells(availableCells);
         checkDomePresence(availableCells, matrixCopy);
         checkPawnPresence(availableCells, matrixCopy);
+        checkNotBuildOnLastBuilt(availableCells);
 
         return availableCells;
     }
