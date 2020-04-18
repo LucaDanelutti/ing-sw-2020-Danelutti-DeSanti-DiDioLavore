@@ -13,6 +13,7 @@ public class ActionState extends PlayerState {
     private ArrayList<Action> actionList = new ArrayList<>();
     private Action currentAction;
     private Pawn selectedPawn;
+    private Pawn unselectedPawn;
 
     public ActionState(ArrayList<Action> actionList) {
         super(PlayerStateType.ActionState);
@@ -112,5 +113,19 @@ public class ActionState extends PlayerState {
      */
     public void setSelectedPawn(Pawn selectedPawn) {
         this.selectedPawn = selectedPawn.duplicate();
+    }
+
+    /**
+     * Get method of the variable unselectedPawn, returns a copy of the unselectedPawn
+     */
+    public Pawn getUnselectedPawn() {
+        return unselectedPawn.duplicate();
+    }
+
+    /**
+     * Set method of the variable unselectedPawn, sets a copy of provided unselectedPawn
+     */
+    public void setUnselectedPawn(Pawn unselectedPawn) {
+        this.unselectedPawn = unselectedPawn.duplicate();
     }
 }
