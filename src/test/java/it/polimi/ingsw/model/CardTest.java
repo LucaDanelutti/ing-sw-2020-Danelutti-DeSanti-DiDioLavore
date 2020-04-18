@@ -25,13 +25,13 @@ class CardTest {
     @Test
     void resetCurrentActionList() {
         ArrayList<Action> testActionList = new ArrayList<>();
-        MoveAction testAction1 = new MoveAction(true, null, true, false, false, false, false, false, null);
-        MoveAction testAction2 = new MoveAction(true, null, true, true, true, false, false, false, null);
+        MoveAction testAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false);
+        MoveAction testAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false);
         testActionList.add(testAction1);
         testActionList.add(testAction2);
         Card testCard = new Card("Apollo", 1, testActionList);
         assertTrue(testCard.getCurrentActionList().size() == 2);
-        MoveAction testAction3 = new MoveAction(true, null, true, false, true, true, false, false, null);
+        MoveAction testAction3 = new MoveAction(true, null, true, false, true, true, false, false, null, false);
         testCard.getCurrentActionList().add(testAction3);
         assertTrue(testCard.getCurrentActionList().size() == 3);
         testCard.resetCurrentActionList();
