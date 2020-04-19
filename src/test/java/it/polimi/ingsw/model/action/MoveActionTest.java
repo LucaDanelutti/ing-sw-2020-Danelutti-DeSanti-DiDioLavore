@@ -48,17 +48,14 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCheckDenyMoveBack() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, true);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
 
-        selectedPawnTester.setPosition(new Position(1,2));
-        //as a consequence of the following function selectedPawn.previousPosition = (1, 2)
-        selectedPawnTester.setPosition(new Position(1,1));
-
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,2));
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
-        boardTester.setPawnPosition(notSelectedPawnTester, new Position(1,2));
+        boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
