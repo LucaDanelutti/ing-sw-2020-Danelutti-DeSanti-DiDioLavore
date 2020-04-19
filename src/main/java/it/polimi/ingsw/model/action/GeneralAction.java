@@ -17,7 +17,9 @@ public class GeneralAction extends Action{
         this.pushEnable=pushEnable;
     }
     GeneralAction(GeneralAction toBeCopied){
-       this(toBeCopied.isOptional,toBeCopied.notAvailableCell,toBeCopied.pushEnable,toBeCopied.destroyPawnAndBuildEnable);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.GENERAL, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionObservers);
+        this.destroyPawnAndBuildEnable = toBeCopied.destroyPawnAndBuildEnable;
+        this.pushEnable = toBeCopied.pushEnable;
     }
 
     @Override

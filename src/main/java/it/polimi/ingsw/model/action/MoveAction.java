@@ -43,7 +43,19 @@ public class MoveAction extends Action {
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn, toBeCopied.denyMoveBack);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.MOVE, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionObservers);
+        this.moveUpEnable = toBeCopied.moveUpEnable;
+        this.swapEnable = toBeCopied.swapEnable;
+        this.moveOnOpponentEnable = toBeCopied.moveOnOpponentEnable;
+        this.pushEnable = toBeCopied.pushEnable;
+        this.denyMoveUpEnable = toBeCopied.denyMoveUpEnable;
+        this.winDownEnable = toBeCopied.winDownEnable;
+        if (toBeCopied.addMoveIfOn != null) {
+            this.addMoveIfOn = new ArrayList<>(toBeCopied.addMoveIfOn);
+        } else {
+            this.addMoveIfOn = null;
+        }
+        this.denyMoveBack = toBeCopied.denyMoveBack;
     }
 
     @Override
