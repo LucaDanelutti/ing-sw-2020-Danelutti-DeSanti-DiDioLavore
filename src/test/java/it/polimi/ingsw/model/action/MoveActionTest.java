@@ -21,25 +21,25 @@ class MoveActionTest {
     Board boardTester;
 
 
-    /**
-     * This test checks whether the duplicate() function of MoveAction works properly
-     */
-    @Test
-    void duplicate() {
-        MoveAction originalMoveAction = new MoveAction(true, null, true, true, true, true, true, true, null, false);
-        MoveAction copiedMoveAction = originalMoveAction.duplicate();
-
-        assertNotSame(originalMoveAction, copiedMoveAction, "Original and Copied should not refer to the same object");
-        assertEquals(originalMoveAction.getIsOptional(), copiedMoveAction.getIsOptional(), "Internal values should be the equals");
-    }
-
-
     @BeforeEach
     void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
         selectedPawnTester = new Pawn("white");
         notSelectedPawnTester = new Pawn("white");
         boardTester = new Board();
+    }
+
+    /**
+     * This test checks whether the duplicate() function of MoveAction works properly
+     */
+    @Test
+    void duplicate() {
+        MoveAction originalMoveAction = new MoveAction(true, null, true, true, true, true, true, true, null, false);
+        originalMoveAction.setSelectedPawn(selectedPawnTester);
+        MoveAction copiedMoveAction = originalMoveAction.duplicate();
+
+        assertNotSame(originalMoveAction, copiedMoveAction, "Original and Copied should not refer to the same object");
+        assertEquals(originalMoveAction.getSelectedPawn(), copiedMoveAction.getSelectedPawn(), "Internal values should be the equals");
     }
 
     /**

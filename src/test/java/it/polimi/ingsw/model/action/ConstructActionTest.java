@@ -18,18 +18,6 @@ class ConstructActionTest {
     Pawn notSelectedPawnTester;
     Board boardTester;
 
-    /**
-     * This test checks whether the duplicate() function of ConstructAction works properly
-     */
-    @Test
-    void duplicate() {
-        ConstructAction originalConstructAction = new ConstructAction(true, null, true, null, false, true, false);
-        ConstructAction copiedConstructAction = originalConstructAction.duplicate();
-
-        assertNotSame(originalConstructAction, copiedConstructAction, "Original and Copied should not refer to the same object");
-        assertEquals(originalConstructAction.getIsOptional(), copiedConstructAction.getIsOptional(), "Internal values should be the equals");
-    }
-
     @BeforeEach
     void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
@@ -38,38 +26,17 @@ class ConstructActionTest {
         boardTester = new Board();
     }
 
-
-    //TODO: the following test schema has to be removed
     /**
-     * This test checks whether the availableCells() function of ConstructAction works properly
+     * This test checks whether the duplicate() function of ConstructAction works properly
      */
     @Test
-    void availableCellsTestSchema() {
-//        notAvailableCellsTester.add(new Position(0,0));
-        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, null, false, true, false);
+    void duplicate() {
+        ConstructAction originalConstructAction = new ConstructAction(true, null, true, null, false, true, false);
+        originalConstructAction.setSelectedPawn(selectedPawnTester);
+        ConstructAction copiedConstructAction = originalConstructAction.duplicate();
 
-        constructActionTester.setSelectedPawn(selectedPawnTester);
-        constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
-
-        Board boardTester = new Board();
-        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
-        boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
-
-//        boardTester.pawnConstruct(new Position(0,2), BlockType.DOME);
-
-        ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
-
-        ArrayList<Position> expectedList = new ArrayList<Position>() {{
-            add(new Position(0,0));
-            add(new Position(0,1));
-            add(new Position(0,2));
-            add(new Position(1,0));
-            add(new Position(1,2));
-            add(new Position(2,0));
-            add(new Position(2,1));
-            add(new Position(2,2));
-        }};
-        assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
+        assertNotSame(originalConstructAction, copiedConstructAction, "Original and Copied should not refer to the same object");
+        assertEquals(originalConstructAction.getSelectedPawn(), copiedConstructAction.getSelectedPawn(), "Internal values should be the equals");
     }
 
     /**
