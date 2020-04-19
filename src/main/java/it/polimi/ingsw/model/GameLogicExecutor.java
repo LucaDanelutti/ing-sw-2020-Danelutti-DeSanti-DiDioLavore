@@ -29,10 +29,12 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         }
         //Normal case
         else {
-            game.getBoard().pawnConstruct(constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
+            game.getBoard().pawnConstruct(constructAction.getSelectedPawn().getPosition(),constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
         }
+
         //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
-        //TODO: call updatepawns inside of ActionState
+        //and in the currentAction
+        getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()),game.getBoard().getPawnCopy(constructAction.getNotSelectedPawn().getPosition()));
 
         //generally we will load the next action or switch to the next player if turn ends
         loadNextAction();
@@ -70,8 +72,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             game.getBoard().updatePawnPosition(oldPos,newPos,opponentPawnNewPos);
         }
 
-        //TODO: chiamare updatePawns dentro actionState
-
+        //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
+        getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos),game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
 
         //after a move action is executed always check if the payer won
         if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
@@ -118,10 +120,10 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
                     if((deltaX1==1&&deltaY1==1&&height1>currentPawnHeight) || (deltaX2==1&&deltaY2==1&&height2>currentPawnHeight)){
                         game.getBoard().removePawnFromGame(p);
                         if(currentPeek==BlockType.TERRAIN){
-                            game.getBoard().pawnConstruct(currentPawnPos,BlockType.LEVEL1);
+                            game.getBoard().pawnConstruct(null, currentPawnPos,BlockType.LEVEL1);
                         }
                         else if(currentPeek==BlockType.LEVEL1){
-                            game.getBoard().pawnConstruct(currentPawnPos,BlockType.LEVEL2);
+                            game.getBoard().pawnConstruct(null, currentPawnPos,BlockType.LEVEL2);
                         }
                         otherPlayer.removePawn(p);
                     }
@@ -131,6 +133,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             }
 
         }
+
+        //TODO: load next action!!
     }
 
     private void enableMoveUpForCurrentPlayer() {
@@ -153,21 +157,52 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         }
     }
     private void loadNextAction(){
-        ArrayList<Player> actionStatePlayers=game.getPlayersIn(PlayerStateType.ActionState);
-        Player currentPlayer = actionStatePlayers.get(0);
-        ((ActionState)currentPlayer.getState() ).setCurrentAction();
-        if(((ActionState)currentPlayer.getState()).getCurrentAction()==null)
-           passTurnToNextPlayer();
+        getActionStateForCurrentPlayer().setCurrentAction();
+        if(getActionStateForCurrentPlayer().getCurrentAction()==null) {
+            passTurnToNextPlayer();
+        }
     }
     private void passTurnToNextPlayer() {
-        Player nextPlayer = game.getNextActionStatePlayer();
+        Player nextPlayer = game.getNextPlayer(PlayerStateType.ActionState);
         Player currentPlayer = game.getPlayersIn(PlayerStateType.ActionState).get(0);
 
-        ArrayList<Action> toBeLoadedInNextPlayer=nextPlayer.getCurrentCard().getCurrentActionList();
-        nextPlayer.setState(new ActionState(toBeLoadedInNextPlayer));
+        if (nextPlayer == null) {
+            //vuol dire che i next player sono già tutti in loser, allora io divento il vincente!
+            currentPlayer.setState(new WinnerState());
+        }
+        else if (nextPlayer.getPawnList().size() == 0) {
+                //se il next player non ha più pawn allora ha perso!
+                nextPlayer.setState(new LoserState());
+                if(game.getPlayers().size()==2){
+                    //se siamo in due io ho automaticamente vinto!
+                    currentPlayer.setState(new WinnerState());
+                }
+                else if(game.getPlayers().size()==3){
+                    //se siamo in tre devo controllare anche l'altro giocatore
+                    nextPlayer = game.getNextActionStatePlayer();
+                    if (nextPlayer == null){
+                        //se non ci sono altri giocatori -> tutti in loser -> ho vinto
+                        currentPlayer.setState(new WinnerState());
+                    }
+                    else{
+                        if (nextPlayer.getPawnList().size() == 0) {
+                            //se anche l'altro avversario c'è , ma ha finito i pawn -> lui ha perso e io ho vinto
+                            nextPlayer.setState(new LoserState());
+                            currentPlayer.setState(new WinnerState());
+                        }
+                    }
+                }
 
-        currentPlayer.getCurrentCard().resetCurrentActionList();
-        currentPlayer.setState(new IdleState());
+            }
+        else {
+            ArrayList<Action> toBeLoadedInNextPlayer = nextPlayer.getCurrentCard().getCurrentActionList();
+            nextPlayer.setState(new ActionState(toBeLoadedInNextPlayer));
+
+            currentPlayer.getCurrentCard().resetCurrentActionList();
+            currentPlayer.setState(new IdleState());
+        }
+
+
     }
     private void someoneWon(Player winner){
         winner.setState(new WinnerState());
@@ -191,7 +226,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition, Position unselectedPawnPosition){
         ActionState actionState= getActionStateForCurrentPlayer();
-        //TODO: call actionState.updatePawns(selected, unselected)
+        actionState.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselectedPawnPosition));
         //load the first action to be executed
         actionState.setCurrentAction();
         return true;
@@ -239,21 +274,54 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             return false;
     }
 
-    public Boolean setInGameCards(ArrayList<Card> cards){
+    public Boolean setInGameCards(ArrayList<Integer> cards){
         //TODO: how do we handle the creation of cards? will the user just send the card IDs?
         return true;
     }
 
-    public Boolean setChosenCard(){
+    public Boolean setChosenCard(int cardId){
         //TODO: how do we handle the selection of a card? will the user just send the card ID?
         return true;
     }
 
     public Boolean setPawnsPositions(ArrayList<Position> positions){
-        //TODO: we could check if the positions are ok, but nah?
+        //TODO: we could check if the positions are ok, but for now, nah...?
         Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
         game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
         game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
         return true;
     }
+
+    public Boolean addPlayer(String name){
+        //check if username is already taken
+        for(Player p : game.getPlayers()){
+            if(p.getName().equals(name)){
+                return false;
+            }
+        }
+
+        //if the user is the first make him the HOST
+        if(game.getPlayers().size()==0){
+            //TODO: create the user and place it in HostWaitOtherPlayers
+        }
+        else{
+            //TODO: create the user and place it in ClientWaitStart
+        }
+
+        return true;
+    }
+
+    public Boolean startGame() {
+        //the most godLike -> random shuffle will chose the Cards in the game
+        game.shufflePlayers();
+        game.getPlayers().get(0).setState(new SelectGameCardsState());
+        game.getPlayers().get(1).setState(new IdleState());
+
+        if (game.getPlayers().size() == 3)
+            game.getPlayers().get(2).setState(new IdleState());
+
+        return true;
+    }
+
+
 }
