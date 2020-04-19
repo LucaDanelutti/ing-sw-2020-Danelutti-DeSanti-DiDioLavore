@@ -50,10 +50,19 @@ class Game {
 
     /**
      * addPlayer method to add the provided Player to inGamePlayers
-     * @param player is the Player to add
+     * @param toAddPlayer is the Player to add
      */
-    void addPlayer(Player player) {
-        inGamePlayers.add(player);
+    boolean addPlayer(Player toAddPlayer) {
+        if (inGamePlayers.size() == 3) {
+            throw new InvalidGameException("Cannot add player to a game that has already 3 players!");
+        }
+        for (Player player : inGamePlayers) {
+            if (player.getName() == toAddPlayer.getName()) {
+                return false;
+            }
+        }
+        inGamePlayers.add(toAddPlayer);
+        return true;
     }
 
     /**

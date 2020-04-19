@@ -21,7 +21,7 @@ class GameTest {
     @BeforeEach
     void init() {
         testGame = new Game();
-        testPlayer1 = new Player("testPlayer", new IdleState());
+        testPlayer1 = new Player("testPlayer1", new IdleState());
         testGame.addPlayer(testPlayer1);
         testPlayer2 = new Player("testPlayer2", new IdleState());
         testGame.addPlayer(testPlayer2);
@@ -34,10 +34,35 @@ class GameTest {
      */
     @Test
     void addPlayer() {
+        testGame.removePlayer(testPlayer1);
+        testGame.removePlayer(testPlayer2);
+        testGame.removePlayer(testPlayer3);
         Player localTestPlayer = new Player("localTestPlayer", new WaitingOtherPlayersState());
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
-        testGame.addPlayer(localTestPlayer);
+        assertTrue(testGame.addPlayer(localTestPlayer));
         assertTrue(testGame.getPlayers().contains(localTestPlayer));
+    }
+
+    /**
+     * The scope of this test function is to test that addPlayer method does not add a player with same name as an inGamePlayer
+     */
+    @Test
+    void addPlayer_SameName() {
+        testGame.removePlayer(testPlayer3);
+        Player localTestPlayer = new Player("testPlayer1", new WaitingOtherPlayersState());
+        assertFalse(testGame.getPlayers().contains(localTestPlayer));
+        assertFalse(testGame.addPlayer(localTestPlayer));
+        assertFalse(testGame.getPlayers().contains(localTestPlayer));
+    }
+
+    /**
+     * The scope of this test function is to test that addPlayer method throws an exception if the game already has 3 players
+     */
+    @Test
+    void addPlayer_FullGame() {
+        Player localTestPlayer = new Player("localTestPlayer", new WaitingOtherPlayersState());
+        assertFalse(testGame.getPlayers().contains(localTestPlayer));
+        assertThrows(InvalidGameException.class, () -> {testGame.addPlayer(localTestPlayer);});
     }
 
     /**
