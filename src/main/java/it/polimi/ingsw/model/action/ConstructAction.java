@@ -129,6 +129,10 @@ public class ConstructAction extends Action {
         }
     }
 
+    /**
+     * Removes from availableCells the position where selectedPawn can't construct because it's its lastBuildPosition and notBuildOnLastBuilt=true
+     * @param availableCells is the current list of cells where the selectedPawn can construct
+     */
     private void checkNotBuildOnLastBuilt(ArrayList<Position> availableCells) {
         if (notBuildOnLastBuilt) availableCells.remove(selectedPawn.getLastBuildPosition());
     }
