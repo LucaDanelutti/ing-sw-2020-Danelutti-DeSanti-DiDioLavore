@@ -16,9 +16,8 @@ public class ConstructAction extends Action {
     private Boolean enableMoveUp;
     private Boolean notBuildOnLastBuilt;
 
-    ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, BlockType selectedBlockType, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp, Boolean notBuildOnLastBuilt){
+    public ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp, Boolean notBuildOnLastBuilt){
         super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
-        this.selectedBlockType=selectedBlockType;
         this.constructOnLastBuilt=constructOnLastBuilt;
         this.buildBelowEnable=buildBelowEnable;
         this.alwaysAvailableBlockType=alwaysAvailableBlockType;
@@ -27,7 +26,8 @@ public class ConstructAction extends Action {
     }
 
     ConstructAction(ConstructAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedBlockType, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp, toBeCopied.notBuildOnLastBuilt);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.buildBelowEnable, toBeCopied.alwaysAvailableBlockType, toBeCopied.constructOnLastBuilt, toBeCopied.enableMoveUp, toBeCopied.notBuildOnLastBuilt);
+        this.selectedBlockType = toBeCopied.selectedBlockType;
     }
 
     @Override
