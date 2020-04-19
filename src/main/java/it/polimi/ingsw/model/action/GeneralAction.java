@@ -55,6 +55,7 @@ public class GeneralAction extends Action{
         Position relativePosition = new Position(otherPawnPosition.getX() - selectedPawnPosition.getX(), otherPawnPosition.getY() - selectedPawnPosition.getY());
         //relativePosition times 2 expresses the relative position wrt the position of selectedPawn that has to be checked. The absolute position that has to be checked is obtained by adding the relative position to the selectedPawnPosition
         Position positionToCheck = new Position(selectedPawnPosition.getX() + 2 * relativePosition.getX(), selectedPawnPosition.getY() + 2 * relativePosition.getY());
+        if (positionToCheck.getX() < 0 || positionToCheck.getX() > 4 || positionToCheck.getY() < 0 || positionToCheck.getY() > 4) return false;
         Cell cellToCheck = matrixCopy[positionToCheck.getX()][positionToCheck.getY()];
         return cellToCheck.peekBlock() != BlockType.DOME && cellToCheck.getPawn() == null;
     }
@@ -66,8 +67,8 @@ public class GeneralAction extends Action{
      */
     @Override
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
-        if (destroyPawnAndBuildEnable) return null;
         ArrayList<Position> availableCells = new ArrayList<>();
+        if (destroyPawnAndBuildEnable) return availableCells;
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
         for (int i=0; i<matrixCopy.length; i++) {
             for (int j=0; j<matrixCopy[0].length; j++) {
