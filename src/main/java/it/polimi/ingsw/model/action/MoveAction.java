@@ -8,8 +8,7 @@ import it.polimi.ingsw.model.board.Cell;
 import java.util.ArrayList;
 import java.util.Objects;
 
-//TODO: capire se e come gestire le NullPointerException nei costruttori
-//TODO: implementare le funzioni mancanti
+
 public class MoveAction extends Action {
     private Boolean moveUpEnable;
     private Boolean swapEnable;
@@ -18,12 +17,12 @@ public class MoveAction extends Action {
     private Boolean denyMoveUpEnable;
     private Boolean winDownEnable;
     private ArrayList<Position> addMoveIfOn;
-    private Boolean denyMoveBackInNextMove;
+    private Boolean denyMoveBack;
 
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
-    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBackInNextMove) {
+    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBack) {
         super(isOptional, notAvailableCell, ActionType.MOVE);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
@@ -36,7 +35,7 @@ public class MoveAction extends Action {
         } else {
             this.addMoveIfOn = null;
         }
-        this.denyMoveBackInNextMove = denyMoveBackInNextMove;
+        this.denyMoveBack = denyMoveBack;
     }
 
     /**
@@ -44,7 +43,7 @@ public class MoveAction extends Action {
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn, toBeCopied.denyMoveBackInNextMove);
+        this(toBeCopied.isOptional, toBeCopied.notAvailableCell,  toBeCopied.moveUpEnable, toBeCopied.swapEnable, toBeCopied.moveOnOpponentEnable, toBeCopied.pushEnable, toBeCopied.denyMoveUpEnable, toBeCopied.winDownEnable, toBeCopied.addMoveIfOn, toBeCopied.denyMoveBack);
     }
 
     @Override
@@ -59,12 +58,12 @@ public class MoveAction extends Action {
                 Objects.equals(denyMoveUpEnable, that.denyMoveUpEnable) &&
                 Objects.equals(winDownEnable, that.winDownEnable) &&
                 Objects.equals(addMoveIfOn, that.addMoveIfOn) &&
-                Objects.equals(denyMoveBackInNextMove, that.denyMoveBackInNextMove);
+                Objects.equals(denyMoveBack, that.denyMoveBack);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBackInNextMove);
+        return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBack);
     }
 
     public void accept(ActionVisitor visitor){
@@ -111,9 +110,9 @@ public class MoveAction extends Action {
         this.moveUpEnable = moveUpEnable;
     }
 
-    public Boolean getDenyMoveBackInNextMove() { return denyMoveBackInNextMove; }
+    public Boolean getDenyMoveBackInNextMove() { return denyMoveBack; }
 
-    public void setDenyMoveBackInNextMove(Boolean denyMoveBackInNextMove) { this.denyMoveBackInNextMove = denyMoveBackInNextMove; }
+    public void setDenyMoveBackInNextMove(Boolean denyMoveBackInNextMove) { this.denyMoveBack = denyMoveBackInNextMove; }
 
 
     /**
@@ -190,6 +189,14 @@ public class MoveAction extends Action {
     }
 
     /**
+     * Removes from availableCells the position where selectedPawn can't move because it is its previous position and denyMoveBack=true
+     * @param availableCells is the current list of cells where the selectedPawn can move
+     */
+    private void checkDenyMoveBack(ArrayList<Position> availableCells) {
+        if (denyMoveBack) availableCells.remove(selectedPawn.getPreviousPosition());
+    }
+
+    /**
      * Computes the list of cells to which a pawn can move
      * @param matrixCopy is a copy of the matrix within board
      * @return the list of available cells to which the pawn selected can move
@@ -210,6 +217,7 @@ public class MoveAction extends Action {
         checkDomePresence(availableCells, matrixCopy);
         checkDeltaHeight(availableCells, matrixCopy);
         checkPawnPresence(availableCells, matrixCopy);
+        checkDenyMoveBack(availableCells);
 
         return availableCells;
     }

@@ -47,6 +47,38 @@ class MoveActionTest {
      * because the latter is a pawn of the same player
      */
     @Test
+    void availableCellsTestCheckDenyMoveBack() {
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false);
+
+        moveActionTester.setSelectedPawn(selectedPawnTester);
+        moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
+
+        selectedPawnTester.setPosition(new Position(1,2));
+        //as a consequence of the following function selectedPawn.previousPosition = (1, 2)
+        selectedPawnTester.setPosition(new Position(1,1));
+
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
+        boardTester.setPawnPosition(notSelectedPawnTester, new Position(1,2));
+
+        ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
+
+        ArrayList<Position> expectedList = new ArrayList<Position>() {{
+            add(new Position(0,0));
+            add(new Position(0,1));
+            add(new Position(0,2));
+            add(new Position(1,0));
+            add(new Position(2,0));
+            add(new Position(2,1));
+            add(new Position(2,2));
+        }};
+        assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
+    }
+
+    /**
+     * This test checks whether the availableCells() works properly when the pawn cannot move to a cell occupied by another pawn (moveOnOpponentEnable = true, swapEnable = true)
+     * because the latter is a pawn of the same player
+     */
+    @Test
     void availableCellsTestCannotSwapPawn() {
         MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false);
 
