@@ -48,15 +48,17 @@ public class ActionState extends PlayerState {
     public void updatePawns(Pawn selectedPawn, Pawn unselectedPawn) {
         setSelectedPawnCopy(selectedPawn);
         setUnselectedPawnCopy(unselectedPawn);
-        if (selectedPawn != null) {
-            currentAction.setSelectedPawn(selectedPawn.duplicate());
-        } else {
-            currentAction.setSelectedPawn(null);
-        }
-        if (unselectedPawn != null) {
-            currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
-        } else {
-            currentAction.setNotSelectedPawn(null);
+        if (currentAction != null) {
+            if (selectedPawn != null) {
+                currentAction.setSelectedPawn(selectedPawn.duplicate());
+            } else {
+                currentAction.setSelectedPawn(null);
+            }
+            if (unselectedPawn != null) {
+                currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+            } else {
+                currentAction.setNotSelectedPawn(null);
+            }
         }
     }
 
