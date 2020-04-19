@@ -68,14 +68,61 @@ class GameTest {
     }
 
     /**
-     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
+     * The scope of this test function is to test that getNextPlayer method returns the right player
      */
     @Test
-    void getNextActionStatePlayer_NoPlayerAvailable() {
+    void getNextPlayer_NoPlayerAvailable() {
         testPlayer1.setState(new WaitingOtherPlayersState());
         testPlayer2.setState(new WaitingOtherPlayersState());
         testPlayer3.setState(new WaitingOtherPlayersState());
-        assertThrows(InvalidGameException.class, () -> {testGame.getNextActionStatePlayer();});
+        assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer(PlayerStateType.ActionState);});
+    }
+
+    /**
+     * The scope of this test function is to test that getNextPlayer method returns the right player
+     */
+    @Test
+    void getNextPlayer_3PlayersInGame_PlayerState() {
+        assertSame(testPlayer1, testGame.getNextPlayer(PlayerStateType.ActionState));
+    }
+
+    /**
+     * The scope of this test function is to test that getNextPlayer method returns the right player
+     */
+    @Test
+    void getNextPlayer_2PlayersInGame_PlayerState() {
+        testGame.removePlayer(testPlayer1);
+        assertSame(testPlayer2, testGame.getNextPlayer(PlayerStateType.ActionState));
+    }
+
+    /**
+     * The scope of this test function is to test that getNextPlayer method returns the right player
+     */
+    @Test
+    void getNextPlayer_3PlayersInGame_ChooseCardState() {
+        testPlayer3.setState(new ChooseCardState());
+        assertSame(testPlayer1, testGame.getNextPlayer(PlayerStateType.ChooseCardState));
+    }
+
+    /**
+     * The scope of this test function is to test that getNextPlayer method returns the right player
+     */
+    @Test
+    void getNextPlayer_2PlayersInGame_ChooseCardState() {
+        testGame.removePlayer(testPlayer1);
+        testPlayer3.setState(new ChooseCardState());
+        assertSame(testPlayer2, testGame.getNextPlayer(PlayerStateType.ChooseCardState));
+    }
+
+    /**
+     * The scope of this test function is to test that getNextPlayer method returns the right player
+     */
+    @Test
+    void getNextPlayer_NoPlayerAvailable_PlayerState() {
+        testPlayer1.setState(new WaitingOtherPlayersState());
+        testPlayer2.setState(new WaitingOtherPlayersState());
+        testPlayer3.setState(new WaitingOtherPlayersState());
+        assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer(PlayerStateType.ActionState);});
     }
 
     /**

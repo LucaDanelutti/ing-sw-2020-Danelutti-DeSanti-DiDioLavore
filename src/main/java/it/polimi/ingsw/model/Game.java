@@ -96,6 +96,37 @@ class Game {
     }
 
     /**
+     * getNextPlayer method to get the Player that is going to be in an active state.
+     * Throws InvalidGameException if no next player is available.
+     */
+    Player getNextPlayer(PlayerStateType playerStateType) {
+        if (inGamePlayers.size() == 2) {
+            for (int i=0; i<2; i++) {
+                if (inGamePlayers.get(i%2).getState().getType() == playerStateType) {
+                    if (inGamePlayers.get((i+1)%2).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+1)%2);
+                    } else {
+                        throw new InvalidGameException("Next player not available");
+                    }
+                }
+            }
+        } else if (inGamePlayers.size() == 3) {
+            for (int i=0; i<3; i++) {
+                if (inGamePlayers.get(i%3).getState().getType() == playerStateType) {
+                    if (inGamePlayers.get((i+1)%3).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+1)%3);
+                    } else if (inGamePlayers.get((i+2)%3).getState().getType() == PlayerStateType.IdleState) {
+                        return inGamePlayers.get((i+2)%3);
+                    } else {
+                        throw new InvalidGameException("Next player not available");
+                    }
+                }
+            }
+        }
+        throw new InvalidGameException("Next player not available");
+    }
+
+    /**
      * getNextCurrentPlayer method to get the Players in the provided playerState. If there are no
      * players in the provided playerStateType returns an empty arrayList. If more than one player
      * is found in actionState throws an exception
