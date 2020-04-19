@@ -27,6 +27,19 @@ class GeneralActionTest {
     }
 
     /**
+     * This test checks whether the duplicate() function of MoveAction works properly
+     */
+    @Test
+    void duplicate() {
+        GeneralAction originalGeneralAction = new GeneralAction(true, notAvailableCellsTester, false, true);
+        originalGeneralAction.setSelectedPawn(selectedPawnTester);
+        GeneralAction copiedMoveAction = originalGeneralAction.duplicate();
+
+        assertNotSame(originalGeneralAction, copiedMoveAction, "Original and Copied should not refer to the same object");
+        assertEquals(originalGeneralAction.getSelectedPawn(), copiedMoveAction.getSelectedPawn(), "Internal values should be the equals");
+    }
+
+    /**
      * This test checks whether the availableCells() function works properly when destroyPawnAndBuildEnable = true
      */
     @Test
