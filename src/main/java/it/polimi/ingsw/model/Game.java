@@ -65,6 +65,23 @@ class Game {
     }
 
     /**
+     * shufflePlayers method to shuffle the players in the game
+     */
+    void shufflePlayers() {
+        int x = (int)(Math.random()*((inGamePlayers.size()-1-0)+1))+0;
+        ArrayList<Player> newInGamePlayers = new ArrayList<>();
+        newInGamePlayers.add(inGamePlayers.get(x));
+        inGamePlayers.remove(x);
+        x = (int)(Math.random()*((inGamePlayers.size()-1-0)+1))+0;
+        newInGamePlayers.add(inGamePlayers.get(x));
+        inGamePlayers.remove(x);
+        if (inGamePlayers.size() > 0) {
+            newInGamePlayers.add(inGamePlayers.get(0));
+        }
+        inGamePlayers = newInGamePlayers;
+    }
+
+    /**
      * getNextCurrentPlayer method to get the Player that is going to be in ActionState.
      * Throws InvalidGameException if no next ActionStatePlayer is available.
      */

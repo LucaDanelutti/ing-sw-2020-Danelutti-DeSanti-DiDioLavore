@@ -153,4 +153,12 @@ class GameTest {
         testPlayer1.setState(new ActionState(new ArrayList<Action>()));
         assertThrows(InvalidGameException.class, () -> {testGame.getPlayersIn(PlayerStateType.ActionState);});
     }
+
+    /**
+     * Usefull only for debugging shufflePlayers
+     */
+    @Test
+    void shufflePlayers() {
+        testGame.shufflePlayers();
+    }
 }
