@@ -41,7 +41,7 @@ class BoardTest {
     @Test
     void updatePawnPosition() {
         Board tester = new Board();
-        tester.pawnConstruct(new Position(0,1), BlockType.LEVEL1);
+        tester.pawnConstruct(null, new Position(0,1), BlockType.LEVEL1);
         tester.setPawnPosition(new Pawn("ffffff"),new Position(0,0));
         Cell[][] original=tester.getMatrixCopy();
         tester.updatePawnPosition(new Position(0,0), new Position(0,1));
@@ -73,7 +73,7 @@ class BoardTest {
         Board tester = new Board();
         tester.setPawnPosition(new Pawn("ffffff"),new Position(0,0));
         Cell[][] original=tester.getMatrixCopy();
-        tester.pawnConstruct(new Position(0,1),BlockType.LEVEL1);
+        tester.pawnConstruct(new Position(0,0), new Position(0,1),BlockType.LEVEL1);
         Cell[][] mod=tester.getMatrixCopy();
         assertEquals(BlockType.LEVEL1,mod[0][1].peekBlock(),"The block constructed should be correct");
     }

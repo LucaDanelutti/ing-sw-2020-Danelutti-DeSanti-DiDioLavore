@@ -103,8 +103,10 @@ public class Board{
      * @param constructPosition the position where the block will be constructed
      * @param type The type of the Block to be added
      */
-    public void pawnConstruct(Position constructPosition, BlockType type){
+    public void pawnConstruct(Position selectedPawnPos,Position constructPosition, BlockType type){
         matrix[constructPosition.getX()][constructPosition.getY()].pushBlock(type);
+        if(selectedPawnPos!=null)
+            matrix[selectedPawnPos.getX()][selectedPawnPos.getY()].getPawn().setLastBuildPosition(constructPosition);
     }
 
     public Pawn getPawnCopy(Position pawnPosition){

@@ -160,8 +160,8 @@ class ConstructActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(2,1), BlockType.LEVEL1);
-        boardTester.pawnConstruct(new Position(2,1), BlockType.LEVEL2);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(2,1), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(2,1), BlockType.LEVEL2);
 
         ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -220,7 +220,7 @@ class ConstructActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(0,2), BlockType.DOME);
+        boardTester.pawnConstruct(null, new Position(0,2), BlockType.DOME);
 
         ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
         availableCellsTester.forEach(value -> System.out.println(value.getX() + " " + value.getY()));
@@ -254,7 +254,7 @@ class ConstructActionTest {
         Board boardTester = new Board();
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL3);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL3);
         Position selectedPosition = new Position(1,2);
 
         ArrayList<BlockType> availableBlockTypes = constructActionTester.availableBlockTypes(selectedPosition, boardTester.getMatrixCopy());
@@ -283,7 +283,7 @@ class ConstructActionTest {
         Board boardTester = new Board();
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL2);
         Position selectedPosition = new Position(1,2);
 
         ArrayList<BlockType> availableBlockTypes = constructActionTester.availableBlockTypes(selectedPosition, boardTester.getMatrixCopy());

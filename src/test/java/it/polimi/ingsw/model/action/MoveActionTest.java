@@ -147,7 +147,7 @@ class MoveActionTest {
         Pawn enemyPawn = new Pawn("grey");
         boardTester.setPawnPosition(enemyPawn, new Position(1,2));
 
-        boardTester.pawnConstruct(new Position(1,3), BlockType.DOME);
+        boardTester.pawnConstruct(enemyPawn.getPosition(),new Position(1,3), BlockType.DOME);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -239,8 +239,8 @@ class MoveActionTest {
         Pawn enemyPawn = new Pawn("grey");
         boardTester.setPawnPosition(enemyPawn, new Position(1,2));
 
-        boardTester.pawnConstruct(new Position(1,3), BlockType.LEVEL1);
-        boardTester.pawnConstruct(new Position(1,3), BlockType.LEVEL2);
+        boardTester.pawnConstruct(enemyPawn.getPosition(),new Position(1,3), BlockType.LEVEL1);
+        boardTester.pawnConstruct(enemyPawn.getPosition(),new Position(1,3), BlockType.LEVEL2);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -332,7 +332,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.DOME);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(), new Position(1,2), BlockType.DOME);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -361,8 +361,8 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL2);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -391,7 +391,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL1);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -420,7 +420,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL1);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -450,8 +450,8 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,1), BlockType.LEVEL1);
-        boardTester.pawnConstruct(new Position(1,1), BlockType.LEVEL2);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,1), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,1), BlockType.LEVEL2);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -481,7 +481,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        boardTester.pawnConstruct(new Position(1,1), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,1), BlockType.LEVEL1);
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
 
@@ -578,9 +578,9 @@ class MoveActionTest {
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,2));
 
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL1);
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL2);
-        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL3);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL3);
         moveActionTester.setSelectedPawn(selectedPawnTester);
 
         assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
