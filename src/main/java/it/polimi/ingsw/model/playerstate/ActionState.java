@@ -35,8 +35,8 @@ public class ActionState extends PlayerState {
         int index = getCurrentActionIndex() + 1;
         if (0 <= index & index < actionList.size()) {
             currentAction = actionList.get(index);
-            currentAction.setSelectedPawn(selectedPawn.duplicate());
-            currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+            if (selectedPawn != null) currentAction.setSelectedPawn(selectedPawn.duplicate());
+            if (unselectedPawn != null) currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
         } else {
             currentAction = null;
         }
