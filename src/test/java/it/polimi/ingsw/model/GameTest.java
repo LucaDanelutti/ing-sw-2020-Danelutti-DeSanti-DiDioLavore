@@ -161,4 +161,22 @@ class GameTest {
     void shufflePlayers() {
         testGame.shufflePlayers();
     }
+
+    /**
+     * The scope of this test function is to test that setFirstPlayer method sets correctly the first player of the game
+     */
+    @Test
+    void setFirstPlayer_First() {
+        testGame.setFirstPlayer(testPlayer1);
+        assertSame(testPlayer1, testGame.getPlayers().get(0));
+    }
+
+    /**
+     * The scope of this test function is to test that setFirstPlayer method sets correctly the first player of the game
+     */
+    @Test
+    void setFirstPlayer_NotFirst() {
+        testGame.setFirstPlayer(testPlayer2);
+        assertSame(testPlayer2, testGame.getPlayers().get(0));
+    }
 }

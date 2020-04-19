@@ -82,6 +82,15 @@ class Game {
     }
 
     /**
+     * setFirstPlayer method to set the first player in the game
+     */
+    void setFirstPlayer(Player player) {
+        int index = inGamePlayers.indexOf(player);
+        inGamePlayers.remove(index);
+        inGamePlayers.add(0, player);
+    }
+
+    /**
      * getNextCurrentPlayer method to get the Player that is going to be in ActionState.
      * Throws InvalidGameException if no next ActionStatePlayer is available.
      */
