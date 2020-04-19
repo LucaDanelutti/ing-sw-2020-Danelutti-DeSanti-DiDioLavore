@@ -271,14 +271,43 @@ class ConstructActionTest {
     }
 
     /**
-     * This test checks whether the availableBlockTypes() function of ConstructAction works properly
+     * This test checks whether the availableBlockTypes() function works properly when alwaysAvailableBlockType is empty
+     * and the player would like to build above a level 3 building
      */
     @Test
-    void availableBlockTypes() {
+    void availableBlockTypesLevel2() {
         ArrayList<Position> notAvailableCellsTester = new ArrayList<>();
         notAvailableCellsTester.add(new Position(0,0));
         ArrayList<BlockType> alwaysAvailableBlockType = new ArrayList<>();
-//        alwaysAvailableBlockType.add(BlockType.DOME);
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, alwaysAvailableBlockType, false, true, false);
+
+        Pawn selectedPawnTester = new Pawn("white");
+        selectedPawnTester.setPosition(new Position(1,1));
+
+        Board boardTester = new Board();
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
+
+        boardTester.pawnConstruct(new Position(1,2), BlockType.LEVEL3);
+        Position selectedPosition = new Position(1,2);
+
+        ArrayList<BlockType> availableBlockTypes = constructActionTester.availableBlockTypes(selectedPosition, boardTester.getMatrixCopy());
+        ArrayList<BlockType> expectedList = new ArrayList<BlockType>() {{
+            add(BlockType.DOME);
+        }};
+
+        assertTrue(availableBlockTypes.containsAll(expectedList) && expectedList.containsAll(availableBlockTypes));
+    }
+
+    /**
+     * This test checks whether the availableBlockTypes() function works properly when alwaysAvailableBlockType is empty
+     * and the player would like to build above a level 2 and alwaysAvailableBlockType contains DOME.
+     */
+    @Test
+    void availableBlockTypesLevel3AndCheckAlwaysAvailableBlockType() {
+        ArrayList<Position> notAvailableCellsTester = new ArrayList<>();
+        notAvailableCellsTester.add(new Position(0,0));
+        ArrayList<BlockType> alwaysAvailableBlockType = new ArrayList<>();
+        alwaysAvailableBlockType.add(BlockType.DOME);
         ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, alwaysAvailableBlockType, false, true, false);
 
         Pawn selectedPawnTester = new Pawn("white");
@@ -291,8 +320,11 @@ class ConstructActionTest {
         Position selectedPosition = new Position(1,2);
 
         ArrayList<BlockType> availableBlockTypes = constructActionTester.availableBlockTypes(selectedPosition, boardTester.getMatrixCopy());
-        availableBlockTypes.forEach(value -> System.out.println(value));
+        ArrayList<BlockType> expectedList = new ArrayList<BlockType>() {{
+            add(BlockType.LEVEL3);
+            add(BlockType.DOME);
+        }};
 
-        assertEquals(BlockType.LEVEL3, availableBlockTypes.get(0), "The block type should be the same");
+        assertTrue(availableBlockTypes.containsAll(expectedList) && expectedList.containsAll(availableBlockTypes));
     }
 }
