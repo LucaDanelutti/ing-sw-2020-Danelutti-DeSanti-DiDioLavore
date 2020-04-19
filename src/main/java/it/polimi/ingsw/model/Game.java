@@ -44,7 +44,7 @@ class Game {
                return tempPlayer;
            }
        }
-       return new Player("TODO", new WaitingOtherPlayersState()); //TODO: PlayerNotFoundException
+       throw new InvalidGameException("No player with provided name found!");
    }
 
 
