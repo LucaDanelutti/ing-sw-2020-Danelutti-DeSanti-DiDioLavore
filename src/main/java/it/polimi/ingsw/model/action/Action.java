@@ -46,7 +46,8 @@ public abstract class Action {
         }
         this.selectedPawn = selectedPawn;
         this.notSelectedPawn = notSelectedPawn;
-        this.actionObservers = actionObservers;
+        this.actionObservers = new ArrayList<>();
+        this.actionObservers.addAll(actionObservers);
     }
 
     /**
