@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.playerstate.WaitingOtherPlayersState;
+import it.polimi.ingsw.model.playerstate.HostWaitOtherPlayersState;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +16,7 @@ class PlayerTest {
      */
     @Test
     void addPawn() {
-        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState());
+        Player testPlayer = new Player("Tester", new HostWaitOtherPlayersState());
         assertEquals(0, testPlayer.getPawnList().size());
         Pawn testPawn = new Pawn("ffffff");
         testPlayer.addPawn(testPawn);
@@ -29,7 +29,7 @@ class PlayerTest {
      */
     @Test
     void removePawn() {
-        Player testPlayer = new Player("Tester", new WaitingOtherPlayersState());
+        Player testPlayer = new Player("Tester", new HostWaitOtherPlayersState());
         Pawn testPawn = new Pawn("ffffff");
         testPlayer.addPawn(testPawn);
         assertEquals(1, testPlayer.getPawnList().size());

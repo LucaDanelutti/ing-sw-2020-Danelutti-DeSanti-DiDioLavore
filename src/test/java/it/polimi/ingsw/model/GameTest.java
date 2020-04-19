@@ -37,7 +37,7 @@ class GameTest {
         testGame.removePlayer(testPlayer1);
         testGame.removePlayer(testPlayer2);
         testGame.removePlayer(testPlayer3);
-        Player localTestPlayer = new Player("localTestPlayer", new WaitingOtherPlayersState());
+        Player localTestPlayer = new Player("localTestPlayer", new HostWaitOtherPlayersState());
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertTrue(testGame.addPlayer(localTestPlayer));
         assertTrue(testGame.getPlayers().contains(localTestPlayer));
@@ -49,7 +49,7 @@ class GameTest {
     @Test
     void addPlayer_SameName() {
         testGame.removePlayer(testPlayer3);
-        Player localTestPlayer = new Player("testPlayer1", new WaitingOtherPlayersState());
+        Player localTestPlayer = new Player("testPlayer1", new IdleState());
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertFalse(testGame.addPlayer(localTestPlayer));
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
@@ -60,7 +60,7 @@ class GameTest {
      */
     @Test
     void addPlayer_FullGame() {
-        Player localTestPlayer = new Player("localTestPlayer", new WaitingOtherPlayersState());
+        Player localTestPlayer = new Player("localTestPlayer", new ClientWaitStartState());
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertThrows(InvalidGameException.class, () -> {testGame.addPlayer(localTestPlayer);});
     }
@@ -126,9 +126,9 @@ class GameTest {
      */
     @Test
     void getNextPlayer_NoCurrentPlayer_PlayerState() {
-        testPlayer1.setState(new WaitingOtherPlayersState());
-        testPlayer2.setState(new WaitingOtherPlayersState());
-        testPlayer3.setState(new WaitingOtherPlayersState());
+        testPlayer1.setState(new HostWaitOtherPlayersState());
+        testPlayer2.setState(new ClientWaitStartState());
+        testPlayer3.setState(new ClientWaitStartState());
         assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer(PlayerStateType.ActionState);});
     }
 
