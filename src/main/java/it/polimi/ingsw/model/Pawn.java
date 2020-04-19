@@ -109,4 +109,20 @@ public class Pawn {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pawn pawn = (Pawn) o;
+        return deltaHeight == pawn.deltaHeight &&
+                color.equals(pawn.color) &&
+                Objects.equals(position, pawn.position) &&
+                Objects.equals(previousPosition, pawn.previousPosition) &&
+                Objects.equals(lastBuildPosition, pawn.lastBuildPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, position, previousPosition, lastBuildPosition, deltaHeight);
+    }
 }
