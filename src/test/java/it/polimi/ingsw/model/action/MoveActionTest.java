@@ -578,9 +578,9 @@ class MoveActionTest {
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,2));
 
-        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL1);
-        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL2);
-        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(1,2), BlockType.LEVEL3);
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL3);
         moveActionTester.setSelectedPawn(selectedPawnTester);
 
         assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
