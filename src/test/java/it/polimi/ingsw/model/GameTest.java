@@ -76,31 +76,13 @@ class GameTest {
     }
 
     /**
-     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
-     */
-    @Test
-    void getNextActionStatePlayer_3PlayersInGame() {
-        assertSame(testPlayer1, testGame.getNextActionStatePlayer());
-    }
-
-    /**
-     * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
-     */
-    @Test
-    void getNextActionStatePlayer_2PlayersInGame() {
-        testGame.removePlayer(testPlayer1);
-        assertSame(testPlayer2, testGame.getNextActionStatePlayer());
-    }
-
-    /**
      * The scope of this test function is to test that getNextPlayer method returns the right player
      */
     @Test
-    void getNextPlayer_NoPlayerAvailable() {
-        testPlayer1.setState(new WaitingOtherPlayersState());
-        testPlayer2.setState(new WaitingOtherPlayersState());
-        testPlayer3.setState(new WaitingOtherPlayersState());
-        assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer(PlayerStateType.ActionState);});
+    void getNextPlayer_NoNextPlayer_ActionState() {
+        testPlayer1.setState(new LoserState());
+        testPlayer2.setState(new LoserState());
+        assertNull(testGame.getNextPlayer(PlayerStateType.ActionState));
     }
 
     /**
@@ -143,7 +125,7 @@ class GameTest {
      * The scope of this test function is to test that getNextPlayer method returns the right player
      */
     @Test
-    void getNextPlayer_NoPlayerAvailable_PlayerState() {
+    void getNextPlayer_NoCurrentPlayer_PlayerState() {
         testPlayer1.setState(new WaitingOtherPlayersState());
         testPlayer2.setState(new WaitingOtherPlayersState());
         testPlayer3.setState(new WaitingOtherPlayersState());

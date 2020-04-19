@@ -100,37 +100,6 @@ class Game {
     }
 
     /**
-     * getNextCurrentPlayer method to get the Player that is going to be in ActionState.
-     * Throws InvalidGameException if no next ActionStatePlayer is available.
-     */
-    Player getNextActionStatePlayer() {
-        if (inGamePlayers.size() == 2) {
-            for (int i=0; i<2; i++) {
-                if (inGamePlayers.get(i%2).getState().getType() == PlayerStateType.ActionState) {
-                    if (inGamePlayers.get((i+1)%2).getState().getType() == PlayerStateType.IdleState) {
-                        return inGamePlayers.get((i+1)%2);
-                    } else {
-                        throw new InvalidGameException("Next ActionStatePlayer not available");
-                    }
-                }
-            }
-        } else if (inGamePlayers.size() == 3) {
-            for (int i=0; i<3; i++) {
-                if (inGamePlayers.get(i%3).getState().getType() == PlayerStateType.ActionState) {
-                    if (inGamePlayers.get((i+1)%3).getState().getType() == PlayerStateType.IdleState) {
-                        return inGamePlayers.get((i+1)%3);
-                    } else if (inGamePlayers.get((i+2)%3).getState().getType() == PlayerStateType.IdleState) {
-                        return inGamePlayers.get((i+2)%3);
-                    } else {
-                        throw new InvalidGameException("Next ActionStatePlayer not available");
-                    }
-                }
-            }
-        }
-        throw new InvalidGameException("Next ActionStatePlayer not available");
-    }
-
-    /**
      * getNextPlayer method to get the Player that is going to be in an active state.
      * Throws InvalidGameException if no next player is available.
      */
@@ -141,7 +110,7 @@ class Game {
                     if (inGamePlayers.get((i+1)%2).getState().getType() == PlayerStateType.IdleState) {
                         return inGamePlayers.get((i+1)%2);
                     } else {
-                        throw new InvalidGameException("Next player not available");
+                        return null;
                     }
                 }
             }
@@ -153,7 +122,7 @@ class Game {
                     } else if (inGamePlayers.get((i+2)%3).getState().getType() == PlayerStateType.IdleState) {
                         return inGamePlayers.get((i+2)%3);
                     } else {
-                        throw new InvalidGameException("Next player not available");
+                        return null;
                     }
                 }
             }

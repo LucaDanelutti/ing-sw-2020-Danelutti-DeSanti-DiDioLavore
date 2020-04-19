@@ -179,7 +179,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
                 }
                 else if(game.getPlayers().size()==3){
                     //se siamo in tre devo controllare anche l'altro giocatore
-                    nextPlayer = game.getNextActionStatePlayer();
+                    nextPlayer = game.getNextPlayer(PlayerStateType.ActionState);
                     if (nextPlayer == null){
                         //se non ci sono altri giocatori -> tutti in loser -> ho vinto
                         currentPlayer.setState(new WinnerState());
