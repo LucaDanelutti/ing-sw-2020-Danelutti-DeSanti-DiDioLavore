@@ -48,8 +48,16 @@ public class ActionState extends PlayerState {
     public void updatePawns(Pawn selectedPawn, Pawn unselectedPawn) {
         setSelectedPawnCopy(selectedPawn);
         setUnselectedPawnCopy(unselectedPawn);
-        currentAction.setSelectedPawn(selectedPawn.duplicate());
-        currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+        if (selectedPawn != null) {
+            currentAction.setSelectedPawn(selectedPawn.duplicate());
+        } else {
+            currentAction.setSelectedPawn(null);
+        }
+        if (unselectedPawn != null) {
+            currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+        } else {
+            currentAction.setNotSelectedPawn(null);
+        }
     }
 
     /**
@@ -124,7 +132,11 @@ public class ActionState extends PlayerState {
      * Set method of the variable selectedPawn, sets a copy of provided selectedPawn
      */
     public void setSelectedPawnCopy(Pawn selectedPawn) {
-        this.selectedPawn = selectedPawn.duplicate();
+        if (selectedPawn != null) {
+            this.selectedPawn = selectedPawn.duplicate();
+        } else {
+            this.selectedPawn = null;
+        }
     }
 
     /**
@@ -138,6 +150,10 @@ public class ActionState extends PlayerState {
      * Set method of the variable unselectedPawn, sets a copy of provided unselectedPawn
      */
     public void setUnselectedPawnCopy(Pawn unselectedPawn) {
-        this.unselectedPawn = unselectedPawn.duplicate();
+        if (unselectedPawn != null) {
+            this.unselectedPawn = unselectedPawn.duplicate();
+        } else {
+            this.unselectedPawn = null;
+        }
     }
 }
