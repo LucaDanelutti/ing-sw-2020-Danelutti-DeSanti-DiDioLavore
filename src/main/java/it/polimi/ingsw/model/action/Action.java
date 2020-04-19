@@ -34,6 +34,22 @@ public abstract class Action {
     }
 
     /**
+     This constructor of Action is needed for the duplicate function
+     */
+    Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType, Pawn selectedPawn, Pawn notSelectedPawn, List<ActionObserver> actionObservers) {
+        this.actionType=actionType;
+        this.isOptional = isOptional;
+        if (notAvailableCell != null) {
+            this.notAvailableCell = new ArrayList<>(notAvailableCell);
+        } else {
+            this.notAvailableCell = null;
+        }
+        this.selectedPawn = selectedPawn;
+        this.notSelectedPawn = notSelectedPawn;
+        this.actionObservers = actionObservers;
+    }
+
+    /**
      * This function is the copy constructor for the class Action
      * By using this method, there is no need to implement Clonable
      * @param toBeCopied this is the original Action to be copied
