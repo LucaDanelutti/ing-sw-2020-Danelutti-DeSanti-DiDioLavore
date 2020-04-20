@@ -34,7 +34,7 @@ class MoveActionTest {
      */
     @Test
     void duplicate() {
-        MoveAction originalMoveAction = new MoveAction(true, null, true, true, true, true, true, true, null, false);
+        MoveAction originalMoveAction = new MoveAction(true, null, true, true, true, true, true, true, null, false, false);
         originalMoveAction.setSelectedPawn(selectedPawnTester);
         MoveAction copiedMoveAction = originalMoveAction.duplicate();
 
@@ -48,7 +48,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCheckDenyMoveBack() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, true);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, true, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -77,7 +77,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotSwapPawn() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -104,7 +104,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCanSwapPawn() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, true, true, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -136,7 +136,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotPushPawn3() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -169,7 +169,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotPushPawn2() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -197,7 +197,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotPushPawn1() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -228,7 +228,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCanPushPawn2() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -263,7 +263,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCanPushPawn1() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, true, true, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -294,7 +294,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotMoveOnPawn0() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -324,7 +324,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotMoveOnDome() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, false, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, false, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -353,7 +353,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotMoveUp2Level() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -383,7 +383,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestCannotMoveUp1Level() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, false, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, false, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -412,7 +412,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestMoveUp() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -442,7 +442,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestMoveDown2levels() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -473,7 +473,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestMoveDown1level() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -507,7 +507,7 @@ class MoveActionTest {
         notAvailableCellsTester.add(new Position(0,0));
         notAvailableCellsTester.add(new Position(0,1));
         notAvailableCellsTester.add(new Position(2,2));
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -532,7 +532,7 @@ class MoveActionTest {
      */
     @Test
     void availableCellsTestBorders() {
-        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false);
+        MoveAction moveActionTester = new MoveAction(true, notAvailableCellsTester, true, false, false, false, false, false, null, false, false);
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
         moveActionTester.setNotSelectedPawn(notSelectedPawnTester);
@@ -556,7 +556,7 @@ class MoveActionTest {
      */
     @Test
     void checkwinMoveDown() {
-        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false);
+        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, false);
         Board boardTester = new Board();
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,2));
@@ -573,7 +573,7 @@ class MoveActionTest {
      */
     @Test
     void checkwinReachedLevel3() {
-        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false);
+        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, false);
         Board boardTester = new Board();
         Pawn selectedPawnTester = new Pawn("white");
         selectedPawnTester.setPosition(new Position(1,2));
@@ -584,5 +584,23 @@ class MoveActionTest {
         moveActionTester.setSelectedPawn(selectedPawnTester);
 
         assertEquals(true, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
+    }
+
+    /**
+     * This test checks whether the checkwin() function works properly when the moved pawn is on the perimeter on a level 3 building but noWinIfOnPerimeter = true
+     */
+    @Test
+    void checkwinCheckNoWinIfOnPerimeter() {
+        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, true);
+        Board boardTester = new Board();
+        Pawn selectedPawnTester = new Pawn("white");
+        boardTester.setPawnPosition(selectedPawnTester, new Position(4,2));
+
+        boardTester.pawnConstruct(null,new Position(4,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(null,new Position(4,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(null,new Position(4,2), BlockType.LEVEL3);
+        moveActionTester.setSelectedPawn(selectedPawnTester);
+
+        assertEquals(false, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
     }
 }
