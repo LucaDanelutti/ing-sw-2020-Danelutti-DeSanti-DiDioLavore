@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.action.Action;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.playerstate.InvalidGameException;
 import it.polimi.ingsw.model.playerstate.PlayerStateType;
@@ -10,8 +11,9 @@ import java.util.Iterator;
  * This class represents the game abstraction. The game contains the player list and the board
  */
 class Game {
-    ArrayList<Player> inGamePlayers = new ArrayList<Player>();
-    ArrayList<Card> inGameCards=new ArrayList<>();
+    ArrayList<Player> inGamePlayers = new ArrayList<>();
+    ArrayList<Card> inGameCards = new ArrayList<>();
+    ArrayList<Card> loadedCards = new ArrayList<>();
 
     Board board;
 
@@ -130,7 +132,7 @@ class Game {
     }
 
     /**
-     * getNextCurrentPlayer method to get the Players in the provided playerState. If there are no
+     * getPlayersIn method to get the Players in the provided playerState. If there are no
      * players in the provided playerStateType returns an empty arrayList. If more than one player
      * is found in actionState throws an exception
      */
@@ -147,14 +149,51 @@ class Game {
         return tempPlayerList;
     }
 
-    void setInGameCards(ArrayList<Card> cards){
-        this.inGameCards=cards;
+    /**
+     * Set method of the variable loadedCards, sets a copy of provided cards
+     */
+    void setLoadedCardsCopy(ArrayList<Card> cards){
+        if (cards != null) {
+            for (Card card : cards) {
+                this.loadedCards.add(new Card(card));
+            }
+        } else {
+            throw new InvalidGameException("Invalid cards array!");
+        }
     }
+
+    /**
+     * Get method of the variable loadedCards, returns the reference of loadedCards
+     */
+    ArrayList<Card> getLoadedCards(){
+        return this.loadedCards;
+    }
+
+    /**
+     * Set method of the variable inGameCards, sets a copy of provided cards
+     */
+    void setInGameCardsCopy(ArrayList<Card> cards){
+        if (cards != null) {
+            for (Card card : cards) {
+                this.inGameCards.add(new Card(card));
+            }
+        } else {
+            throw new InvalidGameException("Invalid cards array!");
+        }
+    }
+
+    /**
+     * Get method of the variable inGameCards, returns the reference of inGameCards
+     */
     ArrayList<Card> getInGameCards(){
         return this.inGameCards;
     }
+
+    /**
+     * getAvailableCards method: returns the available cards (not linked to a player)
+     */
     ArrayList<Card> getAvailableCards(){
-        ArrayList<Card> availableCards=new ArrayList<>(this.inGameCards);
+        ArrayList<Card> availableCards = new ArrayList<>(this.inGameCards);
         for(Player p : this.inGamePlayers){
             if(p.getCurrentCard()!=null){
                 availableCards.removeIf(i -> i.getId() == p.getCurrentCard().getId());

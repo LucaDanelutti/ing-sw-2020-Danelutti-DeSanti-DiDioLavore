@@ -274,6 +274,14 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             return false;
     }
 
+    /**
+     * loadCards method to load cards in the game. We read cards from a JSON config file
+     */
+    public Boolean loadCards() {
+        //TODO: JSON loading
+        return true;
+    }
+
     public Boolean setInGameCards(ArrayList<Integer> cards){
         //TODO: how do we handle the creation of cards? will the user just send the card IDs?
         return true;
