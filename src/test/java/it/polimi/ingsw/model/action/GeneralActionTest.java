@@ -31,7 +31,7 @@ class GeneralActionTest {
      */
     @Test
     void duplicate() {
-        GeneralAction originalGeneralAction = new GeneralAction(true, notAvailableCellsTester, false, true);
+        GeneralAction originalGeneralAction = new GeneralAction(true, notAvailableCellsTester, false, false);
         originalGeneralAction.setSelectedPawn(selectedPawnTester);
         GeneralAction copiedMoveAction = originalGeneralAction.duplicate();
 
@@ -58,31 +58,6 @@ class GeneralActionTest {
 
         ArrayList<Position> availableCellsTester = generalActionTester.availableCells(boardTester.getMatrixCopy());
         ArrayList<Position> expectedList = new ArrayList<>();
-        assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
-    }
-
-    /**
-     * This test checks whether the availableCells() function works properly when pushEnable = true and there is a pawn that can be pushed
-     * and another pawn that cannot be pushed because it's on a border cell
-     */
-    @Test
-    void availableCellsCheckPushEnable() {
-        GeneralAction generalActionTester = new GeneralAction(true, notAvailableCellsTester, true, false);
-
-        Pawn opponentPawn1Tester = new Pawn("grey");
-        Pawn opponentPawn2Tester = new Pawn("grey");
-
-        generalActionTester.setSelectedPawn(selectedPawnTester);
-        generalActionTester.setNotSelectedPawn(notSelectedPawnTester);
-
-        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
-        boardTester.setPawnPosition(opponentPawn1Tester, new Position(1,2));
-        boardTester.setPawnPosition(opponentPawn2Tester, new Position(0,0));
-
-        ArrayList<Position> availableCellsTester = generalActionTester.availableCells(boardTester.getMatrixCopy());
-        ArrayList<Position> expectedList = new ArrayList<Position>() {{
-            add(new Position(1,2));
-        }};
         assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
     }
 
