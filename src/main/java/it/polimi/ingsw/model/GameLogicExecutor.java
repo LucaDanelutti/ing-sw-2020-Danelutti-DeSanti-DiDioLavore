@@ -295,6 +295,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     /**
      * addPlayer method to add a player to the game. The first user to connect is set as the HOST player
      * and he is the only one that can start the game
+     * @return the return value of Game method AddPlayer()
      */
     public Boolean addPlayer(String name){
         //if the user is the first make him the HOST
@@ -312,14 +313,16 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      */
     public Boolean startGame() {
         //the most godLike -> random shuffle will chose the Cards in the game
-        game.shufflePlayers();
-        game.getPlayers().get(0).setState(new SelectGameCardsState());
-        game.getPlayers().get(1).setState(new IdleState());
-
-        if (game.getPlayers().size() == 3)
-            game.getPlayers().get(2).setState(new IdleState());
-
-        return true;
+        if (game.getPlayers().size() > 1) {
+            game.shufflePlayers();
+            game.getPlayers().get(0).setState(new SelectGameCardsState());
+            game.getPlayers().get(1).setState(new IdleState());
+            if (game.getPlayers().size() == 3)
+                game.getPlayers().get(2).setState(new IdleState());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

@@ -153,7 +153,7 @@ class GameLogicExecutorTest {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         assertTrue(testGame.getPlayers().size() == 0);
-        testGameLogicExecutor.addPlayer("testPlayer1");
+        assertTrue(testGameLogicExecutor.addPlayer("testPlayer1"));
         assertTrue(testGame.getPlayers().size() == 1);
         assertTrue(testGame.getPlayer("testPlayer1").getState().getType() == PlayerStateType.HostWaitOtherPlayersState);
     }
@@ -167,8 +167,57 @@ class GameLogicExecutorTest {
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertTrue(testGame.getPlayers().size() == 1);
-        testGameLogicExecutor.addPlayer("testPlayer2");
+        assertTrue(testGameLogicExecutor.addPlayer("testPlayer2"));
         assertTrue(testGame.getPlayers().size() == 2);
         assertTrue(testGame.getPlayer("testPlayer2").getState().getType() == PlayerStateType.ClientWaitStartState);
+    }
+
+    /**
+     * The scope of this test function is to test that startGame method correctly starts the game
+     */
+    @Test
+    void startGame_3Players() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        testGameLogicExecutor.addPlayer("testPlayer2");
+        testGameLogicExecutor.addPlayer("testPlayer3");
+        ArrayList<String> testNameArrays = new ArrayList<>();
+        testNameArrays.add("testPlayer1");
+        testNameArrays.add("testPlayer2");
+        testNameArrays.add("testPlayer3");
+        assertTrue(testGameLogicExecutor.startGame());
+        assertTrue(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).size() == 1);
+        assertTrue(testNameArrays.contains(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).get(0).getName()));
+        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 2);
+    }
+
+    /**
+     * The scope of this test function is to test that startGame method correctly starts the game
+     */
+    @Test
+    void startGame_2Players() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        testGameLogicExecutor.addPlayer("testPlayer2");
+        ArrayList<String> testNameArrays = new ArrayList<>();
+        testNameArrays.add("testPlayer1");
+        testNameArrays.add("testPlayer2");
+        assertTrue(testGameLogicExecutor.startGame());
+        assertTrue(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).size() == 1);
+        assertTrue(testNameArrays.contains(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).get(0).getName()));
+        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 1);
+    }
+
+    /**
+     * The scope of this test function is to test that startGame method correctly starts the game
+     */
+    @Test
+    void startGame_1Players() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        assertFalse(testGameLogicExecutor.startGame());
     }
 }
