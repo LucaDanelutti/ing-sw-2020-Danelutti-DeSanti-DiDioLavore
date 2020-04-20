@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.action.Action;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Card: represents a power up card, has a name and an id
@@ -46,6 +47,22 @@ public class Card {
                 this.currentActionList.add(action);
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return id == card.id &&
+                Objects.equals(name, card.name) &&
+                Objects.equals(defaultActionList, card.defaultActionList) &&
+                Objects.equals(currentActionList, card.currentActionList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id, defaultActionList, currentActionList);
     }
 
     String getName() {
