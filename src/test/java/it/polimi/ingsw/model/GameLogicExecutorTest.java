@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.action.Action;
 import it.polimi.ingsw.model.action.ConstructAction;
 import it.polimi.ingsw.model.action.MoveAction;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.playerstate.ActionState;
-import it.polimi.ingsw.model.playerstate.IdleState;
-import it.polimi.ingsw.model.playerstate.PlayerState;
-import it.polimi.ingsw.model.playerstate.PlayerStateType;
+import it.polimi.ingsw.model.playerstate.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -219,5 +216,70 @@ class GameLogicExecutorTest {
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertFalse(testGameLogicExecutor.startGame());
+    }
+
+    /**
+     * The scope of this test function is to test that setChosenCard method correctly sets the player card
+     */
+    @Test
+    void setChosenCard_FirstPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+        ArrayList<Card> testCardList = new ArrayList<>();
+        testCardList.add(testCard1);
+        testCardList.add(testCard2);
+        testGame.setInGameCardsCopy(testCardList);
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
+        assertEquals(testCard1, testPlayer1.getCurrentCard());
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setChosenCard method correctly sets the player card
+     */
+    @Test
+    void setChosenCard_LastPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+        ArrayList<Card> testCardList = new ArrayList<>();
+        testCardList.add(testCard1);
+        testCardList.add(testCard2);
+        testGame.setInGameCardsCopy(testCardList);
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard2));
+        assertEquals(testCard2, testPlayer2.getCurrentCard());
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.SelectFirstPlayerState, testPlayer2.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setChosenCard method correctly sets the player card
+     */
+    @Test
+    void setChosenCard_WrongCard() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
+        testGame.addPlayer(testPlayer1);
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
+        ArrayList<Card> testCardList = new ArrayList<>();
+        testCardList.add(testCard1);
+        testGame.setInGameCardsCopy(testCardList);
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+        assertFalse(testGameLogicExecutor.setChosenCard(testCard2));
+        assertEquals(null, testPlayer1.getCurrentCard());
     }
 }

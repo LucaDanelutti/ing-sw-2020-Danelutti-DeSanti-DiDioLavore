@@ -128,7 +128,7 @@ class Game {
                 }
             }
         }
-        throw new InvalidGameException("Next player not available");
+        throw new InvalidGameException("A started game must have 2 or 3 players!");
     }
 
     /**
@@ -196,7 +196,7 @@ class Game {
         ArrayList<Card> availableCards = new ArrayList<>(this.inGameCards);
         for(Player p : this.inGamePlayers){
             if(p.getCurrentCard()!=null){
-                availableCards.removeIf(i -> i.getId() == p.getCurrentCard().getId());
+                availableCards.removeIf(i -> i.equals(p.getCurrentCard()));
             }
         }
         return availableCards;

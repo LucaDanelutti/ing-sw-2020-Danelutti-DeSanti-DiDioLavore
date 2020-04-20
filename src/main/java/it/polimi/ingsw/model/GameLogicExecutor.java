@@ -287,9 +287,26 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         return true;
     }
 
-    public Boolean setChosenCard(int cardId){
-        //TODO: how do we handle the selection of a card? will the user just send the card ID?
-        return true;
+    /**
+     * setChosenCard method to set the chosen card in the player
+     */
+    public Boolean setChosenCard(Card card){
+        if (game.getPlayersIn(PlayerStateType.ChooseCardState).size() == 1) {
+            Player currentPlayer = game.getPlayersIn(PlayerStateType.ChooseCardState).get(0);
+            if (game.getAvailableCards().contains(card)) {
+                currentPlayer.setCurrentCard(new Card(card));
+                //Pass turn
+                Player nextPlayer = game.getNextPlayer(PlayerStateType.ChooseCardState);
+                if (game.getAvailableCards().size() == 0) { //All cards are linked to a player
+                    currentPlayer.setState(new SelectFirstPlayerState());
+                } else {
+                    currentPlayer.setState(new IdleState());
+                    nextPlayer.setState(new ChooseCardState());
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     public Boolean setPawnsPositions(ArrayList<Position> positions){
