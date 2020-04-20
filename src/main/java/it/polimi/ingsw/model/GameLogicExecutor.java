@@ -311,10 +311,13 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
 
     public Boolean setPawnsPositions(ArrayList<Position> positions){
         //TODO: we could check if the positions are ok, but for now, nah...?
-        Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
-        game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
-        game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
-        return true;
+        if (game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).size() == 1) {
+            Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
+            game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
+            game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
+            return true;
+        }
+        return false;
     }
 
     /**
