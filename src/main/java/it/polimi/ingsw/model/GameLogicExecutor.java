@@ -275,20 +275,24 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
 
     /**
-     * loadCards method to load cards in the game. We read cards from a JSON config file
+     * Setup method loadCards to load cards in the game. We read cards from a JSON config file
      */
     public Boolean loadCards() {
         //TODO: JSON loading
         return true;
     }
 
+    /**
+     * Setup method setInGameCards to set the cards that will be available to players
+     * Players will choose a card in ChooseCardState
+     */
     public Boolean setInGameCards(ArrayList<Integer> cards){
         //TODO: how do we handle the creation of cards? will the user just send the card IDs?
         return true;
     }
 
     /**
-     * setChosenCard method to set the chosen card in the player
+     * Setup method setChosenCard to set the chosen card in the player
      */
     public Boolean setChosenCard(Card card){
         if (game.getPlayersIn(PlayerStateType.ChooseCardState).size() == 1) {
@@ -309,6 +313,9 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         return false;
     }
 
+    /**
+     * Setup method setPawnsPositions to set the two pawns of the current player
+     */
     public Boolean setPawnsPositions(ArrayList<Position> positions){
         //TODO: we could check if the positions are ok, but for now, nah...?
         if (game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).size() == 1) {
@@ -321,7 +328,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
 
     /**
-     * addPlayer method to add a player to the game. The first user to connect is set as the HOST player
+     * Setup method addPlayer to add a player to the game. The first user to connect is set as the HOST player
      * and he is the only one that can start the game
      * @return the return value of Game method AddPlayer()
      */
