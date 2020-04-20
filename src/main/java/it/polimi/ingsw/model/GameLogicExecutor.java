@@ -292,25 +292,24 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         return true;
     }
 
+    /**
+     * addPlayer method to add a player to the game. The first user to connect is set as the HOST player
+     * and he is the only one that can start the game
+     */
     public Boolean addPlayer(String name){
-        //check if username is already taken
-        for(Player p : game.getPlayers()){
-            if(p.getName().equals(name)){
-                return false;
-            }
-        }
-
         //if the user is the first make him the HOST
-        if(game.getPlayers().size()==0){
-            //TODO: create the user and place it in HostWaitOtherPlayers
+        if (game.getPlayers().size() == 0) {
+            return game.addPlayer(new Player(name, new HostWaitOtherPlayersState()));
         }
-        else{
-            //TODO: create the user and place it in ClientWaitStart
+        else {
+            return game.addPlayer(new Player(name, new ClientWaitStartState()));
         }
-
-        return true;
     }
 
+    /**
+     * startGame method to start the game. After shuffling the players one player is set in SelectGameCardsState,
+     * the other players are set in IdleState
+     */
     public Boolean startGame() {
         //the most godLike -> random shuffle will chose the Cards in the game
         game.shufflePlayers();

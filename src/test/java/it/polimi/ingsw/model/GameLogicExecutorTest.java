@@ -145,4 +145,30 @@ class GameLogicExecutorTest {
 
     }
 
+    /**
+     * The scope of this test function is to test that addPlayer method adds a player with the provided name in the right state
+     */
+    @Test
+    void addPlayer_FirstPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        assertTrue(testGame.getPlayers().size() == 0);
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        assertTrue(testGame.getPlayers().size() == 1);
+        assertTrue(testGame.getPlayer("testPlayer1").getState().getType() == PlayerStateType.HostWaitOtherPlayersState);
+    }
+
+    /**
+     * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
+     */
+    @Test
+    void addPlayer_NotFirstPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        assertTrue(testGame.getPlayers().size() == 1);
+        testGameLogicExecutor.addPlayer("testPlayer2");
+        assertTrue(testGame.getPlayers().size() == 2);
+        assertTrue(testGame.getPlayer("testPlayer2").getState().getType() == PlayerStateType.ClientWaitStartState);
+    }
 }
