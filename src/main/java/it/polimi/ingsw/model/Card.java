@@ -27,7 +27,25 @@ public class Card {
         } else {
             this.defaultActionList = null;
         }
+    }
 
+    /**
+     * this is the copy constructor for Card class
+     * @param toBeCopied the card to be copied
+     */
+    public Card(Card toBeCopied){
+        this.name = toBeCopied.name;
+        this.id = toBeCopied.id;
+        if(toBeCopied.defaultActionList != null) {
+            for (Action action : toBeCopied.defaultActionList) {
+                this.defaultActionList.add(action);
+            }
+        }
+        if(toBeCopied.currentActionList != null) {
+            for (Action action : toBeCopied.currentActionList) {
+                this.currentActionList.add(action);
+            }
+        }
     }
 
     String getName() {
