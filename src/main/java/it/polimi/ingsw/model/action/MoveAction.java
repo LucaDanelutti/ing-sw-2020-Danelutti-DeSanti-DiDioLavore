@@ -18,11 +18,12 @@ public class MoveAction extends Action {
     private Boolean winDownEnable;
     private ArrayList<Position> addMoveIfOn;
     private Boolean denyMoveBack;
+    private Boolean noWinIfOnPerimeter;
 
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
-    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBack) {
+    public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBack, Boolean noWinIfOnPerimeter) {
         super(isOptional, notAvailableCell, ActionType.MOVE);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
@@ -36,6 +37,7 @@ public class MoveAction extends Action {
             this.addMoveIfOn = null;
         }
         this.denyMoveBack = denyMoveBack;
+        this.noWinIfOnPerimeter = noWinIfOnPerimeter;
     }
 
     /**
@@ -56,6 +58,7 @@ public class MoveAction extends Action {
             this.addMoveIfOn = null;
         }
         this.denyMoveBack = toBeCopied.denyMoveBack;
+        this.noWinIfOnPerimeter = toBeCopied.noWinIfOnPerimeter;
     }
 
     @Override
@@ -70,12 +73,13 @@ public class MoveAction extends Action {
                 Objects.equals(denyMoveUpEnable, that.denyMoveUpEnable) &&
                 Objects.equals(winDownEnable, that.winDownEnable) &&
                 Objects.equals(addMoveIfOn, that.addMoveIfOn) &&
-                Objects.equals(denyMoveBack, that.denyMoveBack);
+                Objects.equals(denyMoveBack, that.denyMoveBack) &&
+                Objects.equals(noWinIfOnPerimeter, that.noWinIfOnPerimeter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBack);
+        return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBack, noWinIfOnPerimeter);
     }
 
     public void accept(ActionVisitor visitor){
@@ -126,6 +130,9 @@ public class MoveAction extends Action {
 
     public void setDenyMoveBackInNextMove(Boolean denyMoveBackInNextMove) { this.denyMoveBack = denyMoveBackInNextMove; }
 
+    public Boolean getNoWinIfOnPerimeter() { return noWinIfOnPerimeter; }
+
+    public void setNoWinIfOnPerimeter(Boolean noWinIfOnPerimeter) { this.noWinIfOnPerimeter = noWinIfOnPerimeter; }
 
     /**
      * Computes a boolean value expressing whether the pawn can move on a cell occupied by an enemy pawn
@@ -234,6 +241,12 @@ public class MoveAction extends Action {
         return availableCells;
     }
 
+    private Boolean isOnPerimeter() {
+        Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
+        if (selectedPawnPosition.getX() == 0 || selectedPawnPosition.getX() == 4 || selectedPawnPosition.getY() == 0 || selectedPawnPosition.getY() == 4) return true;
+        return false;
+    }
+
 
     /**
      * Checks whether the last moveAction executed upon the selectedPawn makes the player win. This can happen in two cases:
@@ -243,6 +256,7 @@ public class MoveAction extends Action {
      */
     public Boolean checkWin(Cell[][] matrixCopy) {
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
+        if (noWinIfOnPerimeter && isOnPerimeter()) return false;
         if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3) return true;
         return winDownEnable && selectedPawn.getDeltaHeight() <= -2;
     }
