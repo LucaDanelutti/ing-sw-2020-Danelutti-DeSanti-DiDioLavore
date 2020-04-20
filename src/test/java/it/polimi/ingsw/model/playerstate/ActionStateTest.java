@@ -37,7 +37,7 @@ class ActionStateTest {
      */
     @Test
     void setCurrentAction_FirstAction() {
-        MoveAction testMoveAction = new MoveAction(true, null, true, false, false, false, false, false, null, false);
+        MoveAction testMoveAction = new MoveAction(true, null, true, false, false, false, false, false, null, false, false);
         testActionList.add(testMoveAction);
         testState = new ActionState(testActionList);
         testState.setCurrentAction();
@@ -49,8 +49,8 @@ class ActionStateTest {
      */
     @Test
     void setCurrentAction_NotFirstAction() {
-        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false);
-        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false);
+        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false, false);
+        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false, false);
         testActionList.add(testMoveAction1);
         testActionList.add(testMoveAction2);
         testState = new ActionState(testActionList);
@@ -65,8 +65,8 @@ class ActionStateTest {
      */
     @Test
     void setCurrentAction_NoNextAction() {
-        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false);
-        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false);
+        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false, false);
+        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false, false);
         testActionList.add(testMoveAction1);
         testActionList.add(testMoveAction2);
         testState = new ActionState(testActionList);
@@ -80,14 +80,14 @@ class ActionStateTest {
 
     @Test
     void addActionAfterCurrentOne() {
-        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false);
-        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false);
+        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false, false);
+        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false, false);
         testActionList.add(testMoveAction1);
         testActionList.add(testMoveAction2);
         testState = new ActionState(testActionList);
         testState.setCurrentAction();
         assertTrue(testState.getActionListCopy().size() == 2);
-        MoveAction testMoveAction3 = new MoveAction(true, null, true, false, true, true, false, false, null, false);
+        MoveAction testMoveAction3 = new MoveAction(true, null, true, false, true, true, false, false, null, false, false);
         testState.addActionAfterCurrentOne(testMoveAction3);
         assertTrue(testState.getActionListCopy().size() == 3);
         assertEquals(testMoveAction1, testState.getActionListCopy().get(0));
@@ -97,8 +97,8 @@ class ActionStateTest {
 
     @Test
     void addActionAfterCurrentOne_NoCurrentAction() {
-        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false);
-        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false);
+        MoveAction testMoveAction1 = new MoveAction(true, null, true, false, false, false, false, false, null, false, false);
+        MoveAction testMoveAction2 = new MoveAction(true, null, true, true, true, false, false, false, null, false, false);
         testActionList.add(testMoveAction1);
         testState = new ActionState(testActionList);
         assertTrue(testState.getActionListCopy().size() == 1);
