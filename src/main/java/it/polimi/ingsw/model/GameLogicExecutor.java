@@ -85,15 +85,15 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
     public void executeAction(GeneralAction generalAction){
         //this is the special case for Charon
-        if(generalAction.getPushEnable()){
-            //delta is yourPawn - opponentPawn
-            int deltaX=generalAction.getSelectedPawn().getPosition().getX()-generalAction.getChosenPosition().getX();
-            int deltaY=generalAction.getSelectedPawn().getPosition().getY()-generalAction.getChosenPosition().getY();
-            Position otherSide=new Position(generalAction.getSelectedPawn().getPosition().getX()-deltaX,generalAction.getSelectedPawn().getPosition().getY()-deltaY);
-            game.getBoard().updatePawnPosition(generalAction.getChosenPosition(),otherSide);
-        }
+//        if(generalAction.getPushEnable()){
+//            //delta is yourPawn - opponentPawn
+//            int deltaX=generalAction.getSelectedPawn().getPosition().getX()-generalAction.getChosenPosition().getX();
+//            int deltaY=generalAction.getSelectedPawn().getPosition().getY()-generalAction.getChosenPosition().getY();
+//            Position otherSide=new Position(generalAction.getSelectedPawn().getPosition().getX()-deltaX,generalAction.getSelectedPawn().getPosition().getY()-deltaY);
+//            game.getBoard().updatePawnPosition(generalAction.getChosenPosition(),otherSide);
+//        }
         //this is the special case for Medusa
-        else if(generalAction.getDestroyPawnAndBuildEnable()){
+        if(generalAction.getDestroyPawnAndBuildEnable()){
             Pawn worker1=generalAction.getSelectedPawn();
             Pawn worker2=generalAction.getNotSelectedPawn();
             Position pos1=worker1.getPosition();

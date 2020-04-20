@@ -34,7 +34,7 @@ class GameLogicExecutorTest {
         basicActionList1 = new ArrayList<>();
         basicActionList2 = new ArrayList<>();
         basicActionList3 = new ArrayList<>();
-        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
         basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
         basicActionList1.add(basicMove);
         basicActionList1.add(basicConstruct);
