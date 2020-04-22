@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//TODO: capire se e come gestire le NullPointerException nei costruttori
-//TODO: implementare le funzioni mancanti
+
 public abstract class Action {
     protected Boolean isOptional;
     protected ArrayList<Position> notAvailableCell;
