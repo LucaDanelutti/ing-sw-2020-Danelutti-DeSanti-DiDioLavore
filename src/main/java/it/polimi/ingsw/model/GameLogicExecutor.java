@@ -10,14 +10,26 @@ import static java.lang.Math.abs;
 public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     private Game game;
 
+    /**
+     * This is the constructor for the class GameLogicExecutor
+     * @param game the game to be controlled
+     */
     public GameLogicExecutor(Game game){
         this.game=game;
     }
 
+    /**
+     * This function is a part of the visitor pattern used to call the correct executeAction using dynamic binding
+     * @param action the action to be performed
+     */
     @Override public void update(Action action) {
         action.accept(this);
     }
 
+    /**
+     * This function executes a CONSTRUCT action called via visitor pattern.
+     * @param constructAction the action to be executed
+     */
     public void executeAction(ConstructAction constructAction){
         //This is an optional construct action to be skipped because the chosen position is not set!
         if(constructAction.getIsOptional()&&constructAction.getChosenPosition()==null){
@@ -39,6 +51,11 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         //generally we will load the next action or switch to the next player if turn ends
         loadNextAction();
     }
+
+    /**
+     * This function executes a MOVE action called via visitor pattern.
+     * @param moveAction the action to be executed
+     */
     public void executeAction(MoveAction moveAction){
         Position oldPos =moveAction.getSelectedPawn().getPosition();
         Position newPos =moveAction.getChosenPosition();
@@ -83,15 +100,12 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             loadNextAction();
         }
     }
+
+    /**
+     * This function executes a GENERAL action called via visitor pattern.
+     * @param generalAction the action to be executed
+     */
     public void executeAction(GeneralAction generalAction){
-        //this is the special case for Charon
-//        if(generalAction.getPushEnable()){
-//            //delta is yourPawn - opponentPawn
-//            int deltaX=generalAction.getSelectedPawn().getPosition().getX()-generalAction.getChosenPosition().getX();
-//            int deltaY=generalAction.getSelectedPawn().getPosition().getY()-generalAction.getChosenPosition().getY();
-//            Position otherSide=new Position(generalAction.getSelectedPawn().getPosition().getX()-deltaX,generalAction.getSelectedPawn().getPosition().getY()-deltaY);
-//            game.getBoard().updatePawnPosition(generalAction.getChosenPosition(),otherSide);
-//        }
         //this is the special case for Medusa
         if(generalAction.getDestroyPawnAndBuildEnable()){
             Pawn worker1=generalAction.getSelectedPawn();
@@ -133,10 +147,31 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             }
 
         }
+        //This is the special case for Hera
+        else if(generalAction.getEnableNoWinIfOnPerimeter()){
+            enableNoWinIfOnPerimeterForOpponents();
+        }
 
-        //TODO: load next action!!
+        loadNextAction();
     }
 
+    /**
+     * This function is called to turn to true the parameter NoWinIfOnPerimeter on each opponent moveAction.
+     * It is called when a generalAction with enableNoWinIfOnPerimeter is executed
+     */
+    private void enableNoWinIfOnPerimeterForOpponents(){
+        for(Player p : game.getPlayersIn(PlayerStateType.IdleState)){
+            for(Action a : p.getCurrentCard().getCurrentActionList()){
+                if(a.getActionType()==ActionType.MOVE){
+                    ((MoveAction)a).setNoWinIfOnPerimeter(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * This function is called to turn to TRUE the parameter moveUp for each moveAction for the current player in actionState
+     */
     private void enableMoveUpForCurrentPlayer() {
         ArrayList<Player> actionStatePlayers = game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = actionStatePlayers.get(0);
@@ -147,6 +182,10 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         }
 
     }
+
+    /**
+     * This function is called to turn to FALSE the moveUp parameter on each opponent moveAction
+     */
     private void disableMoveUpOfOtherPlayers() {
         for (Player player : game.getPlayersIn(PlayerStateType.IdleState)) {
             for (Action action : player.getCurrentCard().getCurrentActionList()) {
@@ -156,12 +195,22 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             }
         }
     }
+
+    /**
+     * This function is called to load the next action and if no action is available it will pass the turn to the next player
+     */
     private void loadNextAction(){
         getActionStateForCurrentPlayer().setCurrentAction();
         if(getActionStateForCurrentPlayer().getCurrentAction()==null) {
             passTurnToNextPlayer();
         }
     }
+
+    /**
+     * This function is called to pass the turn to the next player. It also handles the following cases:
+     * 1) The current player is the last one remained in the game, so the current player is the winner
+     * 2) The next player or all of them are unable to perform a turn (for example no pawn remained), so the current player is the winner
+     */
     private void passTurnToNextPlayer() {
         Player nextPlayer = game.getNextPlayer(PlayerStateType.ActionState);
         Player currentPlayer = game.getPlayersIn(PlayerStateType.ActionState).get(0);
@@ -204,12 +253,23 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
 
 
     }
+
+    /**
+     * This function is called when after an execution of a MoveAction the checkWin function (for that specific action) return true.
+     * It places the passed player into winner state and the others in loser state.
+     * @param winner the player who won
+     */
     private void someoneWon(Player winner){
         winner.setState(new WinnerState());
         for(Player loser : game.getPlayersIn(PlayerStateType.IdleState)){
             loser.setState(new LoserState());
         }
     }
+
+    /**
+     * This function is used to return the ActionState for the currentPlayer
+     * @return the ActionState for the current player
+     */
     private ActionState getActionStateForCurrentPlayer(){
         return (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
     }
@@ -245,13 +305,8 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      */
     public Boolean setChosenPosition(Position chosenPos){
         ActionState actionState= getActionStateForCurrentPlayer();
-        if(chosenPos==null) {
-            if (!actionState.getCurrentAction().getIsOptional()) {
-                //TODO: throw an expection! only optional action can have chosenPos set to null
-            }
-            else if(actionState.getCurrentAction().getActionType()!=ActionType.GENERAL){
-                //TODO: throw an expetion! only a general action can have chosenPos set to null (medusa)
-            }
+        if(chosenPos==null && (!actionState.getCurrentAction().getIsOptional() || actionState.getCurrentAction().getActionType()!=ActionType.GENERAL) ) {
+                //TODO: throw an expetion! only a general action or optional Action can have chosenPos set to null
         }
         actionState.getCurrentAction().setChosenPosition(chosenPos);
         return true;
@@ -278,7 +333,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      * Setup method loadCards to load cards in the game. We read cards from a JSON config file
      */
     public Boolean loadCards() {
-        //TODO: JSON loading
+        //TODO: JSON loading -> into game.loadedCards
         return true;
     }
 
