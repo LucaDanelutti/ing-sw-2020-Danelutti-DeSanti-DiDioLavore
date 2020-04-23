@@ -93,9 +93,12 @@ public class Board{
         matrix[position.getX()][position.getY()].setPawn(pawn);
     }
 
+    /**
+     * This function is used to remove a pawn from the game by removing it from the board
+     * @param pawn The pawn to be removed
+     */
     public void removePawnFromGame(Pawn pawn){
         matrix[pawn.getPosition().getX()][pawn.getPosition().getY()].setPawn(null);
-
     }
 
     /**
@@ -109,6 +112,11 @@ public class Board{
             matrix[selectedPawnPos.getX()][selectedPawnPos.getY()].getPawn().setLastBuildPosition(constructPosition);
     }
 
+    /**
+     * This function returns a copy of the pawn in the provided position
+     * @param pawnPosition the position where to retrieve the pawn
+     * @return the copy of the pawn
+     */
     public Pawn getPawnCopy(Position pawnPosition){
         return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
     }

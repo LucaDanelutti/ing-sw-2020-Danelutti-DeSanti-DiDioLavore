@@ -14,21 +14,35 @@ class Game {
     ArrayList<Player> inGamePlayers = new ArrayList<>();
     ArrayList<Card> inGameCards = new ArrayList<>();
     ArrayList<Card> loadedCards = new ArrayList<>();
-
     Board board;
 
+    /**
+     * This is the construct for the class Game
+     */
     Game(){
         this.board=new Board();
     }
 
+    /**
+     * This is the getter for the variable board
+     * @return the board
+     */
     Board getBoard() {
         return board;
     }
 
+    /**
+     * This is the setter for the variable board
+     * @param board the board to be set
+     */
     void setBoard(Board board) {
         this.board = board;
     }
 
+    /**
+     * This is the getter for the variable inGamePlayer
+     * @return the variable inGamePlayers
+     */
     ArrayList<Player> getPlayers() {
         return inGamePlayers;
     }
@@ -47,7 +61,6 @@ class Game {
        }
        throw new InvalidGameException("No player with provided name found!");
    }
-
 
     /**
      * addPlayer method to add the provided Player to inGamePlayers
