@@ -1,0 +1,37 @@
+[{
+  "name": "RandomGod1",
+  "id": 1,
+  "defaultActionList": [
+    {
+      "isOptional": true,
+      "notAvailableCell": [
+        {x: 1, y: 1},
+        {x: 0, y: 4}
+      ],
+      "actionType": "MOVE",
+      "moveUpEnable": true
+    },
+    {
+      "isOptional": false,
+      "actionType": "CONSTRUCT",
+      "alwaysAvailableBlockType": ["DOME"],
+      "buildBelowEnable": true
+    }
+  ]
+},
+{
+    "name": "RandomGod2",
+    "id": 2,
+    "defaultActionList": [
+      {
+        "actionType": "MOVE",
+        "isOptional": true,
+        "moveUpEnable": true
+      },
+      {
+        "actionType": "CONSTRUCT",
+        "isOptional": false,
+        "buildBelowEnable": true
+      }
+    ]
+}]
