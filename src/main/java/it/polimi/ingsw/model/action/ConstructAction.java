@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.action;
 
-import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.Observer;
 import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
 
 import java.util.ArrayList;
@@ -13,15 +12,15 @@ public class ConstructAction extends Action {
     private Boolean constructOnLastBuilt;
     private Boolean buildBelowEnable;
     private ArrayList<BlockType> alwaysAvailableBlockType;
-    private Boolean enableMoveUp;
+    private Boolean disableMoveUp;
     private Boolean notBuildOnLastBuilt;
 
-    public ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean enableMoveUp, Boolean notBuildOnLastBuilt){
+    public ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean disableMoveUp, Boolean notBuildOnLastBuilt){
         super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
         this.constructOnLastBuilt=constructOnLastBuilt;
         this.buildBelowEnable=buildBelowEnable;
         this.alwaysAvailableBlockType=alwaysAvailableBlockType;
-        this.enableMoveUp=enableMoveUp;
+        this.disableMoveUp=disableMoveUp;
         this.notBuildOnLastBuilt=notBuildOnLastBuilt;
     }
 
@@ -30,7 +29,7 @@ public class ConstructAction extends Action {
         this.constructOnLastBuilt = toBeCopied.constructOnLastBuilt;
         this.buildBelowEnable = toBeCopied.buildBelowEnable;
         this.alwaysAvailableBlockType = toBeCopied.alwaysAvailableBlockType;
-        this.enableMoveUp = toBeCopied.enableMoveUp;
+        this.disableMoveUp = toBeCopied.disableMoveUp;
         this.notBuildOnLastBuilt = toBeCopied.notBuildOnLastBuilt;
         this.selectedBlockType = toBeCopied.selectedBlockType;
     }
@@ -44,13 +43,13 @@ public class ConstructAction extends Action {
                 Objects.equals(constructOnLastBuilt, that.constructOnLastBuilt) &&
                 Objects.equals(buildBelowEnable, that.buildBelowEnable) &&
                 Objects.equals(alwaysAvailableBlockType, that.alwaysAvailableBlockType) &&
-                Objects.equals(enableMoveUp, that.enableMoveUp) &&
+                Objects.equals(disableMoveUp, that.disableMoveUp) &&
                 Objects.equals(notBuildOnLastBuilt, that.notBuildOnLastBuilt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selectedBlockType, constructOnLastBuilt, buildBelowEnable, alwaysAvailableBlockType, enableMoveUp);
+        return Objects.hash(selectedBlockType, constructOnLastBuilt, buildBelowEnable, alwaysAvailableBlockType, disableMoveUp);
     }
 
     public void accept(ActionVisitor actionVisitor){
@@ -66,8 +65,8 @@ public class ConstructAction extends Action {
     public ArrayList<BlockType> getAlwaysAvailableBlockType() {
         return alwaysAvailableBlockType;
     }
-    public Boolean getEnableMoveUp() {
-        return enableMoveUp;
+    public Boolean getdisableMoveUp() {
+        return disableMoveUp;
     }
 
 
