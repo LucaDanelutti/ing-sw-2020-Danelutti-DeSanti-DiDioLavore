@@ -360,8 +360,22 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      * Players will choose a card in ChooseCardState
      */
     public Boolean setInGameCards(ArrayList<Integer> cards){
-        //TODO: how do we handle the creation of cards? will the user just send the card IDs?
-        return true;
+        if (game.getPlayersIn(PlayerStateType.SelectGameCardsState).size() == 1) {
+            if (cards.size() == game.getPlayers().size()) { //Every player must have one and only one card
+                ArrayList<Card> inGameCards = new ArrayList<>();
+                for (int cardID : cards) {
+                    if (game.getLoadedCardCopy(cardID) == null) return false;
+                    inGameCards.add(game.getLoadedCardCopy(cardID));
+                }
+                game.setInGameCardsCopy(inGameCards);
+                Player currentPlayer = game.getPlayersIn(PlayerStateType.SelectGameCardsState).get(0);
+                Player nextPlayer = game.getNextPlayer(PlayerStateType.SelectGameCardsState);
+                currentPlayer.setState(new IdleState());
+                nextPlayer.setState(new ChooseCardState());
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
