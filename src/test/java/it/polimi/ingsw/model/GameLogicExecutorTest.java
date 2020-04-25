@@ -383,6 +383,96 @@ class GameLogicExecutorTest {
     }
 
     /**
+     * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
+     */
+    @Test
+    void setInGameCards_OkCards_2Players() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        ArrayList<Card> testCardArray = new ArrayList<>();
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
+        Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+        testCardArray.add(testCard1);
+        testCardArray.add(testCard2);
+        testCardArray.add(testCard3);
+        testGame.setLoadedCardsCopy(testCardArray);
+        ArrayList<Integer> testCardIDArray = new ArrayList<>();
+        testCardIDArray.add(1);
+        testCardIDArray.add(2);
+        assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
+        assertTrue(testGame.getInGameCards().size() == 2);
+        assertEquals(testCard1, testGame.getInGameCards().get(0));
+        assertEquals(testCard2, testGame.getInGameCards().get(1));
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
+     */
+    @Test
+    void setInGameCards_OkCards_3Players() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        testGame.addPlayer(testPlayer3);
+        ArrayList<Card> testCardArray = new ArrayList<>();
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
+        Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+        Card testCard4 = new Card("testCard4", 4, new ArrayList<>());
+        testCardArray.add(testCard1);
+        testCardArray.add(testCard2);
+        testCardArray.add(testCard3);
+        testCardArray.add(testCard4);
+        testGame.setLoadedCardsCopy(testCardArray);
+        ArrayList<Integer> testCardIDArray = new ArrayList<>();
+        testCardIDArray.add(2);
+        testCardIDArray.add(3);
+        testCardIDArray.add(4);
+        assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
+        assertTrue(testGame.getInGameCards().size() == 3);
+        assertEquals(testCard2, testGame.getInGameCards().get(0));
+        assertEquals(testCard3, testGame.getInGameCards().get(1));
+        assertEquals(testCard4, testGame.getInGameCards().get(2));
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
+        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
+     */
+    @Test
+    void setInGameCards_NotOkCards() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
+        testGame.addPlayer(testPlayer1);
+        ArrayList<Card> testCardArray = new ArrayList<>();
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
+        Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+        testCardArray.add(testCard1);
+        testCardArray.add(testCard2);
+        testCardArray.add(testCard3);
+        testGame.setLoadedCardsCopy(testCardArray);
+        ArrayList<Integer> testCardIDArray = new ArrayList<>();
+        testCardIDArray.add(5);
+        assertFalse(testGameLogicExecutor.setInGameCards(testCardIDArray));
+        assertTrue(testGame.getInGameCards().size() == 0);
+    }
+
+    /**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
      */
     @Test
