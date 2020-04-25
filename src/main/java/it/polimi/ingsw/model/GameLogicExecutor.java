@@ -410,9 +410,10 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     /**
      * Setup method setChosenCard to set the chosen card in the player
      */
-    public Boolean setChosenCard(Card card){
+    public Boolean setChosenCard(int cardID){
         if (game.getPlayersIn(PlayerStateType.ChooseCardState).size() == 1) {
             Player currentPlayer = game.getPlayersIn(PlayerStateType.ChooseCardState).get(0);
+            Card card = game.getInGameCardCopy(cardID);
             if (game.getAvailableCards().contains(card)) {
                 currentPlayer.setCurrentCard(new Card(card));
                 //Pass turn

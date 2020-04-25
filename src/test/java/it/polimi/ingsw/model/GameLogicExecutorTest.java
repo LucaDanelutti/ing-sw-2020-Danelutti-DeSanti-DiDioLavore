@@ -297,7 +297,7 @@ class GameLogicExecutorTest {
         testCardList.add(testCard1);
         testCardList.add(testCard2);
         testGame.setInGameCardsCopy(testCardList);
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
+        assertTrue(testGameLogicExecutor.setChosenCard(1));
         assertEquals(testCard1, testPlayer1.getCurrentCard());
         assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
         assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
@@ -320,8 +320,8 @@ class GameLogicExecutorTest {
         testCardList.add(testCard1);
         testCardList.add(testCard2);
         testGame.setInGameCardsCopy(testCardList);
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard2));
+        assertTrue(testGameLogicExecutor.setChosenCard(1));
+        assertTrue(testGameLogicExecutor.setChosenCard(2));
         assertEquals(testCard2, testPlayer2.getCurrentCard());
         assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
         assertEquals(PlayerStateType.SelectFirstPlayerState, testPlayer2.getState().getType());
@@ -341,7 +341,7 @@ class GameLogicExecutorTest {
         testCardList.add(testCard1);
         testGame.setInGameCardsCopy(testCardList);
         Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
-        assertFalse(testGameLogicExecutor.setChosenCard(testCard2));
+        assertFalse(testGameLogicExecutor.setChosenCard(2));
         assertEquals(null, testPlayer1.getCurrentCard());
     }
 
@@ -594,9 +594,9 @@ class GameLogicExecutorTest {
         testCardIDArray.add(2);
         testCardIDArray.add(3);
         assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard2));
-        assertTrue(testGameLogicExecutor.setChosenCard(testCard3));
+        assertTrue(testGameLogicExecutor.setChosenCard(1));
+        assertTrue(testGameLogicExecutor.setChosenCard(2));
+        assertTrue(testGameLogicExecutor.setChosenCard(3));
         assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer1"));
 
         ArrayList<Position> testPositionArray = new ArrayList<>();
