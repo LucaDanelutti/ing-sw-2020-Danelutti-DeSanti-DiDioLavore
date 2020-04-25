@@ -350,7 +350,21 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         //Deserialization
         Type cardListType = new TypeToken<ArrayList<Card>>(){}.getType();
         ArrayList<Card> cardList = gson.fromJson(json, cardListType);
-        game.setLoadedCardsCopy(cardList);
+
+        //Adds the observers to the Actions within cardList
+        ArrayList<Card> updatedCardList = new ArrayList<>();
+        for(Card card: cardList) {
+            ArrayList<Action> updatedActionList = new ArrayList<>();
+            for(Action updatedAction: card.getDefaultActionListCopy()) {
+                updatedAction.addObserver(this);
+                updatedActionList.add(updatedAction);
+            }
+            Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
+            updatedCardList.add(updatedCard);
+
+        }
+
+        game.setLoadedCardsCopy(updatedCardList);
 
         return true;
     }
