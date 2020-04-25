@@ -108,5 +108,453 @@
         "actionObservers": []
       }
     ]
-  }]
+  },
+  {
+    "name": "Atlas",
+    "id": 4,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": ["DOME"],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Demeter",
+    "id": 5,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": true,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": true,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Hephaestus",
+    "id": 6,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": true,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": true,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Minotaur",
+    "id": 8,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": true,
+        "pushEnable": true,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Pan",
+    "id": 9,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": true,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Prometheus",
+    "id": 10,
+    "defaultActionList": [
+      {
+        "isOptional": true,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": true,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Hera",
+    "id": 20,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "GENERAL",
+        "notAvailableCell": [],
+        "enableNoWinIfOnPerimeter": true,
+        "destroyPawnAndBuildEnable": false,
+        "actionObservers": []
+      }
+
+    ]
+  },
+  {
+    "name": "Hestia",
+    "id": 21,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": true,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [
+          {"x": 0, "y": 0},
+          {"x": 0, "y": 1},
+          {"x": 0, "y": 2},
+          {"x": 0, "y": 3},
+          {"x": 0, "y": 4},
+          {"x": 1, "y": 0},
+          {"x": 1, "y": 4},
+          {"x": 2, "y": 0},
+          {"x": 2, "y": 4},
+          {"x": 3, "y": 0},
+          {"x": 3, "y": 4},
+          {"x": 4, "y": 0},
+          {"x": 4, "y": 1},
+          {"x": 4, "y": 2},
+          {"x": 4, "y": 3},
+          {"x": 4, "y": 4}
+        ],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Medusa",
+    "id": 24,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "enableNoWinIfOnPerimeter": false,
+        "destroyPawnAndBuildEnable": true,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Triton",
+    "id": 29,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [
+          {"x": 0, "y": 0},
+          {"x": 0, "y": 1},
+          {"x": 0, "y": 2},
+          {"x": 0, "y": 3},
+          {"x": 0, "y": 4},
+          {"x": 1, "y": 0},
+          {"x": 1, "y": 4},
+          {"x": 2, "y": 0},
+          {"x": 2, "y": 4},
+          {"x": 3, "y": 0},
+          {"x": 3, "y": 4},
+          {"x": 4, "y": 0},
+          {"x": 4, "y": 1},
+          {"x": 4, "y": 2},
+          {"x": 4, "y": 3},
+          {"x": 4, "y": 4}
+        ],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  },
+  {
+    "name": "Zeus",
+    "id": 30,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false,
+        "actionObservers": []
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": true,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false,
+        "actionObservers": []
+      }
+    ]
+  }
+]
 
