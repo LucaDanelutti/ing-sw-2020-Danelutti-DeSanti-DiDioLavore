@@ -214,6 +214,17 @@ class Game {
     }
 
     /**
+     * getInGameCardCopy method: returns a copy of the in game card with id equals to cardID
+     */
+    Card getInGameCardCopy(int cardID){
+        for (Card card : inGameCards) {
+            if (card.getId() == cardID)
+                return new Card(card);
+        }
+        return null;
+    }
+
+    /**
      * getAvailableCards method: returns the available cards (not linked to a player)
      */
     ArrayList<Card> getAvailableCards(){
