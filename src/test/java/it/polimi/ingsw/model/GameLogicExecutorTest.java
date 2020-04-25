@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.action.Action;
+import it.polimi.ingsw.model.action.ActionType;
 import it.polimi.ingsw.model.action.ConstructAction;
 import it.polimi.ingsw.model.action.MoveAction;
 import it.polimi.ingsw.model.board.BlockType;
@@ -479,5 +480,28 @@ class GameLogicExecutorTest {
     void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         gameLogicExecutor.loadCards();
+
+        ArrayList<Position> expectedList = new ArrayList<Position>() {{
+            add(new Position(0,0));
+            add(new Position(0,1));
+            add(new Position(0,2));
+            add(new Position(0,3));
+            add(new Position(0,4));
+            add(new Position(1,0));
+            add(new Position(1,4));
+            add(new Position(2,0));
+            add(new Position(2,4));
+            add(new Position(3,0));
+            add(new Position(3,4));
+            add(new Position(4,0));
+            add(new Position(4,1));
+            add(new Position(4,2));
+            add(new Position(4,3));
+            add(new Position(4,4));
+        }};
+        assertEquals("Apollo", game.getLoadedCards().get(0).getName());
+        assertEquals(ActionType.MOVE, game.getLoadedCards().get(1).getDefaultActionListCopy().get(1).getActionType());
+        //checks whether the list of notAvailableCells loaded from the json is properly set to the action attribute
+        assertTrue(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell().containsAll(expectedList) && expectedList.containsAll(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell()));
     }
 }
