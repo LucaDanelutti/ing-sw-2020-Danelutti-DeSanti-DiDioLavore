@@ -353,9 +353,13 @@ class GameLogicExecutorTest {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
         testPlayer1.addPawn(new Pawn("990000"));
         testPlayer1.addPawn(new Pawn("990000"));
+        testPlayer2.addPawn(new Pawn("009900"));
+        testPlayer2.addPawn(new Pawn("009900"));
         testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
         ArrayList<Position> testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(0, 0));
         testPositionArray.add(new Position(1, 1));
@@ -364,6 +368,38 @@ class GameLogicExecutorTest {
         assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
         assertEquals(new Position(0, 0), testGame.getBoard().getMatrixCopy()[0][0].getPawn().getPosition());
         assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer2.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
+     */
+    @Test
+    void setPawnsPositions_OkPositions_LastPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        testPlayer2.setCurrentCard(new Card("testCard1", 1, new ArrayList<>()));
+        testPlayer1.addPawn(new Pawn("990000"));
+        testPlayer1.addPawn(new Pawn("990000"));
+        testPlayer2.addPawn(new Pawn("009900"));
+        testPlayer2.addPawn(new Pawn("009900"));
+        testPlayer2.getPawnList().get(0).setPosition(new Position(4,5));
+        testPlayer2.getPawnList().get(1).setPosition(new Position(5,5));
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        ArrayList<Position> testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(0, 0));
+        testPositionArray.add(new Position(1, 1));
+        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        assertEquals(new Position(0, 0), testPlayer1.getPawnList().get(0).getPosition());
+        assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
+        assertEquals(new Position(0, 0), testGame.getBoard().getMatrixCopy()[0][0].getPawn().getPosition());
+        assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ActionState, testPlayer2.getState().getType());
     }
 
     /**

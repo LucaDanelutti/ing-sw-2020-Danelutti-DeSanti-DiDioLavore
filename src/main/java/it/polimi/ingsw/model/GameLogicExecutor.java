@@ -439,6 +439,13 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
                 Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
                 game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
                 game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
+                Player nextPlayer = game.getNextPlayer(PlayerStateType.ChoosePawnsPositionState);
+                currentPlayer.setState(new IdleState());
+                if (nextPlayer.getPawnList().get(0).getPosition() != null & nextPlayer.getPawnList().get(1).getPosition() != null) {
+                    nextPlayer.setState(new ActionState(nextPlayer.getCurrentCard().getCurrentActionList()));
+                } else {
+                    nextPlayer.setState(new ChoosePawnsPositionState());
+                }
                 return true;
             }
         }
