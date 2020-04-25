@@ -415,12 +415,14 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      * Setup method setPawnsPositions to set the two pawns of the current player
      */
     public Boolean setPawnsPositions(ArrayList<Position> positions){
-        //TODO: we could check if the positions are ok, but for now, nah...?
-        if (game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).size() == 1) {
-            Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
-            game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
-            game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
-            return true;
+        //TODO: check if positions are free
+        if (positions.get(0).getX() >= 0 & positions.get(0).getX() < 5 & positions.get(0).getY() >= 0 & positions.get(0).getY() < 5 & positions.get(1).getX() >= 0 & positions.get(1).getX() < 5 & positions.get(1).getY() >= 0 & positions.get(1).getY() < 5) {
+            if (game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).size() == 1) {
+                Player currentPlayer=game.getPlayersIn(PlayerStateType.ChoosePawnsPositionState).get(0);
+                game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(0),positions.get(0));
+                game.getBoard().setPawnPosition(currentPlayer.getPawnList().get(1),positions.get(1));
+                return true;
+            }
         }
         return false;
     }
@@ -449,9 +451,15 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         if (game.getPlayers().size() > 1) {
             game.shufflePlayers();
             game.getPlayers().get(0).setState(new SelectGameCardsState());
+            game.getPlayers().get(0).addPawn(new Pawn("990000")); //Red
+            game.getPlayers().get(0).addPawn(new Pawn("990000")); //Red
             game.getPlayers().get(1).setState(new IdleState());
+            game.getPlayers().get(1).addPawn(new Pawn("000099")); //Blue
+            game.getPlayers().get(1).addPawn(new Pawn("000099")); //Blue
             if (game.getPlayers().size() == 3)
                 game.getPlayers().get(2).setState(new IdleState());
+                game.getPlayers().get(2).addPawn(new Pawn("009900")); //Green
+                game.getPlayers().get(2).addPawn(new Pawn("009900")); //Green
             return true;
         } else {
             return false;

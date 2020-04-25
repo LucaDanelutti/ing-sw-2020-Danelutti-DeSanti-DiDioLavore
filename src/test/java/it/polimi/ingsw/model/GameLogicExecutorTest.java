@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.action.Action;
 import it.polimi.ingsw.model.action.ConstructAction;
 import it.polimi.ingsw.model.action.MoveAction;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.playerstate.ActionState;
-import it.polimi.ingsw.model.playerstate.ChooseCardState;
-import it.polimi.ingsw.model.playerstate.IdleState;
-import it.polimi.ingsw.model.playerstate.PlayerStateType;
+import it.polimi.ingsw.model.playerstate.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -345,6 +342,44 @@ class GameLogicExecutorTest {
         Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
         assertFalse(testGameLogicExecutor.setChosenCard(testCard2));
         assertEquals(null, testPlayer1.getCurrentCard());
+    }
+
+    /**
+     * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
+     */
+    @Test
+    void setPawnsPositions_OkPositions() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
+        testPlayer1.addPawn(new Pawn("990000"));
+        testPlayer1.addPawn(new Pawn("990000"));
+        testGame.addPlayer(testPlayer1);
+        ArrayList<Position> testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(0, 0));
+        testPositionArray.add(new Position(1, 1));
+        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        assertEquals(new Position(0, 0), testPlayer1.getPawnList().get(0).getPosition());
+        assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
+        assertEquals(new Position(0, 0), testGame.getBoard().getMatrixCopy()[0][0].getPawn().getPosition());
+        assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
+    }
+
+    /**
+     * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
+     */
+    @Test
+    void setPawnsPositions_NotOkPositions() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
+        testPlayer1.addPawn(new Pawn("990000"));
+        testPlayer1.addPawn(new Pawn("990000"));
+        testGame.addPlayer(testPlayer1);
+        ArrayList<Position> testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(0, 0));
+        testPositionArray.add(new Position(5, 5));
+        assertFalse(testGameLogicExecutor.setPawnsPositions(testPositionArray));
     }
 
     /**
