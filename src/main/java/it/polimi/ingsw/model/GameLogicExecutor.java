@@ -37,24 +37,19 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      * This function executes a CONSTRUCT action called via visitor pattern.
      * @param constructAction the action to be executed
      */
-    public void executeAction(ConstructAction constructAction){
-        //This is an optional construct action to be skipped because the chosen position is not set!
-        if(constructAction.getIsOptional()&&constructAction.getChosenPosition()==null){
-            //Special condition for prometheus
-//            if(constructAction.getEnableMoveUp()){
-//                enableMoveUpForCurrentPlayer();
-//            }
+    public void executeAction(ConstructAction constructAction) {
+        //if the construct action is not skipped we update the necessary variables
+        if(! (constructAction.getIsOptional() && constructAction.getChosenPosition()==null)) {
+            game.getBoard().pawnConstruct(constructAction.getSelectedPawn().getPosition(), constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
+            //special case for prometheus
+            if (constructAction.getdisableMoveUp()) {
+                disableMoveUpForCurrentPlayer();
+            }
 
+            //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
+            //and in the currentAction
+            getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()), game.getBoard().getPawnCopy(constructAction.getNotSelectedPawn().getPosition()));
         }
-        //Normal case
-        else {
-            game.getBoard().pawnConstruct(constructAction.getSelectedPawn().getPosition(),constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
-        }
-
-        //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
-        //and in the currentAction
-        getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()),game.getBoard().getPawnCopy(constructAction.getNotSelectedPawn().getPosition()));
-
         //generally we will load the next action or switch to the next player if turn ends
         loadNextAction();
     }
@@ -177,14 +172,14 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
 
     /**
-     * This function is called to turn to TRUE the parameter moveUp for each moveAction for the current player in actionState
+     * This function is called to turn to FALSE the parameter moveUp for each moveAction for the current player in actionState
      */
-    private void enableMoveUpForCurrentPlayer() {
+    private void disableMoveUpForCurrentPlayer() {
         ArrayList<Player> actionStatePlayers = game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = actionStatePlayers.get(0);
         for (Action action : ((ActionState) currentPlayer.getState()).getActionList()) {
             if (action.getActionType() == ActionType.MOVE) {
-                ((MoveAction) action).setMoveUpEnable(true);
+                ((MoveAction) action).setMoveUpEnable(false);
             }
         }
 
