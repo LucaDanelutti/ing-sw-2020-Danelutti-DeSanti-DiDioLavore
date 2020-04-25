@@ -59,7 +59,7 @@ class Game {
                return tempPlayer;
            }
        }
-       throw new InvalidGameException("No player with provided name found!");
+       return null;
    }
 
     /**
