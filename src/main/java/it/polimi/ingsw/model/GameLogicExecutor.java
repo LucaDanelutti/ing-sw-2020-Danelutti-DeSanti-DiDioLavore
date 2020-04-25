@@ -370,6 +370,21 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     }
 
     /**
+     * Setup method setFirstPlayer to set the first player that will start to play the game
+     */
+    public Boolean setStartPlayer(String player){
+        if (game.getPlayersIn(PlayerStateType.SelectFirstPlayerState).size() == 1) {
+            Player currentPlayer = game.getPlayersIn(PlayerStateType.SelectFirstPlayerState).get(0);
+            Player firstPlayer = game.getPlayer(player);
+            if (firstPlayer == null) return false;
+            currentPlayer.setState(new IdleState());
+            firstPlayer.setState(new ChoosePawnsPositionState());
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Setup method setInGameCards to set the cards that will be available to players
      * Players will choose a card in ChooseCardState
      */

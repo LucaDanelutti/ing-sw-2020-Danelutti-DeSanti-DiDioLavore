@@ -474,6 +474,58 @@ class GameLogicExecutorTest {
     }
 
     /**
+     * The scope of this test function is to test that setStartPlayer method correctly sets the first player
+     */
+    @Test
+    void setStartPlayer_OtherPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        testGame.addPlayer(testPlayer3);
+        assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer2"));
+        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer2.getState().getType());
+        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setStartPlayer method correctly sets the first player
+     */
+    @Test
+    void setStartPlayer_SamePlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        testGame.addPlayer(testPlayer3);
+        assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer1"));
+        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer1.getState().getType());
+        assertEquals(PlayerStateType.IdleState, testPlayer2.getState().getType());
+        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+    }
+
+    /**
+     * The scope of this test function is to test that setStartPlayer method correctly sets the first player
+     */
+    @Test
+    void setStartPlayer_NotOkPlayer() {
+        Game testGame = new Game();
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
+        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
+        assertFalse(testGameLogicExecutor.setStartPlayer("testPlayer3"));
+    }
+
+    /**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
      */
     @Test
