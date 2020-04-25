@@ -7,14 +7,10 @@ import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.playerstate.*;
 import it.polimi.ingsw.utility.ActionDeserializer;
+import it.polimi.ingsw.utility.UtilityClass;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static java.lang.Math.abs;
 
@@ -340,32 +336,11 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             return false;
     }
 
-
-    //TODO: mettere questo metodo in una apposita helper class
-    /**
-     * Helper method used to load the json file within the resources folder
-     */
-    private String getResource(String resource) {
-        StringBuilder json = new StringBuilder();
-        try {
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(resource)),
-                            StandardCharsets.UTF_8));
-            String str;
-            while ((str = in.readLine()) != null)
-                json.append(str);
-            in.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Caught exception reading resource " + resource, e);
-        }
-        return json.toString();
-    }
-
     /**
      * Setup method loadCards to load cards in the game. We read cards from a JSON config file
      */
     public Boolean loadCards() {
-        String json = getResource("configFiles/config.json");
+        String json = UtilityClass.getResource("configFiles/config.json");
 
         //Sets Action typeAdapter so as to instance the correct subtype of Action
         GsonBuilder gsonBuilder = new GsonBuilder();
