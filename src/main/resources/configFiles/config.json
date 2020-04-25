@@ -1,37 +1,105 @@
 [{
-  "name": "RandomGod1",
+  "name": "Apollo",
   "id": 1,
   "defaultActionList": [
     {
-      "isOptional": true,
-      "notAvailableCell": [
-        {x: 1, y: 1},
-        {x: 0, y: 4}
-      ],
+      "isOptional": false,
+      "notAvailableCell": [],
       "actionType": "MOVE",
-      "moveUpEnable": true
+      "moveUpEnable": true,
+      "swapEnable": true,
+      "moveOnOpponentEnable": true,
+      "pushEnable": false,
+      "denyMoveUpEnable": false,
+      "winDownEnable": false,
+      "addMoveIfOn": [],
+      "denyMoveBack": false,
+      "noWinIfOnPerimeter": false
     },
     {
       "isOptional": false,
       "actionType": "CONSTRUCT",
-      "alwaysAvailableBlockType": ["DOME"],
-      "buildBelowEnable": true
+      "notAvailableCell": [],
+      "buildBelowEnable": false,
+      "alwaysAvailableBlockType": [],
+      "constructOnLastBuilt": false,
+      "disableMoveUp": false,
+      "notBuildOnLastBuilt": false
     }
   ]
 },
-{
-    "name": "RandomGod2",
+  {
+    "name": "Artemis",
     "id": 2,
     "defaultActionList": [
       {
+        "isOptional": false,
+        "notAvailableCell": [],
         "actionType": "MOVE",
-        "isOptional": true,
-        "moveUpEnable": true
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false
       },
       {
-        "actionType": "CONSTRUCT",
+        "isOptional": true,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": false,
+        "moveOnOpponentEnable": false,
+        "pushEnable": false,
+        "denyMoveUpEnable": false,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": true,
+        "noWinIfOnPerimeter": false
+      },
+      {
         "isOptional": false,
-        "buildBelowEnable": true
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false
       }
     ]
-}]
+  },
+  {
+    "name": "Athena",
+    "id": 3,
+    "defaultActionList": [
+      {
+        "isOptional": false,
+        "notAvailableCell": [],
+        "actionType": "MOVE",
+        "moveUpEnable": true,
+        "swapEnable": true,
+        "moveOnOpponentEnable": true,
+        "pushEnable": false,
+        "denyMoveUpEnable": true,
+        "winDownEnable": false,
+        "addMoveIfOn": [],
+        "denyMoveBack": false,
+        "noWinIfOnPerimeter": false
+      },
+      {
+        "isOptional": false,
+        "actionType": "CONSTRUCT",
+        "notAvailableCell": [],
+        "buildBelowEnable": false,
+        "alwaysAvailableBlockType": [],
+        "constructOnLastBuilt": false,
+        "disableMoveUp": false,
+        "notBuildOnLastBuilt": false
+      }
+    ]
+  }]
+
