@@ -203,6 +203,17 @@ class Game {
     }
 
     /**
+     * getLoadedCard method: returns a copy of the loaded card with id equals to cardID
+     */
+    Card getLoadedCardCopy(int cardID){
+        for (Card card : loadedCards) {
+            if (card.getId() == cardID)
+                return new Card(card);
+        }
+        return null;
+    }
+
+    /**
      * getAvailableCards method: returns the available cards (not linked to a player)
      */
     ArrayList<Card> getAvailableCards(){

@@ -186,4 +186,20 @@ class GameTest {
         testGame.setFirstPlayer(testPlayer2);
         assertSame(testPlayer2, testGame.getPlayers().get(0));
     }
+
+    /**
+     * The scope of this test function is to test that getLoadedCardCopy method returns the right card
+     */
+    @Test
+    void getLoadedCardCopy() {
+        ArrayList<Card> testCardArray = new ArrayList<>();
+        Card testCard1 = new Card("Card1", 1, new ArrayList<Action>());
+        Card testCard2 = new Card("Card2", 2, new ArrayList<Action>());
+        testCardArray.add(testCard1);
+        testCardArray.add(testCard2);
+        testGame.setLoadedCardsCopy(testCardArray);
+        assertEquals(testCard1, testGame.getLoadedCardCopy(1));
+        assertEquals(testCard2, testGame.getLoadedCardCopy(2));
+        assertEquals(null, testGame.getLoadedCardCopy(3));
+    }
 }
