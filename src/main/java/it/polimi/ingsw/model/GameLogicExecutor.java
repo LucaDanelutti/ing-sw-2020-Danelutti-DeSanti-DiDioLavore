@@ -431,10 +431,11 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             game.getPlayers().get(1).setState(new IdleState());
             game.getPlayers().get(1).addPawn(new Pawn("000099")); //Blue
             game.getPlayers().get(1).addPawn(new Pawn("000099")); //Blue
-            if (game.getPlayers().size() == 3)
+            if (game.getPlayers().size() == 3) {
                 game.getPlayers().get(2).setState(new IdleState());
                 game.getPlayers().get(2).addPawn(new Pawn("009900")); //Green
                 game.getPlayers().get(2).addPawn(new Pawn("009900")); //Green
+            }
             return true;
         } else {
             return false;
