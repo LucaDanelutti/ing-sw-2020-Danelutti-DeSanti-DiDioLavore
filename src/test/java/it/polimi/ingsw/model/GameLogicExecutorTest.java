@@ -562,6 +562,72 @@ class GameLogicExecutorTest {
     }
 
     /**
+     * The scope of this test function is to test that the set-up phase works as expected
+     */
+    @Test
+    void setUpGame_3Players() {
+        Game testGame = new Game();
+
+        //Load cards
+        ArrayList<Card> testCardArray = new ArrayList<>();
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
+        Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+        testCardArray.add(testCard1);
+        testCardArray.add(testCard2);
+        testCardArray.add(testCard3);
+        testGame.setLoadedCardsCopy(testCardArray);
+        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+        //Load cards end
+
+        assertTrue(testGameLogicExecutor.addPlayer("testPlayer1"));
+        assertTrue(testGameLogicExecutor.addPlayer("testPlayer2"));
+        assertTrue(testGameLogicExecutor.addPlayer("testPlayer3"));
+        assertTrue(testGameLogicExecutor.startGame());
+
+        Player godLikePlayer = testGame.getPlayers().get(0);
+        Player testPlayer = testGame.getPlayers().get(1);
+        Player testPlayerBis = testGame.getPlayers().get(2);
+
+        ArrayList<Integer> testCardIDArray = new ArrayList<>();
+        testCardIDArray.add(1);
+        testCardIDArray.add(2);
+        testCardIDArray.add(3);
+        assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard1));
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard2));
+        assertTrue(testGameLogicExecutor.setChosenCard(testCard3));
+        assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer1"));
+
+        ArrayList<Position> testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(0, 0));
+        testPositionArray.add(new Position(0, 1));
+        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(1, 0));
+        testPositionArray.add(new Position(1, 1));
+        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        testPositionArray = new ArrayList<>();
+        testPositionArray.add(new Position(2, 0));
+        testPositionArray.add(new Position(2, 1));
+        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+
+        assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).size() == 1);
+        assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).get(0).getName() == "testPlayer1");
+        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 2);
+
+        assertEquals(testCard1, testPlayer.getCurrentCard());
+        assertEquals(testCard2, testPlayerBis.getCurrentCard());
+        assertEquals(testCard3, godLikePlayer.getCurrentCard());
+
+        assertEquals(new Position(0, 0), testGame.getPlayer("testPlayer1").getPawnList().get(0).getPosition());
+        assertEquals(new Position(0, 0), testGame.getPlayer("testPlayer1").getPawnList().get(0).getPosition());
+
+        assertEquals(new Position(1, 0), testGame.getPlayer(testGame.getNextPlayer(PlayerStateType.ActionState).getName()).getPawnList().get(0).getPosition());
+        assertEquals(new Position(1, 0), testGame.getPlayer(testGame.getNextPlayer(PlayerStateType.ActionState).getName()).getPawnList().get(0).getPosition());
+    }
+
+    /**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
      */
     @Test
