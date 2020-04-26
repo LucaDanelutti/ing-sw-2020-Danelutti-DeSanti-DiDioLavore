@@ -46,13 +46,13 @@ class GameLogicExecutorTest {
         basicActionList3.add(basicMove.duplicate());
         basicActionList3.add(basicConstruct.duplicate());
         for(Action a : basicActionList1){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         for(Action a : basicActionList2){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         for(Action a : basicActionList3){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
 
         p = new Player("ian", new ActionState(basicActionList1));
@@ -126,7 +126,7 @@ class GameLogicExecutorTest {
         actions.add(athenaMove);
         actions.add(basicConstruct.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
 
@@ -173,7 +173,7 @@ class GameLogicExecutorTest {
         actions.add(tritonMove);
         actions.add(basicConstruct.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -209,7 +209,7 @@ class GameLogicExecutorTest {
         actions.add(swapMove);
         actions.add(basicConstruct.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -237,7 +237,7 @@ class GameLogicExecutorTest {
         actions.add(swapMove);
         actions.add(basicConstruct.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -317,7 +317,7 @@ class GameLogicExecutorTest {
         prometheusActionList.add(prometheusMove);
         prometheusActionList.add(basicConstruct.duplicate());
         for(Action a : prometheusActionList){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
 
         //game.getPlayer("ian").setCurrentCard(new Card("prometheus",10,prometheusActionList));
@@ -352,7 +352,7 @@ class GameLogicExecutorTest {
         actions.add(optionalConstruct);
         actions.add(basicMove.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setCurrentCard(new Card("optionalConstruct",33, actions));
         currentPlayer.setState(new ActionState(actions));
@@ -385,7 +385,7 @@ class GameLogicExecutorTest {
         actions.add(basicConstruct.duplicate());
         actions.add(medusaAction);
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -423,7 +423,7 @@ class GameLogicExecutorTest {
         actions.add(basicConstruct.duplicate());
         actions.add(medusaAction);
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -464,7 +464,7 @@ class GameLogicExecutorTest {
         actions.add(basicMove.duplicate());
         actions.add(basicConstruct.duplicate());
         for(Action a : actions){
-            a.addObserver(gameLogicExecutor);
+            a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState)currentPlayer.getState();
@@ -990,4 +990,199 @@ class GameLogicExecutorTest {
         //checks whether the list of notAvailableCells loaded from the json is properly set to the action attribute
         assertTrue(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell().containsAll(expectedList) && expectedList.containsAll(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell()));
     }
+
+
+    //Complete game tests
+
+    /**
+     * WorkInProgress
+     */
+    void automatedTesting(){
+        //TODO: a nice thing to continue working on
+
+        //setup variables
+        game=new Game();
+        gameLogicExecutor=new GameLogicExecutor(game);
+        String chosenStartPlayer = "player2";
+
+        ArrayList<Integer> chosenCards= new ArrayList<>();
+        chosenCards.add(1);
+        chosenCards.add(2);
+        chosenCards.add(3);
+
+        ArrayList<Position> positions1 = new ArrayList<>();
+        positions1.add(new Position(0,0));
+        positions1.add(new Position(4,4));
+
+        ArrayList<Position> positions2 = new ArrayList<>();
+        positions2.add(new Position(0,1));
+        positions2.add(new Position(4,3));
+
+        ArrayList<Position> positions3 = new ArrayList<>();
+        positions3.add(new Position(0,2));
+        positions3.add(new Position(4,2));
+        //END of setup variables
+
+        //player1 will be the host
+        gameLogicExecutor.addPlayer("player1");
+        gameLogicExecutor.addPlayer("player2");
+        gameLogicExecutor.addPlayer("player3");
+
+        //we load the cards into the game
+        gameLogicExecutor.loadCards();
+
+        //we start the game, placing one random player in the chooseInGameCardsState
+        gameLogicExecutor.startGame();
+
+        //selected the inGameCards
+        gameLogicExecutor.setInGameCards(chosenCards);
+
+        //let's each one select the card
+        gameLogicExecutor.setChosenCard(chosenCards.get(0));
+        gameLogicExecutor.setChosenCard(chosenCards.get(1));
+        gameLogicExecutor.setChosenCard(chosenCards.get(2));
+
+        //at this point the godLikePlayer should be in its turn, allowing him to chose the first player
+        gameLogicExecutor.setStartPlayer(chosenStartPlayer);
+
+        //let's all choose our pawn positions
+        gameLogicExecutor.setPawnsPositions(positions1);
+        gameLogicExecutor.setPawnsPositions(positions2);
+        gameLogicExecutor.setPawnsPositions(positions3);
+
+        assertEquals(1,game.getPlayersIn(PlayerStateType.ActionState).size());
+
+        while(game.getPlayersIn(PlayerStateType.WinnerState).size()==0){
+            Player currentPlayer=game.getPlayersIn(PlayerStateType.ActionState).get(0);
+            ActionState actionState= (ActionState)currentPlayer.getState();
+
+            //set the selected pawn, if necessary because a player in ActionState can have 2 or 1 pawn.
+            if(currentPlayer.getPawnList().size()==2) {
+                gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), currentPlayer.getPawnList().get(1).getPosition());
+            }
+            else if(currentPlayer.getPawnList().size()==1){
+                gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), null);
+            }
+
+            while(actionState.getCurrentAction()!=null){
+                if(actionState.getCurrentAction().getActionType()==ActionType.MOVE){
+                    MoveAction moveAction=(MoveAction)actionState.getCurrentAction();
+                    gameLogicExecutor.setChosenPosition(moveAction.availableCells(game.getBoard().getMatrixCopy()).get(0));
+                }
+                else if(actionState.getCurrentAction().getActionType()==ActionType.CONSTRUCT){
+                    ConstructAction constructAction=(ConstructAction)actionState.getCurrentAction();
+                    Position chosenConstructPosition=constructAction.availableCells(game.getBoard().getMatrixCopy()).get(0);
+                    gameLogicExecutor.setChosenPosition(chosenConstructPosition);
+                    gameLogicExecutor.setChosenBlockType(constructAction.availableBlockTypes(chosenConstructPosition,game.getBoard().getMatrixCopy()).get(0));
+                }
+                else if(actionState.getCurrentAction().getActionType()==ActionType.GENERAL){
+                    gameLogicExecutor.setChosenPosition(null);
+                }
+            }
+
+
+        }
+
+    }
+
+    /**
+     * full simple gamePlay with god 1,2,3 no effects activated
+     */
+    @Test void simpleCompleteGameplay(){
+        game = new Game();
+        gameLogicExecutor = new GameLogicExecutor(game);
+
+        ArrayList<Position> positions1 = new ArrayList<>();
+        positions1.add(new Position(0,0));
+        positions1.add(new Position(4,4));
+
+        ArrayList<Position> positions2 = new ArrayList<>();
+        positions2.add(new Position(0,1));
+        positions2.add(new Position(4,3));
+
+        ArrayList<Position> positions3 = new ArrayList<>();
+        positions3.add(new Position(0,2));
+        positions3.add(new Position(4,2));
+
+
+        gameLogicExecutor.addPlayer("Player1");
+        game.getPlayers().get(0).addPawn(new Pawn("Blue"));
+        game.getPlayers().get(0).addPawn(new Pawn("Blue"));
+        gameLogicExecutor.addPlayer("Player2");
+        game.getPlayers().get(1).addPawn(new Pawn("White"));
+        game.getPlayers().get(1).addPawn(new Pawn("White"));
+        gameLogicExecutor.addPlayer("Player3");
+        game.getPlayers().get(2).addPawn(new Pawn("Brown"));
+        game.getPlayers().get(2).addPawn(new Pawn("Brown"));
+
+        gameLogicExecutor.loadCards();
+
+        game.getPlayers().get(0).setCurrentCard(game.getLoadedCardCopy(1)); //APOLLO
+        game.getPlayers().get(1).setCurrentCard(game.getLoadedCardCopy(2)); //ARTEMIS
+        game.getPlayers().get(2).setCurrentCard(game.getLoadedCardCopy(3)); //ATHENA
+
+        game.getPlayers().get(0).setState(new ChoosePawnsPositionState());
+        game.getPlayers().get(1).setState(new IdleState());
+        game.getPlayers().get(2).setState(new IdleState());
+
+        gameLogicExecutor.setPawnsPositions(positions1);
+        gameLogicExecutor.setPawnsPositions(positions2);
+        gameLogicExecutor.setPawnsPositions(positions3);
+
+        gameLogicExecutor.setStartPlayer("Player1");
+
+        //From now on the turns will be Player1(Apollo) -> Player2(Artemis) -> Player3(Athena)
+
+        //Player1 Turn1 Apollo
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,0)); //move
+        gameLogicExecutor.setChosenPosition(new Position(1,1)); //construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+        //Player2 Turn1 Arthemis
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,1)); //move
+        gameLogicExecutor.setChosenPosition(null); //optionalMove
+        gameLogicExecutor.setChosenPosition(new Position(1,2));//construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+        //Player3 Turn1 Athena
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,3)); //move
+        gameLogicExecutor.setChosenPosition(new Position(1,2)); //construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
+
+
+        //Player1 Turn2 Apollo
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(2,1)); //move
+        gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+        //Player2 Turn2 Arthemis
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,2)); //move
+        gameLogicExecutor.setChosenPosition(null); //optionalMove
+        gameLogicExecutor.setChosenPosition(new Position(2,2));//construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
+        //Player3 Turn2 Athena
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(2,3)); //move
+        gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL3);
+
+
+        //Player1 Turn3 Apollo
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(0,3)); //move
+        gameLogicExecutor.setChosenPosition(new Position(0,4)); //construct
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+        //Player2 Turn3 Arthemis
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
+
+        assertEquals(PlayerStateType.WinnerState,game.getPlayer("Player2").getState().getType());
+        assertEquals(PlayerStateType.LoserState,game.getPlayer("Player1").getState().getType());
+        assertEquals(PlayerStateType.LoserState,game.getPlayer("Player3").getState().getType());
+
+
+    }
+
 }
