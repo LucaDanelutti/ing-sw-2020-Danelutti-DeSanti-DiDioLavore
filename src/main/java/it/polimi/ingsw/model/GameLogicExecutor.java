@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
-public class GameLogicExecutor implements ActionObserver, ActionVisitor {
+public class GameLogicExecutor implements ActionVisitor {
     private Game game;
 
     /**
@@ -23,14 +23,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
      */
     public GameLogicExecutor(Game game){
         this.game=game;
-    }
-
-    /**
-     * This function is a part of the visitor pattern used to call the correct executeAction using dynamic binding
-     * @param action the action to be performed
-     */
-    @Override public void update(Action action) {
-        action.accept(this);
     }
 
     /**
@@ -62,50 +54,53 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         Position oldPos =moveAction.getSelectedPawn().getPosition();
         Position newPos =moveAction.getChosenPosition();
 
-        //let's search if in the newPos a pawn is present
-        Pawn opponentPawn = game.getBoard().getMatrixCopy()[newPos.getX()][newPos.getY()].getPawn();
+        if(!(moveAction.getIsOptional() && newPos==null) ) {
+            //let's search if in the newPos a pawn is present
+            Pawn opponentPawn = game.getBoard().getMatrixCopy()[newPos.getX()][newPos.getY()].getPawn();
 
-        if(opponentPawn==null){ //no pawn is detected in newPos
-            game.getBoard().updatePawnPosition(oldPos,newPos);
-            //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-            getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos),game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+            if (opponentPawn == null) { //no pawn is detected in newPos
+                game.getBoard().updatePawnPosition(oldPos, newPos);
+                //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
+                getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
 
-            //Special case for Athena
-            if(moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight()>0) {
-                disableMoveUpOfOtherPlayers();
-            }
-            //special case for Triton
-            else if (moveAction.getAddMoveIfOn()!=null){
-                //in this case we have to add another instance of moveAction to the actionList
-                if(moveAction.getAddMoveIfOn().contains(newPos)){
-                    ActionState actionState = (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
-                    actionState.addActionAfterCurrentOne(moveAction.duplicate());
+                //Special case for Athena
+                if (moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight() > 0) {
+                    disableMoveUpOfOtherPlayers();
                 }
+                //special case for Triton
+                else if (moveAction.getAddMoveIfOn() != null) {
+                    //in this case we have to add another instance of moveAction to the actionList
+                    if (moveAction.getAddMoveIfOn().contains(newPos)) {
+                        ActionState actionState = (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
+                        actionState.addActionAfterCurrentOne(moveAction.duplicate());
+                    }
+                }
+            } else if (moveAction.getSwapEnable()) { //an opponent pawn is present && you have to swap the pawns
+                game.getBoard().updatePawnPosition(oldPos, newPos, oldPos);
+                //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
+                getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+
+            } else if (moveAction.getPushEnable()) { //an opponent pawn is present && you have to push him
+                Position opponentPawnNewPos;
+                int deltaX = newPos.getX() - oldPos.getX();
+                int deltaY = newPos.getY() - oldPos.getY();
+                opponentPawnNewPos = new Position(newPos.getX() + deltaX, newPos.getY() + deltaY);
+                game.getBoard().updatePawnPosition(oldPos, newPos, opponentPawnNewPos);
+                //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
+                getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
             }
-        }
-        else if(moveAction.getSwapEnable()){ //an opponent pawn is present && you have to swap the pawns
-            game.getBoard().updatePawnPosition(oldPos,newPos,oldPos);
-            //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-            getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos),game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
-
-        }
-        else if (moveAction.getPushEnable()){ //an opponent pawn is present && you have to push him
-            Position opponentPawnNewPos;
-            int deltaX=newPos.getX()-oldPos.getX();
-            int deltaY=newPos.getY()-oldPos.getY();
-            opponentPawnNewPos=new Position(newPos.getX()+deltaX,newPos.getY()+deltaY);
-            game.getBoard().updatePawnPosition(oldPos,newPos,opponentPawnNewPos);
-            //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-            getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos),game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
-        }
-
-        //after a move action is executed always check if the payer won
-        if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
-            someoneWon(game.getPlayersIn(PlayerStateType.ActionState).get(0));
+            //after a move action is executed always check if the payer won
+            if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
+                someoneWon(game.getPlayersIn(PlayerStateType.ActionState).get(0));
+            }
+            else{
+                loadNextAction();
+            }
         }
         else{
             loadNextAction();
         }
+
     }
 
     /**
@@ -373,7 +368,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         for(Card card: cardList) {
             ArrayList<Action> updatedActionList = new ArrayList<>();
             for(Action updatedAction: card.getDefaultActionListCopy()) {
-                updatedAction.addObserver(this);
+                updatedAction.addVisitor(this);
                 updatedActionList.add(updatedAction);
             }
             Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
