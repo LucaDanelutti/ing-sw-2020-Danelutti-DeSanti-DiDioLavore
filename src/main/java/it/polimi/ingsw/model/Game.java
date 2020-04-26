@@ -128,7 +128,8 @@ class Game {
                     }
                 }
             }
-        } else if (inGamePlayers.size() == 3) {
+        }
+        else if (inGamePlayers.size() == 3) {
             for (int i=0; i<3; i++) {
                 if (inGamePlayers.get(i%3).getState().getType() == playerStateType) {
                     if (inGamePlayers.get((i+1)%3).getState().getType() == PlayerStateType.IdleState) {

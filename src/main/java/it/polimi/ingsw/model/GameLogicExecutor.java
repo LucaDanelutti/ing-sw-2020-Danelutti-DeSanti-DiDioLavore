@@ -99,7 +99,6 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             getActionStateForCurrentPlayer().updatePawns(game.getBoard().getPawnCopy(newPos),game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
         }
 
-
         //after a move action is executed always check if the payer won
         if(moveAction.checkWin(game.getBoard().getMatrixCopy())){
             someoneWon(game.getPlayersIn(PlayerStateType.ActionState).get(0));
@@ -129,31 +128,40 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
             BlockType currentPeek;
 
             for(Player otherPlayer : otherPlayers){
-                for(Pawn p : otherPlayer.getPawnList()){
-                    currentPawnPos=p.getPosition();
-                    currentPawnHeight=game.board.getMatrixCopy()[currentPawnPos.getX()][currentPawnPos.getY()].getSize();
-                    currentPeek=game.board.getMatrixCopy()[currentPawnPos.getX()][currentPawnPos.getY()].peekBlock();
-                    deltaX1=abs(currentPawnPos.getX()-pos1.getX());
-                    deltaY1=abs(currentPawnPos.getY()-pos1.getY());
-                    deltaX2=abs(currentPawnPos.getX()-pos2.getX());
-                    deltaY2=abs(currentPawnPos.getY()-pos2.getY());
+                ArrayList<Pawn> toBeRemoved = new ArrayList<>();
+                ArrayList<Pawn> pawnList = otherPlayer.getPawnList();
+
+                for (Pawn p : pawnList) {
+                    currentPawnPos = p.getPosition();
+                    currentPawnHeight = game.board.getMatrixCopy()[currentPawnPos.getX()][currentPawnPos.getY()].getSize();
+                    currentPeek = game.board.getMatrixCopy()[currentPawnPos.getX()][currentPawnPos.getY()].peekBlock();
+
+                    //distance vector from the first pawn of medusa
+                    deltaX1 = abs(currentPawnPos.getX() - pos1.getX());
+                    deltaY1 = abs(currentPawnPos.getY() - pos1.getY());
+
+                    //distance vector from the second pawn of medusa
+                    deltaX2 = abs(currentPawnPos.getX() - pos2.getX());
+                    deltaY2 = abs(currentPawnPos.getY() - pos2.getY());
 
                     //we have to remove the pawn from the game
-                    if((deltaX1==1&&deltaY1==1&&height1>currentPawnHeight) || (deltaX2==1&&deltaY2==1&&height2>currentPawnHeight)){
+                    if ((deltaX1 <=1 && deltaY1 <= 1 && height1 > currentPawnHeight) || (deltaX2 <=1 && deltaY2 <= 1 && height2 > currentPawnHeight)) {
                         game.getBoard().removePawnFromGame(p);
-                        if(currentPeek==BlockType.TERRAIN){
-                            game.getBoard().pawnConstruct(null, currentPawnPos,BlockType.LEVEL1);
+                        if (currentPeek == BlockType.TERRAIN) {
+                            game.getBoard().pawnConstruct(null, currentPawnPos, BlockType.LEVEL1);
+                        } else if (currentPeek == BlockType.LEVEL1) {
+                            game.getBoard().pawnConstruct(null, currentPawnPos, BlockType.LEVEL2);
+                        } else if (currentPeek == BlockType.LEVEL2) {
+                            game.getBoard().pawnConstruct(null, currentPawnPos, BlockType.LEVEL3);
                         }
-                        else if(currentPeek==BlockType.LEVEL1){
-                            game.getBoard().pawnConstruct(null, currentPawnPos,BlockType.LEVEL2);
-                        }
-                        otherPlayer.removePawn(p);
+                        toBeRemoved.add(p);
                     }
                 }
-
-
+                //at this point we have the pawns to be removed from the opponent player and we remove them from the player
+                for(Pawn pawn : toBeRemoved){
+                    otherPlayer.removePawn(pawn);
+                }
             }
-
         }
         //This is the special case for Hera
         else if(generalAction.getEnableNoWinIfOnPerimeter()){
@@ -224,7 +232,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
         Player currentPlayer = game.getPlayersIn(PlayerStateType.ActionState).get(0);
 
         if (nextPlayer == null) {
-            //vuol dire che i next player sono già tutti in loser, allora io divento il vincente!
+            //every other player is in loser state, you are the winner
             currentPlayer.setState(new WinnerState());
         }
         else if (nextPlayer.getPawnList().size() == 0) {
@@ -247,11 +255,18 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
                             nextPlayer.setState(new LoserState());
                             currentPlayer.setState(new WinnerState());
                         }
+                        else{
+                            //the third player can be putted in ActionState
+                            ArrayList<Action> toBeLoadedInNextPlayer = nextPlayer.getCurrentCard().getCurrentActionList();
+                            nextPlayer.setState(new ActionState(toBeLoadedInNextPlayer));
+                            currentPlayer.getCurrentCard().resetCurrentActionList();
+                            currentPlayer.setState(new IdleState());
+                        }
                     }
                 }
-
             }
         else {
+            //the next player can play normally, normal case
             ArrayList<Action> toBeLoadedInNextPlayer = nextPlayer.getCurrentCard().getCurrentActionList();
             nextPlayer.setState(new ActionState(toBeLoadedInNextPlayer));
 
@@ -281,6 +296,7 @@ public class GameLogicExecutor implements ActionObserver, ActionVisitor {
     private ActionState getActionStateForCurrentPlayer(){
         return (ActionState) game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
     }
+
 
     //INTERFACE EXPOSED TO THE CONTROLLER
 
