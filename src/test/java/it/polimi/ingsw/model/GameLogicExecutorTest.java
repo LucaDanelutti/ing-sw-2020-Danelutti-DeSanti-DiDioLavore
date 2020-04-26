@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.action.Action;
-import it.polimi.ingsw.model.action.ActionType;
-import it.polimi.ingsw.model.action.ConstructAction;
-import it.polimi.ingsw.model.action.MoveAction;
+import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.playerstate.*;
 import org.junit.jupiter.api.Test;
@@ -91,15 +88,12 @@ class GameLogicExecutorTest {
 
     }
 
-
-
-
     //MoveAction tests
 
     /**
      * This test checks that the execution of a moveAction in the simpleGameSetup works properly
      */
-    @Test void setChosenPositionForMoveActionTest(){
+    @Test void setChosenPositionForMoveAction(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
@@ -164,7 +158,7 @@ class GameLogicExecutorTest {
     }
 
     /**
-     * This test checks that if an MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
+     * This test checks that if a MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
      * This is done two times to check that the execution of the added move works fine
      */
     @Test void moveActionAddMoveIfOnMultipleTimes(){
@@ -202,8 +196,80 @@ class GameLogicExecutorTest {
 
     }
 
+    /**
+     * This test checks that if a MoveAction with swapEnable actually moves into an opponent cell the pawns are swapped
+     */
     @Test void moveActionWithSwapEnable(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        MoveAction swapMove = new MoveAction(false, new ArrayList<>(),true,true,false,false,true,false, addIfOnThis ,false,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(swapMove);
+        actions.add(basicConstruct.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
 
+        //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can swap
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,2));
+
+        assertEquals(new Position(1,1),game.getPlayer("luca").getPawnList().get(0).getPosition());
+        assertEquals(new Position(1,2),currentPlayer.getPawnList().get(0).getPosition());
+
+
+    }
+
+    /**
+     * This test checks that if a MoveAction with pushEnable actually moves into an opponent cell the pawn is pushed away correctly
+     */
+    @Test void moveActionWithPushEnable(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        MoveAction swapMove = new MoveAction(false, new ArrayList<>(),true,false,false,true,true,false, addIfOnThis ,false,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(swapMove);
+        actions.add(basicConstruct.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can push in 1,3
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(1,2));
+
+        assertEquals(new Position(1,3),game.getPlayer("luca").getPawnList().get(0).getPosition());
+        assertEquals(new Position(1,2),currentPlayer.getPawnList().get(0).getPosition());
+
+    }
+
+    /**
+     * This test checks that if a MoveAction gets a pawn to the top level, that player wins, and the correct states are set
+     */
+    @Test void moveActionWithAWinner(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+
+        //the correct setup to test a win, the pawn is positioned in 1,1
+        game.getBoard().pawnConstruct(null, new Position(1,1),BlockType.LEVEL2);
+        game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL1);
+        game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL2);
+        game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL3);
+
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(0,0));
+
+        assertEquals(2,game.getPlayersIn(PlayerStateType.LoserState).size());
+        assertEquals(PlayerStateType.WinnerState,currentPlayer.getState().getType());
+        assertEquals(PlayerStateType.LoserState,game.getPlayer("luca").getState().getType());
+        assertEquals(PlayerStateType.LoserState,game.getPlayer("riccardo").getState().getType());
     }
 
 
@@ -302,6 +368,122 @@ class GameLogicExecutorTest {
     }
 
 
+    //generalAction tests
+
+    /**
+     * This function tests that at the end of a turn if a general action is present that has destroyPawnAndBuildEnable activated
+     * and an opponent pawn is near one of the pawns of the current user the pawn is removed from the game and a block is constructed
+     */
+    @Test void generalActionWithDestroyPawnAndBuildEnable(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        GeneralAction medusaAction = new GeneralAction(false,new ArrayList<>(),false,true);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(basicMove.duplicate());
+        actions.add(basicConstruct.duplicate());
+        actions.add(medusaAction);
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
+
+        //MoveAction executed
+        gameLogicExecutor.setChosenPosition(new Position(0,1));
+
+        //ConstructAction executed
+        gameLogicExecutor.setChosenPosition(new Position(1,1));
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+
+        //GeneralAction executed
+        gameLogicExecutor.setChosenPosition(null);
+
+        assertEquals(1,game.getPlayer("luca").getPawnList().size());
+        assertEquals(BlockType.LEVEL1,game.getBoard().getMatrixCopy()[1][2].peekBlock());
+        assertNull(game.getBoard().getMatrixCopy()[1][2].getPawn());
+
+    }
+
+    /**
+     * This test checks that if a player lose all of his pawn, the player is set in loser state
+     */
+    @Test void generalActionThatRemovesAllPawnOfAnOpponent(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        GeneralAction medusaAction = new GeneralAction(false,new ArrayList<>(),false,true);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(basicMove.duplicate());
+        actions.add(basicConstruct.duplicate());
+        actions.add(medusaAction);
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
+        game.getBoard().pawnConstruct(null, new Position(4,4),BlockType.LEVEL1);
+
+
+        //MoveAction executed
+        gameLogicExecutor.setChosenPosition(new Position(0,1));
+
+        //ConstructAction executed
+        gameLogicExecutor.setChosenPosition(new Position(1,1));
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+
+        //GeneralAction executed
+        gameLogicExecutor.setChosenPosition(null);
+
+        assertEquals(0,game.getPlayer("luca").getPawnList().size());
+        assertEquals(BlockType.LEVEL1,game.getBoard().getMatrixCopy()[1][2].peekBlock());
+        assertNull(game.getBoard().getMatrixCopy()[1][2].getPawn());
+        assertEquals(PlayerStateType.LoserState,game.getPlayer("luca").getState().getType());
+
+    }
+
+    /**
+     * This test checks  that if a general Action is executed with enableNoWinOnPerimeter the actual variable is set accordingly
+     */
+    @Test void generalActionEnableNoWinIfOnPerimeterForOtherPlayers(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        GeneralAction heraAction = new GeneralAction(false,new ArrayList<>(),true,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(heraAction);
+        actions.add(basicMove.duplicate());
+        actions.add(basicConstruct.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        //we execute the general action
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(null);
+
+        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
+            for(Action a : opponent.getCurrentCard().getCurrentActionList()){
+                if(a.getActionType()==ActionType.MOVE){
+                    assertEquals(true, ((MoveAction)a).getNoWinIfOnPerimeter());
+                }
+            }
+        }
+
+
+    }
+
 
     //Setup tests
 
@@ -326,6 +508,31 @@ class GameLogicExecutorTest {
         assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getSelectedPawnCopy());
         assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getUnselectedPawnCopy());
 
+
+    }
+
+    /**
+     * The test checks that after a player has finished all of its actions, it is placed in idle and the next player is loaded
+     */
+    @Test void loadNextPlayer(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+
+        //moveAction executed
+        gameLogicExecutor.setChosenPosition(new Position(0,0));
+
+        //constructAction executed
+        gameLogicExecutor.setChosenPosition(new Position(0,1));
+        gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
+
+        //so here we should have that luca is in actionState and ian is in idle state, riccardo too.
+        assertEquals(PlayerStateType.ActionState,game.getPlayer("luca").getState().getType());
+        assertEquals(PlayerStateType.IdleState,game.getPlayer("ian").getState().getType());
+        assertEquals(PlayerStateType.IdleState,game.getPlayer("riccardo").getState().getType());
+
+        //let's check that luca has the correct action loaded in his ActionState
+        ActionState actionState = (ActionState) game.getPlayer("luca").getState();
+        assertEquals(game.getPlayer("luca").getCurrentCard().getCurrentActionList(),actionState.getActionListCopy());
 
     }
 
