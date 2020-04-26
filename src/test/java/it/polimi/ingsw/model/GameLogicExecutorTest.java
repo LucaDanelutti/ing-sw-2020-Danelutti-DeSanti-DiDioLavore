@@ -91,38 +91,15 @@ class GameLogicExecutorTest {
 
     }
 
-    /**
-     * The test checks that after the selection of the pawn for the current turn each variable is set correctly in the player state and the action to be executed.
-     */
-    @Test
-    void setSelectedPawnTest(){
-        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        Position selectedPawn= game.getPlayer("ian").getPawnList().get(0).getPosition();
-        Position notSelectedPawn= game.getPlayer("ian").getPawnList().get(1).getPosition();
-
-        //once we call this function the first action will be loaded from actionList and pawn values will be updated
-        gameLogicExecutor.setSelectedPawn(selectedPawn,notSelectedPawn);
-
-        // we should check that the first action is actually loaded
-        ActionState actionState = (ActionState) game.getPlayer("ian").getState();
-        assertEquals(basicMove,actionState.getCurrentAction());
-
-        //we should check that the pawns are set correctly both in the loaded action and in ActionState
-        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getCurrentAction().getSelectedPawn());
-        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getCurrentAction().getNotSelectedPawn());
-        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getSelectedPawnCopy());
-        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getUnselectedPawnCopy());
 
 
-    }
 
-
+    //MoveAction tests
 
     /**
      * This test checks that the execution of a moveAction in the simpleGameSetup works properly
      */
-    @Test
-    void setChosenPositionForMoveActionTest(){
+    @Test void setChosenPositionForMoveActionTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
@@ -144,11 +121,100 @@ class GameLogicExecutorTest {
     }
 
     /**
+     * This test checks that if an action with denyMoveUp enabled and with a selectedPawn that has moved up, disables moveUp for other players
+     */
+    @Test void moveActionDenyMoveUpForOtherPlayers(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        MoveAction athenaMove = new MoveAction(false, new ArrayList<>(),true,false,false,false,true,false,new ArrayList<>(),false,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(athenaMove);
+        actions.add(basicConstruct.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+
+        //before the action since our opponets have basicMove and basicConstruct, they should have moveUpEnable
+        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
+            for (Action a : opponent.getCurrentCard().getCurrentActionList()){
+                if(a.getActionType()==ActionType.MOVE){
+                    assertEquals(true, ((MoveAction)a).getMoveUpEnable());
+                }
+            }
+        }
+
+        //to activate this effect we have to moveUp of one block our pawn, we create a level1 block near our pawn(0)
+        game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL1);
+
+        //then we move the pawn to the selected position
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(0,0));
+
+        //we check that all other players have moveUp disable (in currentActionList) since our pawn moved up of one position
+        assertEquals(1,currentPlayer.getPawnList().get(0).getDeltaHeight());
+        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
+            for (Action a : opponent.getCurrentCard().getCurrentActionList()){
+                if(a.getActionType()==ActionType.MOVE){
+                    assertEquals(false, ((MoveAction)a).getMoveUpEnable());
+                }
+            }
+        }
+    }
+
+    /**
+     * This test checks that if an MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
+     * This is done two times to check that the execution of the added move works fine
+     */
+    @Test void moveActionAddMoveIfOnMultipleTimes(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        ArrayList<Position> addIfOnThis = new ArrayList<>();
+        addIfOnThis.add(new Position(0,0));
+        addIfOnThis.add(new Position(0,1));
+        MoveAction tritonMove = new MoveAction(false, new ArrayList<>(),true,false,false,false,true,false, addIfOnThis ,false,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        ArrayList<Action> actions = new ArrayList<>();
+        actions.add(tritonMove);
+        actions.add(basicConstruct.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
+        currentPlayer.setState(new ActionState(actions));
+        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        //before the move, the action list should have a size of 2
+        assertEquals(2,actionState.getActionListCopy().size());
+
+        //then we move the pawn to the selected position
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(0,0));
+
+        //after the move the actionList should have a size of 3 and the added action should be a moveAction with the same addMoveIfOn array (a copy)
+        assertEquals(3,actionState.getActionListCopy().size());
+        assertEquals(tritonMove,actionState.getActionList().get(1));
+
+        gameLogicExecutor.setChosenPosition(new Position(0,1));
+        assertEquals(4,actionState.getActionListCopy().size());
+        assertEquals(tritonMove,actionState.getActionList().get(2));
+
+
+    }
+
+    @Test void moveActionWithSwapEnable(){
+
+    }
+
+
+
+    //ConstructAction tests
+
+    /**
      * This test checks that the execution of a constructAction in the simpleGameSetup works properly and the turn is passed
      * to the next player.
      */
-    @Test
-    void setChosenPositionForConstructActionTest(){
+    @Test void setChosenPositionForConstructActionTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
@@ -174,19 +240,19 @@ class GameLogicExecutorTest {
     /**
      * This test checks that if an OptionalConstruct with disableMoveUp is actually run, the value of moveUP is turned off in the next actions
      */
-    @Test
-    void optionalConstructWithDisableMoveUpTest(){
+    @Test void optionalConstructWithDisableMoveUpTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         MoveAction prometheusMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
         ConstructAction optionalConstruct= new ConstructAction(true,new ArrayList<>(),false,new ArrayList<>(),false,true,false);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
         ArrayList<Action> prometheusActionList = new ArrayList<>();
         prometheusActionList.add(optionalConstruct);
         prometheusActionList.add(prometheusMove);
+        prometheusActionList.add(basicConstruct.duplicate());
         for(Action a : prometheusActionList){
             a.addObserver(gameLogicExecutor);
         }
-        prometheusActionList.add(basicConstruct.duplicate());
-
 
         //game.getPlayer("ian").setCurrentCard(new Card("prometheus",10,prometheusActionList));
         currentPlayer.setCurrentCard(new Card("prometheus",10,prometheusActionList));
@@ -211,14 +277,17 @@ class GameLogicExecutorTest {
      * This test checks that if an optional Action (in this case a ConstructAction) is actually skipped, no changes are made to the pawn and the next
      * action is correctly loaded.
      */
-    @Test
-    void genericOptionalActionIsSkippedTest(){
+    @Test void genericOptionalActionIsSkippedTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         ConstructAction optionalConstruct = new ConstructAction(true,new ArrayList<>(),false, new ArrayList<>(),false,false, false);
-        optionalConstruct.addObserver(gameLogicExecutor);
+        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
+        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(optionalConstruct);
         actions.add(basicMove.duplicate());
+        for(Action a : actions){
+            a.addObserver(gameLogicExecutor);
+        }
         currentPlayer.setCurrentCard(new Card("optionalConstruct",33, actions));
         currentPlayer.setState(new ActionState(actions));
         ActionState actionState = (ActionState) currentPlayer.getState();
@@ -230,6 +299,34 @@ class GameLogicExecutorTest {
 
         assertEquals(prevPawn, currentPlayer.getPawnList().get(0));
         assertEquals(basicMove,actionState.getCurrentAction());
+    }
+
+
+
+    //Setup tests
+
+    /**
+     * The test checks that after the selection of the pawn for the current turn each variable is set correctly in the player state and the action to be executed.
+     */
+    @Test void setSelectedPawnTest(){
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        Position selectedPawn= game.getPlayer("ian").getPawnList().get(0).getPosition();
+        Position notSelectedPawn= game.getPlayer("ian").getPawnList().get(1).getPosition();
+
+        //once we call this function the first action will be loaded from actionList and pawn values will be updated
+        gameLogicExecutor.setSelectedPawn(selectedPawn,notSelectedPawn);
+
+        // we should check that the first action is actually loaded
+        ActionState actionState = (ActionState) game.getPlayer("ian").getState();
+        assertEquals(basicMove,actionState.getCurrentAction());
+
+        //we should check that the pawns are set correctly both in the loaded action and in ActionState
+        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getCurrentAction().getSelectedPawn());
+        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getCurrentAction().getNotSelectedPawn());
+        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getSelectedPawnCopy());
+        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getUnselectedPawnCopy());
+
+
     }
 
     /**
