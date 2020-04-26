@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.action;
 
 import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.model.Observer;
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
 
@@ -17,7 +16,7 @@ public abstract class Action {
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
     protected final ActionType actionType;
-    protected List<ActionObserver> actionObservers = new ArrayList<>();
+    protected List<ActionVisitor> actionVisitors = new ArrayList<ActionVisitor>();
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
@@ -35,7 +34,7 @@ public abstract class Action {
     /**
      This constructor of Action is needed for the duplicate function
      */
-    Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType, Pawn selectedPawn, Pawn notSelectedPawn, List<ActionObserver> actionObservers) {
+    Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType, Pawn selectedPawn, Pawn notSelectedPawn, List<ActionVisitor> actionVisitors) {
         this.actionType=actionType;
         this.isOptional = isOptional;
         if (notAvailableCell != null) {
@@ -45,8 +44,8 @@ public abstract class Action {
         }
         this.selectedPawn = selectedPawn;
         this.notSelectedPawn = notSelectedPawn;
-        this.actionObservers = new ArrayList<>();
-        this.actionObservers.addAll(actionObservers);
+        this.actionVisitors = new ArrayList<>();
+        this.actionVisitors.addAll(actionVisitors);
     }
 
     /**
@@ -59,7 +58,7 @@ public abstract class Action {
         this.selectedPawn = toBeCopied.selectedPawn;
         this.notSelectedPawn = toBeCopied.notSelectedPawn;
         this.chosenPosition = toBeCopied.chosenPosition;
-        this.actionObservers=toBeCopied.actionObservers;
+        this.actionVisitors=toBeCopied.actionVisitors;
         this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(toBeCopied.notAvailableCell);
@@ -67,6 +66,7 @@ public abstract class Action {
             this.notAvailableCell = null;
         }
     }
+
     /**
      * Abstract method which returns a duplicate of this. Implemented in the concrete classes.
      * @return Action
@@ -79,11 +79,11 @@ public abstract class Action {
      */
     public abstract  void accept(ActionVisitor actionVisitor);
 
-    public void addObserver(ActionObserver actionObserver){
-        this.actionObservers.add(actionObserver);
+    public void addVisitor(ActionVisitor actionVisitor){
+        this.actionVisitors.add(actionVisitor);
     }
-    public void removeObserver(ActionObserver actionObserver){
-        this.actionObservers.remove(actionObserver);
+    public void removeVisitor(ActionVisitor actionVisitor){
+        this.actionVisitors.remove(actionVisitor);
     }
 
     /**
@@ -91,15 +91,7 @@ public abstract class Action {
      * chosenBlockType is set!
      * @param chosenPosition the position where to MOVE/CONSTRUCT
      */
-    public void setChosenPosition(Position chosenPosition) {
-        this.chosenPosition = chosenPosition;
-        //TODO: call update function only inside of the sub-classes (remove setChosenPos from here)
-        if(this.actionType==ActionType.MOVE || this.actionType==ActionType.GENERAL){
-            for(ActionObserver actionObserver : this.actionObservers){
-                actionObserver.update(this);
-            }
-        }
-    }
+    public abstract void setChosenPosition(Position chosenPosition);
 
     public void setSelectedPawn(Pawn selectedPawn) {
         this.selectedPawn = selectedPawn;

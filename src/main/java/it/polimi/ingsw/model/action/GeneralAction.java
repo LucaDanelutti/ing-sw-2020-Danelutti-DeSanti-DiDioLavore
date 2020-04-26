@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.action;
 
+import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -17,7 +18,7 @@ public class GeneralAction extends Action{
         this.enableNoWinIfOnPerimeter = enableNoWinIfOnPerimeter;
     }
     GeneralAction(GeneralAction toBeCopied){
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.GENERAL, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionObservers);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.GENERAL, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
         this.destroyPawnAndBuildEnable = toBeCopied.destroyPawnAndBuildEnable;
         this.enableNoWinIfOnPerimeter = toBeCopied.enableNoWinIfOnPerimeter;
     }
@@ -54,6 +55,13 @@ public class GeneralAction extends Action{
     public ArrayList<Position> availableCells(Cell[][] matrixCopy) {
         ArrayList<Position> availableCells = new ArrayList<>();
         return availableCells;
+    }
+
+    public void setChosenPosition(Position chosenPosition) {
+        this.chosenPosition = chosenPosition;
+        for (ActionVisitor actionVisitor : this.actionVisitors) {
+            ((GameLogicExecutor)actionVisitor).executeAction(this);
+        }
     }
 
     public void  setEnableNoWinIfOnPerimeter(Boolean enableNoWinIfOnPerimeter) { this.enableNoWinIfOnPerimeter = enableNoWinIfOnPerimeter; }

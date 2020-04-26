@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.action;
 
+import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -25,7 +26,7 @@ public class ConstructAction extends Action {
     }
 
     ConstructAction(ConstructAction toBeCopied) {
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.CONSTRUCT, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionObservers);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.CONSTRUCT, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
         this.constructOnLastBuilt = toBeCopied.constructOnLastBuilt;
         this.buildBelowEnable = toBeCopied.buildBelowEnable;
         this.alwaysAvailableBlockType = toBeCopied.alwaysAvailableBlockType;
@@ -75,6 +76,10 @@ public class ConstructAction extends Action {
         return new ConstructAction(this);
     }
 
+    public void setChosenPosition(Position chosenPosition) {
+        this.chosenPosition = chosenPosition;
+    }
+
     public BlockType getSelectedBlockType() {
         return selectedBlockType;
     }
@@ -86,8 +91,8 @@ public class ConstructAction extends Action {
      */
     public void setSelectedBlockType(BlockType selectedBlockType) {
         this.selectedBlockType = selectedBlockType;
-        for(ActionObserver actionObserver: this.actionObservers){
-            actionObserver.update(this);
+        for(ActionVisitor actionVisitor: this.actionVisitors){
+            ((GameLogicExecutor)actionVisitor).executeAction(this);
         }
     }
 

@@ -15,7 +15,7 @@
       "addMoveIfOn": [],
       "denyMoveBack": false,
       "noWinIfOnPerimeter": false,
-      "actionObservers": []
+      "actionVisitors": []
     },
     {
       "isOptional": false,
@@ -26,7 +26,7 @@
       "constructOnLastBuilt": false,
       "disableMoveUp": false,
       "notBuildOnLastBuilt": false,
-      "actionObservers": []
+      "actionVisitors": []
     }
   ]
 },
@@ -47,7 +47,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": true,
@@ -62,7 +62,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": true,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -73,7 +73,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -94,7 +94,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -105,7 +105,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -126,7 +126,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -137,7 +137,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -158,7 +158,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -169,7 +169,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": true,
@@ -180,7 +180,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": true,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -201,7 +201,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -212,7 +212,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": true,
@@ -223,7 +223,7 @@
         "constructOnLastBuilt": true,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -244,7 +244,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -255,7 +255,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -276,7 +276,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -287,7 +287,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -304,7 +304,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": true,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -319,7 +319,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -330,7 +330,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -351,7 +351,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -362,7 +362,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -370,7 +370,7 @@
         "notAvailableCell": [],
         "enableNoWinIfOnPerimeter": true,
         "destroyPawnAndBuildEnable": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
 
     ]
@@ -392,7 +392,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -403,7 +403,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": true,
@@ -431,7 +431,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -452,7 +452,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -463,7 +463,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -471,7 +471,7 @@
         "notAvailableCell": [],
         "enableNoWinIfOnPerimeter": false,
         "destroyPawnAndBuildEnable": true,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -509,7 +509,7 @@
         ],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -520,7 +520,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   },
@@ -541,7 +541,7 @@
         "addMoveIfOn": [],
         "denyMoveBack": false,
         "noWinIfOnPerimeter": false,
-        "actionObservers": []
+        "actionVisitors": []
       },
       {
         "isOptional": false,
@@ -552,7 +552,7 @@
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
         "notBuildOnLastBuilt": false,
-        "actionObservers": []
+        "actionVisitors": []
       }
     ]
   }

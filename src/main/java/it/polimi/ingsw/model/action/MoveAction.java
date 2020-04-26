@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.action;
 
 import java.lang.Math;
+
+import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -45,7 +47,7 @@ public class MoveAction extends Action {
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.MOVE, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionObservers);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.MOVE, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
         this.moveUpEnable = toBeCopied.moveUpEnable;
         this.swapEnable = toBeCopied.swapEnable;
         this.moveOnOpponentEnable = toBeCopied.moveOnOpponentEnable;
@@ -84,6 +86,13 @@ public class MoveAction extends Action {
 
     public void accept(ActionVisitor visitor){
         visitor.executeAction(this);
+    }
+
+    public void setChosenPosition(Position chosenPosition) {
+        this.chosenPosition = chosenPosition;
+        for (ActionVisitor actionVisitor : this.actionVisitors) {
+            ((GameLogicExecutor)actionVisitor).executeAction(this);
+        }
     }
 
     /**
