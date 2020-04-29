@@ -983,10 +983,7 @@ class GameLogicExecutorTest {
             add(new Position(4,4));
         }};
         assertEquals("Apollo", game.getLoadedCards().get(0).getName());
-
-        //TODO: da modificare?
-        //assertEquals(ActionType.MOVE, game.getLoadedCards().get(1).getDefaultActionListCopy().get(1).getActionType());
-
+        assertTrue(game.getLoadedCards().get(1).getDefaultActionListCopy().get(1) instanceof MoveAction);
         //checks whether the list of notAvailableCells loaded from the json is properly set to the action attribute
         assertTrue(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell().containsAll(expectedList) && expectedList.containsAll(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell()));
     }
