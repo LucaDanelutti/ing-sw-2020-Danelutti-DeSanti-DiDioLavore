@@ -25,6 +25,9 @@ public class GameLogicExecutor implements ActionVisitor {
         this.game=game;
     }
 
+
+    //ACTION EXECUTORS
+
     /**
      * This function executes a CONSTRUCT action called via visitor pattern.
      * @param constructAction the action to be executed
@@ -165,6 +168,9 @@ public class GameLogicExecutor implements ActionVisitor {
 
         loadNextAction();
     }
+
+
+    //PRIVATE COMMODITY FUNCTIONS
 
     /**
      * This function is called to turn to true the parameter NoWinIfOnPerimeter on each opponent moveAction.
