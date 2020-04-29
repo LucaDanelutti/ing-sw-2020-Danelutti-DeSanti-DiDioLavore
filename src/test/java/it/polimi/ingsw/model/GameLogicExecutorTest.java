@@ -117,45 +117,40 @@ class GameLogicExecutorTest {
     /**
      * This test checks that if an action with denyMoveUp enabled and with a selectedPawn that has moved up, disables moveUp for other players
      */
-    @Test void moveActionDenyMoveUpForOtherPlayers(){
+    @Test void moveActionDenyMoveUpForOtherPlayers() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        MoveAction athenaMove = new MoveAction(false, new ArrayList<>(),true,false,false,false,true,false,new ArrayList<>(),false,false);
-        basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
-        basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
+        MoveAction athenaMove = new MoveAction(false, new ArrayList<>(), true, false, false, false, true, false, new ArrayList<>(), false, false);
+        basicMove = new MoveAction(false, new ArrayList<>(), true, false, false, false, false, false, new ArrayList<>(), false, false);
+        basicConstruct = new ConstructAction(false, new ArrayList<>(), false, new ArrayList<>(), false, false, false);
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(athenaMove);
         actions.add(basicConstruct.duplicate());
-        for(Action a : actions){
+        for (Action a : actions) {
             a.addVisitor(gameLogicExecutor);
         }
         currentPlayer.setState(new ActionState(actions));
 
         //before the action since our opponets have basicMove and basicConstruct, they should have moveUpEnable
-        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
-            for (Action a : opponent.getCurrentCard().getCurrentActionList()){
-                if(a.getActionType()==ActionType.MOVE){
-                    assertEquals(true, ((MoveAction)a).getMoveUpEnable());
-                }
-            }
+        for (Player opponent : game.getPlayersIn(PlayerStateType.IdleState)) {
+            MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
+            assertEquals(true, moveAction.getMoveUpEnable());
         }
 
         //to activate this effect we have to moveUp of one block our pawn, we create a level1 block near our pawn(0)
-        game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL1);
+        game.getBoard().pawnConstruct(null, new Position(0, 0), BlockType.LEVEL1);
 
         //then we move the pawn to the selected position
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
-        gameLogicExecutor.setChosenPosition(new Position(0,0));
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setChosenPosition(new Position(0, 0));
 
         //we check that all other players have moveUp disable (in currentActionList) since our pawn moved up of one position
-        assertEquals(1,currentPlayer.getPawnList().get(0).getDeltaHeight());
-        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
-            for (Action a : opponent.getCurrentCard().getCurrentActionList()){
-                if(a.getActionType()==ActionType.MOVE){
-                    assertEquals(false, ((MoveAction)a).getMoveUpEnable());
-                }
-            }
+        assertEquals(1, currentPlayer.getPawnList().get(0).getDeltaHeight());
+        for (Player opponent : game.getPlayersIn(PlayerStateType.IdleState)) {
+            MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
+            assertEquals(false, moveAction.getMoveUpEnable());
         }
     }
+
 
     /**
      * This test checks that if a MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
@@ -282,11 +277,14 @@ class GameLogicExecutorTest {
      */
     @Test void setChosenPositionForConstructActionTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+
+        //set selectedPawn for current user
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
         Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
         Position notSelectedPawnPos= notSelected.getPosition();
         gameLogicExecutor.setSelectedPawn(selectedPawnPos,notSelectedPawnPos);
+
         ActionState actionState=(ActionState)game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
 
         //this will execute the first action (Move)
@@ -475,9 +473,8 @@ class GameLogicExecutorTest {
 
         for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
             for(Action a : opponent.getCurrentCard().getCurrentActionList()){
-                if(a.getActionType()==ActionType.MOVE){
-                    assertEquals(true, ((MoveAction)a).getNoWinIfOnPerimeter());
-                }
+                MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
+                assertEquals(true, moveAction.getNoWinIfOnPerimeter());
             }
         }
 
@@ -986,104 +983,16 @@ class GameLogicExecutorTest {
             add(new Position(4,4));
         }};
         assertEquals("Apollo", game.getLoadedCards().get(0).getName());
-        assertEquals(ActionType.MOVE, game.getLoadedCards().get(1).getDefaultActionListCopy().get(1).getActionType());
+
+        //TODO: da modificare?
+        //assertEquals(ActionType.MOVE, game.getLoadedCards().get(1).getDefaultActionListCopy().get(1).getActionType());
+
         //checks whether the list of notAvailableCells loaded from the json is properly set to the action attribute
         assertTrue(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell().containsAll(expectedList) && expectedList.containsAll(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell()));
     }
 
 
     //Complete game tests
-
-    /**
-     * WorkInProgress
-     */
-    void automatedTesting(){
-        //TODO: a nice thing to continue working on
-
-        //setup variables
-        game=new Game();
-        gameLogicExecutor=new GameLogicExecutor(game);
-        String chosenStartPlayer = "player2";
-
-        ArrayList<Integer> chosenCards= new ArrayList<>();
-        chosenCards.add(1);
-        chosenCards.add(2);
-        chosenCards.add(3);
-
-        ArrayList<Position> positions1 = new ArrayList<>();
-        positions1.add(new Position(0,0));
-        positions1.add(new Position(4,4));
-
-        ArrayList<Position> positions2 = new ArrayList<>();
-        positions2.add(new Position(0,1));
-        positions2.add(new Position(4,3));
-
-        ArrayList<Position> positions3 = new ArrayList<>();
-        positions3.add(new Position(0,2));
-        positions3.add(new Position(4,2));
-        //END of setup variables
-
-        //player1 will be the host
-        gameLogicExecutor.addPlayer("player1");
-        gameLogicExecutor.addPlayer("player2");
-        gameLogicExecutor.addPlayer("player3");
-
-        //we load the cards into the game
-        gameLogicExecutor.loadCards();
-
-        //we start the game, placing one random player in the chooseInGameCardsState
-        gameLogicExecutor.startGame();
-
-        //selected the inGameCards
-        gameLogicExecutor.setInGameCards(chosenCards);
-
-        //let's each one select the card
-        gameLogicExecutor.setChosenCard(chosenCards.get(0));
-        gameLogicExecutor.setChosenCard(chosenCards.get(1));
-        gameLogicExecutor.setChosenCard(chosenCards.get(2));
-
-        //at this point the godLikePlayer should be in its turn, allowing him to chose the first player
-        gameLogicExecutor.setStartPlayer(chosenStartPlayer);
-
-        //let's all choose our pawn positions
-        gameLogicExecutor.setPawnsPositions(positions1);
-        gameLogicExecutor.setPawnsPositions(positions2);
-        gameLogicExecutor.setPawnsPositions(positions3);
-
-        assertEquals(1,game.getPlayersIn(PlayerStateType.ActionState).size());
-
-        while(game.getPlayersIn(PlayerStateType.WinnerState).size()==0){
-            Player currentPlayer=game.getPlayersIn(PlayerStateType.ActionState).get(0);
-            ActionState actionState= (ActionState)currentPlayer.getState();
-
-            //set the selected pawn, if necessary because a player in ActionState can have 2 or 1 pawn.
-            if(currentPlayer.getPawnList().size()==2) {
-                gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), currentPlayer.getPawnList().get(1).getPosition());
-            }
-            else if(currentPlayer.getPawnList().size()==1){
-                gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), null);
-            }
-
-            while(actionState.getCurrentAction()!=null){
-                if(actionState.getCurrentAction().getActionType()==ActionType.MOVE){
-                    MoveAction moveAction=(MoveAction)actionState.getCurrentAction();
-                    gameLogicExecutor.setChosenPosition(moveAction.availableCells(game.getBoard().getMatrixCopy()).get(0));
-                }
-                else if(actionState.getCurrentAction().getActionType()==ActionType.CONSTRUCT){
-                    ConstructAction constructAction=(ConstructAction)actionState.getCurrentAction();
-                    Position chosenConstructPosition=constructAction.availableCells(game.getBoard().getMatrixCopy()).get(0);
-                    gameLogicExecutor.setChosenPosition(chosenConstructPosition);
-                    gameLogicExecutor.setChosenBlockType(constructAction.availableBlockTypes(chosenConstructPosition,game.getBoard().getMatrixCopy()).get(0));
-                }
-                else if(actionState.getCurrentAction().getActionType()==ActionType.GENERAL){
-                    gameLogicExecutor.setChosenPosition(null);
-                }
-            }
-
-
-        }
-
-    }
 
     /**
      * full simple gamePlay with god 1,2,3 no effects activated

@@ -89,6 +89,9 @@ public class MoveAction extends Action {
     }
 
     public void setChosenPosition(Position chosenPosition) {
+        if(chosenPosition==null && !this.isOptional){
+            //TODO: throw exception!
+        }
         this.chosenPosition = chosenPosition;
         for (ActionVisitor actionVisitor : this.actionVisitors) {
             ((GameLogicExecutor)actionVisitor).executeAction(this);
@@ -268,6 +271,21 @@ public class MoveAction extends Action {
         if (noWinIfOnPerimeter && isOnPerimeter()) return false;
         if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3) return true;
         return winDownEnable && selectedPawn.getDeltaHeight() <= -2;
+    }
+
+    public void disablePerimeterWin() {
+        this.noWinIfOnPerimeter=true;
+    }
+
+    public void disableClimbing() {
+        this.moveUpEnable=false;
+    }
+
+    public void blockSelected(BlockType blockType) {
+    }
+
+    public ArrayList<BlockType> availableBlockTypes(Position selectedPosition, Cell[][] matrixCopy){
+        return new ArrayList<>();
     }
 
 }

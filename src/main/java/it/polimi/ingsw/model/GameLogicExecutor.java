@@ -179,9 +179,7 @@ public class GameLogicExecutor implements ActionVisitor {
     private void enableNoWinIfOnPerimeterForOpponents(){
         for(Player p : game.getPlayersIn(PlayerStateType.IdleState)){
             for(Action a : p.getCurrentCard().getCurrentActionList()){
-                if(a.getActionType()==ActionType.MOVE){
-                    ((MoveAction)a).setNoWinIfOnPerimeter(true);
-                }
+                a.disablePerimeterWin();
             }
         }
     }
@@ -193,9 +191,7 @@ public class GameLogicExecutor implements ActionVisitor {
         ArrayList<Player> actionStatePlayers = game.getPlayersIn(PlayerStateType.ActionState);
         Player currentPlayer = actionStatePlayers.get(0);
         for (Action action : ((ActionState) currentPlayer.getState()).getActionList()) {
-            if (action.getActionType() == ActionType.MOVE) {
-                ((MoveAction) action).setMoveUpEnable(false);
-            }
+            action.disableClimbing();
         }
 
     }
@@ -206,9 +202,7 @@ public class GameLogicExecutor implements ActionVisitor {
     private void disableMoveUpOfOtherPlayers() {
         for (Player player : game.getPlayersIn(PlayerStateType.IdleState)) {
             for (Action action : player.getCurrentCard().getCurrentActionList()) {
-                if (action.getActionType() == ActionType.MOVE) {
-                    ((MoveAction) action).setMoveUpEnable(false);
-                }
+                action.disableClimbing();
             }
         }
     }
@@ -330,9 +324,7 @@ public class GameLogicExecutor implements ActionVisitor {
      */
     public Boolean setChosenPosition(Position chosenPos){
         ActionState actionState= getActionStateForCurrentPlayer();
-        if(chosenPos==null && (!actionState.getCurrentAction().getIsOptional() || actionState.getCurrentAction().getActionType()!=ActionType.GENERAL) ) {
-                //TODO: throw an expetion! only a general action or optional Action can have chosenPos set to null
-        }
+        //TODO: the exception for a chosenPos==null has to be dealt with inside of the setChosenPosition for a move/construct non optional! todos already added to Action class
         actionState.getCurrentAction().setChosenPosition(chosenPos);
         return true;
     }
@@ -346,12 +338,8 @@ public class GameLogicExecutor implements ActionVisitor {
      */
     public Boolean setChosenBlockType(BlockType blockType){
         ActionState actionState=getActionStateForCurrentPlayer();
-        if(actionState.getCurrentAction().getActionType()==ActionType.CONSTRUCT) {
-            ((ConstructAction) actionState.getCurrentAction()).setSelectedBlockType(blockType);
-            return true;
-        }
-        else
-            return false;
+        actionState.getCurrentAction().blockSelected(blockType);
+        return true;
     }
 
     /**
@@ -509,6 +497,19 @@ public class GameLogicExecutor implements ActionVisitor {
         } else {
             return false;
         }
+    }
+
+    public Boolean execute(){
+        /*
+            game.getCurrentAction().accept(this);
+
+            or (if currentAction is inside gameLogicExecutor)
+
+            currentAction.accept(this);
+
+            action.accept() invoca gameLogicExecutor.executAction(this)
+         */
+        return true;
     }
 
 

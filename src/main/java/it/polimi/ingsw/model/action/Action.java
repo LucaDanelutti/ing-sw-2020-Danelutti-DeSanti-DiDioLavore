@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.action;
 
+import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
@@ -15,14 +16,15 @@ public abstract class Action {
     protected Pawn selectedPawn;
     protected Pawn notSelectedPawn;
     protected Position chosenPosition;
-    protected final ActionType actionType;
-    protected List<ActionVisitor> actionVisitors = new ArrayList<ActionVisitor>();
+    //protected final ActionType actionType;
+    protected List<ActionVisitor> actionVisitors = new ArrayList<>();
+
 
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
      */
     Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType) {
-        this.actionType=actionType;
+        //this.actionType=actionType;
         this.isOptional = isOptional;
         if (notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(notAvailableCell);
@@ -35,7 +37,7 @@ public abstract class Action {
      This constructor of Action is needed for the duplicate function
      */
     Action(Boolean isOptional, ArrayList<Position> notAvailableCell,ActionType actionType, Pawn selectedPawn, Pawn notSelectedPawn, List<ActionVisitor> actionVisitors) {
-        this.actionType=actionType;
+        //this.actionType=actionType;
         this.isOptional = isOptional;
         if (notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(notAvailableCell);
@@ -59,7 +61,7 @@ public abstract class Action {
         this.notSelectedPawn = toBeCopied.notSelectedPawn;
         this.chosenPosition = toBeCopied.chosenPosition;
         this.actionVisitors=toBeCopied.actionVisitors;
-        this.actionType=toBeCopied.actionType;
+        //this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {
             this.notAvailableCell = new ArrayList<>(toBeCopied.notAvailableCell);
         } else {
@@ -121,10 +123,19 @@ public abstract class Action {
         return chosenPosition;
     }
 
-    public ActionType getActionType() {
+    /*public ActionType getActionType() {
         return actionType;
-    }
+    }*/
+
 
     public abstract ArrayList<Position> availableCells(Cell[][] matrixCopy);
+
+    public abstract void disablePerimeterWin();
+
+    public abstract void disableClimbing();
+
+    public abstract void blockSelected(BlockType blockType);
+
+    public abstract ArrayList<BlockType> availableBlockTypes(Position selectedPosition, Cell[][] matrixCopy);
 
 }

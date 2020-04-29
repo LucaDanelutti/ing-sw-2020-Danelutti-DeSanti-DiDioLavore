@@ -89,12 +89,12 @@ public class ConstructAction extends Action {
      * to the GameLogic
      * @param selectedBlockType the selected blocktype returned by avaiableBlockTypes
      */
-    public void setSelectedBlockType(BlockType selectedBlockType) {
+    /*public void setSelectedBlockType(BlockType selectedBlockType) {
         this.selectedBlockType = selectedBlockType;
         for(ActionVisitor actionVisitor: this.actionVisitors){
             ((GameLogicExecutor)actionVisitor).executeAction(this);
         }
-    }
+    }*/
 
     /**
      * Removes from availableCells the positions present within notAvailableCell
@@ -192,4 +192,16 @@ public class ConstructAction extends Action {
         return availableBlockTypes;
     }
 
+    public void blockSelected(BlockType blockType) {
+        this.selectedBlockType=blockType;
+        for(ActionVisitor actionVisitor: this.actionVisitors){
+            ((GameLogicExecutor)actionVisitor).executeAction(this);
+        }
+    }
+
+    public void disablePerimeterWin() {
+    }
+
+    public void disableClimbing() {
+    }
 }

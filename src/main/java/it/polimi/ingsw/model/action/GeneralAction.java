@@ -73,4 +73,18 @@ public class GeneralAction extends Action{
     public Boolean getDestroyPawnAndBuildEnable() {
         return destroyPawnAndBuildEnable;
     }
+
+    public void disablePerimeterWin() {
+    }
+
+    public void disableClimbing() {
+    }
+
+    public void blockSelected(BlockType blockType) {
+    }
+
+    public ArrayList<BlockType> availableBlockTypes(Position selectedPosition, Cell[][] matrixCopy){
+        return new ArrayList<>();
+    }
+
 }
