@@ -16,6 +16,57 @@ class Game {
     ArrayList<Card> loadedCards = new ArrayList<>();
     Board board;
 
+    //=================================================================================
+    //NEW THINGS
+    Player currentPlayer;
+    Action currentAction;
+
+    public Action getCurrentAction(){
+        return this.currentAction;
+    }
+
+    public ArrayList<Action> getCurrentPlayerActionList(){
+        return this.currentPlayer.getCurrentCard().getCurrentActionList();
+    }
+    private Pawn getCurrentPlayerSelectedPawn(){
+        return this.currentPlayer.getSelectedPawn();
+    }
+
+/*
+    public void setCurrentAction() {
+        int index = getCurrentActionIndex() + 1;
+        ArrayList<Action>actionList = getCurrentPlayerActionList();
+        if (0 <= index & index < actionList.size()) {
+            currentAction = actionList.get(index);
+            if (selectedPawn != null) currentAction.setSelectedPawn(selectedPawn.duplicate());
+            if (unselectedPawn != null) currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+        } else {
+            currentAction = null;
+        }
+    }
+*/
+
+    private int getCurrentActionIndex() {
+        int index = -1;
+        ArrayList<Action>actionList = getCurrentPlayerActionList();
+        if (currentAction == null) {
+            index = -1;
+        } else {
+            for (int i=0; i < actionList.size(); i++) {
+                if (actionList.get(i) == currentAction) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1) {
+                throw new InvalidGameException("Invalid actionState!");
+            }
+        }
+        return index;
+    }
+    //===================================================================================
+
+
     /**
      * This is the construct for the class Game
      */

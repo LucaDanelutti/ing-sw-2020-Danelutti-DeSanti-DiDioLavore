@@ -13,6 +13,29 @@ class Player {
     Card currentCard;
     PlayerState state;
 
+    //===================================================
+    //NEW THINGS
+    Position selectedPawnPosition;
+    Position unselectedPawnPosition;
+
+    public Pawn getSelectedPawn(){
+        for(Pawn p : pawnList){
+            if(p.getPosition().equals(selectedPawnPosition)){
+                return p;
+            }
+        }
+        return null;
+    }
+    public Pawn getUnselectedPawn(){
+        for(Pawn p : pawnList){
+            if(p.getPosition().equals(unselectedPawnPosition)){
+                return p;
+            }
+        }
+        return null;
+    }
+    //======================================================
+
     /**
      * Constructor of this class
      * @param name defines the name of the player
