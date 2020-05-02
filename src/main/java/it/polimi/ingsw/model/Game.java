@@ -28,23 +28,28 @@ class Game {
     public ArrayList<Action> getCurrentPlayerActionList(){
         return this.currentPlayer.getCurrentCard().getCurrentActionList();
     }
+
     private Pawn getCurrentPlayerSelectedPawn(){
+
         return this.currentPlayer.getSelectedPawn();
     }
 
-/*
+    private Pawn getCurrentPlayerUnselectedPawn(){
+
+        return this.currentPlayer.getUnselectedPawn();
+    }
+
     public void setCurrentAction() {
         int index = getCurrentActionIndex() + 1;
         ArrayList<Action>actionList = getCurrentPlayerActionList();
         if (0 <= index & index < actionList.size()) {
             currentAction = actionList.get(index);
-            if (selectedPawn != null) currentAction.setSelectedPawn(selectedPawn.duplicate());
-            if (unselectedPawn != null) currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+            if (getCurrentPlayerSelectedPawn() != null) currentAction.setSelectedPawn(getCurrentPlayerSelectedPawn().duplicate());
+            if (getCurrentPlayerUnselectedPawn() != null) currentAction.setNotSelectedPawn(getCurrentPlayerUnselectedPawn().duplicate());
         } else {
             currentAction = null;
         }
     }
-*/
 
     private int getCurrentActionIndex() {
         int index = -1;
