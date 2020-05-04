@@ -9,6 +9,11 @@ public class PlayerView {
     private Boolean isWinner;
     private Boolean isLoser;
 
+    public PlayerView(String name, ArrayList<PawnView> pawnList) {
+        this.name = name;
+        this.pawnList = pawnList;
+    }
+
     public String getName() {
         return name;
     }

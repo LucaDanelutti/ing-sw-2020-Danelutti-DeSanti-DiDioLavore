@@ -8,6 +8,11 @@ public class PawnView {
     private String color;
     private Boolean isSelected;
 
+    public PawnView(int id, String color) {
+        this.id = id;
+        this.color = color;
+    }
+
     public int getId() {
         return id;
     }

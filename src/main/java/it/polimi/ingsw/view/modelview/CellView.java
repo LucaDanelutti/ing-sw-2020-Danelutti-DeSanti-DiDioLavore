@@ -7,6 +7,10 @@ import java.util.Stack;
 public class CellView {
     private Stack<BlockType> blockStack;
 
+    CellView(){
+        this.blockStack = new Stack<>();
+        this.blockStack.push(BlockType.TERRAIN);
+    }
 
     public int getSize(){
         return this.blockStack.size();
