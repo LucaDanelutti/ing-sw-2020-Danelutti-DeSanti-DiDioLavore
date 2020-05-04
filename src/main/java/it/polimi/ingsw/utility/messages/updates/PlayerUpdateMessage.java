@@ -16,4 +16,20 @@ public class PlayerUpdateMessage extends Message {
         this.workerId1 = workerId1;
         this.workerId2 = workerId2;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getWorkerId1() {
+        return workerId1;
+    }
+
+    public int getWorkerId2() {
+        return workerId2;
+    }
 }
