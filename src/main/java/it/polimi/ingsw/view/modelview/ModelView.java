@@ -1,19 +1,25 @@
 package it.polimi.ingsw.view.modelview;
 
 import it.polimi.ingsw.model.Position;
-import it.polimi.ingsw.utility.messages.updates.*;
-import it.polimi.ingsw.view.listeners.UpdatesListener;
 
 import java.util.ArrayList;
 
-public class ModelView implements UpdatesListener {
+public class ModelView {
+    private static final int MATRIX_SIZE = 5;
     private ArrayList<PlayerView> playerList;
     private CellView[][] matrix;
 
-    @Override
-    public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage){
-        int pawnId=pawnPositionUpdateMessage.getWorkerId();
-        Position pawnPos=pawnPositionUpdateMessage.getWorkerPos();
+    public ModelView(){
+        this.matrix = new CellView[MATRIX_SIZE][MATRIX_SIZE];
+        for(int i=0; i<this.matrix.length; i++){
+            for(int j=0; j<this.matrix[0].length; j++){
+                this.matrix[i][j] = new CellView();
+            }
+        }
+        playerList = new ArrayList<>();
+    }
+
+    public void onPawnPositionUpdate(int pawnId, Position pawnPos) {
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
                 if (pawn.getId() == pawnId) pawn.setPawnPosition(pawnPos);
@@ -21,71 +27,54 @@ public class ModelView implements UpdatesListener {
         }
     }
 
-    @Override
-    public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage){
-        for (PlayerView player : playerList) {
-            player.getPawnList().removeIf(pawn -> pawn.getId() == pawnRemoveUpdateMessage.getWorkerId());
-        }
-    }
-
-    @Override
-    public void update(CellUpdateMessage cellUpdateMessage){
-        Position cellPosition=cellUpdateMessage.getPosition();
-        matrix[cellPosition.getX()][cellPosition.getY()] = cellUpdateMessage.getCell();
-    }
-
-    @Override
-    public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
-
-    }
-
-    @Override
-    public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage){
-        int pawnId1=doublePawnPositionUpdateMessage.getWorkerId1();
-        Position pawnPos1=doublePawnPositionUpdateMessage.getWorkerPos1();
-        int pawnId2=doublePawnPositionUpdateMessage.getWorkerId2();
-        Position pawnPos2=doublePawnPositionUpdateMessage.getWorkerPos2();
-
+    public void onPawnRemoved(int pawnId) {
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
-                if (pawn.getId() == pawnId1) pawn.setPawnPosition(pawnPos1);
+                if (pawn.getId() == pawnId) player.getPawnList().remove(pawn);
             }
         }
+    }
+
+    public void onCellUpdate(Position cellPosition, CellView changedCell) {
+        matrix[cellPosition.getX()][cellPosition.getY()] = changedCell;
+    }
+
+    public void onDoublePawnPositionUpdate(int pawnId1, Position pawnPos1, int pawnId2, Position pawnPos2) {
+        onPawnPositionUpdate(pawnId1, pawnPos1);
+        onPawnPositionUpdate(pawnId2, pawnPos2);
+    }
+
+    public void onPlayerUpdate(String name, String color, int pawnId1, int pawnId2) {
+        //if the player is already contained within the playerList it has already set its attributes (pawns and relative color)
+        Boolean playerExists = false;
         for (PlayerView player : playerList) {
-            for (PawnView pawn: player.getPawnList()) {
-                if (pawn.getId() == pawnId2) pawn.setPawnPosition(pawnPos2);
+            if (player.getName().equals(name)) {
+                playerExists = true;
             }
         }
-
+        //if the player isn't contained within the playerList it is added with the passed attributes
+        if (!playerExists) {
+            ArrayList<PawnView> newPawnList = new ArrayList<>();
+            newPawnList.add(new PawnView(pawnId1, color));
+            newPawnList.add(new PawnView(pawnId2, color));
+            PlayerView newPlayer = new PlayerView(name, newPawnList);
+            playerList.add(newPlayer);
+        }
     }
 
-    @Override
-    public void update(PlayerUpdateMessage playerUpdateMessage){
-        //TODO: continue
+    public void onChosenCardUpdate(CardView chosenCard, String name) {
+        for(PlayerView player : playerList) {
+            if (player.getName().equals(name)) {
+                player.setCard(chosenCard);
+            }
+        }
     }
 
-    @Override
-    public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage){
-        int id=selectedPawnUpdateMessage.getWorkerId();
+    public void onSelectPawnUpdate(Integer id) {
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
                 if (pawn.getId() == id) pawn.setSelected(true);
             }
         }
-    }
-
-    @Override
-    public void update(GameStartMessage gameStartMessage) {
-
-    }
-
-    @Override
-    public void update(TurnEndedMessage turnEndedMessage) {
-
-    }
-
-    @Override
-    public void update(Object o) {
-
     }
 }
