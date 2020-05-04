@@ -1,16 +1,19 @@
 package it.polimi.ingsw.view.modelview;
 
 import it.polimi.ingsw.model.Position;
-import it.polimi.ingsw.view.listeners.updates.*;
+import it.polimi.ingsw.utility.messages.updates.*;
+import it.polimi.ingsw.view.listeners.UpdatesListener;
 
 import java.util.ArrayList;
 
-public class ModelView implements PawnPositionUpdateListener, PawnRemoveUpdateListener, CellUpdateListener, DoublePawnPositionUpdateListener, PlayerUpdateListener, SelectPawnUpdateListener {
+public class ModelView implements UpdatesListener {
     private ArrayList<PlayerView> playerList;
     private CellView[][] matrix;
 
     @Override
-    public void onPawnPositionUpdate(Integer pawnId, Position pawnPos) {
+    public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage){
+        int pawnId=pawnPositionUpdateMessage.getWorkerId();
+        Position pawnPos=pawnPositionUpdateMessage.getWorkerPos();
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
                 if (pawn.getId() == pawnId) pawn.setPawnPosition(pawnPos);
@@ -19,40 +22,70 @@ public class ModelView implements PawnPositionUpdateListener, PawnRemoveUpdateLi
     }
 
     @Override
-    public void onPawnRemoved(Integer pawnId) {
+    public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage){
+        for (PlayerView player : playerList) {
+            player.getPawnList().removeIf(pawn -> pawn.getId() == pawnRemoveUpdateMessage.getWorkerId());
+        }
+    }
+
+    @Override
+    public void update(CellUpdateMessage cellUpdateMessage){
+        Position cellPosition=cellUpdateMessage.getPosition();
+        matrix[cellPosition.getX()][cellPosition.getY()] = cellUpdateMessage.getCell();
+    }
+
+    @Override
+    public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
+
+    }
+
+    @Override
+    public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage){
+        int pawnId1=doublePawnPositionUpdateMessage.getWorkerId1();
+        Position pawnPos1=doublePawnPositionUpdateMessage.getWorkerPos1();
+        int pawnId2=doublePawnPositionUpdateMessage.getWorkerId2();
+        Position pawnPos2=doublePawnPositionUpdateMessage.getWorkerPos2();
+
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
-                if (pawn.getId() == pawnId) player.getPawnList().remove(pawn);
+                if (pawn.getId() == pawnId1) pawn.setPawnPosition(pawnPos1);
             }
         }
-    }
-
-    @Override
-    public void onCellUpdate(Position cellPosition, CellView changedCell) {
-        matrix[cellPosition.getX()][cellPosition.getY()] = changedCell;
-    }
-
-    @Override
-    public void onDoublePawnPositionUpdate(Integer pawnId1, Position pawnPos1, Integer pawnId2, Position pawnPos2) {
-        onPawnPositionUpdate(pawnId1, pawnPos1);
-        onPawnPositionUpdate(pawnId2, pawnPos2);
-    }
-
-    @Override
-    public void onPlayerUpdate(String name, int id1, String color1, int id2, String color2) {
         for (PlayerView player : playerList) {
-            if (player.getName().equals(name)) {
-                //TODO: continue
+            for (PawnView pawn: player.getPawnList()) {
+                if (pawn.getId() == pawnId2) pawn.setPawnPosition(pawnPos2);
             }
         }
+
     }
 
     @Override
-    public void onSelectPawnUpdate(Integer id) {
+    public void update(PlayerUpdateMessage playerUpdateMessage){
+        //TODO: continue
+    }
+
+    @Override
+    public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage){
+        int id=selectedPawnUpdateMessage.getWorkerId();
         for (PlayerView player : playerList) {
             for (PawnView pawn: player.getPawnList()) {
                 if (pawn.getId() == id) pawn.setSelected(true);
             }
         }
+    }
+
+    @Override
+    public void update(GameStartMessage gameStartMessage) {
+
+    }
+
+    @Override
+    public void update(TurnEndedMessage turnEndedMessage) {
+
+    }
+
+    @Override
+    public void update(Object o) {
+
     }
 }

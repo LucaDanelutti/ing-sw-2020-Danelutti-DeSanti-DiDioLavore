@@ -17,4 +17,20 @@ public class DoublePawnPositionUpdateMessage extends Message {
         this.workerPos1 = workerPos1;
         this.workerPos2 = workerPos2;
     }
+
+    public int getWorkerId1() {
+        return workerId1;
+    }
+
+    public int getWorkerId2() {
+        return workerId2;
+    }
+
+    public Position getWorkerPos1() {
+        return workerPos1;
+    }
+
+    public Position getWorkerPos2() {
+        return workerPos2;
+    }
 }

@@ -15,4 +15,12 @@ public class PawnPositionUpdateMessage extends Message {
         this.workerId = workerId;
         this.workerPos = workerPos;
     }
+
+    public int getWorkerId() {
+        return workerId;
+    }
+
+    public Position getWorkerPos() {
+        return workerPos;
+    }
 }

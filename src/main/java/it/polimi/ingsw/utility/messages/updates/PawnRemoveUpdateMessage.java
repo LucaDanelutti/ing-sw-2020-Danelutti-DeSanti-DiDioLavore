@@ -11,4 +11,8 @@ public class PawnRemoveUpdateMessage extends Message {
         super(recipients);
         this.workerId= workerId;
     }
+
+    public int getWorkerId() {
+        return workerId;
+    }
 }

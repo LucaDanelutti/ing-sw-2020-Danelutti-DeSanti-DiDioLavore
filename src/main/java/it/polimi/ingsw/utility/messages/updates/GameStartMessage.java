@@ -1,4 +1,6 @@
-package it.polimi.ingsw.utility.messages;
+package it.polimi.ingsw.utility.messages.updates;
+
+import it.polimi.ingsw.utility.messages.Message;
 
 import java.util.ArrayList;
 
