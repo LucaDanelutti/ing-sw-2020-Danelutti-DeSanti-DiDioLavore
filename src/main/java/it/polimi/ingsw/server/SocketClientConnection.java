@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.Observable;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -73,6 +74,7 @@ public class SocketClientConnection extends Observable implements ClientConnecti
             String read;
             //name = read;
             //server.lobby(this, name);
+            VirtualView player1View = new VirtualView(this);
             while(isActive()){
                 read = in.nextLine();
                 asyncSend(read);
