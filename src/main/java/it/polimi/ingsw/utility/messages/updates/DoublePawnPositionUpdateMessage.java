@@ -3,9 +3,12 @@ package it.polimi.ingsw.utility.messages.updates;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.utility.messages.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DoublePawnPositionUpdateMessage extends Message {
+public class DoublePawnPositionUpdateMessage extends Message implements Serializable {
+    private static final long serialVersionUID = -9037003976306087363L;
+
     int workerId1, workerId2;
     Position workerPos1,workerPos2;
 

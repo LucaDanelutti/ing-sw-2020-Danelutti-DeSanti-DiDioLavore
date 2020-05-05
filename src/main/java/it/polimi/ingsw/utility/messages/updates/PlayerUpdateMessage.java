@@ -2,12 +2,14 @@ package it.polimi.ingsw.utility.messages.updates;
 
 import it.polimi.ingsw.utility.messages.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerUpdateMessage extends Message {
+public class PlayerUpdateMessage extends Message implements Serializable {
+    private static final long serialVersionUID = -8015019956390426992L;
+
     String name,color;
     int workerId1,workerId2;
-
 
     public PlayerUpdateMessage(ArrayList<String> recipients, String name, String color, int workerId1, int workerId2) {
         super(recipients);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Message implements Serializable {
+    private static final long serialVersionUID = 2641830232979966012L;
+
     ArrayList<String> recipients = new ArrayList<>();
 
     public Message(ArrayList<String> recipients) {
@@ -12,5 +14,4 @@ public class Message implements Serializable {
     public ArrayList<String> getRecipients() {
         return recipients;
     }
-
 }

@@ -3,9 +3,12 @@ package it.polimi.ingsw.utility.messages.sets;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.utility.messages.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class InitialPawnPositionSetMessage extends Message {
+public class InitialPawnPositionSetMessage extends Message implements Serializable {
+    private static final long serialVersionUID = -2076557089937662535L;
+
     int workerId1,workerId2;
     Position workerPos1, workerPos2;
 
