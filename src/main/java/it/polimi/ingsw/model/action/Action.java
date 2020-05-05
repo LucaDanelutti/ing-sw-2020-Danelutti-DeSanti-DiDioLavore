@@ -20,6 +20,9 @@ public abstract class Action {
     protected List<ActionVisitor> actionVisitors = new ArrayList<>();
 
 
+    //-------------------------------------------------------------------------------------------------------------------
+
+
     /**
      This constructor of Action sets isOptional and creates an internal copy of notAvailableCell before setting it to the private variable
      */
@@ -80,6 +83,7 @@ public abstract class Action {
      * @param actionVisitor the visitor
      */
     public abstract  void accept(ActionVisitor actionVisitor);
+    public abstract  void acceptForProcess(ActionVisitor actionVisitor);
 
     public void addVisitor(ActionVisitor actionVisitor){
         this.actionVisitors.add(actionVisitor);

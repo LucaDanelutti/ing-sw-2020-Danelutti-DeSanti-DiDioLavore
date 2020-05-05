@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
+import javafx.geometry.Pos;
+
+import java.util.ArrayList;
 
 /**
  * This class represent the actual board of the concrete game.
@@ -119,6 +122,11 @@ public class Board{
      */
     public Pawn getPawnCopy(Position pawnPosition){
         return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
+    }
+
+    public ArrayList<Position> availablePositionsForPawnInitialPlacement(){
+        //TODO: IMPLEMENT FUNCTION!!
+        return new ArrayList<>();
     }
 }
 

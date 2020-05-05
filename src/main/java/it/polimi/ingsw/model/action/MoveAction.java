@@ -88,14 +88,15 @@ public class MoveAction extends Action {
         visitor.executeAction(this);
     }
 
+    public void acceptForProcess(ActionVisitor visitor){
+        visitor.processAction(this);
+    }
+
     public void setChosenPosition(Position chosenPosition) {
         if(chosenPosition==null && !this.isOptional){
             //TODO: throw exception!
         }
         this.chosenPosition = chosenPosition;
-        for (ActionVisitor actionVisitor : this.actionVisitors) {
-            ((GameLogicExecutor)actionVisitor).executeAction(this);
-        }
     }
 
     /**

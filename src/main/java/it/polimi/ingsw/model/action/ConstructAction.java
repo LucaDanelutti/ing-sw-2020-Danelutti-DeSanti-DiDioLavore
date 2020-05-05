@@ -56,6 +56,9 @@ public class ConstructAction extends Action {
     public void accept(ActionVisitor actionVisitor){
         actionVisitor.executeAction(this);
     }
+    public void acceptForProcess(ActionVisitor visitor){
+        visitor.processAction(this);
+    }
 
     public Boolean getConstructOnLastBuilt() {
         return constructOnLastBuilt;
@@ -194,9 +197,6 @@ public class ConstructAction extends Action {
 
     public void blockSelected(BlockType blockType) {
         this.selectedBlockType=blockType;
-        for(ActionVisitor actionVisitor: this.actionVisitors){
-            ((GameLogicExecutor)actionVisitor).executeAction(this);
-        }
     }
 
     public void disablePerimeterWin() {

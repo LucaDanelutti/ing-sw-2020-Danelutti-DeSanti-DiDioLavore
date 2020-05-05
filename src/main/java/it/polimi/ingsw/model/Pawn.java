@@ -14,12 +14,19 @@ public class Pawn {
     private Position previousPosition;
     private Position lastBuildPosition;
     private int deltaHeight;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
 
     /**
      * Constructor of this class
      * @param color defines the color of a pawn
      */
-    public Pawn(String color) {
+    public Pawn(String color,int id) {
+        this.id=id;
         this.color = color;
     }
 
@@ -36,7 +43,7 @@ public class Pawn {
         if(toBeCopied.lastBuildPosition!=null)
             this.lastBuildPosition=new Position(toBeCopied.lastBuildPosition.getX(),toBeCopied.lastBuildPosition.getY());
         this.deltaHeight=toBeCopied.deltaHeight;
-
+        this.id=toBeCopied.id;
     }
 
     public Pawn duplicate() {

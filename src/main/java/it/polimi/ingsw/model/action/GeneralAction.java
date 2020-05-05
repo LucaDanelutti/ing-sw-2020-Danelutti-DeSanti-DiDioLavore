@@ -44,7 +44,9 @@ public class GeneralAction extends Action{
     public void accept(ActionVisitor visitor){
         visitor.executeAction(this);
     }
-
+    public void acceptForProcess(ActionVisitor visitor){
+        visitor.processAction(this);
+    }
 
     /**
      * Computes the list of cells where a pawn can move
@@ -59,9 +61,6 @@ public class GeneralAction extends Action{
 
     public void setChosenPosition(Position chosenPosition) {
         this.chosenPosition = chosenPosition;
-        for (ActionVisitor actionVisitor : this.actionVisitors) {
-            ((GameLogicExecutor)actionVisitor).executeAction(this);
-        }
     }
 
     public void  setEnableNoWinIfOnPerimeter(Boolean enableNoWinIfOnPerimeter) { this.enableNoWinIfOnPerimeter = enableNoWinIfOnPerimeter; }

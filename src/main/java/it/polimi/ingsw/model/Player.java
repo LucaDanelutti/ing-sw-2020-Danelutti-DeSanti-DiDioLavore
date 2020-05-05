@@ -11,7 +11,9 @@ class Player {
     final String name;
     ArrayList<Pawn> pawnList;
     Card currentCard;
-    PlayerState state;
+    Boolean isLoser;
+    Boolean isWinner;
+    //PlayerState state;
 
     //===================================================
     //NEW THINGS
@@ -34,16 +36,35 @@ class Player {
         }
         return null;
     }
+    public void setUnselectedPawnPosition(Pawn p){
+        if(p==null) {
+            unselectedPawnPosition = null;
+        }
+        else {
+            unselectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
+        }
+    }
+    public void setSelectedPawnPosition(Pawn p){
+        if(p==null){
+            selectedPawnPosition=null;
+        }
+        else {
+            selectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
+        }
+    }
+
+
     //======================================================
 
     /**
      * Constructor of this class
      * @param name defines the name of the player
-     * @param state defines the state of the player
      */
-    Player(String name, PlayerState state) {
+    Player(String name) {
         this.name = name;
-        this.state = state;
+        this.isLoser=false;
+        this.isWinner=false;
+        //this.state = state;
         pawnList = new ArrayList<Pawn>();
     }
 
@@ -79,11 +100,27 @@ class Player {
         this.currentCard = currentCard;
     }
 
-    PlayerState getState() {
+    public Boolean getLoser() {
+        return isLoser;
+    }
+
+    public void setLoser(Boolean loser) {
+        isLoser = loser;
+    }
+
+    public Boolean getWinner() {
+        return isWinner;
+    }
+
+    public void setWinner(Boolean winner) {
+        isWinner = winner;
+    }
+
+    /*PlayerState getState() {
         return state;
     }
 
     void setState(PlayerState state) {
         this.state = state;
-    }
+    }*/
 }

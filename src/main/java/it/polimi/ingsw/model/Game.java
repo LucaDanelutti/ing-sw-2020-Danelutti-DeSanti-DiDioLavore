@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.action.Action;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.playerstate.InvalidGameException;
-import it.polimi.ingsw.model.playerstate.PlayerStateType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +15,8 @@ class Game {
     ArrayList<Card> loadedCards = new ArrayList<>();
     Board board;
 
+
+
     //=================================================================================
     //NEW THINGS
     Player currentPlayer;
@@ -23,6 +24,13 @@ class Game {
 
     public Action getCurrentAction(){
         return this.currentAction;
+    }
+    public Player getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+        this.currentAction=null;
     }
 
     public ArrayList<Action> getCurrentPlayerActionList(){
@@ -69,6 +77,72 @@ class Game {
         }
         return index;
     }
+
+    /**
+     * updatePawns method: updates selectedPawn and unselectedPawn inside this and inside currentAction
+     */
+    public void updatePawns(Pawn selectedPawn, Pawn unselectedPawn) {
+        setSelectedPawnCopy(selectedPawn);
+        setUnselectedPawnCopy(unselectedPawn);
+        if (currentAction != null) {
+            if (selectedPawn != null) {
+                currentAction.setSelectedPawn(selectedPawn.duplicate());
+            } else {
+                currentAction.setSelectedPawn(null);
+            }
+            if (unselectedPawn != null) {
+                currentAction.setNotSelectedPawn(unselectedPawn.duplicate());
+            } else {
+                currentAction.setNotSelectedPawn(null);
+            }
+        }
+    }
+
+    /**
+     * Get method of the variable unselectedPawn, returns a copy of the unselectedPawn
+     */
+    public Pawn getUnselectedPawnCopy() {
+        return currentPlayer.getUnselectedPawn().duplicate();
+    }
+
+    /**
+     * Set method of the variable unselectedPawn, sets a copy of provided unselectedPawn
+     */
+    public void setUnselectedPawnCopy(Pawn unselectedPawn) {
+        if (unselectedPawn != null) {
+            currentPlayer.setUnselectedPawnPosition(unselectedPawn.duplicate());
+        } else {
+            currentPlayer.setUnselectedPawnPosition(null);
+        }
+    }
+
+    /**
+     * Get method of the variable selectedPawn, returns a copy of the selectedPawn
+     */
+    public Pawn getSelectedPawnCopy() {
+        return currentPlayer.getSelectedPawn().duplicate();
+    }
+
+    /**
+     * Set method of the variable selectedPawn, sets a copy of provided selectedPawn
+     */
+    public void setSelectedPawnCopy(Pawn selectedPawn) {
+        if (selectedPawn != null) {
+            currentPlayer.setSelectedPawnPosition(selectedPawn.duplicate());
+        } else {
+            currentPlayer.setSelectedPawnPosition(null);
+        }
+    }
+
+
+    /**
+     * addActionAfterCurrentOne method: adds the provided Action after the current one
+     */
+    public void addActionAfterCurrentOne(Action action) {
+        int index = getCurrentActionIndex() + 1;
+        currentPlayer.getCurrentCard().getCurrentActionList().add(index, action.duplicate());
+    }
+
     //===================================================================================
 
 
@@ -169,11 +243,83 @@ class Game {
         inGamePlayers.add(0, player);
     }
 
+    Player getNextPlayer(){
+        int currentPlayerIndex=inGamePlayers.indexOf(currentPlayer);
+        int numberOfPlayers=inGamePlayers.size();
+        if(currentPlayerIndex==numberOfPlayers-1){
+            //we have to restart the index
+            return inGamePlayers.get(0);
+        }else{
+            //just the next one on the list
+            return inGamePlayers.get(currentPlayerIndex+1);
+        }
+    }
+    private Boolean areThereAnyNonLoserPlayersLeft(){
+        boolean isSomeoneNonLoser=false;
+        for(Player p : inGamePlayers){
+            if(!p.getName().equals(currentPlayer.getName())){
+                if(!p.getLoser()){
+                    isSomeoneNonLoser=true;
+                }
+            }
+        }
+        return isSomeoneNonLoser;
+    }
+
+    Player getNextNonLoserPlayer() {
+        Boolean isSomeoneNonLoser = areThereAnyNonLoserPlayersLeft();
+        if (isSomeoneNonLoser) {
+            //c'è qualcuno che effettivamente può essere messo a giocare
+            int currentPlayerIndex = inGamePlayers.indexOf(currentPlayer);
+            int numberOfPlayers = inGamePlayers.size();
+            if (numberOfPlayers == 2) {
+                if (currentPlayerIndex == 1) {
+                    return inGamePlayers.get(0);
+                }
+                else if(currentPlayerIndex==0){
+                    return inGamePlayers.get(1);
+                }
+            }
+            else {
+                if (currentPlayerIndex == 0) {
+                    if (inGamePlayers.get(1).getLoser()) {
+                        //se il prossimo è perdente ne rimane solo uno da poter mettere a giocare
+                        return inGamePlayers.get(2);
+                    } else {
+                        return inGamePlayers.get(1);
+                    }
+                }
+                else if (currentPlayerIndex == 1) {
+                    if (inGamePlayers.get(2).getLoser()) {
+                        //se il prossimo è perdente ne rimane solo uno da poter mettere a giocare
+                        return inGamePlayers.get(0);
+                    } else {
+                        return inGamePlayers.get(2);
+                    }
+                }
+                else if (currentPlayerIndex == 2) {
+                    if (inGamePlayers.get(0).getLoser()) {
+                        //se il prossimo è perdente ne rimane solo uno da poter mettere a giocare
+                        return inGamePlayers.get(1);
+                    } else {
+                        return inGamePlayers.get(0);
+                    }
+                }
+            }
+        }
+        else {
+            //sono tutti perdenti!
+            return null;
+        }
+
+        return null;
+    }
+
     /**
      * getNextPlayer method to get the Player that is going to be in an active state.
      * Throws InvalidGameException if no next player is available.
      */
-    Player getNextPlayer(PlayerStateType playerStateType) {
+    /*Player getNextPlayer(PlayerStateType playerStateType) {
         if (inGamePlayers.size() == 2) {
             for (int i=0; i<2; i++) {
                 if (inGamePlayers.get(i%2).getState().getType() == playerStateType) {
@@ -199,14 +345,14 @@ class Game {
             }
         }
         throw new InvalidGameException("A started game must have 2 or 3 players!");
-    }
+    }*/
 
     /**
      * getPlayersIn method to get the Players in the provided playerState. If there are no
      * players in the provided playerStateType returns an empty arrayList. If more than one player
      * is found in actionState throws an exception
      */
-    ArrayList<Player> getPlayersIn(PlayerStateType playerState) {
+    /*ArrayList<Player> getPlayersIn(PlayerStateType playerState) {
         ArrayList<Player> tempPlayerList = new ArrayList<>();
         for (Player player : inGamePlayers) {
             if (player.getState().getType() == playerState) {
@@ -217,7 +363,7 @@ class Game {
             throw new InvalidGameException("No player/more than one player in ActionState found");
         }
         return tempPlayerList;
-    }
+    }*/
 
     /**
      * Set method of the variable loadedCards, sets a copy of provided cards
