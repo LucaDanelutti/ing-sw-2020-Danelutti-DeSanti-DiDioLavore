@@ -55,20 +55,21 @@ class GameLogicExecutorTest {
             a.addVisitor(gameLogicExecutor);
         }
 
-        p = new Player("ian", new ActionState(basicActionList1));
+        p = new Player("ian");
         currentPlayer=p;
-        p.addPawn(new Pawn("black"));
-        p.addPawn(new Pawn("black"));
+        p.addPawn(new Pawn("black",0));
+        p.addPawn(new Pawn("black",1));
         p.setCurrentCard(new Card("Pippo1", 1, basicActionList1));
         game.addPlayer(p);
+        game.setCurrentPlayer(p);
         p1 = new Position(1, 1);
         p2 = new Position(4, 4);
         game.board.setPawnPosition(p.getPawnList().get(0), p1);
         game.board.setPawnPosition(p.getPawnList().get(1), p2);
 
-        p = new Player("luca", new IdleState());
-        p.addPawn(new Pawn("white"));
-        p.addPawn(new Pawn("white"));
+        p = new Player("luca");
+        p.addPawn(new Pawn("white",2));
+        p.addPawn(new Pawn("white",3));
         p.setCurrentCard(new Card("Pippo2", 2, basicActionList2));
         game.addPlayer(p);
         p1 = new Position(1, 2);
@@ -76,9 +77,9 @@ class GameLogicExecutorTest {
         game.board.setPawnPosition(p.getPawnList().get(0), p1);
         game.board.setPawnPosition(p.getPawnList().get(1), p2);
 
-        p = new Player("riccardo", new IdleState());
-        p.addPawn(new Pawn("green"));
-        p.addPawn(new Pawn("green"));
+        p = new Player("riccardo");
+        p.addPawn(new Pawn("green",4));
+        p.addPawn(new Pawn("green",5));
         p.setCurrentCard(new Card("Pippo3", 3, basicActionList3));
         game.addPlayer(p);
         p1 = new Position(1, 3);
@@ -87,6 +88,25 @@ class GameLogicExecutorTest {
         game.board.setPawnPosition(p.getPawnList().get(1), p2);
 
     }
+    private ArrayList<Player> getNonCurrentPlayers(){
+        ArrayList<Player> opponents = new ArrayList<>();
+        for(Player p : game.getPlayers()){
+            if(!p.getName().equals(game.getCurrentPlayer().getName())){
+                opponents.add(p);
+            }
+        }
+        return opponents;
+    }
+    private ArrayList<Player> getNonLoserOrWinnerPlayers(){
+        ArrayList<Player> opponents = new ArrayList<>();
+        for(Player p : game.getPlayers()){
+            if(!p.getLoser()&&!p.getWinner()){
+                opponents.add(p);
+            }
+        }
+        return opponents;
+    }
+
 
     //MoveAction tests
 
@@ -100,10 +120,9 @@ class GameLogicExecutorTest {
         Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
         Position notSelectedPawnPos= notSelected.getPosition();
         gameLogicExecutor.setSelectedPawn(selectedPawnPos,notSelectedPawnPos);
-        ActionState actionState=(ActionState)game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
 
         //let's find out the positions available for the selected pawn
-        ArrayList<Position> positions=actionState.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        ArrayList<Position> positions=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
 
         //after this function there should be a call (via visitor pattern) to the gameLogicExecutor.executeAction
         //so after this call the pawn should be placed correctly in the board
@@ -119,6 +138,7 @@ class GameLogicExecutorTest {
      */
     @Test void moveActionDenyMoveUpForOtherPlayers() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+
         MoveAction athenaMove = new MoveAction(false, new ArrayList<>(), true, false, false, false, true, false, new ArrayList<>(), false, false);
         basicMove = new MoveAction(false, new ArrayList<>(), true, false, false, false, false, false, new ArrayList<>(), false, false);
         basicConstruct = new ConstructAction(false, new ArrayList<>(), false, new ArrayList<>(), false, false, false);
@@ -128,10 +148,13 @@ class GameLogicExecutorTest {
         for (Action a : actions) {
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
+
 
         //before the action since our opponets have basicMove and basicConstruct, they should have moveUpEnable
-        for (Player opponent : game.getPlayersIn(PlayerStateType.IdleState)) {
+        for (Player opponent : getNonCurrentPlayers()) {
             MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
             assertEquals(true, moveAction.getMoveUpEnable());
         }
@@ -145,12 +168,11 @@ class GameLogicExecutorTest {
 
         //we check that all other players have moveUp disable (in currentActionList) since our pawn moved up of one position
         assertEquals(1, currentPlayer.getPawnList().get(0).getDeltaHeight());
-        for (Player opponent : game.getPlayersIn(PlayerStateType.IdleState)) {
+        for (Player opponent : getNonCurrentPlayers()) {
             MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
             assertEquals(false, moveAction.getMoveUpEnable());
         }
     }
-
 
     /**
      * This test checks that if a MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
@@ -170,23 +192,25 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
+
 
         //before the move, the action list should have a size of 2
-        assertEquals(2,actionState.getActionListCopy().size());
+        assertEquals(2,currentPlayer.getCurrentCard().getCurrentActionList().size());
 
         //then we move the pawn to the selected position
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0,0));
 
         //after the move the actionList should have a size of 3 and the added action should be a moveAction with the same addMoveIfOn array (a copy)
-        assertEquals(3,actionState.getActionListCopy().size());
-        assertEquals(tritonMove,actionState.getActionList().get(1));
+        assertEquals(3,currentPlayer.getCurrentCard().getCurrentActionList().size());
+        assertEquals(tritonMove,currentPlayer.getCurrentCard().getCurrentActionList().get(1));
 
         gameLogicExecutor.setChosenPosition(new Position(0,1));
-        assertEquals(4,actionState.getActionListCopy().size());
-        assertEquals(tritonMove,actionState.getActionList().get(2));
+        assertEquals(4,currentPlayer.getCurrentCard().getCurrentActionList().size());
+        assertEquals(tritonMove,currentPlayer.getCurrentCard().getCurrentActionList().get(2));
 
 
     }
@@ -206,8 +230,10 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
+
 
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can swap
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
@@ -234,8 +260,9 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
 
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can push in 1,3
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
@@ -261,10 +288,10 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0,0));
 
-        assertEquals(2,game.getPlayersIn(PlayerStateType.LoserState).size());
-        assertEquals(PlayerStateType.WinnerState,currentPlayer.getState().getType());
-        assertEquals(PlayerStateType.LoserState,game.getPlayer("luca").getState().getType());
-        assertEquals(PlayerStateType.LoserState,game.getPlayer("riccardo").getState().getType());
+        assertEquals(0,getNonLoserOrWinnerPlayers().size());
+        assertEquals(true,currentPlayer.getWinner());
+        assertEquals(true,game.getPlayer("luca").getLoser());
+        assertEquals(true,game.getPlayer("riccardo").getLoser());
     }
 
 
@@ -283,18 +310,18 @@ class GameLogicExecutorTest {
         Position selectedPawnPos= selectedPawn.getPosition();
         Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
         Position notSelectedPawnPos= notSelected.getPosition();
+
         gameLogicExecutor.setSelectedPawn(selectedPawnPos,notSelectedPawnPos);
 
-        ActionState actionState=(ActionState)game.getPlayersIn(PlayerStateType.ActionState).get(0).getState();
 
         //this will execute the first action (Move)
-        ArrayList<Position> positions=actionState.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        ArrayList<Position> positions=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(positions.get(0));
 
         //this will execute the second action (Construct)
-        positions=actionState.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        positions=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(positions.get(0));
-        ArrayList<BlockType> blockTypes = ((ConstructAction)actionState.getCurrentAction()).availableBlockTypes(positions.get(0),game.getBoard().getMatrixCopy());
+        ArrayList<BlockType> blockTypes = game.getCurrentAction().availableBlockTypes(positions.get(0),game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenBlockType(blockTypes.get(0));
 
         assertEquals(blockTypes.get(0),game.getBoard().getMatrixCopy()[positions.get(0).getX()][positions.get(0).getY()].peekBlock());
@@ -318,23 +345,20 @@ class GameLogicExecutorTest {
             a.addVisitor(gameLogicExecutor);
         }
 
-        //game.getPlayer("ian").setCurrentCard(new Card("prometheus",10,prometheusActionList));
-        currentPlayer.setCurrentCard(new Card("prometheus",10,prometheusActionList));
-        currentPlayer.setState(new ActionState(prometheusActionList));
+        game.getCurrentPlayer().setCurrentCard(new Card("prometheus",10,prometheusActionList));
 
         gameLogicExecutor.setSelectedPawn(game.getPlayer("ian").getPawnList().get(0).getPosition(), game.getPlayer("ian").getPawnList().get(1).getPosition());
 
-        ActionState actionState = (ActionState) game.getPlayer("ian").getState();
-        assertEquals(true, ((MoveAction)actionState.getActionList().get(1)).getMoveUpEnable());
+        assertEquals(true, ((MoveAction)game.getCurrentPlayer().getCurrentCard().getCurrentActionList().get(1)).getMoveUpEnable());
 
-        ArrayList<Position> chosenPos = actionState.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
-        //let's skip the position for the optional construct and see if the MoveUp on the move for the current player is updated correctly
+        ArrayList<Position> chosenPos = game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+
         gameLogicExecutor.setChosenPosition(chosenPos.get(0));
-        ArrayList<BlockType> blockTypes = ((ConstructAction)actionState.getCurrentAction()).availableBlockTypes(chosenPos.get(0),game.getBoard().getMatrixCopy());
+        ArrayList<BlockType> blockTypes = ((ConstructAction)game.getCurrentAction()).availableBlockTypes(chosenPos.get(0),game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenBlockType(blockTypes.get(0)); //this is needed, a construct action is executed only if the chosenBlockType is set
 
         //at this time the next action should be loaded, and it is the moveAction, this moveAction must have MoveUp set to true
-        assertEquals(false, ((MoveAction)actionState.getCurrentAction()).getMoveUpEnable());
+        assertEquals(false, ((MoveAction)game.getCurrentAction()).getMoveUpEnable());
     }
 
     /**
@@ -352,9 +376,9 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
+
         currentPlayer.setCurrentCard(new Card("optionalConstruct",33, actions));
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState) currentPlayer.getState();
+
 
         Pawn prevPawn = currentPlayer.getPawnList().get(0);
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
@@ -362,7 +386,7 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenBlockType(null);
 
         assertEquals(prevPawn, currentPlayer.getPawnList().get(0));
-        assertEquals(basicMove,actionState.getCurrentAction());
+        assertEquals(basicMove,game.getCurrentAction());
     }
 
 
@@ -385,8 +409,9 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
 
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
         game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
@@ -398,8 +423,6 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(1,1));
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
 
-        //GeneralAction executed
-        gameLogicExecutor.setChosenPosition(null);
 
         assertEquals(1,game.getPlayer("luca").getPawnList().size());
         assertEquals(BlockType.LEVEL1,game.getBoard().getMatrixCopy()[1][2].peekBlock());
@@ -423,8 +446,9 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
 
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
         game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
@@ -438,13 +462,11 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(1,1));
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
 
-        //GeneralAction executed
-        gameLogicExecutor.setChosenPosition(null);
 
         assertEquals(0,game.getPlayer("luca").getPawnList().size());
         assertEquals(BlockType.LEVEL1,game.getBoard().getMatrixCopy()[1][2].peekBlock());
         assertNull(game.getBoard().getMatrixCopy()[1][2].getPawn());
-        assertEquals(PlayerStateType.LoserState,game.getPlayer("luca").getState().getType());
+        assertEquals(true,game.getPlayer("luca").getLoser());
 
     }
 
@@ -464,14 +486,15 @@ class GameLogicExecutorTest {
         for(Action a : actions){
             a.addVisitor(gameLogicExecutor);
         }
-        currentPlayer.setState(new ActionState(actions));
-        ActionState actionState = (ActionState)currentPlayer.getState();
+
+        Card card=new Card("test",55,actions);
+        currentPlayer.setCurrentCard(card);
 
         //we execute the general action
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(null);
 
-        for(Player opponent : game.getPlayersIn(PlayerStateType.IdleState)){
+        for(Player opponent : getNonCurrentPlayers()){
             for(Action a : opponent.getCurrentCard().getCurrentActionList()){
                 MoveAction moveAction = (MoveAction) opponent.getCurrentCard().getCurrentActionList().get(0);
                 assertEquals(true, moveAction.getNoWinIfOnPerimeter());
@@ -482,11 +505,14 @@ class GameLogicExecutorTest {
     }
 
 
+
     //Setup tests
 
-    /**
+
+    /*
+    *//**
      * The test checks that after the selection of the pawn for the current turn each variable is set correctly in the player state and the action to be executed.
-     */
+     *//*
     @Test void setSelectedPawnTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Position selectedPawn= game.getPlayer("ian").getPawnList().get(0).getPosition();
@@ -508,9 +534,9 @@ class GameLogicExecutorTest {
 
     }
 
-    /**
+    *//**
      * The test checks that after a player has finished all of its actions, it is placed in idle and the next player is loaded
-     */
+     *//*
     @Test void loadNextPlayer(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
@@ -533,9 +559,9 @@ class GameLogicExecutorTest {
 
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the right state
-     */
+     *//*
     @Test
     void addPlayer_FirstPlayer() {
         Game testGame = new Game();
@@ -546,9 +572,9 @@ class GameLogicExecutorTest {
         assertTrue(testGame.getPlayer("testPlayer1").getState().getType() == PlayerStateType.HostWaitOtherPlayersState);
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
-     */
+     *//*
     @Test
     void addPlayer_NotFirstPlayer() {
         Game testGame = new Game();
@@ -560,9 +586,9 @@ class GameLogicExecutorTest {
         assertTrue(testGame.getPlayer("testPlayer2").getState().getType() == PlayerStateType.ClientWaitStartState);
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that startGame method correctly starts the game
-     */
+     *//*
     @Test
     void startGame_3Players() {
         Game testGame = new Game();
@@ -580,9 +606,9 @@ class GameLogicExecutorTest {
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 2);
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that startGame method correctly starts the game
-     */
+     *//*
     @Test
     void startGame_2Players() {
         Game testGame = new Game();
@@ -598,9 +624,9 @@ class GameLogicExecutorTest {
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 1);
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that startGame method correctly starts the game
-     */
+     *//*
     @Test
     void startGame_1Players() {
         Game testGame = new Game();
@@ -609,9 +635,9 @@ class GameLogicExecutorTest {
         assertFalse(testGameLogicExecutor.startGame());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     */
+     *//*
     @Test
     void setChosenCard_FirstPlayer() {
         Game testGame = new Game();
@@ -632,9 +658,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     */
+     *//*
     @Test
     void setChosenCard_LastPlayer() {
         Game testGame = new Game();
@@ -656,9 +682,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.SelectFirstPlayerState, testPlayer2.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     */
+     *//*
     @Test
     void setChosenCard_WrongCard() {
         Game testGame = new Game();
@@ -674,9 +700,9 @@ class GameLogicExecutorTest {
         assertEquals(null, testPlayer1.getCurrentCard());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     */
+     *//*
     @Test
     void setPawnsPositions_OkPositions() {
         Game testGame = new Game();
@@ -701,9 +727,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer2.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     */
+     *//*
     @Test
     void setPawnsPositions_OkPositions_LastPlayer() {
         Game testGame = new Game();
@@ -731,9 +757,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.ActionState, testPlayer2.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     */
+     *//*
     @Test
     void setPawnsPositions_NotOkPositions() {
         Game testGame = new Game();
@@ -748,9 +774,9 @@ class GameLogicExecutorTest {
         assertFalse(testGameLogicExecutor.setPawnsPositions(testPositionArray));
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     */
+     *//*
     @Test
     void setInGameCards_OkCards_2Players() {
         Game testGame = new Game();
@@ -778,9 +804,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     */
+     *//*
     @Test
     void setInGameCards_OkCards_3Players() {
         Game testGame = new Game();
@@ -815,9 +841,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     */
+     *//*
     @Test
     void setInGameCards_NotOkCards() {
         Game testGame = new Game();
@@ -838,9 +864,9 @@ class GameLogicExecutorTest {
         assertTrue(testGame.getInGameCards().size() == 0);
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     */
+     *//*
     @Test
     void setStartPlayer_OtherPlayer() {
         Game testGame = new Game();
@@ -857,9 +883,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     */
+     *//*
     @Test
     void setStartPlayer_SamePlayer() {
         Game testGame = new Game();
@@ -876,9 +902,9 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     */
+     *//*
     @Test
     void setStartPlayer_NotOkPlayer() {
         Game testGame = new Game();
@@ -890,9 +916,9 @@ class GameLogicExecutorTest {
         assertFalse(testGameLogicExecutor.setStartPlayer("testPlayer3"));
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that the set-up phase works as expected
-     */
+     *//*
     @Test
     void setUpGame_3Players() {
         Game testGame = new Game();
@@ -956,9 +982,9 @@ class GameLogicExecutorTest {
         assertEquals(new Position(1, 0), testGame.getPlayer(testGame.getNextPlayer(PlayerStateType.ActionState).getName()).getPawnList().get(0).getPosition());
     }
 
-    /**
+    *//**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
-     */
+     *//*
     @Test
     void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
@@ -991,9 +1017,9 @@ class GameLogicExecutorTest {
 
     //Complete game tests
 
-    /**
+    *//**
      * full simple gamePlay with god 1,2,3 no effects activated
-     */
+     *//*
     @Test void simpleCompleteGameplay(){
         game = new Game();
         gameLogicExecutor = new GameLogicExecutor(game);
@@ -1089,6 +1115,6 @@ class GameLogicExecutorTest {
         assertEquals(PlayerStateType.LoserState,game.getPlayer("Player3").getState().getType());
 
 
-    }
+    }*/
 
 }
