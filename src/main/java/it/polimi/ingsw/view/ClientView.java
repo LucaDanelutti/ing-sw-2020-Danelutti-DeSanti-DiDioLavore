@@ -1,16 +1,24 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.utility.messages.updates.*;
-import it.polimi.ingsw.view.listeners.RequestsListener;
+import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
-import it.polimi.ingsw.view.listeners.UpdatesListener;
 import it.polimi.ingsw.view.modelview.ModelView;
 
-public class ClientView implements RequestsListener, SetsListener, UpdatesListener {
+public class ClientView implements SetsListener, RequestsAndUpdateListener {
     private String name;
     ModelView modelView;
+
+    private ServerConnection serverConnection;
+
+    public ClientView(ServerConnection c) {
+        this.serverConnection = c;
+        c.addListener(this);
+        System.out.println("ClientView created!");
+    }
 
     public String getName() {
         return name;
@@ -152,6 +160,21 @@ public class ClientView implements RequestsListener, SetsListener, UpdatesListen
 
     @Override
     public void update(TurnEndedMessage turnEndedMessage) {
+
+    }
+
+    @Override
+    public void update(YouLostMessage youLostMessage) {
+
+    }
+
+    @Override
+    public void update(YouWonMessage youWonMessage) {
+
+    }
+
+    @Override
+    public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
 
     }
 
