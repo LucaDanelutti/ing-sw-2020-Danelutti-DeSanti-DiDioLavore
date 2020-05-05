@@ -17,11 +17,6 @@ public class SetObservable {
         this.listeners.remove(listener);
     }
 
-    public void notifyListeners(Message message){
-        for(SetsListener l : this.listeners){
-            l.update(message);
-        }
-    }
 
     public void notifyListeners(ChosenCardSetMessage message){
         for(SetsListener l : this.listeners){

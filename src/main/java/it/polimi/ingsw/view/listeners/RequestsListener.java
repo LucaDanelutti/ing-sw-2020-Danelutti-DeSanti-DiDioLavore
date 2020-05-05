@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.listeners;
 import it.polimi.ingsw.utility.messages.*;
 import it.polimi.ingsw.utility.messages.requests.*;
 
-public interface RequestsListener extends Listener {
+public interface RequestsListener {
     void update(NicknameRequestMessage nicknameRequestMessage);
     void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage);
     void update(ChosenCardRequestMessage chosenCardRequestMessage);
