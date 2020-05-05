@@ -21,8 +21,8 @@ class GeneralActionTest {
     @BeforeEach
     void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
-        selectedPawnTester = new Pawn("white");
-        notSelectedPawnTester = new Pawn("white");
+        selectedPawnTester = new Pawn("white",0);
+        notSelectedPawnTester = new Pawn("white",1);
         boardTester = new Board();
     }
 
@@ -53,7 +53,7 @@ class GeneralActionTest {
 
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(1,1));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(2,3));
 
         ArrayList<Position> availableCellsTester = generalActionTester.availableCells(boardTester.getMatrixCopy());

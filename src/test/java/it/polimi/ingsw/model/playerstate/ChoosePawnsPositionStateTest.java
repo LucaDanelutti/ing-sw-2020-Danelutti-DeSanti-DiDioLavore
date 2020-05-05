@@ -10,10 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+/*
 
+*/
 /**
  * This is the test class for ActionState
- */
+ *//*
+
 class ChoosePawnsPositionStateTest {
     Board testBoard;
     ChoosePawnsPositionState testState;
@@ -24,10 +27,12 @@ class ChoosePawnsPositionStateTest {
         testState = new ChoosePawnsPositionState();
     }
 
-    /**
+    */
+/**
      * This test checks whether the availableCells() function of ChoosePawnsPositionState works properly
      * In this test none of the gameboard cells are occupied
-     */
+     *//*
+
     @Test
     void availableCells_AllEmpty() {
         ArrayList<Position> availableCells = new ArrayList<Position>();
@@ -40,10 +45,12 @@ class ChoosePawnsPositionStateTest {
         assertTrue(availableCells.size() == 25);
     }
 
-    /**
+    */
+/**
      * This test checks whether the availableCells() function of ChoosePawnsPositionState works properly
      * In this test all of the gameboard cells are occupied
-     */
+     *//*
+
     @Test
     void availableCells_NoneEmpty() {
         ArrayList<Position> availableCells;
@@ -56,10 +63,12 @@ class ChoosePawnsPositionStateTest {
         assertTrue(availableCells.size() == 0);
     }
 
-    /**
+    */
+/**
      * This test checks whether the availableCells() function of ChoosePawnsPositionState works properly
      * In this test only the first row of the gameboard is full
-     */
+     *//*
+
     @Test
     void availableCells_FirstRowFull() {
         ArrayList<Position> availableCells;
@@ -74,4 +83,4 @@ class ChoosePawnsPositionStateTest {
         }
         assertTrue(availableCells.size() == 20);
     }
-}
+}*/

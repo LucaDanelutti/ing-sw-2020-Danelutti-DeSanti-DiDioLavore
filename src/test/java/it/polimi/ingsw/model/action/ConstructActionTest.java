@@ -21,8 +21,8 @@ class ConstructActionTest {
     @BeforeEach
     void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
-        selectedPawnTester = new Pawn("white");
-        notSelectedPawnTester = new Pawn("white");
+        selectedPawnTester = new Pawn("white",0);
+        notSelectedPawnTester = new Pawn("white",1);
         boardTester = new Board();
     }
 
@@ -248,7 +248,7 @@ class ConstructActionTest {
         ArrayList<BlockType> alwaysAvailableBlockType = new ArrayList<>();
         ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, alwaysAvailableBlockType, false, false, false);
 
-        Pawn selectedPawnTester = new Pawn("white");
+        Pawn selectedPawnTester = new Pawn("white",0);
         selectedPawnTester.setPosition(new Position(1,1));
 
         Board boardTester = new Board();
@@ -277,7 +277,7 @@ class ConstructActionTest {
         alwaysAvailableBlockType.add(BlockType.DOME);
         ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, alwaysAvailableBlockType, false, false, false);
 
-        Pawn selectedPawnTester = new Pawn("white");
+        Pawn selectedPawnTester = new Pawn("white",0);
         selectedPawnTester.setPosition(new Position(1,1));
 
         Board boardTester = new Board();

@@ -16,9 +16,9 @@ class PlayerTest {
      */
     @Test
     void addPawn() {
-        Player testPlayer = new Player("Tester", new HostWaitOtherPlayersState());
+        Player testPlayer = new Player("Tester");
         assertEquals(0, testPlayer.getPawnList().size());
-        Pawn testPawn = new Pawn("ffffff");
+        Pawn testPawn = new Pawn("ffffff",0);
         testPlayer.addPawn(testPawn);
         assertEquals(1, testPlayer.getPawnList().size());
         assertTrue(testPlayer.getPawnList().contains(testPawn));
@@ -29,8 +29,8 @@ class PlayerTest {
      */
     @Test
     void removePawn() {
-        Player testPlayer = new Player("Tester", new HostWaitOtherPlayersState());
-        Pawn testPawn = new Pawn("ffffff");
+        Player testPlayer = new Player("Tester");
+        Pawn testPawn = new Pawn("ffffff",0);
         testPlayer.addPawn(testPawn);
         assertEquals(1, testPlayer.getPawnList().size());
         assertTrue(testPlayer.getPawnList().contains(testPawn));

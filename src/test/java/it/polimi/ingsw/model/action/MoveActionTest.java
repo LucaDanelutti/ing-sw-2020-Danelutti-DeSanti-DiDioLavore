@@ -24,8 +24,8 @@ class MoveActionTest {
     @BeforeEach
     void setUpTests() {
         notAvailableCellsTester = new ArrayList<>();
-        selectedPawnTester = new Pawn("white");
-        notSelectedPawnTester = new Pawn("white");
+        selectedPawnTester = new Pawn("white",0);
+        notSelectedPawnTester = new Pawn("white",1);
         boardTester = new Board();
     }
 
@@ -112,7 +112,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(1,2));
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
@@ -144,7 +144,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(1,2));
 
         boardTester.pawnConstruct(enemyPawn.getPosition(),new Position(1,3), BlockType.DOME);
@@ -205,7 +205,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(0,2));
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
@@ -236,7 +236,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(1,2));
 
         boardTester.pawnConstruct(enemyPawn.getPosition(),new Position(1,3), BlockType.LEVEL1);
@@ -271,7 +271,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(2,1));
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
@@ -302,7 +302,7 @@ class MoveActionTest {
         boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
         boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
 
-        Pawn enemyPawn = new Pawn("grey");
+        Pawn enemyPawn = new Pawn("grey",3);
         boardTester.setPawnPosition(enemyPawn, new Position(2,0));
 
         ArrayList<Position> availableCellsTester = moveActionTester.availableCells(boardTester.getMatrixCopy());
@@ -558,7 +558,7 @@ class MoveActionTest {
     void checkwinMoveDown() {
         MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, false);
         Board boardTester = new Board();
-        Pawn selectedPawnTester = new Pawn("white");
+        Pawn selectedPawnTester = new Pawn("white",0);
         selectedPawnTester.setPosition(new Position(1,2));
 
         moveActionTester.setSelectedPawn(selectedPawnTester);
@@ -575,7 +575,7 @@ class MoveActionTest {
     void checkwinReachedLevel3() {
         MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, false);
         Board boardTester = new Board();
-        Pawn selectedPawnTester = new Pawn("white");
+        Pawn selectedPawnTester = new Pawn("white",0);
         selectedPawnTester.setPosition(new Position(1,2));
 
         boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL1);
@@ -593,7 +593,7 @@ class MoveActionTest {
     void checkwinCheckNoWinIfOnPerimeter() {
         MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, true);
         Board boardTester = new Board();
-        Pawn selectedPawnTester = new Pawn("white");
+        Pawn selectedPawnTester = new Pawn("white",0);
         boardTester.setPawnPosition(selectedPawnTester, new Position(4,2));
 
         boardTester.pawnConstruct(null,new Position(4,2), BlockType.LEVEL1);

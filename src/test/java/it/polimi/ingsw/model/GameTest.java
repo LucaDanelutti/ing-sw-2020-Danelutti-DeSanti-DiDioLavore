@@ -21,12 +21,13 @@ class GameTest {
     @BeforeEach
     void init() {
         testGame = new Game();
-        testPlayer1 = new Player("testPlayer1", new IdleState());
+        testPlayer1 = new Player("testPlayer1");
         testGame.addPlayer(testPlayer1);
-        testPlayer2 = new Player("testPlayer2", new IdleState());
+        testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer2);
-        testPlayer3 = new Player("testPlayer3", new ActionState(new ArrayList<Action>()));
+        testPlayer3 = new Player("testPlayer3");
         testGame.addPlayer(testPlayer3);
+        testGame.setCurrentPlayer(testPlayer3);
     }
 
     /**
@@ -37,7 +38,7 @@ class GameTest {
         testGame.removePlayer(testPlayer1);
         testGame.removePlayer(testPlayer2);
         testGame.removePlayer(testPlayer3);
-        Player localTestPlayer = new Player("localTestPlayer", new HostWaitOtherPlayersState());
+        Player localTestPlayer = new Player("localTestPlayer");
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertTrue(testGame.addPlayer(localTestPlayer));
         assertTrue(testGame.getPlayers().contains(localTestPlayer));
@@ -49,7 +50,7 @@ class GameTest {
     @Test
     void addPlayer_SameName() {
         testGame.removePlayer(testPlayer3);
-        Player localTestPlayer = new Player("testPlayer1", new IdleState());
+        Player localTestPlayer = new Player("testPlayer1");
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertFalse(testGame.addPlayer(localTestPlayer));
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
@@ -60,7 +61,7 @@ class GameTest {
      */
     @Test
     void addPlayer_FullGame() {
-        Player localTestPlayer = new Player("localTestPlayer", new ClientWaitStartState());
+        Player localTestPlayer = new Player("localTestPlayer");
         assertFalse(testGame.getPlayers().contains(localTestPlayer));
         assertThrows(InvalidGameException.class, () -> {testGame.addPlayer(localTestPlayer);});
     }
@@ -80,9 +81,9 @@ class GameTest {
      */
     @Test
     void getNextPlayer_NoNextPlayer_ActionState() {
-        testPlayer1.setState(new LoserState());
-        testPlayer2.setState(new LoserState());
-        assertNull(testGame.getNextPlayer(PlayerStateType.ActionState));
+        testPlayer1.setLoser(true);
+        testPlayer2.setLoser(true);
+        assertFalse(testGame.areThereAnyNonLoserPlayersLeft());
     }
 
     /**
@@ -90,7 +91,7 @@ class GameTest {
      */
     @Test
     void getNextPlayer_3PlayersInGame_PlayerState() {
-        assertSame(testPlayer1, testGame.getNextPlayer(PlayerStateType.ActionState));
+        assertSame(testPlayer1, testGame.getNextPlayer());
     }
 
     /**
@@ -99,67 +100,68 @@ class GameTest {
     @Test
     void getNextPlayer_2PlayersInGame_PlayerState() {
         testGame.removePlayer(testPlayer1);
-        assertSame(testPlayer2, testGame.getNextPlayer(PlayerStateType.ActionState));
+        assertSame(testPlayer2, testGame.getNextPlayer());
     }
+
 
     /**
      * The scope of this test function is to test that getNextPlayer method returns the right player
      */
-    @Test
+    /*@Test
     void getNextPlayer_3PlayersInGame_ChooseCardState() {
         testPlayer3.setState(new ChooseCardState());
         assertSame(testPlayer1, testGame.getNextPlayer(PlayerStateType.ChooseCardState));
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that getNextPlayer method returns the right player
      */
-    @Test
+   /* @Test
     void getNextPlayer_2PlayersInGame_ChooseCardState() {
         testGame.removePlayer(testPlayer1);
         testPlayer3.setState(new ChooseCardState());
         assertSame(testPlayer2, testGame.getNextPlayer(PlayerStateType.ChooseCardState));
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that getNextPlayer method returns the right player
      */
-    @Test
+    /*@Test
     void getNextPlayer_NoCurrentPlayer_PlayerState() {
         testPlayer1.setState(new HostWaitOtherPlayersState());
         testPlayer2.setState(new ClientWaitStartState());
         testPlayer3.setState(new ClientWaitStartState());
-        assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer(PlayerStateType.ActionState);});
-    }
+        assertThrows(InvalidGameException.class, () -> {testGame.getNextPlayer();});
+    }*/
 
     /**
      * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
      */
-    @Test
+   /* @Test
     void getPlayersIn_MultipleIdleState() {
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer1));
         assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer2));
         assertFalse(testGame.getPlayersIn(PlayerStateType.IdleState).contains(testPlayer3));
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
      */
-    @Test
+   /* @Test
     void getPlayersIn_ActionState() {
         assertFalse(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer1));
         assertFalse(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer2));
         assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).contains(testPlayer3));
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that getNextActionStatePlayer method returns the right player
      */
-    @Test
+    /*@Test
     void getPlayersIn_MultipleActionState() {
         testPlayer1.setState(new ActionState(new ArrayList<Action>()));
         assertThrows(InvalidGameException.class, () -> {testGame.getPlayersIn(PlayerStateType.ActionState);});
-    }
+    }*/
 
     /**
      * Usefull only for debugging shufflePlayers
