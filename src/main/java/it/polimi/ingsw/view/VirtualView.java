@@ -9,10 +9,6 @@ public class VirtualView extends Observable {
     private ClientConnection clientConnection;
 
     private class MessageReceiver implements SetsListener {
-
-        @Override
-        public void update(Object o) {}
-
         @Override
         public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {}
 

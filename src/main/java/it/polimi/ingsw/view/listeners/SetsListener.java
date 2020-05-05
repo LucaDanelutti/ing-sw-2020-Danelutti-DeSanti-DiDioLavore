@@ -1,9 +1,8 @@
 package it.polimi.ingsw.view.listeners;
 
-import it.polimi.ingsw.utility.messages.Message;
 import it.polimi.ingsw.utility.messages.sets.*;
 
-public interface SetsListener extends Listener{
+public interface SetsListener {
     void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage);
     void update(ChosenCardSetMessage chosenCardSetMessage);
     void update(ChosenPositionSetMessage chosenPositionSetMessage);

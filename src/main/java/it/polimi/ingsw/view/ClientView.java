@@ -179,10 +179,4 @@ public class ClientView implements SetsListener {
     public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
 
     }
-
-    //TODO: find out whether this method can be removed
-    @Override
-    public void update(Object o) {
-
-    }
 }
