@@ -1,11 +1,15 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
+import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class Client {
     private String ip;
@@ -48,15 +52,18 @@ public class Client {
         return t;
     }
 
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
+    public Thread asyncWriteToSocket(final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (isActive()) {
-                        String inputLine = stdin.nextLine();
-                        socketOut.println(inputLine);
+                    if (isActive()) {
+                        socketOut.reset();
+                        socketOut.writeObject(new ChosenCardSetMessage(new ArrayList<String>(), 1));
                         socketOut.flush();
+                    }
+                    while (isActive()) {
+
                     }
                 }catch(Exception e){
                     setActive(false);
@@ -71,18 +78,16 @@ public class Client {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
+        ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(stdin, socketOut);
+            Thread t1 = asyncWriteToSocket(socketOut);
             t0.join();
             t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
-            stdin.close();
             socketIn.close();
             socketOut.close();
             socket.close();

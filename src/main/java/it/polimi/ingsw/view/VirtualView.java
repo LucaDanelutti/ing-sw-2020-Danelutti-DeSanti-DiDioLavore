@@ -14,11 +14,12 @@ public class VirtualView extends Observable {
         public void update(Object o) {}
 
         @Override
-        public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
-        }
+        public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {}
 
         @Override
-        public void update(ChosenCardSetMessage chosenCardSetMessage) {}
+        public void update(ChosenCardSetMessage chosenCardSetMessage) {
+            clientConnection.asyncSend("ChosenCardSetMessage message received!");
+        }
 
         @Override
         public void update(ChosenPositionSetMessage chosenPositionSetMessage) {}

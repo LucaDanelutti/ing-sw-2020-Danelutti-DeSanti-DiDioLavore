@@ -1,9 +1,13 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.Observable;
+import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
+import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -65,24 +69,34 @@ public class SocketClientConnection extends Observable implements ClientConnecti
         }).start();
     }
 
+    private void deserializeMessage(Object inputObject) {
+        if(inputObject instanceof ChosenCardSetMessage) {
+            ChosenCardSetMessage message = (ChosenCardSetMessage)inputObject;
+            notifyListeners(message);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     @Override
     public void run() {
-        Scanner in;
+        ObjectInputStream in;
         try{
-            in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            String read;
+            in = new ObjectInputStream(socket.getInputStream());
             //name = read;
             //server.lobby(this, name);
             VirtualView player1View = new VirtualView(this);
+            //TODO
             while(isActive()){
-                read = in.nextLine();
-                asyncSend(read);
-                //notify(read);
+                Object inputObject = in.readObject();
+                deserializeMessage(inputObject);
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());
-        }finally{
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error!");
+        } finally {
             close();
         }
     }

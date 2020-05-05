@@ -1,23 +1,31 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.listeners.Listener;
 import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.view.listeners.SetsListener;
 
 import java.util.ArrayList;
 
 public abstract class Observable{
-    ArrayList<Listener> listeners = new ArrayList<>();
+    ArrayList<SetsListener> listeners = new ArrayList<>();
     
-    public void addListener(Listener listener){
+    public void addListener(SetsListener listener){
         this.listeners.add(listener);
     }
 
-    public void removeListener(Listener listener){
+    public void removeListener(SetsListener listener){
         this.listeners.remove(listener);
     }
 
     public void notifyListeners(Message message){
-        for(Listener l : this.listeners){
+        for(SetsListener l : this.listeners){
+            l.update(message);
+        }
+    }
+
+    public void notifyListeners(ChosenCardSetMessage message){
+        for(SetsListener l : this.listeners){
             l.update(message);
         }
     }
