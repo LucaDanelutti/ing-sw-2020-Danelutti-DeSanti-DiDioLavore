@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
-public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor, RequestsAndUpdatesMessageVisitor {
+public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor {
     private Game game;
 
     /**
