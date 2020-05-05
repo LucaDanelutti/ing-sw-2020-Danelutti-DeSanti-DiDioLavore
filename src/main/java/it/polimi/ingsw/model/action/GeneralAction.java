@@ -44,8 +44,10 @@ public class GeneralAction extends Action{
     public void accept(ActionVisitor visitor){
         visitor.executeAction(this);
     }
-    public void acceptForProcess(ActionVisitor visitor){
-        visitor.processAction(this);
+    public void acceptForProcess(){
+        for(ActionVisitor visitor : actionVisitors) {
+            visitor.processAction(this);
+        }
     }
 
     /**

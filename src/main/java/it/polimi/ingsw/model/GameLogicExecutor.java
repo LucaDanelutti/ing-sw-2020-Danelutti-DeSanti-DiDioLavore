@@ -33,13 +33,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
                                             //ACTION PROCESS FUNCTIONS
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
-    public void processAction(MoveAction moveAction){
-        if(moveAction.getChosenPosition()==null) {
+    public void processAction(MoveAction moveAction) {
+        if (moveAction.getChosenPosition() == null) {
             notifyListeners(generateChosenPositionRequest());
-        }
-        else{
+
+        } else {
             executeAction(moveAction);
         }
+
     }
     public void processAction(ConstructAction constructAction){
         if(constructAction.getChosenPosition()==null){
@@ -258,7 +259,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             passTurnToNextPlayer();
         }
         else{
-            game.getCurrentAction().acceptForProcess(this);
+            game.getCurrentAction().acceptForProcess();
         }
     }
     /**
@@ -461,11 +462,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition, Position unselectedPawnPosition){
-        //aggiorna i selectedPawn e i pawn dentro la currentAction
-        game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselectedPawnPosition));
         //load the first action to be executed
         game.setCurrentAction();
-        game.getCurrentAction().acceptForProcess(this);
+        //aggiorna i selectedPawn e i pawn dentro la currentAction
+        game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselectedPawnPosition));
+
         return true;
     }
     /**
@@ -481,8 +482,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      */
     public Boolean setChosenPosition(Position chosenPos){
         //this call activates the execution of the moveAction but for the constructAction we have to ask the user for the selectedBlockType
-        game.getCurrentAction().setChosenPosition(chosenPos);
-        game.getCurrentAction().acceptForProcess(this);
+        if(game.getCurrentAction().getIsOptional()){
+            if(chosenPos==null) {
+                game.getCurrentAction().setChosenPosition(null);
+                game.currentAction.accept(this); //to be executed(skipped) directly
+            }
+            else{
+                game.getCurrentAction().setChosenPosition(chosenPos);
+                game.getCurrentAction().acceptForProcess();
+            }
+        }else{
+            game.getCurrentAction().setChosenPosition(chosenPos);
+            game.getCurrentAction().acceptForProcess();
+        }
+
 
         return true;
     }
@@ -495,7 +508,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      */
     public Boolean setChosenBlockType(BlockType blockType){
         game.getCurrentAction().blockSelected(blockType);
-        game.getCurrentAction().acceptForProcess(this);
+        game.getCurrentAction().acceptForProcess();
         return true;
     }
     /**
@@ -544,6 +557,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * Players will choose a card in ChooseCardState
      */
     public Boolean setInGameCards(ArrayList<Integer> cards){
+        //TODO: add check on player
         if (cards.size() == game.getPlayers().size()) { //Every player must have one and only one card
             ArrayList<Card> inGameCards = new ArrayList<>();
             for (int cardID : cards) {

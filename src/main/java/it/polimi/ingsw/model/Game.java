@@ -243,7 +243,7 @@ class Game {
         inGamePlayers.add(0, player);
     }
 
-    Player getNextPlayer(){
+     Player getNextPlayer(){
         int currentPlayerIndex=inGamePlayers.indexOf(currentPlayer);
         int numberOfPlayers=inGamePlayers.size();
         if(currentPlayerIndex==numberOfPlayers-1){
@@ -254,7 +254,7 @@ class Game {
             return inGamePlayers.get(currentPlayerIndex+1);
         }
     }
-    private Boolean areThereAnyNonLoserPlayersLeft(){
+     Boolean areThereAnyNonLoserPlayersLeft(){
         boolean isSomeoneNonLoser=false;
         for(Player p : inGamePlayers){
             if(!p.getName().equals(currentPlayer.getName())){
@@ -266,7 +266,7 @@ class Game {
         return isSomeoneNonLoser;
     }
 
-    Player getNextNonLoserPlayer() {
+     Player getNextNonLoserPlayer() {
         Boolean isSomeoneNonLoser = areThereAnyNonLoserPlayersLeft();
         if (isSomeoneNonLoser) {
             //c'è qualcuno che effettivamente può essere messo a giocare

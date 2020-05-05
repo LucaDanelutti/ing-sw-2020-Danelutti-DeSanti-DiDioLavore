@@ -56,8 +56,10 @@ public class ConstructAction extends Action {
     public void accept(ActionVisitor actionVisitor){
         actionVisitor.executeAction(this);
     }
-    public void acceptForProcess(ActionVisitor visitor){
-        visitor.processAction(this);
+    public void acceptForProcess(){
+        for(ActionVisitor visitor : actionVisitors) {
+            visitor.processAction(this);
+        }
     }
 
     public Boolean getConstructOnLastBuilt() {

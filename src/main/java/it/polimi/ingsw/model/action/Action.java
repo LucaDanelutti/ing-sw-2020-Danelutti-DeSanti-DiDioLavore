@@ -83,7 +83,7 @@ public abstract class Action {
      * @param actionVisitor the visitor
      */
     public abstract  void accept(ActionVisitor actionVisitor);
-    public abstract  void acceptForProcess(ActionVisitor actionVisitor);
+    public abstract  void acceptForProcess();
 
     public void addVisitor(ActionVisitor actionVisitor){
         this.actionVisitors.add(actionVisitor);

@@ -88,8 +88,10 @@ public class MoveAction extends Action {
         visitor.executeAction(this);
     }
 
-    public void acceptForProcess(ActionVisitor visitor){
-        visitor.processAction(this);
+    public void acceptForProcess(){
+        for(ActionVisitor visitor : actionVisitors) {
+            visitor.processAction(this);
+        }
     }
 
     public void setChosenPosition(Position chosenPosition) {
