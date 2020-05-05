@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.model.Observable;
-import it.polimi.ingsw.utility.messages.Message;
-import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
+import it.polimi.ingsw.model.SetObservable;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -11,9 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-public class SocketClientConnection extends Observable implements ClientConnection, Runnable {
+public class SocketClientConnection extends SetObservable implements ClientConnection, Runnable {
 
     private Socket socket;
     private ObjectOutputStream out;
