@@ -1,13 +1,17 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.SetObservable;
+import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.VirtualView;
+import it.polimi.ingsw.view.modelview.CardView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class SocketClientConnection extends SetObservable implements ClientConnection, Runnable {
@@ -66,7 +70,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         }).start();
     }
 
-    private void deserializeMessage(Object inputObject) {
+    private void handleMessage(Object inputObject) {
         if(inputObject instanceof ChosenCardSetMessage) {
             ChosenCardSetMessage message = (ChosenCardSetMessage)inputObject;
             notifyListeners(message);
@@ -85,9 +89,10 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             //server.lobby(this, name);
             VirtualView player1View = new VirtualView(this);
             //TODO
+            asyncSend(new ChosenCardRequestMessage(new ArrayList<String>(), new ArrayList<CardView>()));
             while(isActive()){
                 Object inputObject = in.readObject();
-                deserializeMessage(inputObject);
+                handleMessage(inputObject);
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());

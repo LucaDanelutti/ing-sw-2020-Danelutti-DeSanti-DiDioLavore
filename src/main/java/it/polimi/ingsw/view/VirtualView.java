@@ -18,7 +18,7 @@ public class VirtualView extends Observable {
 
         @Override
         public void update(ChosenCardSetMessage chosenCardSetMessage) {
-            clientConnection.asyncSend("ChosenCardSetMessage message received!");
+            System.out.println("ChosenCardSetMessage message received!");
         }
 
         @Override
@@ -46,6 +46,6 @@ public class VirtualView extends Observable {
     public VirtualView(ClientConnection c) {
         this.clientConnection = c;
         c.addListener(new MessageReceiver());
-        c.asyncSend("VirtualView created!");
+        System.out.println("VirtualView created!");
     }
 }
