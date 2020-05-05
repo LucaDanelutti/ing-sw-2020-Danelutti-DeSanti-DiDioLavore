@@ -125,7 +125,8 @@ public class Pawn {
                 color.equals(pawn.color) &&
                 Objects.equals(position, pawn.position) &&
                 Objects.equals(previousPosition, pawn.previousPosition) &&
-                Objects.equals(lastBuildPosition, pawn.lastBuildPosition);
+                Objects.equals(lastBuildPosition, pawn.lastBuildPosition)&&
+                Objects.equals(id,pawn.id);
     }
 
     @Override
