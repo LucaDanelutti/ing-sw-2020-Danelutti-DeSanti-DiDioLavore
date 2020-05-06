@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
+import it.polimi.ingsw.utility.messages.sets.NicknameSetMessage;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
 import java.util.ArrayList;
@@ -17,6 +18,12 @@ public class SetObservable {
     }
 
     public void notifyListeners(ChosenCardSetMessage message){
+        for(SetsListener l : this.listeners){
+            l.update(message);
+        }
+    }
+
+    public void notifyListeners(NicknameSetMessage message){
         for(SetsListener l : this.listeners){
             l.update(message);
         }

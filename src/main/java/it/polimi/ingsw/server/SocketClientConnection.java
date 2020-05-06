@@ -1,13 +1,11 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
+import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.utility.messages.SetMessage;
 import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.utility.messages.sets.NicknameSetMessage;
-import it.polimi.ingsw.view.VirtualView;
-import it.polimi.ingsw.view.modelview.CardView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -73,9 +71,9 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     }
 
     private void handleMessage(Object inputObject) {
-        if(inputObject instanceof ChosenCardSetMessage) {
-            ChosenCardSetMessage message = (ChosenCardSetMessage)inputObject;
-            notifyListeners(message);
+        if (inputObject instanceof SetMessage) {
+            SetMessage message = (SetMessage) inputObject;
+            message.accept(this);
         } else {
             throw new IllegalArgumentException();
         }
