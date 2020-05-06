@@ -1,11 +1,12 @@
 package it.polimi.ingsw.utility.messages.sets;
 
-import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.model.SetObservable;
+import it.polimi.ingsw.utility.messages.SetMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class InGameCardsSetMessage extends Message implements Serializable {
+public class InGameCardsSetMessage extends SetMessage implements Serializable {
     private static final long serialVersionUID = 559837490721849033L;
 
     ArrayList<Integer> cardsId=new ArrayList<>();
@@ -13,5 +14,9 @@ public class InGameCardsSetMessage extends Message implements Serializable {
     public InGameCardsSetMessage(ArrayList<String> recipients, ArrayList<Integer> cardsId) {
         super(recipients);
         this.cardsId.addAll(cardsId);
+    }
+
+    public void accept(SetObservable visitor) {
+        visitor.notifyListeners(this);
     }
 }

@@ -1,11 +1,12 @@
 package it.polimi.ingsw.utility.messages.updates;
 
-import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.model.RequestAndUpdateObservable;
+import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerUpdateMessage extends Message implements Serializable {
+public class PlayerUpdateMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = -8015019956390426992L;
 
     String name,color;
@@ -33,5 +34,9 @@ public class PlayerUpdateMessage extends Message implements Serializable {
 
     public int getWorkerId2() {
         return workerId2;
+    }
+
+    public void accept(RequestAndUpdateObservable visitor) {
+        visitor.notifyListeners(this);
     }
 }

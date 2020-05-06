@@ -1,14 +1,14 @@
 package it.polimi.ingsw.utility.messages.updates;
 
 import it.polimi.ingsw.model.Position;
-import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.model.RequestAndUpdateObservable;
+import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 import it.polimi.ingsw.view.modelview.CellView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CellUpdateMessage extends Message implements Serializable {
+public class CellUpdateMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = -7436329154575487370L;
 
     CellView cell;
@@ -26,5 +26,9 @@ public class CellUpdateMessage extends Message implements Serializable {
 
     public Position getPosition() {
         return position;
+    }
+
+    public void accept(RequestAndUpdateObservable visitor) {
+        visitor.notifyListeners(this);
     }
 }

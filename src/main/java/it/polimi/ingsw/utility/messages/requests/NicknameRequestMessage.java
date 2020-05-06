@@ -1,9 +1,7 @@
 package it.polimi.ingsw.utility.messages.requests;
 
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
-import it.polimi.ingsw.utility.messages.Message;
 import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
-import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;

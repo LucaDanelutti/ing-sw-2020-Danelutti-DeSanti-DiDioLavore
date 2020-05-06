@@ -1,12 +1,13 @@
 package it.polimi.ingsw.utility.messages.updates;
 
 import it.polimi.ingsw.model.Position;
-import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.model.RequestAndUpdateObservable;
+import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DoublePawnPositionUpdateMessage extends Message implements Serializable {
+public class DoublePawnPositionUpdateMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = -9037003976306087363L;
 
     int workerId1, workerId2;
@@ -35,5 +36,9 @@ public class DoublePawnPositionUpdateMessage extends Message implements Serializ
 
     public Position getWorkerPos2() {
         return workerPos2;
+    }
+
+    public void accept(RequestAndUpdateObservable visitor) {
+        visitor.notifyListeners(this);
     }
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.utility.messages.sets;
 
-import it.polimi.ingsw.model.RequestAndUpdateObservable;
 import it.polimi.ingsw.model.SetObservable;
 import it.polimi.ingsw.utility.messages.SetMessage;
 
