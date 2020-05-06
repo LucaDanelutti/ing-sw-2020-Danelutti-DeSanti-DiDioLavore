@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Observable;
+import it.polimi.ingsw.model.SetObservable;
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
@@ -8,7 +8,7 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
-public class VirtualView extends Observable implements RequestsAndUpdateListener {
+public class VirtualView extends SetObservable implements RequestsAndUpdateListener {
     private ClientConnection clientConnection;
 
     private class MessageReceiver implements SetsListener {
@@ -17,7 +17,7 @@ public class VirtualView extends Observable implements RequestsAndUpdateListener
 
         @Override
         public void update(ChosenCardSetMessage chosenCardSetMessage) {
-            System.out.println("ChosenCardSetMessage message received!");
+            notifyListeners(chosenCardSetMessage);
         }
 
         @Override

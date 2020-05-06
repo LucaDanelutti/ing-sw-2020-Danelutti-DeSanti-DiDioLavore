@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
@@ -90,7 +91,8 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             Game game = new Game();
             GameLogicExecutor gameLogicExecutor = new GameLogicExecutor(game);
             gameLogicExecutor.addListener(player1View);
-            gameLogicExecutor.startGame();
+            Controller controller = new Controller(gameLogicExecutor);
+            player1View.addListener(controller);
             //TODO
             while(isActive()){
                 Object inputObject = in.readObject();
