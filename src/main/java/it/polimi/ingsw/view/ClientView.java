@@ -8,6 +8,8 @@ import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
 
+import java.util.ArrayList;
+
 public class ClientView implements SetsListener {
     private String name;
     ModelView modelView;
@@ -142,7 +144,7 @@ public class ClientView implements SetsListener {
 
     @Override
     public void update(ChosenCardSetMessage chosenCardSetMessage) {
-
+        serverConnection.asyncSend(chosenCardSetMessage);
     }
 
     @Override

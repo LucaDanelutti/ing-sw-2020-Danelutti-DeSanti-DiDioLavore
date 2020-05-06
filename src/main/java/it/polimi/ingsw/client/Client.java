@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
-import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.utility.messages.updates.GameStartMessage;
 import it.polimi.ingsw.view.ClientView;
 
@@ -82,6 +81,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         return t;
     }
 
+    /* DEPRECATED
     public Thread asyncWriteToSocket(final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -98,12 +98,13 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         t.start();
         return t;
     }
+    */
 
     private void handleMessage(Object inputObject) {
-        if(inputObject instanceof ChosenCardRequestMessage) {
+        if (inputObject instanceof ChosenCardRequestMessage) {
             ChosenCardRequestMessage message = (ChosenCardRequestMessage) inputObject;
             notifyListeners(message);
-        } else if(inputObject instanceof GameStartMessage){
+        } else if (inputObject instanceof GameStartMessage) {
             GameStartMessage message = (GameStartMessage) inputObject;
             notifyListeners(message);
         } else {
@@ -119,10 +120,10 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(out);
+            // DEPRECATED Thread t1 = asyncWriteToSocket(out);
             ClientView clientView = new ClientView(this);
             t0.join();
-            t1.join();
+            // DEPRECATED t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
