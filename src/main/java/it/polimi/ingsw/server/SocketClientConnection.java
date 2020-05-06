@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.SetObservable;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.VirtualView;
@@ -88,8 +87,11 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             //name = read;
             //server.lobby(this, name);
             VirtualView player1View = new VirtualView(this);
+            Game game = new Game();
+            GameLogicExecutor gameLogicExecutor = new GameLogicExecutor(game);
+            gameLogicExecutor.addListener(player1View);
+            gameLogicExecutor.startGame();
             //TODO
-            asyncSend(new ChosenCardRequestMessage(new ArrayList<String>(), new ArrayList<CardView>()));
             while(isActive()){
                 Object inputObject = in.readObject();
                 handleMessage(inputObject);

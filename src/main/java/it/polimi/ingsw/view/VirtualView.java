@@ -2,10 +2,13 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Observable;
 import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
+import it.polimi.ingsw.utility.messages.updates.*;
+import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
-public class VirtualView extends Observable {
+public class VirtualView extends Observable implements RequestsAndUpdateListener {
     private ClientConnection clientConnection;
 
     private class MessageReceiver implements SetsListener {
@@ -43,5 +46,90 @@ public class VirtualView extends Observable {
         this.clientConnection = c;
         c.addListener(new MessageReceiver());
         System.out.println("VirtualView created!");
+    }
+
+    @Override
+    public void update(NicknameRequestMessage nicknameRequestMessage) {
+    }
+
+    @Override
+    public void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage) {
+    }
+
+    @Override
+    public void update(ChosenCardRequestMessage chosenCardRequestMessage) {
+    }
+
+    @Override
+    public void update(ChosenPositionRequestMessage chosenPositionRequestMessage) {
+    }
+
+    @Override
+    public void update(FirstPlayerRequestMessage firstPlayerRequestMessage) {
+    }
+
+    @Override
+    public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
+    }
+
+    @Override
+    public void update(InitialPawnPositionRequestMessage initialPawnPositionRequestMessage) {
+    }
+
+    @Override
+    public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
+    }
+
+    @Override
+    public void update(SelectPawnRequestMessage selectPawnRequestMessage) {
+    }
+
+    @Override
+    public void update(CellUpdateMessage cellUpdateMessage) {
+    }
+
+    @Override
+    public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
+    }
+
+    @Override
+    public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage) {
+    }
+
+    @Override
+    public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage) {
+    }
+
+    @Override
+    public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage) {
+    }
+
+    @Override
+    public void update(PlayerUpdateMessage playerUpdateMessage) {
+    }
+
+    @Override
+    public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
+    }
+
+    @Override
+    public void update(GameStartMessage gameStartMessage) {
+        clientConnection.asyncSend(gameStartMessage);
+    }
+
+    @Override
+    public void update(TurnEndedMessage turnEndedMessage) {
+    }
+
+    @Override
+    public void update(YouLostMessage youLostMessage) {
+    }
+
+    @Override
+    public void update(YouWonMessage youWonMessage) {
+    }
+
+    @Override
+    public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
     }
 }

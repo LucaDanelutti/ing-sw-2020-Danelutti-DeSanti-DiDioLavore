@@ -111,7 +111,7 @@ public class ClientView implements SetsListener {
 
         @Override
         public void update(GameStartMessage gameStartMessage) {
-
+            System.out.println("GameStartMessage message received!");
         }
 
         @Override

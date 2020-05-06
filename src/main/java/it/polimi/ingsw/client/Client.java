@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
+import it.polimi.ingsw.utility.messages.updates.GameStartMessage;
 import it.polimi.ingsw.view.ClientView;
 
 import java.io.IOException;
@@ -100,7 +101,10 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
     private void handleMessage(Object inputObject) {
         if(inputObject instanceof ChosenCardRequestMessage) {
-            ChosenCardRequestMessage message = (ChosenCardRequestMessage)inputObject;
+            ChosenCardRequestMessage message = (ChosenCardRequestMessage) inputObject;
+            notifyListeners(message);
+        } else if(inputObject instanceof GameStartMessage){
+            GameStartMessage message = (GameStartMessage) inputObject;
             notifyListeners(message);
         } else {
             throw new IllegalArgumentException();

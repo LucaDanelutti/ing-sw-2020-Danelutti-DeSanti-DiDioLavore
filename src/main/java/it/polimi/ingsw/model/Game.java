@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * This class represents the game abstraction. The game contains the player list and the board
  */
-class Game {
+public class Game {
     ArrayList<Player> inGamePlayers = new ArrayList<>();
     ArrayList<Card> inGameCards = new ArrayList<>();
     ArrayList<Card> loadedCards = new ArrayList<>();
@@ -149,7 +149,7 @@ class Game {
     /**
      * This is the construct for the class Game
      */
-    Game(){
+    public Game(){
         this.board=new Board();
     }
 
