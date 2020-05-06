@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
+import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
 import it.polimi.ingsw.utility.messages.updates.GameStartMessage;
 import it.polimi.ingsw.view.ClientView;
 
@@ -106,6 +107,9 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
             notifyListeners(message);
         } else if (inputObject instanceof GameStartMessage) {
             GameStartMessage message = (GameStartMessage) inputObject;
+            notifyListeners(message);
+        } else if (inputObject instanceof NicknameRequestMessage) {
+            NicknameRequestMessage message = (NicknameRequestMessage) inputObject;
             notifyListeners(message);
         } else {
             throw new IllegalArgumentException();

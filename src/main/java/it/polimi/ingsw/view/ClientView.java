@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientView implements SetsListener {
     private String name;
@@ -18,7 +19,7 @@ public class ClientView implements SetsListener {
 
     public ClientView(ServerConnection c) {
         this.serverConnection = c;
-        c.addListener(new MessageReceiver());
+        c.addListener(new MessageReceiver(this));
         System.out.println("ClientView created!");
     }
 
@@ -31,9 +32,18 @@ public class ClientView implements SetsListener {
     }
 
     private class MessageReceiver implements RequestsAndUpdateListener {
+        final ClientView clientView;
+
+        public MessageReceiver(ClientView clientView) {
+            this.clientView = clientView;
+        }
+
         @Override
         public void update(NicknameRequestMessage nicknameRequestMessage) {
-
+            System.out.println("What's your name?");
+            Scanner stdin = new Scanner(System.in);
+            String inputLine = stdin.nextLine();
+            clientView.update(new NicknameSetMessage(new ArrayList<>(), inputLine));
         }
 
         @Override
@@ -169,7 +179,7 @@ public class ClientView implements SetsListener {
 
     @Override
     public void update(NicknameSetMessage nicknameSetMessage) {
-
+        serverConnection.asyncSend(nicknameSetMessage);
     }
 
     @Override

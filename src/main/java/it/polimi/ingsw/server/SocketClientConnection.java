@@ -3,7 +3,9 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
+import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
+import it.polimi.ingsw.utility.messages.sets.NicknameSetMessage;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.view.modelview.CardView;
 
@@ -55,9 +57,9 @@ public class SocketClientConnection extends SetObservable implements ClientConne
 
     private void close() {
         closeConnection();
-        //System.out.println("Deregistering client...");
-        //server.deregisterConnection(this);
-        System.out.println("Done!");
+        System.out.print("Removing client... ");
+        server.removeConnection(this);
+        System.out.println("done!");
     }
 
     @Override
@@ -85,14 +87,27 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            //name = read;
+
+            NicknameSetMessage nicknameSetMessage;
+            do {
+                NicknameRequestMessage nicknameRequestMessage = new NicknameRequestMessage(new ArrayList<>());
+                send(nicknameRequestMessage);
+                Object input = in.readObject();
+                if (input instanceof NicknameSetMessage) {
+                    nicknameSetMessage = (NicknameSetMessage) input;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            } while (!server.addConnection(this, nicknameSetMessage.getName()));
+
+            System.out.println("Nickname set!");
             //server.lobby(this, name);
-            VirtualView player1View = new VirtualView(this);
-            Game game = new Game();
-            GameLogicExecutor gameLogicExecutor = new GameLogicExecutor(game);
-            gameLogicExecutor.addListener(player1View);
-            Controller controller = new Controller(gameLogicExecutor);
-            player1View.addListener(controller);
+            //VirtualView player1View = new VirtualView(this);
+            //Game game = new Game();
+            //GameLogicExecutor gameLogicExecutor = new GameLogicExecutor(game);
+            //gameLogicExecutor.addListener(player1View);
+            //Controller controller = new Controller(gameLogicExecutor);
+            //player1View.addListener(controller);
             //TODO
             while(isActive()){
                 Object inputObject = in.readObject();

@@ -14,4 +14,8 @@ public class NicknameSetMessage extends Message implements Serializable {
         super(recipients);
         this.name=name;
     }
+
+    public String getName() {
+        return name;
+    }
 }
