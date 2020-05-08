@@ -34,4 +34,9 @@ public interface UserInterface {
      * @param cellView is the updated object.
      */
     void refreshView(CellView cellView);
+
+    /**
+     * Shows the board screen.
+     */
+    void showMainScene();
 }
