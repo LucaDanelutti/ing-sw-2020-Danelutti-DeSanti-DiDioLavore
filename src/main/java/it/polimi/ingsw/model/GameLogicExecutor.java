@@ -630,9 +630,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the return value of Game method AddPlayer()
      */
     public Boolean addPlayer(String name){
+        game.addPlayer(new Player(name));
         //TODO: this function will accept a list of correct players from the controller
         //TODO: should send all the players in one message to each client
-        notifyListeners(generateGameStart());
+        //notifyListeners(generateGameStart());
         return null;
     }
 
