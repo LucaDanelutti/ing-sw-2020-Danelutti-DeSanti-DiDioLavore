@@ -8,20 +8,16 @@ import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class GUIEngine extends Application implements UserInterface {
 
     private Stage stage;
     private ClientView clientView;
     private GUIController currentController;
-
     private static final String SANTORINI_STAGE_TITLE = "Santorini";
 
     @Override
@@ -30,7 +26,7 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
-        showScene("/fxml/login.fxml");
+        showScene("/fxml/loginScene.fxml", false);
     }
 
     @Override
@@ -38,7 +34,7 @@ public class GUIEngine extends Application implements UserInterface {
         launch();
     }
 
-    public synchronized void showScene(String fxmlResource) {
+    public synchronized void showScene(String fxmlResource, Boolean isFullScreen) {
         if (fxmlResource == null) {
             return;
         }
@@ -48,6 +44,8 @@ public class GUIEngine extends Application implements UserInterface {
             Scene scene = loader.load();
 
             currentController = loader.getController();
+
+            stage.setMaximized(isFullScreen ? true : false);
 
             if (stage != null) {
                 stage.hide();
@@ -89,5 +87,10 @@ public class GUIEngine extends Application implements UserInterface {
     @Override
     public void refreshView(CellView cellView) {
 
+    }
+
+    @Override
+    public void showBoardScreen() {
+        showScene("/fxml/mainScene.fxml", true);
     }
 }
