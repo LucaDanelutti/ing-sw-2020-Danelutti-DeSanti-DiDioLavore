@@ -13,14 +13,26 @@ import java.util.Scanner;
 
 public class ClientView implements SetsListener {
     private String name;
-    ModelView modelView;
-
+    private ModelView modelView;
+    private UserInterface userInterface;
     private ServerConnection serverConnection;
+
+    //TODO: manage properly instantiation of ClientView (it should be created within GUIEngine and CLIEngine once the user selects the UI)
+    public ClientView() {
+        this.name = null;
+        this.modelView = null;
+        this.userInterface = null;
+        this.serverConnection = null;
+    };
 
     public ClientView(ServerConnection c) {
         this.serverConnection = c;
         c.addListener(new MessageReceiver(this));
         System.out.println("ClientView created!");
+    }
+
+    public void setUserInterface(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 
     public String getName() {
