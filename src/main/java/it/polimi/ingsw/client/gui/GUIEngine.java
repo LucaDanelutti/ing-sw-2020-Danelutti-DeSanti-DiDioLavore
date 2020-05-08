@@ -90,7 +90,7 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
     @Override
-    public void showBoardScreen() {
+    public void showMainScene() {
         showScene("/fxml/mainScene.fxml", true);
     }
 }
