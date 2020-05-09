@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.playerstate;
+package it.polimi.ingsw.model;
 
 public class InvalidGameException extends RuntimeException {
     public InvalidGameException(String message) {

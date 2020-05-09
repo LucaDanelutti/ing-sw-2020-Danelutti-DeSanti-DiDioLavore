@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.action.Action;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.playerstate.InvalidGameException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

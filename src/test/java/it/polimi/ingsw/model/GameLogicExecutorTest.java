@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.playerstate.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
