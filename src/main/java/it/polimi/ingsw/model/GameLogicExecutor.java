@@ -450,6 +450,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         recipients.add(game.getCurrentPlayer().getName());
         return new InitialPawnPositionRequestMessage(recipients, game.getBoard().availablePositionsForPawnInitialPlacement());
     }
+    private NumberOfPlayersRequestMessage generateNumberOfPlayersRequest(){
+        ArrayList<String> recipients = new ArrayList<>();
+        recipients.add(this.lobby.get(0));
+        return new NumberOfPlayersRequestMessage(recipients);
+    }
+
     private SelectedPawnUpdateMessage generateSelectedPawnUpdate(Position selectedPawnPosition){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -695,12 +701,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             notifyListeners(generateChosenCardUpdate(card));
 
             //Pass turn
-            Player nextPlayer = game.getNextPlayer();
             if (game.getAvailableCards().size() == 0) {
                 //All cards are linked to a player
                 notifyListeners(generateFirstPlayerRequest());
             } else {
                 //next one should select its card
+                Player nextPlayer = game.getNextPlayer();
                 game.setCurrentPlayer(nextPlayer);
                 notifyListeners(generateChosenCardRequest());
             }
@@ -735,6 +741,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
     public Boolean addPlayerToLobby(String name){
         this.lobby.add(name);
+        if(this.lobby.size()==1){
+            notifyListeners(generateNumberOfPlayersRequest());
+        }
         if(this.lobby.size()>=numberOfPlayers && numberOfPlayers>1){
             startGame();
         }

@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class ChosenCardRequestMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = -4196349432013669336L;
 
+    public ArrayList<CardView> getAvailableCards() {
+        return availableCards;
+    }
+
     ArrayList<CardView> availableCards=new ArrayList<>();
 
     public ChosenCardRequestMessage(ArrayList<String> recipients, ArrayList<CardView> availableCards) {
