@@ -509,10 +509,10 @@ class GameLogicExecutorTest {
     //Setup tests
 
 
-    /*
-    *//**
+
+    /**
      * The test checks that after the selection of the pawn for the current turn each variable is set correctly in the player state and the action to be executed.
-     *//*
+     */
     @Test void setSelectedPawnTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Position selectedPawn= game.getPlayer("ian").getPawnList().get(0).getPosition();
@@ -522,21 +522,20 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setSelectedPawn(selectedPawn,notSelectedPawn);
 
         // we should check that the first action is actually loaded
-        ActionState actionState = (ActionState) game.getPlayer("ian").getState();
-        assertEquals(basicMove,actionState.getCurrentAction());
+        assertEquals(basicMove,game.getCurrentAction());
 
         //we should check that the pawns are set correctly both in the loaded action and in ActionState
-        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getCurrentAction().getSelectedPawn());
-        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getCurrentAction().getNotSelectedPawn());
-        assertEquals(game.getPlayer("ian").getPawnList().get(0),actionState.getSelectedPawnCopy());
-        assertEquals(game.getPlayer("ian").getPawnList().get(1),actionState.getUnselectedPawnCopy());
+        assertEquals(game.getPlayer("ian").getPawnList().get(0),game.getCurrentAction().getSelectedPawn());
+        assertEquals(game.getPlayer("ian").getPawnList().get(1),game.getCurrentAction().getNotSelectedPawn());
+        assertEquals(game.getPlayer("ian").getPawnList().get(0),game.getSelectedPawnCopy());
+        assertEquals(game.getPlayer("ian").getPawnList().get(1),game.getUnselectedPawnCopy());
 
 
     }
 
-    *//**
+    /**
      * The test checks that after a player has finished all of its actions, it is placed in idle and the next player is loaded
-     *//*
+     */
     @Test void loadNextPlayer(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
@@ -549,48 +548,36 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
 
         //so here we should have that luca is in actionState and ian is in idle state, riccardo too.
-        assertEquals(PlayerStateType.ActionState,game.getPlayer("luca").getState().getType());
-        assertEquals(PlayerStateType.IdleState,game.getPlayer("ian").getState().getType());
-        assertEquals(PlayerStateType.IdleState,game.getPlayer("riccardo").getState().getType());
-
-        //let's check that luca has the correct action loaded in his ActionState
-        ActionState actionState = (ActionState) game.getPlayer("luca").getState();
-        assertEquals(game.getPlayer("luca").getCurrentCard().getCurrentActionList(),actionState.getActionListCopy());
-
+        assertEquals("luca",game.getCurrentPlayer().getName());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the right state
-     *//*
-    @Test
-    void addPlayer_FirstPlayer() {
+     */
+    @Test void addPlayer_FirstPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        assertTrue(testGame.getPlayers().size() == 0);
-        assertTrue(testGameLogicExecutor.addPlayer("testPlayer1"));
-        assertTrue(testGame.getPlayers().size() == 1);
-        assertTrue(testGame.getPlayer("testPlayer1").getState().getType() == PlayerStateType.HostWaitOtherPlayersState);
+        assertEquals(0, testGame.getPlayers().size());
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        assertEquals(1, testGame.getPlayers().size());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
-     *//*
-    @Test
-    void addPlayer_NotFirstPlayer() {
+     */
+    @Test void addPlayer_NotFirstPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
-        assertTrue(testGame.getPlayers().size() == 1);
-        assertTrue(testGameLogicExecutor.addPlayer("testPlayer2"));
-        assertTrue(testGame.getPlayers().size() == 2);
-        assertTrue(testGame.getPlayer("testPlayer2").getState().getType() == PlayerStateType.ClientWaitStartState);
+        assertEquals(1, testGame.getPlayers().size());
+        testGameLogicExecutor.addPlayer("testPlayer2");
+        assertEquals(2, testGame.getPlayers().size());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that startGame method correctly starts the game
-     *//*
-    @Test
-    void startGame_3Players() {
+     */
+    @Test void startGame_3Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
@@ -600,17 +587,15 @@ class GameLogicExecutorTest {
         testNameArrays.add("testPlayer1");
         testNameArrays.add("testPlayer2");
         testNameArrays.add("testPlayer3");
-        assertTrue(testGameLogicExecutor.startGame());
-        assertTrue(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).size() == 1);
-        assertTrue(testNameArrays.contains(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).get(0).getName()));
-        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 2);
+        testGameLogicExecutor.startGame();
+        assertNotNull(testGame.getCurrentPlayer());
+        assertTrue(testNameArrays.contains(testGame.getCurrentPlayer().getName()));
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that startGame method correctly starts the game
-     *//*
-    @Test
-    void startGame_2Players() {
+     */
+    @Test void startGame_2Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
@@ -618,155 +603,132 @@ class GameLogicExecutorTest {
         ArrayList<String> testNameArrays = new ArrayList<>();
         testNameArrays.add("testPlayer1");
         testNameArrays.add("testPlayer2");
+
+        //TODO: startGame should set the current player
         assertTrue(testGameLogicExecutor.startGame());
-        assertTrue(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).size() == 1);
-        assertTrue(testNameArrays.contains(testGame.getPlayersIn(PlayerStateType.SelectGameCardsState).get(0).getName()));
-        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 1);
+        assertNotNull(testGame.getCurrentPlayer());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that startGame method correctly starts the game
-     *//*
-    @Test
-    void startGame_1Players() {
+     */
+    @Test void startGame_1Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertFalse(testGameLogicExecutor.startGame());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     *//*
-    @Test
-    void setChosenCard_FirstPlayer() {
+     */
+    @Test void setChosenCard_FirstPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
-        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
-        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         ArrayList<Card> testCardList = new ArrayList<>();
         testCardList.add(testCard1);
         testCardList.add(testCard2);
+
+        testGame.setCurrentPlayer(testPlayer1);
         testGame.setInGameCardsCopy(testCardList);
-        assertTrue(testGameLogicExecutor.setChosenCard(1));
+        testGameLogicExecutor.setChosenCard(1);
+
         assertEquals(testCard1, testPlayer1.getCurrentCard());
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
+        assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     *//*
-    @Test
-    void setChosenCard_LastPlayer() {
+     */
+    @Test void setChosenCard_LastPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
-        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
-        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         ArrayList<Card> testCardList = new ArrayList<>();
         testCardList.add(testCard1);
         testCardList.add(testCard2);
+
+        testGame.setCurrentPlayer(testPlayer1);
         testGame.setInGameCardsCopy(testCardList);
-        assertTrue(testGameLogicExecutor.setChosenCard(1));
-        assertTrue(testGameLogicExecutor.setChosenCard(2));
+
+        testGameLogicExecutor.setChosenCard(1);
+        testGameLogicExecutor.setChosenCard(2);
+
         assertEquals(testCard2, testPlayer2.getCurrentCard());
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.SelectFirstPlayerState, testPlayer2.getState().getType());
+        assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
-     *//*
-    @Test
-    void setChosenCard_WrongCard() {
+     */
+    //TODO: add this function
+    /*@Test void setChosenCard_WrongCard() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChooseCardState());
+        Player testPlayer1 = new Player("testPlayer1");
         testGame.addPlayer(testPlayer1);
+
         Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
         ArrayList<Card> testCardList = new ArrayList<>();
         testCardList.add(testCard1);
+
         testGame.setInGameCardsCopy(testCardList);
-        Card testCard2 = new Card("testCard2", 2, new ArrayList<Action>());
+        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         assertFalse(testGameLogicExecutor.setChosenCard(2));
-        assertEquals(null, testPlayer1.getCurrentCard());
-    }
+        assertNull(testPlayer1.getCurrentCard());
+    }*/
 
-    *//**
+    /**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     *//*
-    @Test
-    void setPawnsPositions_OkPositions() {
+     */
+    @Test void setPawnsPositions_OkPositions() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
-        testPlayer1.addPawn(new Pawn("990000"));
-        testPlayer1.addPawn(new Pawn("990000"));
-        testPlayer2.addPawn(new Pawn("009900"));
-        testPlayer2.addPawn(new Pawn("009900"));
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
+        testPlayer1.addPawn(new Pawn("990000",0));
+        testPlayer1.addPawn(new Pawn("990000",1));
+        testPlayer2.addPawn(new Pawn("009900",2));
+        testPlayer2.addPawn(new Pawn("009900",3));
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         ArrayList<Position> testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(0, 0));
         testPositionArray.add(new Position(1, 1));
-        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+
         assertEquals(new Position(0, 0), testPlayer1.getPawnList().get(0).getPosition());
         assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
         assertEquals(new Position(0, 0), testGame.getBoard().getMatrixCopy()[0][0].getPawn().getPosition());
         assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer2.getState().getType());
+        assertEquals(testPlayer2.getName(),testGame.getCurrentPlayer().getName());
     }
 
-    *//**
-     * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     *//*
-    @Test
-    void setPawnsPositions_OkPositions_LastPlayer() {
-        Game testGame = new Game();
-        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
-        testPlayer2.setCurrentCard(new Card("testCard1", 1, new ArrayList<>()));
-        testPlayer1.addPawn(new Pawn("990000"));
-        testPlayer1.addPawn(new Pawn("990000"));
-        testPlayer2.addPawn(new Pawn("009900"));
-        testPlayer2.addPawn(new Pawn("009900"));
-        testPlayer2.getPawnList().get(0).setPosition(new Position(4,5));
-        testPlayer2.getPawnList().get(1).setPosition(new Position(5,5));
-        testGame.addPlayer(testPlayer1);
-        testGame.addPlayer(testPlayer2);
-        ArrayList<Position> testPositionArray = new ArrayList<>();
-        testPositionArray.add(new Position(0, 0));
-        testPositionArray.add(new Position(1, 1));
-        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
-        assertEquals(new Position(0, 0), testPlayer1.getPawnList().get(0).getPosition());
-        assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
-        assertEquals(new Position(0, 0), testGame.getBoard().getMatrixCopy()[0][0].getPawn().getPosition());
-        assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ActionState, testPlayer2.getState().getType());
-    }
 
-    *//**
+    /**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
-     *//*
-    @Test
-    void setPawnsPositions_NotOkPositions() {
+     */
+    @Test void setPawnsPositions_NotOkPositions() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new ChoosePawnsPositionState());
-        testPlayer1.addPawn(new Pawn("990000"));
-        testPlayer1.addPawn(new Pawn("990000"));
+        Player testPlayer1 = new Player("testPlayer1");
+        testPlayer1.addPawn(new Pawn("990000",0));
+        testPlayer1.addPawn(new Pawn("990000",1));
         testGame.addPlayer(testPlayer1);
         ArrayList<Position> testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(0, 0));
@@ -774,15 +736,14 @@ class GameLogicExecutorTest {
         assertFalse(testGameLogicExecutor.setPawnsPositions(testPositionArray));
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     *//*
-    @Test
-    void setInGameCards_OkCards_2Players() {
+     */
+    @Test void setInGameCards_OkCards_2Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         ArrayList<Card> testCardArray = new ArrayList<>();
@@ -796,24 +757,25 @@ class GameLogicExecutorTest {
         ArrayList<Integer> testCardIDArray = new ArrayList<>();
         testCardIDArray.add(1);
         testCardIDArray.add(2);
-        assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
-        assertTrue(testGame.getInGameCards().size() == 2);
+
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setInGameCards(testCardIDArray);
+
+        assertEquals(2, testGame.getInGameCards().size());
         assertEquals(testCard1, testGame.getInGameCards().get(0));
         assertEquals(testCard2, testGame.getInGameCards().get(1));
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
+        assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     *//*
-    @Test
-    void setInGameCards_OkCards_3Players() {
+     */
+    @Test void setInGameCards_OkCards_3Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
-        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
+        Player testPlayer3 = new Player("testPlayer3");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         testGame.addPlayer(testPlayer3);
@@ -826,30 +788,33 @@ class GameLogicExecutorTest {
         testCardArray.add(testCard2);
         testCardArray.add(testCard3);
         testCardArray.add(testCard4);
+
         testGame.setLoadedCardsCopy(testCardArray);
+
         ArrayList<Integer> testCardIDArray = new ArrayList<>();
         testCardIDArray.add(2);
         testCardIDArray.add(3);
         testCardIDArray.add(4);
-        assertTrue(testGameLogicExecutor.setInGameCards(testCardIDArray));
-        assertTrue(testGame.getInGameCards().size() == 3);
+
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setInGameCards(testCardIDArray);
+
+        assertEquals(3, testGame.getInGameCards().size());
         assertEquals(testCard2, testGame.getInGameCards().get(0));
         assertEquals(testCard3, testGame.getInGameCards().get(1));
         assertEquals(testCard4, testGame.getInGameCards().get(2));
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ChooseCardState, testPlayer2.getState().getType());
-        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+        assertEquals(testPlayer2, testGame.getCurrentPlayer());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
-     *//*
-    @Test
-    void setInGameCards_NotOkCards() {
+     */
+    /*@Test void setInGameCards_NotOkCards() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectGameCardsState());
+        Player testPlayer1 = new Player("testPlayer1");
         testGame.addPlayer(testPlayer1);
+        testGame.setCurrentPlayer(testPlayer1);
         ArrayList<Card> testCardArray = new ArrayList<>();
         Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
         Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
@@ -862,65 +827,64 @@ class GameLogicExecutorTest {
         testCardIDArray.add(5);
         assertFalse(testGameLogicExecutor.setInGameCards(testCardIDArray));
         assertTrue(testGame.getInGameCards().size() == 0);
-    }
+    }*/
 
-    *//**
+    /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     *//*
-    @Test
-    void setStartPlayer_OtherPlayer() {
+     */
+    @Test void setStartPlayer_OtherPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
-        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
+        Player testPlayer3 = new Player("testPlayer3");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         testGame.addPlayer(testPlayer3);
-        assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer2"));
-        assertEquals(PlayerStateType.IdleState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer2.getState().getType());
-        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setStartPlayer("testPlayer2");
+
+        assertEquals(testPlayer2, testGame.getCurrentPlayer());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     *//*
-    @Test
-    void setStartPlayer_SamePlayer() {
+     */
+    @Test void setStartPlayer_SamePlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
-        Player testPlayer3 = new Player("testPlayer3", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
+        Player testPlayer3 = new Player("testPlayer3");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         testGame.addPlayer(testPlayer3);
-        assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer1"));
-        assertEquals(PlayerStateType.ChoosePawnsPositionState, testPlayer1.getState().getType());
-        assertEquals(PlayerStateType.IdleState, testPlayer2.getState().getType());
-        assertEquals(PlayerStateType.IdleState, testPlayer3.getState().getType());
+
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setStartPlayer("testPlayer1");
+        assertEquals(testPlayer1,testGame.getCurrentPlayer());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
-     *//*
-    @Test
-    void setStartPlayer_NotOkPlayer() {
+     */
+    //TODO: check other functions too
+    /*@Test void setStartPlayer_NotOkPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1", new SelectFirstPlayerState());
-        Player testPlayer2 = new Player("testPlayer2", new IdleState());
+        Player testPlayer1 = new Player("testPlayer1");
+        Player testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
-        assertFalse(testGameLogicExecutor.setStartPlayer("testPlayer3"));
-    }
+        testGame.setCurrentPlayer(testPlayer1);
+        testGameLogicExecutor.setStartPlayer("testPlayer3");
+    }*/
 
-    *//**
+    /**
      * The scope of this test function is to test that the set-up phase works as expected
-     *//*
-    @Test
-    void setUpGame_3Players() {
+     */
+    @Test void setUpGame_3Players() {
         Game testGame = new Game();
 
         //Load cards
@@ -931,14 +895,15 @@ class GameLogicExecutorTest {
         testCardArray.add(testCard1);
         testCardArray.add(testCard2);
         testCardArray.add(testCard3);
+
         testGame.setLoadedCardsCopy(testCardArray);
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        //Load cards end
 
-        assertTrue(testGameLogicExecutor.addPlayer("testPlayer1"));
-        assertTrue(testGameLogicExecutor.addPlayer("testPlayer2"));
-        assertTrue(testGameLogicExecutor.addPlayer("testPlayer3"));
-        assertTrue(testGameLogicExecutor.startGame());
+        testGameLogicExecutor.addPlayer("testPlayer1");
+        testGameLogicExecutor.addPlayer("testPlayer2");
+        testGameLogicExecutor.addPlayer("testPlayer3");
+        testGameLogicExecutor.startGame();
+
 
         Player godLikePlayer = testGame.getPlayers().get(0);
         Player testPlayer = testGame.getPlayers().get(1);
@@ -957,34 +922,29 @@ class GameLogicExecutorTest {
         ArrayList<Position> testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(0, 0));
         testPositionArray.add(new Position(0, 1));
-        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+
         testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(1, 0));
         testPositionArray.add(new Position(1, 1));
-        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+
         testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(2, 0));
         testPositionArray.add(new Position(2, 1));
-        assertTrue(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        testGameLogicExecutor.setPawnsPositions(testPositionArray);
 
-        assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).size() == 1);
-        assertTrue(testGame.getPlayersIn(PlayerStateType.ActionState).get(0).getName() == "testPlayer1");
-        assertTrue(testGame.getPlayersIn(PlayerStateType.IdleState).size() == 2);
 
         assertEquals(testCard1, testPlayer.getCurrentCard());
         assertEquals(testCard2, testPlayerBis.getCurrentCard());
         assertEquals(testCard3, godLikePlayer.getCurrentCard());
 
         assertEquals(new Position(0, 0), testGame.getPlayer("testPlayer1").getPawnList().get(0).getPosition());
-        assertEquals(new Position(0, 0), testGame.getPlayer("testPlayer1").getPawnList().get(0).getPosition());
-
-        assertEquals(new Position(1, 0), testGame.getPlayer(testGame.getNextPlayer(PlayerStateType.ActionState).getName()).getPawnList().get(0).getPosition());
-        assertEquals(new Position(1, 0), testGame.getPlayer(testGame.getNextPlayer(PlayerStateType.ActionState).getName()).getPawnList().get(0).getPosition());
     }
 
-    *//**
+    /**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
-     *//*
+     */
     @Test
     void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
@@ -1017,9 +977,9 @@ class GameLogicExecutorTest {
 
     //Complete game tests
 
-    *//**
+    /**
      * full simple gamePlay with god 1,2,3 no effects activated
-     *//*
+     */
     @Test void simpleCompleteGameplay(){
         game = new Game();
         gameLogicExecutor = new GameLogicExecutor(game);
@@ -1038,14 +998,14 @@ class GameLogicExecutorTest {
 
 
         gameLogicExecutor.addPlayer("Player1");
-        game.getPlayers().get(0).addPawn(new Pawn("Blue"));
-        game.getPlayers().get(0).addPawn(new Pawn("Blue"));
+        game.getPlayers().get(0).addPawn(new Pawn("Blue",0));
+        game.getPlayers().get(0).addPawn(new Pawn("Blue",1));
         gameLogicExecutor.addPlayer("Player2");
-        game.getPlayers().get(1).addPawn(new Pawn("White"));
-        game.getPlayers().get(1).addPawn(new Pawn("White"));
+        game.getPlayers().get(1).addPawn(new Pawn("White",2));
+        game.getPlayers().get(1).addPawn(new Pawn("White",3));
         gameLogicExecutor.addPlayer("Player3");
-        game.getPlayers().get(2).addPawn(new Pawn("Brown"));
-        game.getPlayers().get(2).addPawn(new Pawn("Brown"));
+        game.getPlayers().get(2).addPawn(new Pawn("Brown",4));
+        game.getPlayers().get(2).addPawn(new Pawn("Brown",5));
 
         gameLogicExecutor.loadCards();
 
@@ -1053,9 +1013,7 @@ class GameLogicExecutorTest {
         game.getPlayers().get(1).setCurrentCard(game.getLoadedCardCopy(2)); //ARTEMIS
         game.getPlayers().get(2).setCurrentCard(game.getLoadedCardCopy(3)); //ATHENA
 
-        game.getPlayers().get(0).setState(new ChoosePawnsPositionState());
-        game.getPlayers().get(1).setState(new IdleState());
-        game.getPlayers().get(2).setState(new IdleState());
+        game.setCurrentPlayer(game.getPlayers().get(0));
 
         gameLogicExecutor.setPawnsPositions(positions1);
         gameLogicExecutor.setPawnsPositions(positions2);
@@ -1071,13 +1029,13 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(1,1)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn1 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,1)); //move
         gameLogicExecutor.setChosenPosition(null); //optionalMove
         gameLogicExecutor.setChosenPosition(new Position(1,2));//construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player3 Turn1 Athena
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player3").getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,3)); //move
         gameLogicExecutor.setChosenPosition(new Position(1,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
@@ -1089,13 +1047,13 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn2 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,2)); //move
         gameLogicExecutor.setChosenPosition(null); //optionalMove
         gameLogicExecutor.setChosenPosition(new Position(2,2));//construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
         //Player3 Turn2 Athena
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player3").getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(2,3)); //move
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL3);
@@ -1107,14 +1065,14 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(0,4)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn3 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
 
-        assertEquals(PlayerStateType.WinnerState,game.getPlayer("Player2").getState().getType());
-        assertEquals(PlayerStateType.LoserState,game.getPlayer("Player1").getState().getType());
-        assertEquals(PlayerStateType.LoserState,game.getPlayer("Player3").getState().getType());
+        assertEquals(true,game.getPlayer("Player2").getWinner());
+        assertEquals(true,game.getPlayer("Player1").getLoser());
+        assertEquals(true,game.getPlayer("Player3").getLoser());
 
 
-    }*/
+    }
 
 }
