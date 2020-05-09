@@ -11,8 +11,8 @@ public class NicknameSetMessage extends SetMessage implements Serializable {
 
     String name;
 
-    public NicknameSetMessage(ArrayList<String> recipients,String name) {
-        super(recipients);
+    public NicknameSetMessage(String sender,String name) {
+        super(sender);
         this.name=name;
     }
 

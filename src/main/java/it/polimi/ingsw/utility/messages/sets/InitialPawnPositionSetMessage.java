@@ -13,8 +13,8 @@ public class InitialPawnPositionSetMessage extends SetMessage implements Seriali
     int workerId1,workerId2;
     Position workerPos1, workerPos2;
 
-    public InitialPawnPositionSetMessage(ArrayList<String> recipients, int workerId1, int workerId2, Position workerPos1, Position workerPos2) {
-        super(recipients);
+    public InitialPawnPositionSetMessage(String sender, int workerId1, int workerId2, Position workerPos1, Position workerPos2) {
+        super(sender);
         this.workerId1 = workerId1;
         this.workerId2 = workerId2;
         this.workerPos1 = workerPos1;

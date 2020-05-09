@@ -11,8 +11,8 @@ public class FirstPlayerSetMessage extends SetMessage implements Serializable {
 
     String name;
 
-    public FirstPlayerSetMessage(ArrayList<String> recipients, String name) {
-        super(recipients);
+    public FirstPlayerSetMessage(String sender, String name) {
+        super(sender);
         this.name=name;
     }
 

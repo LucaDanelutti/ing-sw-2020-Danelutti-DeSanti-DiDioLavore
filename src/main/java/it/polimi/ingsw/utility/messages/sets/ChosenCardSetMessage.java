@@ -11,8 +11,8 @@ public class ChosenCardSetMessage extends SetMessage implements Serializable {
 
     int cardId;
 
-    public ChosenCardSetMessage(ArrayList<String> recipients, int cardId) {
-        super(recipients);
+    public ChosenCardSetMessage(String sender, int cardId) {
+        super(sender);
         this.cardId=cardId;
     }
 

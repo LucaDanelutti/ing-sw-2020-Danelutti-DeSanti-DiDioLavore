@@ -12,8 +12,8 @@ public class ChosenPositionSetMessage extends SetMessage implements Serializable
 
     Position workerPos;
 
-    public ChosenPositionSetMessage(ArrayList<String> recipients, Position workerPos) {
-        super(recipients);
+    public ChosenPositionSetMessage(String sender, Position workerPos) {
+        super(sender);
         this.workerPos=workerPos;
     }
 
