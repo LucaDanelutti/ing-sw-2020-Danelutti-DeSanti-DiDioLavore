@@ -91,11 +91,7 @@ public class RequestAndUpdateObservable {
             l.update(m);
         }
     }
-    public void notifyListeners(PlayerUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
-        }
-    }
+
     public void notifyListeners(SelectedPawnUpdateMessage m) {
         for(RequestsAndUpdateListener l : this.listeners){
             l.update(m);
@@ -126,6 +122,12 @@ public class RequestAndUpdateObservable {
             l.update(m);
         }
     }
+    public void notifyListeners(gameStartedAndYouAreNotSelectedMessage m) {
+        for(RequestsAndUpdateListener l : this.listeners){
+            l.update(m);
+        }
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 

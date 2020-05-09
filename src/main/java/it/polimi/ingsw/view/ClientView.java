@@ -7,6 +7,7 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
+import it.polimi.ingsw.view.modelview.PlayerView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -55,7 +56,7 @@ public class ClientView implements SetsListener {
             System.out.println("What's your name?");
             Scanner stdin = new Scanner(System.in);
             String inputLine = stdin.nextLine();
-            clientView.update(new NicknameSetMessage(new ArrayList<>(), inputLine));
+            clientView.update(new NicknameSetMessage(inputLine, inputLine));
         }
 
         @Override
@@ -123,10 +124,6 @@ public class ClientView implements SetsListener {
             modelView.onPawnRemoved(pawnRemoveUpdateMessage.getWorkerId());
         }
 
-        @Override
-        public void update(PlayerUpdateMessage playerUpdateMessage) {
-            modelView.onPlayerUpdate(playerUpdateMessage.getName(), playerUpdateMessage.getColor(), playerUpdateMessage.getWorkerId1(), playerUpdateMessage.getWorkerId2());
-        }
 
         @Override
         public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
@@ -135,6 +132,9 @@ public class ClientView implements SetsListener {
 
         @Override
         public void update(GameStartMessage gameStartMessage) {
+            for(PlayerView p : gameStartMessage.getInGamePlayers()){
+                modelView.onPlayerUpdate(p.getName(), p.getPawnList().get(0).getColor(), p.getPawnList().get(0).getId(), p.getPawnList().get(1).getId());
+            }
             System.out.println("GameStartMessage message received!");
         }
 
@@ -151,6 +151,10 @@ public class ClientView implements SetsListener {
         @Override
         public void update(YouWonMessage youWonMessage) {
 
+        }
+
+        @Override
+        public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
         }
 
         @Override

@@ -104,9 +104,6 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage) {
     }
 
-    @Override
-    public void update(PlayerUpdateMessage playerUpdateMessage) {
-    }
 
     @Override
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
@@ -127,6 +124,10 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
 
     @Override
     public void update(YouWonMessage youWonMessage) {
+    }
+
+    @Override
+    public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
     }
 
     @Override

@@ -18,7 +18,6 @@ public interface RequestsAndUpdateListener{
     void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage);
     void update(PawnPositionUpdateMessage pawnPositionUpdateMessage);
     void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage);
-    void update(PlayerUpdateMessage playerUpdateMessage);
     void update (SelectedPawnUpdateMessage selectedPawnUpdateMessage);
 
 
@@ -27,5 +26,6 @@ public interface RequestsAndUpdateListener{
     void update(YouLostMessage youLostMessage);
     void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage);
     void update(YouWonMessage youWonMessage);
+    void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage);
 
 }
