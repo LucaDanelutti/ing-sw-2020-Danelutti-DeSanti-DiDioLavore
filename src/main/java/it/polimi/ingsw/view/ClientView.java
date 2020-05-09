@@ -100,7 +100,7 @@ public class ClientView implements SetsListener {
 
         @Override
         public void update(CellUpdateMessage cellUpdateMessage) {
-            modelView.onCellUpdate(cellUpdateMessage.getPosition(), cellUpdateMessage.getCell());
+            modelView.onCellUpdate(cellUpdateMessage.getPosition(), cellUpdateMessage.getBlockType());
         }
 
         @Override

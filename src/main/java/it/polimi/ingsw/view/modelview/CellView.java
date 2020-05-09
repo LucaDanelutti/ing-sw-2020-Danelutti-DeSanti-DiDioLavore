@@ -12,6 +12,9 @@ public class CellView {
         this.blockStack.push(BlockType.TERRAIN);
     }
 
+    public void addBlock(BlockType blockType){
+        blockStack.add(blockType);
+    }
     public int getSize(){
         return this.blockStack.size();
     }

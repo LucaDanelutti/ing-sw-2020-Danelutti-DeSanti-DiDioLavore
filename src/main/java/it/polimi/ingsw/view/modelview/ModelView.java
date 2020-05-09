@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.modelview;
 
 import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.BlockType;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,8 @@ public class ModelView {
         }
     }
 
-    public void onCellUpdate(Position cellPosition, CellView changedCell) {
-        matrix[cellPosition.getX()][cellPosition.getY()] = changedCell;
+    public void onCellUpdate(Position cellPosition, BlockType newBlock) {
+        matrix[cellPosition.getX()][cellPosition.getY()].addBlock(newBlock);
     }
 
     public void onDoublePawnPositionUpdate(int pawnId1, Position pawnPos1, int pawnId2, Position pawnPos2) {

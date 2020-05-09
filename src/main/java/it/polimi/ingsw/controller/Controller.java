@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
+//TODO: add check on the FROM parameter of the message with the getCurrentPlayerName of the Model
+
 public class Controller implements SetsListener {
     private final GameLogicExecutor gameLogic;
 
