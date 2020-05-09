@@ -86,7 +86,7 @@ class GameLogicExecutorTest {
         p2 = new Position(4, 0);
         game.board.setPawnPosition(p.getPawnList().get(0), p1);
         game.board.setPawnPosition(p.getPawnList().get(1), p2);
-
+        gameLogicExecutor.loadCards();
     }
     private ArrayList<Player> getNonCurrentPlayers(){
         ArrayList<Player> opponents = new ArrayList<>();
@@ -554,25 +554,25 @@ class GameLogicExecutorTest {
     /**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the right state
      */
-    @Test void addPlayer_FirstPlayer() {
+    /*@Test void addPlayer_FirstPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         assertEquals(0, testGame.getPlayers().size());
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertEquals(1, testGame.getPlayers().size());
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
      */
-    @Test void addPlayer_NotFirstPlayer() {
+   /* @Test void addPlayer_NotFirstPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertEquals(1, testGame.getPlayers().size());
         testGameLogicExecutor.addPlayer("testPlayer2");
         assertEquals(2, testGame.getPlayers().size());
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that startGame method correctly starts the game
@@ -580,14 +580,15 @@ class GameLogicExecutorTest {
     @Test void startGame_3Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        testGameLogicExecutor.addPlayer("testPlayer2");
-        testGameLogicExecutor.addPlayer("testPlayer3");
+        testGameLogicExecutor.setNumberOfPlayers(3);
+        testGameLogicExecutor.addPlayerToLobby("testPlayer1");
+        testGameLogicExecutor.addPlayerToLobby("testPlayer2");
+        testGameLogicExecutor.addPlayerToLobby("testPlayer3");
+
         ArrayList<String> testNameArrays = new ArrayList<>();
         testNameArrays.add("testPlayer1");
         testNameArrays.add("testPlayer2");
         testNameArrays.add("testPlayer3");
-        testGameLogicExecutor.startGame();
         assertNotNull(testGame.getCurrentPlayer());
         assertTrue(testNameArrays.contains(testGame.getCurrentPlayer().getName()));
     }
@@ -598,26 +599,26 @@ class GameLogicExecutorTest {
     @Test void startGame_2Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        testGameLogicExecutor.addPlayer("testPlayer2");
+        testGameLogicExecutor.setNumberOfPlayers(2);
+
+        testGameLogicExecutor.addPlayerToLobby("testPlayer1");
+        testGameLogicExecutor.addPlayerToLobby("testPlayer2");
         ArrayList<String> testNameArrays = new ArrayList<>();
         testNameArrays.add("testPlayer1");
         testNameArrays.add("testPlayer2");
 
-        //TODO: startGame should set the current player
-        assertTrue(testGameLogicExecutor.startGame());
         assertNotNull(testGame.getCurrentPlayer());
     }
 
     /**
      * The scope of this test function is to test that startGame method correctly starts the game
      */
-    @Test void startGame_1Players() {
+    /*@Test void startGame_1Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertFalse(testGameLogicExecutor.startGame());
-    }
+    }*/
 
     /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
@@ -899,10 +900,10 @@ class GameLogicExecutorTest {
         testGame.setLoadedCardsCopy(testCardArray);
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
 
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        testGameLogicExecutor.addPlayer("testPlayer2");
-        testGameLogicExecutor.addPlayer("testPlayer3");
-        testGameLogicExecutor.startGame();
+        testGameLogicExecutor.setNumberOfPlayers(3);
+        testGameLogicExecutor.addPlayerToLobby("testPlayer1");
+        testGameLogicExecutor.addPlayerToLobby("testPlayer2");
+        testGameLogicExecutor.addPlayerToLobby("testPlayer3");
 
 
         Player godLikePlayer = testGame.getPlayers().get(0);
@@ -948,7 +949,6 @@ class GameLogicExecutorTest {
     @Test
     void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        gameLogicExecutor.loadCards();
 
         ArrayList<Position> expectedList = new ArrayList<Position>() {{
             add(new Position(0,0));
@@ -997,18 +997,19 @@ class GameLogicExecutorTest {
         positions3.add(new Position(4,2));
 
 
-        gameLogicExecutor.addPlayer("Player1");
+        game.addPlayer(new Player("Player1"));
+        game.addPlayer(new Player("Player2"));
+        game.addPlayer(new Player("Player3"));
+
+        //set the pawn as we want
         game.getPlayers().get(0).addPawn(new Pawn("Blue",0));
         game.getPlayers().get(0).addPawn(new Pawn("Blue",1));
-        gameLogicExecutor.addPlayer("Player2");
         game.getPlayers().get(1).addPawn(new Pawn("White",2));
         game.getPlayers().get(1).addPawn(new Pawn("White",3));
-        gameLogicExecutor.addPlayer("Player3");
         game.getPlayers().get(2).addPawn(new Pawn("Brown",4));
         game.getPlayers().get(2).addPawn(new Pawn("Brown",5));
 
         gameLogicExecutor.loadCards();
-
         game.getPlayers().get(0).setCurrentCard(game.getLoadedCardCopy(1)); //APOLLO
         game.getPlayers().get(1).setCurrentCard(game.getLoadedCardCopy(2)); //ARTEMIS
         game.getPlayers().get(2).setCurrentCard(game.getLoadedCardCopy(3)); //ATHENA
