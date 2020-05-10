@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class ChosenBlockTypeRequestMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = -363983287119219876L;
 
+    public ArrayList<BlockType> getAvailableBlockTypes() {
+        return availableBlockTypes;
+    }
+
     ArrayList<BlockType> availableBlockTypes=new ArrayList<>();
 
     public ChosenBlockTypeRequestMessage(ArrayList<String> recipients, ArrayList<BlockType> availableBlockTypes) {

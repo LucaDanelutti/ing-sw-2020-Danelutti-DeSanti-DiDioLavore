@@ -28,7 +28,7 @@ public enum BlockType {
      * This function is used to retrieve the level of the block selected.
      * @return byte This is the level of the block selected.
      */
-    protected int getLevel(){
+    public int getLevel(){
         return this.level;
     }
 
