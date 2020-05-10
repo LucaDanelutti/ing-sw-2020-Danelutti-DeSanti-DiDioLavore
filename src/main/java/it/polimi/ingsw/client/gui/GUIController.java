@@ -7,8 +7,8 @@ import javafx.stage.Stage;
  * Abstract class which generalizes the concept of controller
  */
 public abstract class GUIController {
-    ClientView clientView;
-    Stage stage;
+    public ClientView clientView;
+    public Stage stage;
 
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
