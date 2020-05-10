@@ -5,16 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.utility.ActionDeserializer;
 import it.polimi.ingsw.utility.UtilityClass;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.CardView;
-import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
-import javafx.geometry.Pos;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -567,15 +564,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * we have to set the selectedPawn/unselectedPawn and load the first action by calling setCurrentAction
      * once setCurrentAction has done it's job the view will receive the notification that an action is ready to be run
      * @param selectedPawnPosition the selectedPawn
-     * @param unselectedPawnPosition UnselectedPawn
      * @return the success of the operation
      */
-    public Boolean setSelectedPawn(Position selectedPawnPosition, Position unselectedPawnPosition){
+    public Boolean setSelectedPawn(Position selectedPawnPosition){
         //load the first action to be executed
         game.setCurrentAction();
 
         //aggiorna i selectedPawn e i pawn dentro la currentAction
-        game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselectedPawnPosition));
+        Position unselected=null;
+        for(Pawn p : game.getCurrentPlayer().getPawnList()){
+            if(p.getPosition()!=selectedPawnPosition){
+                unselected=p.getPosition();
+            }
+        }
+        game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselected));
 
         //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
         notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
