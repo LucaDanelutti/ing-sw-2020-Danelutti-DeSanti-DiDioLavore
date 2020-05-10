@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class ChosenPositionRequestMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = 8891676114903493827L;
 
+    public ArrayList<Position> getAvailablePositions() {
+        return availablePositions;
+    }
+
     ArrayList<Position> availablePositions=new ArrayList<>();
 
     public ChosenPositionRequestMessage(ArrayList<String> recipients, ArrayList<Position> availablePositions) {

@@ -118,7 +118,7 @@ class GameLogicExecutorTest {
         Position selectedPawnPos= selectedPawn.getPosition();
         Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
         Position notSelectedPawnPos= notSelected.getPosition();
-        gameLogicExecutor.setSelectedPawn(selectedPawnPos,notSelectedPawnPos);
+        gameLogicExecutor.setSelectedPawn(selectedPawnPos);
 
         //let's find out the positions available for the selected pawn
         ArrayList<Position> positions=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
@@ -162,7 +162,7 @@ class GameLogicExecutorTest {
         game.getBoard().pawnConstruct(null, new Position(0, 0), BlockType.LEVEL1);
 
         //then we move the pawn to the selected position
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(), currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0, 0));
 
         //we check that all other players have moveUp disable (in currentActionList) since our pawn moved up of one position
@@ -200,7 +200,7 @@ class GameLogicExecutorTest {
         assertEquals(2,currentPlayer.getCurrentCard().getCurrentActionList().size());
 
         //then we move the pawn to the selected position
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0,0));
 
         //after the move the actionList should have a size of 3 and the added action should be a moveAction with the same addMoveIfOn array (a copy)
@@ -235,7 +235,7 @@ class GameLogicExecutorTest {
 
 
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can swap
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,2));
 
         assertEquals(new Position(1,1),game.getPlayer("luca").getPawnList().get(0).getPosition());
@@ -264,7 +264,7 @@ class GameLogicExecutorTest {
         currentPlayer.setCurrentCard(card);
 
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can push in 1,3
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,2));
 
         assertEquals(new Position(1,3),game.getPlayer("luca").getPawnList().get(0).getPosition());
@@ -284,7 +284,7 @@ class GameLogicExecutorTest {
         game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL2);
         game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL3);
 
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0,0));
 
         assertEquals(0,getNonLoserOrWinnerPlayers().size());
@@ -310,7 +310,7 @@ class GameLogicExecutorTest {
         Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
         Position notSelectedPawnPos= notSelected.getPosition();
 
-        gameLogicExecutor.setSelectedPawn(selectedPawnPos,notSelectedPawnPos);
+        gameLogicExecutor.setSelectedPawn(selectedPawnPos);
 
 
         //this will execute the first action (Move)
@@ -346,7 +346,7 @@ class GameLogicExecutorTest {
 
         game.getCurrentPlayer().setCurrentCard(new Card("prometheus",10,prometheusActionList));
 
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("ian").getPawnList().get(0).getPosition(), game.getPlayer("ian").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("ian").getPawnList().get(0).getPosition());
 
         assertEquals(true, ((MoveAction)game.getCurrentPlayer().getCurrentCard().getCurrentActionList().get(1)).getMoveUpEnable());
 
@@ -380,7 +380,7 @@ class GameLogicExecutorTest {
 
 
         Pawn prevPawn = currentPlayer.getPawnList().get(0);
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(null);
         gameLogicExecutor.setChosenBlockType(null);
 
@@ -412,7 +412,7 @@ class GameLogicExecutorTest {
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
 
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
 
         //MoveAction executed
@@ -449,7 +449,7 @@ class GameLogicExecutorTest {
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
 
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         game.getBoard().pawnConstruct(null, new Position(0,1),BlockType.LEVEL1);
         game.getBoard().pawnConstruct(null, new Position(4,4),BlockType.LEVEL1);
 
@@ -490,7 +490,7 @@ class GameLogicExecutorTest {
         currentPlayer.setCurrentCard(card);
 
         //we execute the general action
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(null);
 
         for(Player opponent : getNonCurrentPlayers()){
@@ -518,7 +518,7 @@ class GameLogicExecutorTest {
         Position notSelectedPawn= game.getPlayer("ian").getPawnList().get(1).getPosition();
 
         //once we call this function the first action will be loaded from actionList and pawn values will be updated
-        gameLogicExecutor.setSelectedPawn(selectedPawn,notSelectedPawn);
+        gameLogicExecutor.setSelectedPawn(selectedPawn);
 
         // we should check that the first action is actually loaded
         assertEquals(basicMove,game.getCurrentAction());
@@ -537,7 +537,7 @@ class GameLogicExecutorTest {
      */
     @Test void loadNextPlayer(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition(),currentPlayer.getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
 
         //moveAction executed
         gameLogicExecutor.setChosenPosition(new Position(0,0));
@@ -1024,48 +1024,48 @@ class GameLogicExecutorTest {
         //From now on the turns will be Player1(Apollo) -> Player2(Artemis) -> Player3(Athena)
 
         //Player1 Turn1 Apollo
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,0)); //move
         gameLogicExecutor.setChosenPosition(new Position(1,1)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn1 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,1)); //move
         gameLogicExecutor.setChosenPosition(null); //optionalMove
         gameLogicExecutor.setChosenPosition(new Position(1,2));//construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player3 Turn1 Athena
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player3").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,3)); //move
         gameLogicExecutor.setChosenPosition(new Position(1,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
 
 
         //Player1 Turn2 Apollo
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(2,1)); //move
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn2 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(1,2)); //move
         gameLogicExecutor.setChosenPosition(null); //optionalMove
         gameLogicExecutor.setChosenPosition(new Position(2,2));//construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL2);
         //Player3 Turn2 Athena
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition(),game.getPlayer("Player3").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player3").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(2,3)); //move
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL3);
 
 
         //Player1 Turn3 Apollo
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition(),game.getPlayer("Player1").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(0,3)); //move
         gameLogicExecutor.setChosenPosition(new Position(0,4)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn3 Arthemis
-        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition(),game.getPlayer("Player2").getPawnList().get(1).getPosition());
+        gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
 
         assertEquals(true,game.getPlayer("Player2").getWinner());

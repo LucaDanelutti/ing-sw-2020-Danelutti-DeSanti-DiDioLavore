@@ -125,8 +125,15 @@ public class Board{
     }
 
     public ArrayList<Position> availablePositionsForPawnInitialPlacement(){
-        //TODO: IMPLEMENT FUNCTION!!
-        return new ArrayList<>();
+        ArrayList<Position> availablePositions = new ArrayList<>();
+        for(int row=0; row<matrix.length;row++){
+            for(int column=0; column<matrix[0].length;column++){
+                if(matrix[row][column].getPawn()==null){
+                    availablePositions.add(new Position(row,column));
+                }
+            }
+        }
+        return availablePositions;
     }
 }
 

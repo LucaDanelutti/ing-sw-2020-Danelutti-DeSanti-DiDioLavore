@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class SelectPawnRequestMessage extends RequestAndUpdateMessage implements Serializable {
     private static final long serialVersionUID = 2417769558217583111L;
 
+    public ArrayList<Position> getAvailablePositions() {
+        return availablePositions;
+    }
+
     ArrayList<Position> availablePositions=new ArrayList<>();
 
     public SelectPawnRequestMessage(ArrayList<String> recipients, ArrayList<Position> availablePositions) {
