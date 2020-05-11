@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.modelview;
 
-public class CardView {
+import java.io.Serializable;
+
+public class CardView implements Serializable {
+    private static final long serialVersionUID = 1388515673371521992L;
     private int id;
     private String name;
     private String description;

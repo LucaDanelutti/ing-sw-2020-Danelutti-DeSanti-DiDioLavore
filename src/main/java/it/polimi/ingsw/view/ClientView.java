@@ -29,6 +29,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     public ClientView(ServerConnection c) {
         this.serverConnection = c;
         c.addListener(this);
+        this.modelView = new ModelView();
         System.out.println("ClientView created!");
     }
 
@@ -82,7 +83,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
-
+        System.out.println("inGameCardsRequestMessage message received!");
     }
 
     @Override

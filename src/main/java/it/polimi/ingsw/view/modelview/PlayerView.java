@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.modelview;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerView {
+public class PlayerView implements Serializable {
+    private static final long serialVersionUID = 3617065964702629105L;
     private String name;
     private CardView card;
     private ArrayList<PawnView> pawnList;

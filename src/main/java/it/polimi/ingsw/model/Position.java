@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * The Position class is used as a Type to
  * represent the position of a pawn in the board
  */
-public class Position {
+public class Position implements Serializable {
+    private static final long serialVersionUID = -4558638867829126293L;
     private int x;
     private int y;
 

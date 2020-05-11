@@ -2,7 +2,10 @@ package it.polimi.ingsw.view.modelview;
 
 import it.polimi.ingsw.model.Position;
 
-public class PawnView {
+import java.io.Serializable;
+
+public class PawnView implements Serializable {
+    private static final long serialVersionUID = -7705485393891982394L;
     private int id;
     private Position pawnPosition;
     private String color;
