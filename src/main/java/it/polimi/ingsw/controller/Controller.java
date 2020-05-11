@@ -14,42 +14,42 @@ public class Controller implements SetsListener {
     @Override
     public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(chosenBlockTypeSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setChosenBlockType(chosenBlockTypeSetMessage.getBlockType());
         }
     }
 
     @Override
     public void update(ChosenCardSetMessage chosenCardSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(chosenCardSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setChosenCard(chosenCardSetMessage.getCardId());
         }
     }
 
     @Override
     public void update(ChosenPositionSetMessage chosenPositionSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(chosenPositionSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setChosenPosition(chosenPositionSetMessage.getWorkerPos());
         }
     }
 
     @Override
     public void update(FirstPlayerSetMessage firstPlayerSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(firstPlayerSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setStartPlayer(firstPlayerSetMessage.getName());
         }
     }
 
     @Override
     public void update(InGameCardsSetMessage inGameCardsSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(inGameCardsSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setInGameCards(inGameCardsSetMessage.getCardsId());
         }
     }
 
     @Override
     public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(initialPawnPositionSetMessage.getNameOfTheSender())) {
-
+            //TODO
         }
     }
 
@@ -63,14 +63,14 @@ public class Controller implements SetsListener {
     @Override
     public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(numberOfPlayersSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setNumberOfPlayers(numberOfPlayersSetMessage.getNumberOfPlayers());
         }
     }
 
     @Override
     public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(selectedPawnSetMessage.getNameOfTheSender())) {
-
+            gameLogic.setSelectedPawn(selectedPawnSetMessage.getWorkerPos());
         }
     }
 }

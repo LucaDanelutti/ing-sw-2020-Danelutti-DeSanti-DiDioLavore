@@ -15,6 +15,10 @@ public class ChosenCardSetMessage extends SetMessage implements Serializable {
         this.cardId=cardId;
     }
 
+    public int getCardId() {
+        return cardId;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }

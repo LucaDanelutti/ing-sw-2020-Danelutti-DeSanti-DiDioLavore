@@ -15,6 +15,10 @@ public class FirstPlayerSetMessage extends SetMessage implements Serializable {
         this.name=name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }

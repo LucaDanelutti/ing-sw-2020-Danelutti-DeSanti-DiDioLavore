@@ -15,6 +15,10 @@ public class NumberOfPlayersSetMessage extends SetMessage implements Serializabl
         this.numberOfPlayers=numberOfPlayers;
     }
 
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }
