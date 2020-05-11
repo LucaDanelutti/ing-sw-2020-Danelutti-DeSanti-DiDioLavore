@@ -95,7 +95,7 @@ public class ClientView implements SetsListener {
 
         @Override
         public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
-
+            System.out.println("How many players do you want to play with?");
         }
 
         @Override

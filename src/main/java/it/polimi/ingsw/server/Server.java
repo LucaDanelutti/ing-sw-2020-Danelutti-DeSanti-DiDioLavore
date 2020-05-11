@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
@@ -16,22 +19,37 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<ClientConnection, String> playingConnection = new HashMap<>();
+    private GameLogicExecutor gameLogicExecutor;
+    private Controller controller;
 
     public Server(int port) throws IOException {
         this.port = port;
         this.serverSocket = new ServerSocket(port);
     }
 
+    private void newGame() {
+        Game game = new Game();
+        gameLogicExecutor = new GameLogicExecutor(game);
+        controller = new Controller(gameLogicExecutor);
+    }
+
     public synchronized void removeConnection(ClientConnection c) {
         playingConnection.remove(c);
+        //TODO: remove player from gameLogic
     }
 
     public synchronized boolean addConnection(ClientConnection c, String name) {
+        if (playingConnection.isEmpty()) {
+            newGame();
+        }
         if (playingConnection.containsValue(name)) {
             return false;
         } else {
             playingConnection.put(c, name);
             VirtualView playerView = new VirtualView(c);
+            playerView.addListener(controller);
+            gameLogicExecutor.addListener(playerView);
+            gameLogicExecutor.addPlayerToLobby(name);
             return true;
         }
     }

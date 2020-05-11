@@ -78,6 +78,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
 
     @Override
     public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
+        clientConnection.asyncSend(numberOfPlayersRequestMessage);
     }
 
     @Override
