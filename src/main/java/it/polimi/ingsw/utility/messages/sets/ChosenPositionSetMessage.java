@@ -15,6 +15,10 @@ public class ChosenPositionSetMessage extends SetMessage implements Serializable
         this.workerPos=workerPos;
     }
 
+    public Position getWorkerPos() {
+        return workerPos;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }

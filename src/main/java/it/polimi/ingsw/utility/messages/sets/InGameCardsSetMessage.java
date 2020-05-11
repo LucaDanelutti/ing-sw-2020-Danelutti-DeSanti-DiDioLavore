@@ -15,6 +15,10 @@ public class InGameCardsSetMessage extends SetMessage implements Serializable {
         this.cardsId.addAll(cardsId);
     }
 
+    public ArrayList<Integer> getCardsId() {
+        return cardsId;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }

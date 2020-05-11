@@ -16,6 +16,10 @@ public class ChosenBlockTypeSetMessage extends SetMessage implements Serializabl
         this.blockType=blockType;
     }
 
+    public BlockType getBlockType() {
+        return blockType;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }
