@@ -2,6 +2,8 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
 import it.polimi.ingsw.utility.messages.Message;
+import it.polimi.ingsw.utility.messages.PingMessage;
+import it.polimi.ingsw.utility.messages.PongMessage;
 import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
 import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
@@ -37,7 +39,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
     @Override
     public synchronized void closeConnection() {
-        send("Connection closed!");
+        //send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
@@ -107,6 +109,8 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         if (inputObject instanceof RequestAndUpdateMessage) {
             RequestAndUpdateMessage message = (RequestAndUpdateMessage) inputObject;
             message.accept(this);
+        } else if (inputObject instanceof PingMessage) {
+            asyncSend(new PongMessage());
         } else {
             throw new IllegalArgumentException();
         }
