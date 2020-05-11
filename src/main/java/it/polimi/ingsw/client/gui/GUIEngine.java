@@ -7,8 +7,11 @@ import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,6 +29,7 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
+        //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
         showScene("/fxml/loginScene.fxml", false);
     }
 
@@ -34,7 +38,7 @@ public class GUIEngine extends Application implements UserInterface {
         launch();
     }
 
-    public synchronized void showScene(String fxmlResource, Boolean isFullScreen) {
+    public void showScene(String fxmlResource, Boolean isFullScreen) {
         if (fxmlResource == null) {
             return;
         }
@@ -89,8 +93,29 @@ public class GUIEngine extends Application implements UserInterface {
 
     }
 
-    @Override
     public void showMainScene() {
         showScene("/fxml/mainScene.fxml", true);
     }
+
+    public void showWaitingScene() {
+        showScene("/fxml/waitingScene.fxml", false);
+    }
+
+    public void showPopUp(String fxmlResource) {
+        Platform.runLater(() -> {
+            Popup popup = new Popup();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(fxmlResource));
+            currentController = loader.getController();
+            try {
+                popup.getContent().add((Parent)loader.load());
+                popup.show(stage);
+            } catch (IOException e) {
+                //TODO: manage exception properly
+                System.out.println("Exception while loading fxml resource.");
+            }
+        });
+    }
+
+
 }
