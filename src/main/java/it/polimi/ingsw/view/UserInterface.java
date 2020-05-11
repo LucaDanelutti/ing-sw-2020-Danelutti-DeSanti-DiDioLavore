@@ -35,8 +35,4 @@ public interface UserInterface {
      */
     void refreshView(CellView cellView);
 
-    /**
-     * Shows the board screen.
-     */
-    void showMainScene();
 }
