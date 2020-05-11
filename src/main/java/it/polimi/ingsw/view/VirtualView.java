@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.listeners.SetsListener;
 
 public class VirtualView extends SetObservable implements RequestsAndUpdateListener {
     private ClientConnection clientConnection;
+    private String name;
 
     private class MessageReceiver implements SetsListener {
         @Override
@@ -42,72 +43,117 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
         public void update(SelectedPawnSetMessage selectedPawnSetMessage) {}
     }
 
-    public VirtualView(ClientConnection c) {
+    public VirtualView(ClientConnection c, String name) {
         this.clientConnection = c;
+        this.name = name;
         c.addListener(new MessageReceiver());
-        System.out.println("VirtualView created!");
+        System.out.println(name + ": virtualView created!");
     }
 
     @Override
     public void update(NicknameRequestMessage nicknameRequestMessage) {
+        if (nicknameRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(nicknameRequestMessage);
+        }
     }
 
     @Override
     public void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage) {
+        if (chosenBlockTypeRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenBlockTypeRequestMessage);
+        }
     }
 
     @Override
     public void update(ChosenCardRequestMessage chosenCardRequestMessage) {
+        if (chosenCardRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenCardRequestMessage);
+        }
     }
 
     @Override
     public void update(ChosenPositionRequestMessage chosenPositionRequestMessage) {
+        if (chosenPositionRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenPositionRequestMessage);
+        }
     }
 
     @Override
     public void update(FirstPlayerRequestMessage firstPlayerRequestMessage) {
+        if (firstPlayerRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(firstPlayerRequestMessage);
+        }
     }
 
     @Override
     public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
+        if (inGameCardsRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(inGameCardsRequestMessage);
+        }
     }
 
     @Override
     public void update(InitialPawnPositionRequestMessage initialPawnPositionRequestMessage) {
+        if (initialPawnPositionRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(initialPawnPositionRequestMessage);
+        }
     }
 
     @Override
     public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
-        clientConnection.asyncSend(numberOfPlayersRequestMessage);
+        if (numberOfPlayersRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(numberOfPlayersRequestMessage);
+        }
     }
 
     @Override
     public void update(SelectPawnRequestMessage selectPawnRequestMessage) {
+        if (selectPawnRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(selectPawnRequestMessage);
+        }
     }
 
     @Override
     public void update(CellUpdateMessage cellUpdateMessage) {
+        if (cellUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(cellUpdateMessage);
+        }
     }
 
     @Override
     public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
+        if (chosenCardUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenCardUpdateMessage);
+        }
     }
 
     @Override
     public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage) {
+        if (doublePawnPositionUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(doublePawnPositionUpdateMessage);
+        }
     }
 
     @Override
     public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage) {
+        if (pawnPositionUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(pawnPositionUpdateMessage);
+        }
     }
 
     @Override
     public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage) {
+        if (pawnRemoveUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(pawnRemoveUpdateMessage);
+        }
     }
 
 
     @Override
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
+        if (selectedPawnUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(selectedPawnUpdateMessage);
+        }
     }
 
     @Override
@@ -117,21 +163,36 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
 
     @Override
     public void update(TurnEndedMessage turnEndedMessage) {
+        if (turnEndedMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(turnEndedMessage);
+        }
     }
 
     @Override
     public void update(YouLostMessage youLostMessage) {
+        if (youLostMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(youLostMessage);
+        }
     }
 
     @Override
     public void update(YouWonMessage youWonMessage) {
+        if (youWonMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(youWonMessage);
+        }
     }
 
     @Override
     public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
+        if (gameStartedAndYouAreNotSelectedMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(gameStartedAndYouAreNotSelectedMessage);
+        }
     }
 
     @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
+        if (youLostAndSomeoneWonMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(youLostAndSomeoneWonMessage);
+        }
     }
 }
