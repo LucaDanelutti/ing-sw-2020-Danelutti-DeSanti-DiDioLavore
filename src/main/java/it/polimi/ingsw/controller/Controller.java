@@ -62,9 +62,7 @@ public class Controller implements SetsListener {
 
     @Override
     public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {
-        if (gameLogic.getCurrentPlayerName().equals(numberOfPlayersSetMessage.getNameOfTheSender())) {
-            gameLogic.setNumberOfPlayers(numberOfPlayersSetMessage.getNumberOfPlayers());
-        }
+        gameLogic.setNumberOfPlayers(numberOfPlayersSetMessage.getNumberOfPlayers());
     }
 
     @Override
