@@ -4,8 +4,6 @@ import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
-//TODO: add check on the FROM parameter of the message with the getCurrentPlayerName of the Model
-
 public class Controller implements SetsListener {
     private final GameLogicExecutor gameLogic;
 
@@ -14,31 +12,65 @@ public class Controller implements SetsListener {
     }
 
     @Override
-    public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {}
+    public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(chosenBlockTypeSetMessage.getNameOfTheSender())) {
 
-    @Override
-    public void update(ChosenCardSetMessage chosenCardSetMessage) {
-        System.out.println("ChosenCardSetMessage message received by controller!");
+        }
     }
 
     @Override
-    public void update(ChosenPositionSetMessage chosenPositionSetMessage) {}
+    public void update(ChosenCardSetMessage chosenCardSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(chosenCardSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(FirstPlayerSetMessage firstPlayerSetMessage) {}
+    public void update(ChosenPositionSetMessage chosenPositionSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(chosenPositionSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(InGameCardsSetMessage inGameCardsSetMessage) {}
+    public void update(FirstPlayerSetMessage firstPlayerSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(firstPlayerSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {}
+    public void update(InGameCardsSetMessage inGameCardsSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(inGameCardsSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(NicknameSetMessage nicknameSetMessage) {}
+    public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(initialPawnPositionSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {}
+    public void update(NicknameSetMessage nicknameSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(nicknameSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 
     @Override
-    public void update(SelectedPawnSetMessage selectedPawnSetMessage) {}
+    public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(numberOfPlayersSetMessage.getNameOfTheSender())) {
+
+        }
+    }
+
+    @Override
+    public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(selectedPawnSetMessage.getNameOfTheSender())) {
+
+        }
+    }
 }
