@@ -85,7 +85,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
             //we update the pawns inside of ActionState for the user in ActionState (as they are a copy of the actual pawns in the board)
             //and in the currentAction
-            game.updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()), game.getBoard().getPawnCopy(constructAction.getNotSelectedPawn().getPosition()));
+            if(constructAction.getNotSelectedPawn()!=null) {
+                game.updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()), game.getBoard().getPawnCopy(constructAction.getNotSelectedPawn().getPosition()));
+            }
+            else{
+                game.updatePawns(game.getBoard().getPawnCopy(constructAction.getSelectedPawn().getPosition()), null);
+            }
 
             //notify listeners of the change in the board
             notifyListeners(generateCellUpdate(constructAction.getSelectedBlockType(),constructAction.getChosenPosition()));
@@ -108,7 +113,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             if (opponentPawn == null) { //no pawn is detected in newPos
                 game.getBoard().updatePawnPosition(oldPos, newPos);
                 //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-                game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                if(moveAction.getNotSelectedPawn()!=null) {
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                }
+                else{
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), null);
+                }
 
                 //Special case for Athena
                 if (moveAction.getDenyMoveUpEnable() && moveAction.getSelectedPawn().getDeltaHeight() > 0) {
@@ -130,7 +140,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 game.getBoard().updatePawnPosition(oldPos, newPos, oldPos);
 
                 //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-                game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                if(moveAction.getNotSelectedPawn()!=null) {
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                }
+                else{
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), null);
+                }
 
                 //notify all players of the pawns position change
                 notifyListeners(generateDoublePawnPositionUpdate(moveAction.getSelectedPawn().getId(),opponentPawn.getId(),newPos,oldPos));
@@ -144,7 +159,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 game.getBoard().updatePawnPosition(oldPos, newPos, opponentPawnNewPos);
 
                 //this functions updates the copies of the pawns inside of both ActionState and the currentAction before calling checkWin
-                game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                if(moveAction.getNotSelectedPawn()!=null) {
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), game.getBoard().getPawnCopy(moveAction.getNotSelectedPawn().getPosition()));
+                }
+                else{
+                    game.updatePawns(game.getBoard().getPawnCopy(newPos), null);
+                }
 
                 //notify all the players of the change
                 notifyListeners(generateDoublePawnPositionUpdate(moveAction.getSelectedPawn().getId(),opponentPawn.getId(),newPos,opponentPawnNewPos));
@@ -400,6 +420,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         ArrayList<Position> availablePositions = game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        if(game.getCurrentAction().getIsOptional()){
+            availablePositions.add(null);
+        }
         return new ChosenPositionRequestMessage(recipients, availablePositions);
     }
     private ChosenBlockTypeRequestMessage generateChosenBlockTypeRequest(ConstructAction constructAction){
@@ -577,8 +600,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 unselected=p.getPosition();
             }
         }
-        game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),game.getBoard().getPawnCopy(unselected));
-
+        if(unselected==null) {
+            game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),null);
+        }else {
+            game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), game.getBoard().getPawnCopy(unselected));
+        }
         //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
         notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
 

@@ -223,7 +223,7 @@ class ConstructActionTest {
         boardTester.pawnConstruct(null, new Position(0,2), BlockType.DOME);
 
         ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
-        availableCellsTester.forEach(value -> System.out.println(value.getX() + " " + value.getY()));
+        //availableCellsTester.forEach(value -> System.out.println(value.getX() + " " + value.getY()));
 
         ArrayList<Position> expectedList = new ArrayList<Position>() {{
             add(new Position(0,0));

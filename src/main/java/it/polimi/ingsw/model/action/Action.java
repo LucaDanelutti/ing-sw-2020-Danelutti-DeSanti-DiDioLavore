@@ -11,6 +11,10 @@ import java.util.List;
 
 
 public abstract class Action {
+    public void setOptional(Boolean optional) {
+        isOptional = optional;
+    }
+
     protected Boolean isOptional;
     protected ArrayList<Position> notAvailableCell;
     protected Pawn selectedPawn;

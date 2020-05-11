@@ -216,7 +216,14 @@ public class MoveAction extends Action {
         for (int i=0; i<matrixCopy.length; i++) {
             for (int j = 0; j < matrixCopy[0].length; j++) {
                 if (availableCells.contains(new Position(i, j))) {
-                    if (matrixCopy[i][j].getPawn() != null && (matrixCopy[i][j].getPawn().getPosition().equals(notSelectedPawn.getPosition()) || !canMoveOnOpponent(matrixCopy, selectedPawn.getPosition(), new Position(i,j)))) availableCells.remove(new Position(i, j));
+                    if (notSelectedPawn != null) {
+                        if (matrixCopy[i][j].getPawn() != null && (matrixCopy[i][j].getPawn().getPosition().equals(notSelectedPawn.getPosition()) || !canMoveOnOpponent(matrixCopy, selectedPawn.getPosition(), new Position(i, j))))
+                            availableCells.remove(new Position(i, j));
+                    }else{
+                        if (matrixCopy[i][j].getPawn() != null && (!canMoveOnOpponent(matrixCopy, selectedPawn.getPosition(), new Position(i, j)))) {
+                            availableCells.remove(new Position(i, j));
+                        }
+                    }
                 }
             }
         }
@@ -229,6 +236,7 @@ public class MoveAction extends Action {
     private void checkDenyMoveBack(ArrayList<Position> availableCells) {
         if (denyMoveBack) availableCells.remove(selectedPawn.getPreviousPosition());
     }
+
 
     /**
      * Computes the list of cells to which a pawn can move
@@ -252,7 +260,6 @@ public class MoveAction extends Action {
         checkDeltaHeight(availableCells, matrixCopy);
         checkPawnPresence(availableCells, matrixCopy);
         checkDenyMoveBack(availableCells);
-
         return availableCells;
     }
 

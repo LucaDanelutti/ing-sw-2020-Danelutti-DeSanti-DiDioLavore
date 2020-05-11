@@ -139,7 +139,9 @@ public class Game {
      */
     public void addActionAfterCurrentOne(Action action) {
         int index = getCurrentActionIndex() + 1;
-        currentPlayer.getCurrentCard().getCurrentActionList().add(index, action.duplicate());
+        Action newAction=action.duplicate();
+        newAction.setOptional(true);
+        currentPlayer.getCurrentCard().getCurrentActionList().add(index, newAction);
     }
 
     //===================================================================================

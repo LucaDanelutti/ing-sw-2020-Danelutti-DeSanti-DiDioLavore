@@ -467,7 +467,7 @@
       },
       {
         "isOptional": false,
-        "actionType": "CONSTRUCT",
+        "actionType": "GENERAL",
         "notAvailableCell": [],
         "enableNoWinIfOnPerimeter": false,
         "destroyPawnAndBuildEnable": true,
