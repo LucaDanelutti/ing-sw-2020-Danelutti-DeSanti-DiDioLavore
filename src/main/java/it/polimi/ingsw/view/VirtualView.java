@@ -189,7 +189,9 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
 
     @Override
     public void update(GameStartMessage gameStartMessage) {
-        clientConnection.asyncSend(gameStartMessage);
+        if (gameStartMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(gameStartMessage);
+        }
     }
 
     @Override
