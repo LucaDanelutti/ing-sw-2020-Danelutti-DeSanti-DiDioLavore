@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.GUIController;
+import it.polimi.ingsw.client.gui.GUIEngine;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -14,11 +15,9 @@ public class LoginSceneController extends GUIController {
     @FXML
     private TextField portTextField;
 
-
     /* ===== FXML Properties ===== */
     private StringProperty serverHostname;
     private StringProperty port;
-
 
     /* ===== FXML Set Up and Bindings ===== */
     @FXML
@@ -33,5 +32,9 @@ public class LoginSceneController extends GUIController {
         System.out.println("clicked connect");
         System.out.println(serverHostname.getValue());
         System.out.println(port.getValue());
+
+
+        //opens the WaitingScene
+        ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
     }
 }
