@@ -60,7 +60,7 @@ public class ClientView implements SetsListener {
             System.out.println("What's your name?");
             Scanner stdin = new Scanner(System.in);
             String inputLine = stdin.nextLine();
-            clientView.update(new NicknameSetMessage(inputLine, inputLine));
+            clientView.update(new NicknameSetMessage(inputLine));
         }
 
         @Override
