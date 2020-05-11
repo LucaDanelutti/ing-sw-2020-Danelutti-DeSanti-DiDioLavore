@@ -46,7 +46,7 @@ public class Server {
             return false;
         } else {
             playingConnection.put(c, name);
-            VirtualView playerView = new VirtualView(c);
+            VirtualView playerView = new VirtualView(c, name);
             playerView.addListener(controller);
             gameLogicExecutor.addListener(playerView);
             gameLogicExecutor.addPlayerToLobby(name);

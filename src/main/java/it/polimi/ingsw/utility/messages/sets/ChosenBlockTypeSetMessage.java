@@ -12,8 +12,7 @@ public class ChosenBlockTypeSetMessage extends SetMessage implements Serializabl
 
     BlockType blockType;
 
-    public ChosenBlockTypeSetMessage(String sender, BlockType blockType) {
-        super(sender);
+    public ChosenBlockTypeSetMessage(BlockType blockType) {
         this.blockType=blockType;
     }
 

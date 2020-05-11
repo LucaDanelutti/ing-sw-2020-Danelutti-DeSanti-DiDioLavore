@@ -98,15 +98,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                 }
             } while (!server.addConnection(this, nicknameSetMessage.getName()));
 
-            System.out.println("Nickname set!");
-            //server.lobby(this, name);
-            //VirtualView player1View = new VirtualView(this);
-            //Game game = new Game();
-            //GameLogicExecutor gameLogicExecutor = new GameLogicExecutor(game);
-            //gameLogicExecutor.addListener(player1View);
-            //Controller controller = new Controller(gameLogicExecutor);
-            //player1View.addListener(controller);
-            //TODO
+            System.out.println(nicknameSetMessage.getName() + ": nickname set!");
             while(isActive()){
                 Object inputObject = in.readObject();
                 handleMessage(inputObject);

@@ -11,8 +11,7 @@ public class InGameCardsSetMessage extends SetMessage implements Serializable {
 
     ArrayList<Integer> cardsId=new ArrayList<>();
 
-    public InGameCardsSetMessage(String sender, ArrayList<Integer> cardsId) {
-        super(sender);
+    public InGameCardsSetMessage(ArrayList<Integer> cardsId) {
         this.cardsId.addAll(cardsId);
     }
 

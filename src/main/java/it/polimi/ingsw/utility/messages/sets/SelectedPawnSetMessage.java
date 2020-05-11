@@ -12,8 +12,7 @@ public class SelectedPawnSetMessage extends SetMessage implements Serializable {
 
     Position workerPos;
 
-    public SelectedPawnSetMessage(String sender, Position workerPos) {
-        super(sender);
+    public SelectedPawnSetMessage(Position workerPos) {
         this.workerPos=workerPos;
     }
 

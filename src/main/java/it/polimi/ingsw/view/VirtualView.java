@@ -13,40 +13,71 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     private String name;
 
     private class MessageReceiver implements SetsListener {
+        final String name;
+
+        public MessageReceiver(String name) {
+            this.name = name;
+        }
+
         @Override
-        public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {}
+        public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
+            chosenBlockTypeSetMessage.setNameOfTheSender(name);
+            notifyListeners(chosenBlockTypeSetMessage);
+        }
 
         @Override
         public void update(ChosenCardSetMessage chosenCardSetMessage) {
+            chosenCardSetMessage.setNameOfTheSender(name);
             notifyListeners(chosenCardSetMessage);
         }
 
         @Override
-        public void update(ChosenPositionSetMessage chosenPositionSetMessage) {}
+        public void update(ChosenPositionSetMessage chosenPositionSetMessage) {
+            chosenPositionSetMessage.setNameOfTheSender(name);
+            notifyListeners(chosenPositionSetMessage);
+        }
 
         @Override
-        public void update(FirstPlayerSetMessage firstPlayerSetMessage) {}
+        public void update(FirstPlayerSetMessage firstPlayerSetMessage) {
+            firstPlayerSetMessage.setNameOfTheSender(name);
+            notifyListeners(firstPlayerSetMessage);
+        }
 
         @Override
-        public void update(InGameCardsSetMessage inGameCardsSetMessage) {}
+        public void update(InGameCardsSetMessage inGameCardsSetMessage) {
+            inGameCardsSetMessage.setNameOfTheSender(name);
+            notifyListeners(inGameCardsSetMessage);
+        }
 
         @Override
-        public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {}
+        public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
+            initialPawnPositionSetMessage.setNameOfTheSender(name);
+            notifyListeners(initialPawnPositionSetMessage);
+        }
 
         @Override
-        public void update(NicknameSetMessage nicknameSetMessage) {}
+        public void update(NicknameSetMessage nicknameSetMessage) {
+            nicknameSetMessage.setNameOfTheSender(name);
+            notifyListeners(nicknameSetMessage);
+        }
 
         @Override
-        public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {}
+        public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {
+            numberOfPlayersSetMessage.setNameOfTheSender(name);
+            notifyListeners(numberOfPlayersSetMessage);
+        }
 
         @Override
-        public void update(SelectedPawnSetMessage selectedPawnSetMessage) {}
+        public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
+            selectedPawnSetMessage.setNameOfTheSender(name);
+            notifyListeners(selectedPawnSetMessage);
+        }
     }
 
     public VirtualView(ClientConnection c, String name) {
         this.clientConnection = c;
         this.name = name;
-        c.addListener(new MessageReceiver());
+        c.addListener(new MessageReceiver(name));
         System.out.println(name + ": virtualView created!");
     }
 

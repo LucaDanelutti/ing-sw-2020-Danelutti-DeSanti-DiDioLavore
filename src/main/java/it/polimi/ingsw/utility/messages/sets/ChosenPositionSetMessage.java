@@ -5,15 +5,13 @@ import it.polimi.ingsw.model.SetObservable;
 import it.polimi.ingsw.utility.messages.SetMessage;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ChosenPositionSetMessage extends SetMessage implements Serializable {
     private static final long serialVersionUID = 253005137274615202L;
 
     Position workerPos;
 
-    public ChosenPositionSetMessage(String sender, Position workerPos) {
-        super(sender);
+    public ChosenPositionSetMessage(Position workerPos) {
         this.workerPos=workerPos;
     }
 

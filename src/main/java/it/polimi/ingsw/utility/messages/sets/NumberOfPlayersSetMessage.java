@@ -11,8 +11,7 @@ public class NumberOfPlayersSetMessage extends SetMessage implements Serializabl
 
     int numberOfPlayers;
 
-    public NumberOfPlayersSetMessage(String sender, int numberOfPlayers) {
-        super(sender);
+    public NumberOfPlayersSetMessage(int numberOfPlayers) {
         this.numberOfPlayers=numberOfPlayers;
     }
 
