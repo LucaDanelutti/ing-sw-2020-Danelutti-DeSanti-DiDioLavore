@@ -32,6 +32,10 @@ public class ClientView implements SetsListener {
         System.out.println("ClientView created!");
     }
 
+    public UserInterface getUserInterface() {
+        return userInterface;
+    }
+
     public ModelView getModelView() {
         return modelView;
     }
