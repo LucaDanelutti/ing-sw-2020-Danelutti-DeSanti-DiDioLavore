@@ -78,4 +78,17 @@ public class ModelView {
             }
         }
     }
+
+    /**
+     *
+     * @param name is the name of the client player
+     * @return the list of enemies names
+     */
+    public ArrayList<String> getEnemiesNames(String name) {
+        ArrayList<String> enemiesNamesList = new ArrayList<>();
+        for (PlayerView player : playerList) {
+            if (!player.getName().equals(name)) enemiesNamesList.add(player.getName());
+        }
+        return enemiesNamesList;
+    }
 }
