@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.controllers.NicknameRequestController;
+import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.ClientView;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.modelview.CardView;
@@ -15,6 +18,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GUIEngine extends Application implements UserInterface {
 
@@ -61,7 +65,7 @@ public class GUIEngine extends Application implements UserInterface {
 
             if (currentController != null) {
                 currentController.setClientView(clientView);
-                currentController.setStage(this.stage);
+                currentController.setStage(stage);
             }
 
             stage.setScene(scene);
@@ -101,21 +105,50 @@ public class GUIEngine extends Application implements UserInterface {
         showScene("/fxml/waitingScene.fxml", false);
     }
 
-    public void showPopUp(String fxmlResource) {
-        Platform.runLater(() -> {
-            Popup popup = new Popup();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource(fxmlResource));
-            currentController = loader.getController();
-            try {
-                popup.getContent().add((Parent)loader.load());
-                popup.show(stage);
-            } catch (IOException e) {
-                //TODO: manage exception properly
-                System.out.println("Exception while loading fxml resource.");
-            }
-        });
+    @Override
+    public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
+
     }
 
+    @Override
+    public void onChosenCardRequest(ArrayList<CardView> availableCards) {
 
+    }
+
+    @Override
+    public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
+
+    }
+
+    @Override
+    public void onFirstPlayerRequest() {
+
+    }
+
+    @Override
+    public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
+
+    }
+
+    @Override
+    public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
+
+    }
+
+    @Override
+    public void onNicknameRequest() {
+//        Platform.runLater(() -> {
+////            showScene("/fxml/nicknameRequest.fxml", false);
+////        });
+    }
+
+    @Override
+    public void onNumberOfPlayersRequest() {
+
+    }
+
+    @Override
+    public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
+
+    }
 }
