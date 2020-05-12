@@ -701,12 +701,12 @@ class MockViewTest {
         return cardIds;
     }
 
-    void loopBotsGame(){
+    @Test void loopBotsGame(){
         //SETUP VARIABLES
         int counter=0;
-        int numberOfCardsRandomCombinationSwitch=1000;
-        int numberOfGamesToRunWithSameCards=1000;
-        int maxTurns=321;
+        int numberOfCardsRandomCombinationSwitch=10;
+        int numberOfGamesToRunWithSameCards=10;
+        int maxTurns=100;
 
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;

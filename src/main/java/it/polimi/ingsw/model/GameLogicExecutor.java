@@ -766,7 +766,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         return false;
     }
-
     public Boolean addPlayerToLobby(String name){
         this.lobby.add(name);
         if(this.lobby.size()==1){

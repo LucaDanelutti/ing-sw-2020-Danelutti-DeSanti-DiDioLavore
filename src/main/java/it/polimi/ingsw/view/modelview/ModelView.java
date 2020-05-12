@@ -7,7 +7,17 @@ import java.util.ArrayList;
 
 public class ModelView {
     private static final int MATRIX_SIZE = 5;
+
+    public ArrayList<PlayerView> getPlayerList() {
+        return playerList;
+    }
+
     private ArrayList<PlayerView> playerList;
+
+    public CellView[][] getMatrix() {
+        return matrix;
+    }
+
     private CellView[][] matrix;
 
     public ModelView(){

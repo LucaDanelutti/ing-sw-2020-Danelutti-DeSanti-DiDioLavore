@@ -14,6 +14,8 @@ public class PlayerView implements Serializable {
     public PlayerView(String name, ArrayList<PawnView> pawnList) {
         this.name = name;
         this.pawnList = pawnList;
+        this.isWinner=false;
+        this.isLoser=false;
     }
 
     public String getName() {

@@ -1,9 +1,13 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Position;
+import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
+
+import java.util.ArrayList;
 
 public interface UserInterface {
 
@@ -34,5 +38,23 @@ public interface UserInterface {
      * @param cellView is the updated object.
      */
     void refreshView(CellView cellView);
+
+    void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes);
+
+    void onChosenCardRequest(ArrayList<CardView> availableCards);
+
+    void onChosenPositionRequest(ArrayList<Position> availablePositions);
+
+    void onFirstPlayerRequest();
+
+    void onInGameCardsRequest(ArrayList<CardView> availableCards);
+
+    void onInitialPawnPositionRequest(ArrayList<Position> availablePositions);
+
+    void onNicknameRequest();
+
+    void onNumberOfPlayersRequest();
+
+    void onSelectPawnRequest(ArrayList<Position> availablePositions);
 
 }

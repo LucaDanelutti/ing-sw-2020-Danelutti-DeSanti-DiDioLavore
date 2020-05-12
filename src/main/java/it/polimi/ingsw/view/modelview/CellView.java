@@ -30,4 +30,8 @@ public class CellView {
     public void setBlockStack(Stack<BlockType> blockStack) {
         this.blockStack = blockStack;
     }
+
+    public BlockType getPeek(){
+        return blockStack.peek();
+    }
 }
