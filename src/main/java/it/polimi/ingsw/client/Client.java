@@ -91,7 +91,13 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
     private void handleMessage(Object inputObject) {
         if (inputObject instanceof RequestAndUpdateMessage) {
             RequestAndUpdateMessage message = (RequestAndUpdateMessage) inputObject;
-            message.accept(this);
+            RequestAndUpdateObservable visitor = this;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    message.accept(visitor);
+                }
+            }).start();
         } else if (inputObject instanceof PingMessage) {
             lastPing = new Timestamp(System.currentTimeMillis());
             asyncSend(new PongMessage());
