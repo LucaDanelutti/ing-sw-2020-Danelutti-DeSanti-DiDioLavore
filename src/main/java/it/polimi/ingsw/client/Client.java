@@ -1,20 +1,19 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.RequestAndUpdateObservable;
-import it.polimi.ingsw.utility.messages.Message;
 import it.polimi.ingsw.utility.messages.PingMessage;
 import it.polimi.ingsw.utility.messages.PongMessage;
 import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
-import it.polimi.ingsw.utility.messages.requests.ChosenCardRequestMessage;
-import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
-import it.polimi.ingsw.utility.messages.updates.GameStartMessage;
 import it.polimi.ingsw.view.ClientView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client extends RequestAndUpdateObservable implements ServerConnection {
     Socket socket;
@@ -25,9 +24,12 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
+        lastPing = new Timestamp(System.currentTimeMillis());
     }
 
     private boolean active = true;
+
+    private Timestamp lastPing;
 
     public synchronized boolean isActive(){
         return active;
@@ -110,6 +112,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
             RequestAndUpdateMessage message = (RequestAndUpdateMessage) inputObject;
             message.accept(this);
         } else if (inputObject instanceof PingMessage) {
+            lastPing = new Timestamp(System.currentTimeMillis());
             asyncSend(new PongMessage());
         } else {
             throw new IllegalArgumentException();
@@ -123,6 +126,18 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         out = new ObjectOutputStream(socket.getOutputStream());
 
         try{
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (System.currentTimeMillis() - lastPing.getTime() > 15*1000) {
+                        //System.out.println("No ping received!");
+                        closeConnection();
+                        timer.cancel();
+                    }
+                }
+            }, 1000, 10*1000);
+
             Thread t0 = asyncReadFromSocket(socketIn);
             // DEPRECATED Thread t1 = asyncWriteToSocket(out);
             ClientView clientView = new ClientView(this);

@@ -100,7 +100,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                 @Override
                 public void run() {
                     if (pong) {
-                        asyncSend(new PingMessage());
+                        //asyncSend(new PingMessage());
                         pong = false;
                     } else {
                         System.out.println("No pong received!");
