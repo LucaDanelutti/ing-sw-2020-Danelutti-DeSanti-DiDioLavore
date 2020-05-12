@@ -4,7 +4,11 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
  }
+
  .mainGridPane {
-    -fx-background-color: rgb(28,198,217);
+    -fx-background-color: rgb(161, 226, 247);
  }
 
+.nicknameRequest {
+    -fx-background-color: rgb(193, 221, 230);
+}
