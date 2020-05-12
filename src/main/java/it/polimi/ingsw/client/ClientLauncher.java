@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CLIEngine;
 import it.polimi.ingsw.client.gui.GUIEngine;
 import it.polimi.ingsw.view.UserInterface;
 
@@ -13,8 +14,7 @@ public class ClientLauncher {
         if (selectedUserInterface.equals("gui")) {
             userInterface = new GUIEngine();
         } else {
-            //TODO: replace with CLI counterpart
-            userInterface = new GUIEngine();
+            userInterface = new CLIEngine();
         }
 
         userInterface.initialize();

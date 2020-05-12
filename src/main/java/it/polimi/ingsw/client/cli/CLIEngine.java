@@ -16,10 +16,15 @@ import java.util.Scanner;
 
 public class CLIEngine implements UserInterface {
 
-    private ClientView clientView;
-    public CLIEngine(ClientView clientView) {
+    public ClientView getClientView() {
+        return clientView;
+    }
+
+    public void setClientView(ClientView clientView) {
         this.clientView = clientView;
     }
+
+    private ClientView clientView;
 
     private boolean isThereAnyPawnOnTheBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();
@@ -160,7 +165,8 @@ public class CLIEngine implements UserInterface {
         clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
         //clientView.getModelView().onChosenCardUpdate(new CardView(2,"Medusa","do as he wishes"),"Luca");
         clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
-        CLIEngine cliEngine = new CLIEngine(clientView);
+        CLIEngine cliEngine = new CLIEngine();
+        cliEngine.setClientView(clientView);
         //cliEngine.initialize();
         cliEngine.refreshView(new PawnView(32,"ciao"));
 
