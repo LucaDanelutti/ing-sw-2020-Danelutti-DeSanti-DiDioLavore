@@ -24,7 +24,7 @@ public class WaitingSceneController extends GUIController {
     public void testPopUp() {
         //testing pop-up
         Platform.runLater(() -> {
-            ((GUIEngine)clientView.getUserInterface()).showPopUp("/fxml/nicknameRequest.fxml");
+            ((GUIEngine)clientView.getUserInterface()).showScene("/fxml/nicknameRequest.fxml", false);
         });
     }
 }
