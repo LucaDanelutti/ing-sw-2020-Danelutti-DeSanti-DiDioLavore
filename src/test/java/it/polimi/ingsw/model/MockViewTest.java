@@ -701,7 +701,7 @@ class MockViewTest {
         return cardIds;
     }
 
-    @Test void loopBotsGame(){
+    void loopBotsGame(){
         //SETUP VARIABLES
         int counter=0;
         int numberOfCardsRandomCombinationSwitch=10;
@@ -743,7 +743,7 @@ class MockViewTest {
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
-            System.out.println("CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
 
             totalBlocked+=blocked;
             totalWinner+=winner;
