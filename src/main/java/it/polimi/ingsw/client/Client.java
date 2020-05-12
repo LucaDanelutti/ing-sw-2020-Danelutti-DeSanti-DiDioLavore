@@ -88,25 +88,6 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         return t;
     }
 
-    /* DEPRECATED
-    public Thread asyncWriteToSocket(final ObjectOutputStream socketOut){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-
-                    }
-                }catch(Exception e){
-                    setActive(false);
-                }
-            }
-        });
-        t.start();
-        return t;
-    }
-    */
-
     private void handleMessage(Object inputObject) {
         if (inputObject instanceof RequestAndUpdateMessage) {
             RequestAndUpdateMessage message = (RequestAndUpdateMessage) inputObject;
@@ -139,10 +120,8 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
             }, 1000, 10*1000);
 
             Thread t0 = asyncReadFromSocket(socketIn);
-            // DEPRECATED Thread t1 = asyncWriteToSocket(out);
             ClientView clientView = new ClientView(this);
             t0.join();
-            // DEPRECATED t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
