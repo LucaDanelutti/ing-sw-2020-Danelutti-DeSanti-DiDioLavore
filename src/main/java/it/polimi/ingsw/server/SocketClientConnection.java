@@ -100,7 +100,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                 @Override
                 public void run() {
                     if (pong) {
-                        //asyncSend(new PingMessage());
+                        asyncSend(new PingMessage());
                         pong = false;
                     } else {
                         System.out.println("No pong received!");
@@ -114,7 +114,13 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             do {
                 NicknameRequestMessage nicknameRequestMessage = new NicknameRequestMessage(new ArrayList<>());
                 send(nicknameRequestMessage);
-                Object input = in.readObject();
+                Object input;
+                do {
+                    input = in.readObject();
+                    if (input instanceof PongMessage) {
+                        pong = true;
+                    }
+                } while (input instanceof PongMessage);
                 if (input instanceof NicknameSetMessage) {
                     nicknameSetMessage = (NicknameSetMessage) input;
                 } else {
