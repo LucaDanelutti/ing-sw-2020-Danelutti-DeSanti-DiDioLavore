@@ -15,139 +15,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLIEngine implements UserInterface {
+    private ClientView clientView;
 
     public ClientView getClientView() {
         return clientView;
     }
-
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
     }
 
-    private ClientView clientView;
-
-    private boolean isThereAnyPawnOnTheBoard(){
-        CellView[][] matrix=clientView.getModelView().getMatrix();
-        for(int i=0; i<matrix.length; i++){
-            for(int j=0; j<matrix[0].length; j++){
-                if(isThereAPawnHere(i,j)!=null){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private PawnView isThereAPawnHere(int x, int y){
-        for(PlayerView p : clientView.getModelView().getPlayerList()){
-            for(PawnView pawnView : p.getPawnList()){
-                if(pawnView.getPawnPosition()==null)
-                    return null;
-                if(pawnView.getPawnPosition().getY()==y && pawnView.getPawnPosition().getX()==x){
-                    return pawnView;
-                }
-            }
-        }
-        return null;
-    }
-    private void printSingleUnderscoreRow(){
-        System.out.println("________________________________");
-    }
-
-    private void printEqualsRow(){
-        System.out.println("===================================================");
-
-    }
-    private void printSingleScoreRow(){
-        System.out.println("---------------------------------------------------");
-
-    }
-    private void printBoard(){
-        CellView[][] matrix=clientView.getModelView().getMatrix();
-        PawnView p;
-        int level;
-
-        for(int i=0; i<matrix.length; i++){
-            if(i==0){
-                printSingleUnderscoreRow();
-            }
-            for(int j=0; j<matrix[0].length; j++){
-                p = isThereAPawnHere(i,j);
-                level= matrix[i][j].getPeek().getLevel();
-
-                if(j==0){
-                    System.out.print("|");
-                }
-                if(p==null) {
-                    if(level!=0) {
-                        System.out.print("l:" + level + "   |");
-                    }else{
-                        System.out.print("     |");
-                    }
-                }
-                else {
-                    if(level!=0) {
-                        System.out.print("l:" + level + " "+p.getId()+"|");
-                    }else{
-                        System.out.print("    "+p.getId()+"|");
-                    }
-                }
-                if(j==matrix[0].length-1){
-                    System.out.print("\n");
-                }
-            }
-            printSingleUnderscoreRow();
-        }
-        System.out.println(" ");
-    }
-    private void printPlayersWith_Cards_WinnerStatus_PawnsIds(){
-        printEqualsRow();
-        int maxNickLength=0;
-        for(PlayerView p : clientView.getModelView().getPlayerList()){
-            if(p.getName().length()>=maxNickLength){
-                maxNickLength=p.getName().length();
-            }
-        }
-
-
-        for(PlayerView p : clientView.getModelView().getPlayerList()){
-            CardView currentCard =p.getCard();
-            String cardName;
-            if(currentCard==null){
-                cardName="---------";
-            }
-            else{
-                cardName=currentCard.getName();
-            }
-
-            StringBuilder a= new StringBuilder();
-            String str="|%-15s|";
-            a.append(String.format(str," "+p.getName()));
-
-            StringBuilder b = new StringBuilder();
-            b.append(" Pawns: ");
-            for(PawnView pawnView : p.getPawnList()){
-                b.append(pawnView.getId()).append(" ");
-            }
-            str=String.format("%-15s|",b.toString());
-            a.append(str);
-            a.append(String.format("%-17s|"," Card: "+cardName));
-
-            System.out.println(a.toString());
-
-
-
-        }
-        printEqualsRow();
-    }
-    public void printCompleteGameStatus(){
-        printPlayersWith_Cards_WinnerStatus_PawnsIds();
-        printBoard();
-    }
-    public void printWelcome(){
-        System.out.println("==============================================================");
-        System.out.println("                         SANTORINI                            ");
-        System.out.println("==============================================================");
-    }
 
     public static void main(String[] args) {
         ClientView clientView = new ClientView();
@@ -162,6 +38,9 @@ public class CLIEngine implements UserInterface {
         clientView.getModelView().onPawnPositionUpdate(4,new Position(0,2));
         clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
         clientView.getModelView().onCellUpdate(new Position(3,3), BlockType.LEVEL1);
+        clientView.getModelView().onCellUpdate(new Position(0,0), BlockType.LEVEL2);
+        clientView.getModelView().onCellUpdate(new Position(4,4), BlockType.DOME);
+
         clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
         //clientView.getModelView().onChosenCardUpdate(new CardView(2,"Medusa","do as he wishes"),"Luca");
         clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
@@ -413,5 +292,165 @@ public class CLIEngine implements UserInterface {
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
     }
 
+    private boolean isThereAnyPawnOnTheBoard(){
+        CellView[][] matrix=clientView.getModelView().getMatrix();
+        for(int i=0; i<matrix.length; i++){
+            for(int j=0; j<matrix[0].length; j++){
+                if(isThereAPawnHere(i,j)!=null){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private PawnView isThereAPawnHere(int x, int y){
+        for(PlayerView p : clientView.getModelView().getPlayerList()){
+            for(PawnView pawnView : p.getPawnList()){
+                if(pawnView.getPawnPosition()==null)
+                    return null;
+                if(pawnView.getPawnPosition().getY()==y && pawnView.getPawnPosition().getX()==x){
+                    return pawnView;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void printSingleUnderscoreRow(){
+        System.out.println("_________________________________________");
+    }
+    private void printHorizontalCoordinates(){
+        System.out.println("         x:0     x:1     x:2     x:3     x:4   ");
+    }
+    private void printEqualsRow(){
+        System.out.println("===================================================");
+
+    }
+    private void printSingleScoreRow(){
+        System.out.println("---------------------------------------------------");
+    }
+
+    public void printBoard(){
+        CellView[][] matrix=clientView.getModelView().getMatrix();
+        PawnView p;
+        int level;
+
+        System.out.println();
+        for(int i=0; i<matrix.length; i++){
+
+            if(i==0) {
+                //if this is the first line we should write the first row
+                printHorizontalCoordinates();
+                System.out.println("    ===========================================");
+            }
+
+            for(int j=0; j<matrix[0].length; j++){
+                //let's get the pawn (or null) in the current position to be printed
+                p = isThereAPawnHere(i,j);
+                level= matrix[i][j].getPeek().getLevel();
+                StringBuilder a = new StringBuilder();
+                if(j==0){
+                    a.append("y:").append(i).append("  #|");
+                }
+                if(level==4){
+                    a.append("   X   |");
+                }
+                else {
+                    if(p==null && level==0){
+                        a.append("       |");
+                    }
+                    else {
+                        if (p == null) {
+                            a.append("   ");
+                        } else {
+                            if(level!=0) {
+                                a.append(" ").append(p.getId()).append(",");
+                            }else{
+                                a.append(" ").append(p.getId()).append(" ");
+                            }
+                        }
+                        if (level != 0) {
+                            a.append("l:").append(level).append(" |");
+                        } else {
+                            a.append("    |");
+                        }
+                    }
+                }
+                System.out.print(a.toString());
+
+
+                /*if(p==null) {
+                    if(level!=0) {
+                        System.out.print(String.format("l:" + level + "   |"));
+                    }else{
+                        System.out.print("     |");
+                    }
+                }
+                else {
+                    if(level!=0) {
+                        System.out.print("l:" + level + " "+p.getId()+"|");
+                    }else{
+                        System.out.print("    "+p.getId()+"|");
+                    }
+                }*/
+                if(j==matrix[0].length-1){
+                    System.out.print("#\n");
+                }
+            }
+
+            //this is the row below the printed things
+            System.out.println("    ===========================================");
+        }
+        System.out.println(" ");
+    }
+    private void printPlayersWith_Cards_WinnerStatus_PawnsIds(){
+        printEqualsRow();
+        int maxNickLength=0;
+        for(PlayerView p : clientView.getModelView().getPlayerList()){
+            if(p.getName().length()>=maxNickLength){
+                maxNickLength=p.getName().length();
+            }
+        }
+
+
+        for(PlayerView p : clientView.getModelView().getPlayerList()){
+            CardView currentCard =p.getCard();
+            String cardName;
+            if(currentCard==null){
+                cardName="---------";
+            }
+            else{
+                cardName=currentCard.getName();
+            }
+
+            StringBuilder a= new StringBuilder();
+            String str="|%-15s|";
+            a.append(String.format(str," "+p.getName()));
+
+            StringBuilder b = new StringBuilder();
+            b.append(" Pawns: ");
+            for(PawnView pawnView : p.getPawnList()){
+                b.append(pawnView.getId()).append(" ");
+            }
+            str=String.format("%-15s|",b.toString());
+            a.append(str);
+            a.append(String.format("%-17s|"," Card: "+cardName));
+
+            System.out.println(a.toString());
+
+
+
+        }
+        printEqualsRow();
+    }
+    private void printCompleteGameStatus(){
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
+        printBoard();
+    }
+    private void printWelcome(){
+        System.out.println("==============================================================");
+        System.out.println("                         SANTORINI                            ");
+        System.out.println("==============================================================");
+    }
 
 }
