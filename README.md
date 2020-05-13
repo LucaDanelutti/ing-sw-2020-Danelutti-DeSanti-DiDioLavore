@@ -9,14 +9,14 @@ Java implementation of the table game Santorini by Cranio Creations
 ### Development state: 
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
-| Basic rules | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
-| Complete rules | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
-| Socket | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| GUI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| CLI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Socket | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| GUI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| CLI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 | Multiple games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| Advanced Gods | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| Advanced Gods | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 
 >[![RED](https://placehold.it/15/f03c15/f03c15)](#) = not implemented <br>
