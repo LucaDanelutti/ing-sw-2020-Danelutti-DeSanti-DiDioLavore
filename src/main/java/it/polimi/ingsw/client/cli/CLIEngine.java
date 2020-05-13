@@ -167,8 +167,6 @@ public class CLIEngine implements UserInterface {
         clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
         CLIEngine cliEngine = new CLIEngine();
         cliEngine.setClientView(clientView);
-        //cliEngine.initialize();
-        cliEngine.refreshView(new PawnView(32,"ciao"));
 
         /*ArrayList<BlockType> arrayList = new ArrayList<>();
         arrayList.add(BlockType.LEVEL1);
@@ -234,6 +232,12 @@ public class CLIEngine implements UserInterface {
     }
 
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the block type to construct from the ones below:");
         for(int i=0; i<availableBlockTypes.size(); i++){
@@ -256,6 +260,12 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenBlockTypeSetMessage(availableBlockTypes.get(input)));
     }
     @Override public void onChosenCardRequest(ArrayList<CardView> availableCards) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printPlayersWith_Cards_WinnerStatus_PawnsIds();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select your card from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
@@ -266,6 +276,12 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
     @Override public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the position from the ones below:");
         for(int i=0; i<availablePositions.size(); i++){
@@ -280,6 +296,11 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
     @Override public void onFirstPlayerRequest() {
+        try {
+            Runtime.getRuntime().exec("clear");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the first player from the ones below:");
         int i=0;
@@ -292,12 +313,19 @@ public class CLIEngine implements UserInterface {
         clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
     }
     @Override public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         printEqualsRow();
         ArrayList<Integer> chosenCards = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select "+clientView.getModelView().getPlayerList().size()+" cards from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
-            System.out.println(i+") "+availableCards.get(i).getName() + "| "+availableCards.get(i).getDescription());
+            System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
         for(int i=0; i<clientView.getModelView().getPlayerList().size(); i++){
@@ -310,6 +338,12 @@ public class CLIEngine implements UserInterface {
 
     }
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ArrayList<Position> pawnsPositions = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the positions for your pawns from the ones below:");
@@ -333,6 +367,12 @@ public class CLIEngine implements UserInterface {
         clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0),pawnsId.get(1),pawnsPositions.get(0),pawnsPositions.get(1)));
     }
     @Override public void onNicknameRequest() {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printWelcome();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select your nickname: ");
         String name = scanner.nextLine();
@@ -345,6 +385,12 @@ public class CLIEngine implements UserInterface {
         clientView.update(new NumberOfPlayersSetMessage(number));
     }
     @Override public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the pawns from the ones below:");
         ArrayList<PawnView> pawnViews = new ArrayList<>();
