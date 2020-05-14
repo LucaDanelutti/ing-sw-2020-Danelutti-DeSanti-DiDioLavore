@@ -163,7 +163,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(GameEndedMessage m) {
+    public void update(GameEndedMessage gameEndedMessage) {
 
     }
 
@@ -174,7 +174,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
-
+        serverConnection.asyncSend(chosenBlockTypeSetMessage);
     }
 
     @Override
@@ -184,22 +184,22 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(ChosenPositionSetMessage chosenPositionSetMessage) {
-
+        serverConnection.asyncSend(chosenPositionSetMessage);
     }
 
     @Override
     public void update(FirstPlayerSetMessage firstPlayerSetMessage) {
-
+        serverConnection.asyncSend(firstPlayerSetMessage);
     }
 
     @Override
     public void update(InGameCardsSetMessage inGameCardsSetMessage) {
-
+        serverConnection.asyncSend(inGameCardsSetMessage);
     }
 
     @Override
     public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
-
+        serverConnection.asyncSend(initialPawnPositionSetMessage);
     }
 
     @Override
@@ -214,6 +214,6 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
-
+        serverConnection.asyncSend(selectedPawnSetMessage);
     }
 }
