@@ -12,6 +12,7 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
+import javafx.geometry.Pos;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -772,6 +773,38 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
 
         return false;
+    }
+    public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
+        int indexWorker1=0;
+        int indexWorker2=0;
+        for(int i=0; i<game.getCurrentPlayer().getPawnList().size(); i++){
+            Pawn p=game.getCurrentPlayer().getPawnList().get(i);
+            if(p.getId()==idWorker1){
+                indexWorker1=i;
+                game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
+            }
+            else if(p.getId()==idWorker2){
+                indexWorker2=i;
+                game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
+            }
+            else{
+                return false;
+            }
+        }
+        notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(),game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(),workerPos1,workerPos2));
+        Player nextPlayer = game.getNextPlayer();
+        if (nextPlayer.getPawnList().get(0).getPosition() != null & nextPlayer.getPawnList().get(1).getPosition() != null) {
+            //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
+            notifyListeners(generateSelectPawnRequest());
+
+        } else {
+            //otherwise i have to ask the next player to set its initial pawn positions
+            //this function will also set CurrentAction to null
+            game.setCurrentPlayer(nextPlayer);
+            notifyListeners(generateInitialPawnPositionRequest());
+        }
+
+        return true;
     }
     public Boolean addPlayerToLobby(String name){
         this.lobby.add(name);
