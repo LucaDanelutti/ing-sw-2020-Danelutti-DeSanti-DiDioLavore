@@ -273,7 +273,7 @@ public class CLIEngine implements UserInterface {
             chosenCards = new ArrayList<>();
             for (int i = 0; i < clientView.getModelView().getPlayerList().size(); i++) {
                 System.out.print("Card " + (i + 1) + " of " + clientView.getModelView().getPlayerList().size() + " | Choice (0->" + (availableCards.size() - 1) + "): ");
-                chosenCards.add(scanner.nextInt());
+                chosenCards.add(availableCards.get(scanner.nextInt()).getId());
             }
             if(areThereAnyDuplicates(chosenCards)){
                 System.out.println("No duplicates allowed, retry: ");
