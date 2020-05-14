@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.model.board.Cell;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,6 +22,43 @@ class GameLogicExecutorTest {
     //TODO: missing setPawnsPositions
     //TODO: missing loadCard
     //TODO: setInGameCards
+
+    private void simpleCompleteBoardPrint(){
+        Cell[][] matrix=game.getBoard().getMatrixCopy();
+        for(int i=0; i<matrix.length; i++){
+            if(i==0){
+                System.out.println("___________________________________");
+            }
+            for(int j=0; j<matrix[0].length; j++){
+                Pawn p =matrix[i][j].getPawn();
+                BlockType blockType = matrix[i][j].peekBlock();
+                int level = blockType.getLevel();
+                if(j==0){
+                    System.out.print("|");
+                }
+                if(p==null) {
+                    if(level!=0) {
+                        System.out.print("l:" + level + "   |");
+                    }else{
+                        System.out.print("     |");
+                    }
+                }
+                else {
+                    if(level!=0) {
+                        System.out.print("l:" + level + " "+p.getId()+"|");
+                    }else{
+                        System.out.print("    "+p.getId()+"|");
+                    }
+                }
+                if(j==matrix[0].length-1){
+                    System.out.print("\n");
+                }
+            }
+            System.out.println("___________________________________");
+        }
+        System.out.println(" ");
+    }
+
 
     /**
      * This function creates a simple setup for a game of three players Ian, Luca, Riccardo.
@@ -265,6 +303,9 @@ class GameLogicExecutorTest {
 
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can push in 1,3
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
+        game.board.updatePawnPosition(new Position(1,3), new Position(1,4));
+        //simpleCompleteBoardPrint();
+        //ArrayList<Position> availablePos=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(1,2));
 
         assertEquals(new Position(1,3),game.getPlayer("luca").getPawnList().get(0).getPosition());
@@ -279,6 +320,7 @@ class GameLogicExecutorTest {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
 
         //the correct setup to test a win, the pawn is positioned in 1,1
+        game.getBoard().pawnConstruct(null, new Position(1,1),BlockType.LEVEL1);
         game.getBoard().pawnConstruct(null, new Position(1,1),BlockType.LEVEL2);
         game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL1);
         game.getBoard().pawnConstruct(null, new Position(0,0),BlockType.LEVEL2);
@@ -1061,11 +1103,14 @@ class GameLogicExecutorTest {
 
         //Player1 Turn3 Apollo
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
-        gameLogicExecutor.setChosenPosition(new Position(0,3)); //move
-        gameLogicExecutor.setChosenPosition(new Position(0,4)); //construct
+        ArrayList<Position> a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        gameLogicExecutor.setChosenPosition(new Position(3,0)); //move
+        a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        gameLogicExecutor.setChosenPosition(new Position(4,0)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn3 Arthemis
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
+        a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
 
         assertEquals(true,game.getPlayer("Player2").getWinner());

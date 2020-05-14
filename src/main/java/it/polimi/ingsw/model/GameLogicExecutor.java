@@ -12,7 +12,6 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
-import javafx.geometry.Pos;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public void processAction(MoveAction moveAction) {
         if (moveAction.getChosenPosition() == null) {
             notifyListeners(generateChosenPositionRequest());
-
         } else {
             executeAction(moveAction);
         }
@@ -410,6 +408,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         return availableViewCards;
     }
 
+    private Boolean isThisPositionInTheAvailableCells(Position toBeChecked){
+        if(game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy()).contains(toBeChecked)){
+            return true;
+        }
+        return false;
+    }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 
@@ -580,9 +584,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new GameEndedMessage(recipients,reason);
     }
-
-
-
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 
@@ -640,14 +641,23 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 game.getCurrentAction().setChosenPosition(null);
                 game.currentAction.accept(this); //to be executed(skipped) directly this will call the executeAction
             }
-            else{
+            else if(isThisPositionInTheAvailableCells(chosenPos)){
                 game.getCurrentAction().setChosenPosition(chosenPos);
                 game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
             }
+            else{
+                game.getCurrentAction().acceptForProcess();
+            }
         }
         else{
-            game.getCurrentAction().setChosenPosition(chosenPos);
-            game.getCurrentAction().acceptForProcess();
+            if(isThisPositionInTheAvailableCells(chosenPos)){
+                game.getCurrentAction().setChosenPosition(chosenPos);
+                game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
+            }
+            else{
+                game.getCurrentAction().acceptForProcess();
+            }
+
         }
 
 
