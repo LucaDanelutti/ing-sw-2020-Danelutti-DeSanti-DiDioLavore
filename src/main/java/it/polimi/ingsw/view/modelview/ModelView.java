@@ -8,16 +8,7 @@ import java.util.ArrayList;
 public class ModelView {
     private static final int MATRIX_SIZE = 5;
 
-    public ArrayList<PlayerView> getPlayerList() {
-        return playerList;
-    }
-
     private ArrayList<PlayerView> playerList;
-
-    public CellView[][] getMatrix() {
-        return matrix;
-    }
-
     private CellView[][] matrix;
 
     public ModelView(){
@@ -28,6 +19,14 @@ public class ModelView {
             }
         }
         playerList = new ArrayList<>();
+    }
+
+    public ArrayList<PlayerView> getPlayerList() {
+        return playerList;
+    }
+
+    public CellView[][] getMatrix() {
+        return matrix;
     }
 
     public void onPawnPositionUpdate(int pawnId, Position pawnPos) {
@@ -91,14 +90,32 @@ public class ModelView {
 
     /**
      *
-     * @param name is the name of the client player
+     * @param playerName is the name of the client player
      * @return the list of enemies names
      */
-    public ArrayList<String> getEnemiesNames(String name) {
+    public ArrayList<String> getEnemiesNames(String playerName) {
         ArrayList<String> enemiesNamesList = new ArrayList<>();
         for (PlayerView player : playerList) {
-            if (!player.getName().equals(name)) enemiesNamesList.add(player.getName());
+            if (!player.getName().equals(playerName)) enemiesNamesList.add(player.getName());
         }
         return enemiesNamesList;
     }
+
+    public CardView getClientPlayerCard(String playerName) {
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) {
+                return player.getCard();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<CardView> getEnemiesCards(String playerName) {
+        ArrayList<CardView> enemiesCardsList = new ArrayList<>();
+        for (PlayerView player : playerList) {
+            if (!player.getName().equals(playerName)) enemiesCardsList.add(player.getCard());
+        }
+        return enemiesCardsList;
+    }
+
 }
