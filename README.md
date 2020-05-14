@@ -17,7 +17,7 @@ Java implementation of the table game Santorini by Cranio Creations
 | Multiple games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Advanced Gods | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Undo | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 
 >[![RED](https://placehold.it/15/f03c15/f03c15)](#) = not implemented <br>
 [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) = work in progress <br>

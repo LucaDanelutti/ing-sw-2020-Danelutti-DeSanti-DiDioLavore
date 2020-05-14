@@ -286,7 +286,6 @@ public class CLIEngine implements UserInterface {
         printEqualsRow();
 
         clientView.update(new InGameCardsSetMessage(chosenCards));
-
     }
 
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
