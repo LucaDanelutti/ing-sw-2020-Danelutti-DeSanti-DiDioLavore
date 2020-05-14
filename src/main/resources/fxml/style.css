@@ -16,3 +16,7 @@
 .nicknameRequest {
     -fx-background-color: rgb(193, 221, 230);
 }
+
+.test {
+    -fx-background-color: rgb(0, 0, 100);
+}

@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.scene.image.ImageView;
 
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 
 public class MainSceneController extends GUIController {
 
-    private static final double BOARD_PADDING = 12.0;
     private static final double BOARD_PADDING_RATIO = 0.76;
 
     /* ===== FXML elements ===== */
@@ -34,6 +34,8 @@ public class MainSceneController extends GUIController {
 
     @FXML
     private GridPane boardGridPane;
+    @FXML
+    private AnchorPane boardAnchorPane;
 
     @FXML
     private Label clientPlayerNameLabel;
@@ -50,17 +52,12 @@ public class MainSceneController extends GUIController {
     private ImageView enemy2PlayerCardImageView;
 
 
-
     /* ===== FXML Properties ===== */
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
     public void initialize() {
-//       new Insets(boardGridPane.widthProperty().getValue()*BOARD_PADDING))
-       boardGridPane.setPadding(new Insets(boardGridPane.widthProperty().getValue()*BOARD_PADDING));
-       System.out.println(boardGridPane.widthProperty().getValue()*BOARD_PADDING);
-//       boardGridPane.paddingProperty().bind(Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().getValue()*BOARD_PADDING)));
-       System.out.println(boardGridPane.paddingProperty().getValue());
+       //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(6));
        clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(2.5));
        enemy1PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(12));
@@ -68,12 +65,17 @@ public class MainSceneController extends GUIController {
        enemy2PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(12));
        enemy2PlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(5));
 
+       //board dimensions bindings
+       boardAnchorPane.setPrefWidth(mainGridPane.heightProperty().multiply(0.5).getValue());
+       boardAnchorPane.setPrefHeight(mainGridPane.heightProperty().multiply(0.5).getValue());
+       boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(0.5));
+       boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
    }
 
 
    public void buildMainScene() {
-       stage.setMinWidth(Screen.getPrimary().getBounds().getWidth() / 2);
-       stage.setMinHeight(Screen.getPrimary().getBounds().getHeight() / 2);
+       stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+       stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
 
        updatePlayersName();
        updatePlayersCard();
