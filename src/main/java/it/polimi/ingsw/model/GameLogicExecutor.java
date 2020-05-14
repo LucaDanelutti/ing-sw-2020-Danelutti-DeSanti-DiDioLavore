@@ -414,6 +414,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return false;
     }
+    private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
+        if(game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(),game.getBoard().getMatrixCopy()).contains(blockType)){
+            return true;
+        }
+        return false;
+    }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 
@@ -671,8 +677,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setChosenBlockType(BlockType blockType){
-        game.getCurrentAction().blockSelected(blockType);
-        game.getCurrentAction().acceptForProcess();
+        if(isThisBlockTypeInTheAvailableBlockTypes(blockType)){
+            game.getCurrentAction().blockSelected(blockType);
+            game.getCurrentAction().acceptForProcess();
+        }
+        else{
+            game.getCurrentAction().acceptForProcess();
+            return false;
+        }
         return true;
     }
     /**
