@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.controllers.GameCardsSceneController;
 import it.polimi.ingsw.client.gui.controllers.MainSceneController;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
@@ -156,8 +157,8 @@ public class GUIEngine extends Application implements UserInterface {
     public void showWaitingScene() {
         Platform.runLater(() -> {
             showScene("/fxml/waitingScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/3);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
         });
     }
 
@@ -183,7 +184,12 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/gameCardsScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            ((GameCardsSceneController)currentController).loadCards(availableCards);
+        });
     }
 
     @Override
