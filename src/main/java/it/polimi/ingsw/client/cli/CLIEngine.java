@@ -232,7 +232,7 @@ public class CLIEngine implements UserInterface {
         System.out.print("Choice (0->"+(clientView.getModelView().getPlayerList().size()-1)+"): ");
         ArrayList<Integer> options = new ArrayList<>();
         int input;
-        for(int j=0; i<clientView.getModelView().getPlayerList().size(); i++){
+        for(int j=0; j<clientView.getModelView().getPlayerList().size(); j++){
             options.add(j);
         }
         do {
@@ -255,6 +255,7 @@ public class CLIEngine implements UserInterface {
         ArrayList<Integer> chosenCards;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select "+clientView.getModelView().getPlayerList().size()+" cards from the ones below:");
+
         for(int i=0; i<availableCards.size(); i++){
             System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
