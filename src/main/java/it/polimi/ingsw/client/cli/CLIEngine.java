@@ -74,7 +74,12 @@ public class CLIEngine implements UserInterface {
     }
 
     @Override public void refreshView() {
-
+        try {
+            Runtime.getRuntime().exec("clear");
+            printCompleteGameStatus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override public void refreshView(PawnView pawnView) {
