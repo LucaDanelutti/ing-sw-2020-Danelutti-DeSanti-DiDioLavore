@@ -168,6 +168,11 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
+    public void update(UndoUpdateMessage m) {
+
+    }
+
+    @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
 
     }

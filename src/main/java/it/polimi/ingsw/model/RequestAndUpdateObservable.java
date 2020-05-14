@@ -132,6 +132,12 @@ public class RequestAndUpdateObservable {
         }
     }
 
+    public void notifyListeners(UndoUpdateMessage m) {
+        for(RequestsAndUpdateListener l : this.listeners){
+            l.update(m);
+        }
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 

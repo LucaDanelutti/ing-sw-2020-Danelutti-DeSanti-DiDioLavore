@@ -29,4 +29,6 @@ public interface RequestsAndUpdateListener{
     void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage);
 
     void update(GameEndedMessage gameEndedMessage);
+
+    void update(UndoUpdateMessage m);
 }

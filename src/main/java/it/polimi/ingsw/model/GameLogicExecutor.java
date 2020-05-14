@@ -20,11 +20,13 @@ import java.util.Set;
 import static java.lang.Math.abs;
 
 public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor {
-    private final Game game;
+    private Game game;
     private final ArrayList<String> lobby;
     private int numberOfPlayers; //set to -1 by constructor
     private static final int maxX=4;
     private static final int maxY=4;
+    private Game beginningOfCurrentAction;
+    private Game beginningOfCurrentPlayerTurn;
 
     /**
      * This is the constructor for the class GameLogicExecutor
@@ -43,6 +45,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
     public void processAction(MoveAction moveAction) {
         if (moveAction.getChosenPosition() == null) {
+            beginningOfCurrentAction=createGameHardCopy(game);
             notifyListeners(generateChosenPositionRequest());
         } else {
             executeAction(moveAction);
@@ -51,6 +54,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
     public void processAction(ConstructAction constructAction){
         if(constructAction.getChosenPosition()==null){
+            beginningOfCurrentAction=createGameHardCopy(game);
             notifyListeners(generateChosenPositionRequest());
         }
         else if(constructAction.getSelectedBlockType()==null){
@@ -683,6 +687,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition){
+        beginningOfCurrentPlayerTurn=createGameHardCopy(game);
         if(isThisSelectedPawnValid(selectedPawnPosition)) {
             //load the first action to be executed
             game.setCurrentAction();
@@ -1003,6 +1008,24 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         notifyListeners(new gameStartedAndYouAreNotSelectedMessage(notToBeAddedPlayers));
     }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
+
+    public Boolean undoCurrentAction(){
+        this.game=beginningOfCurrentAction;
+
+        //let's ask again the currentPlayer for the ChosenPosition
+        notifyListeners(generateChosenPositionRequest());
+
+        return true;
+    }
+    public Boolean undoTurn(){
+        this.game=beginningOfCurrentPlayerTurn;
+
+
+        //let's ask again the currentPlayer for the selectedPawn
+        notifyListeners(generateSelectPawnRequest());
+
+        return true;
+    }
 
 
 
