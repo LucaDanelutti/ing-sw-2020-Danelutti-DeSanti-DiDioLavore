@@ -39,6 +39,15 @@ public class Cell{
         }
     }
 
+    public Cell getCellCopyWithoutPawn(){
+        Cell copy=new Cell();
+        Object[] temp= this.blockStack.toArray();
+        for (int i=1; i<temp.length; i++){
+            copy.blockStack.push((BlockType)temp[i]);
+        }
+        return copy;
+    }
+
     /**
      * This provides access to the Stack push function.
      * @param type The block to be pushed into the Stack

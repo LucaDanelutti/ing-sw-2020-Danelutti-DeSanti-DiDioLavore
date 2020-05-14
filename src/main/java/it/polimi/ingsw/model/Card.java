@@ -41,12 +41,12 @@ public class Card {
         this.description = toBeCopied.description;
         if(toBeCopied.defaultActionList != null) {
             for (Action action : toBeCopied.defaultActionList) {
-                this.defaultActionList.add(action);
+                this.defaultActionList.add(action.duplicate());
             }
         }
         if(toBeCopied.currentActionList != null) {
             for (Action action : toBeCopied.currentActionList) {
-                this.currentActionList.add(action);
+                this.currentActionList.add(action.duplicate());
             }
         }
     }

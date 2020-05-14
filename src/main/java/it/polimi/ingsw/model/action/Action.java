@@ -64,9 +64,9 @@ public abstract class Action {
      */
     Action(Action toBeCopied){
         this.isOptional = toBeCopied.isOptional;
-        this.selectedPawn = toBeCopied.selectedPawn;
-        this.notSelectedPawn = toBeCopied.notSelectedPawn;
-        this.chosenPosition = toBeCopied.chosenPosition;
+        this.selectedPawn = new Pawn(toBeCopied.selectedPawn);
+        this.notSelectedPawn = new Pawn(toBeCopied.notSelectedPawn);
+        this.chosenPosition = new Position(toBeCopied.chosenPosition);
         this.actionVisitors=toBeCopied.actionVisitors;
         //this.actionType=toBeCopied.actionType;
         if (toBeCopied.notAvailableCell != null) {

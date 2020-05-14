@@ -67,6 +67,17 @@ class Player {
         pawnList = new ArrayList<Pawn>();
     }
 
+    Player(Player toBeCopied){
+        this.name=toBeCopied.name;
+        this.pawnList=new ArrayList<>();
+        for(Pawn p: toBeCopied.pawnList){
+            this.pawnList.add(new Pawn(p));
+        }
+        this.isWinner=toBeCopied.isWinner;
+        this.isLoser=toBeCopied.isLoser;
+        this.currentCard=new Card(toBeCopied.currentCard);
+    }
+
     String getName() {
         return name;
     }

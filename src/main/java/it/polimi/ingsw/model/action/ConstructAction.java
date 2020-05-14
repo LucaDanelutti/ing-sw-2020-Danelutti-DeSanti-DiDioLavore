@@ -29,6 +29,13 @@ public class ConstructAction extends Action {
         super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.CONSTRUCT, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
         this.constructOnLastBuilt = toBeCopied.constructOnLastBuilt;
         this.buildBelowEnable = toBeCopied.buildBelowEnable;
+        if(toBeCopied.alwaysAvailableBlockType!=null){
+            this.alwaysAvailableBlockType=new ArrayList<>();
+            this.alwaysAvailableBlockType.addAll(toBeCopied.alwaysAvailableBlockType);
+        }
+        else{
+            this.alwaysAvailableBlockType=null;
+        }
         this.alwaysAvailableBlockType = toBeCopied.alwaysAvailableBlockType;
         this.disableMoveUp = toBeCopied.disableMoveUp;
         this.notBuildOnLastBuilt = toBeCopied.notBuildOnLastBuilt;

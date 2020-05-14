@@ -40,6 +40,18 @@ public class Board{
         return clonedMatrix;
     }
 
+    public Board getBoardCopyWithoutPawns(){
+        Board copy=new Board();
+        Cell[][] clonedMatrix=new Cell[5][5];
+        for (int i=0; i<clonedMatrix.length; i++){
+            for(int j=0; j<clonedMatrix[0].length; j++){
+                clonedMatrix[i][j]=this.matrix[i][j].getCellCopyWithoutPawn();
+            }
+        }
+        copy.matrix=clonedMatrix;
+        return copy;
+    }
+
     /**
      * This function updates the position of the pawn inside of the board, and also updates the inside variables of the
      * Pawn class to match accordingly.
@@ -93,6 +105,9 @@ public class Board{
     public void setPawnPosition(Pawn pawn, Position position){
         pawn.setPosition(position);
         pawn.setDeltaHeight(0);
+        matrix[position.getX()][position.getY()].setPawn(pawn);
+    }
+    public void placePawn(Pawn pawn,Position position){
         matrix[position.getX()][position.getY()].setPawn(pawn);
     }
 

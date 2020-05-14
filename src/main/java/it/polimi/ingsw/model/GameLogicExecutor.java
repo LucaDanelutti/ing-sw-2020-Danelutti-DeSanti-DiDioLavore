@@ -451,6 +451,18 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private Boolean isThisPositionInTheAvailableOnes(Position chosenPos){
         return game.getBoard().availablePositionsForPawnInitialPlacement().contains(chosenPos);
     }
+
+    private Game createGameHardCopy(Game toBeCopied){
+        Game hardCopy=new Game();
+        //since we call this function when the game is already started,let's be sure about that
+        if(toBeCopied.getCurrentPlayer()!=null) {
+            //TODO: we have to implement the hard copy of player, board and card
+            hardCopy.setLoadedCardsCopy(toBeCopied.getLoadedCards());
+            hardCopy.setInGameCardsCopy(toBeCopied.getInGameCards());
+            hardCopy.setInGamePlayersAndBoardCopy(toBeCopied);
+        }
+        return null;
+    }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 

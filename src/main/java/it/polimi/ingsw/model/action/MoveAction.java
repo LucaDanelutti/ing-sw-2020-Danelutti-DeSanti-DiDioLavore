@@ -55,7 +55,10 @@ public class MoveAction extends Action {
         this.denyMoveUpEnable = toBeCopied.denyMoveUpEnable;
         this.winDownEnable = toBeCopied.winDownEnable;
         if (toBeCopied.addMoveIfOn != null) {
-            this.addMoveIfOn = new ArrayList<>(toBeCopied.addMoveIfOn);
+            this.addMoveIfOn=new ArrayList<>();
+            for(Position p : toBeCopied.addMoveIfOn){
+                this.addMoveIfOn.add(new Position(p));
+            }
         } else {
             this.addMoveIfOn = null;
         }

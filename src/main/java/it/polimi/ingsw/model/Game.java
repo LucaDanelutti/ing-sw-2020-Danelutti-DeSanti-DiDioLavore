@@ -154,6 +154,43 @@ public class Game {
         this.board=new Board();
     }
 
+    public Game(Game toBeCopied){
+        if(toBeCopied!=null) {
+            if (toBeCopied.getCurrentPlayer() != null) {
+                this.setLoadedCardsCopy(toBeCopied.getLoadedCards());
+                this.setInGameCardsCopy(toBeCopied.getInGameCards());
+                this.setInGamePlayersAndBoardCopy(toBeCopied);
+                this.currentAction=toBeCopied.currentAction.duplicate();
+                for(Player p : this.getPlayers()){
+                    if(p.getName().equals(toBeCopied.getCurrentPlayer().getName())){
+                        this.currentPlayer=p;
+                    }
+                }
+            }
+        }
+        else{
+            this.board=new Board();
+        }
+    }
+
+    public void setInGamePlayersAndBoardCopy(Game toBeCopied){
+        this.inGamePlayers=new ArrayList<>();
+        for(Player p: toBeCopied.getPlayers()){
+            this.inGamePlayers.add(new Player(p));
+        }
+        this.setBoardCopy(toBeCopied);
+    }
+    private void setBoardCopy(Game toBeCopied){
+        this.board=toBeCopied.getBoard().getBoardCopyWithoutPawns();
+        //TODO: we have to set all the pawns in the board accordingly to the InGamePlayers ones
+        for(Player p : this.getPlayers()){
+            for(Pawn pawn : p.getPawnList()){
+                this.board.placePawn(pawn,pawn.getPosition());
+            }
+        }
+    }
+
+
     /**
      * This is the getter for the variable board
      * @return the board
