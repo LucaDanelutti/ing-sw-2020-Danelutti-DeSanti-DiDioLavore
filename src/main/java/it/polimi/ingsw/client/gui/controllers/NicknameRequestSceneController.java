@@ -13,11 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-public class NicknameRequestController extends GUIController {
+public class NicknameRequestSceneController extends GUIController {
     @FXML
     private TextField nicknameTextField;
-    @FXML
-    private Button closeButton;
 
     private StringProperty nickname;
 
