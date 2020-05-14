@@ -932,13 +932,13 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         loadCards();
         //the most godLike -> random shuffle will chose the Cards in the game
         game.shufflePlayers();
-        game.getPlayers().get(0).addPawn(new Pawn("990000",0)); //Red
-        game.getPlayers().get(0).addPawn(new Pawn("990000",1)); //Red
-        game.getPlayers().get(1).addPawn(new Pawn("000099",2)); //Blue
-        game.getPlayers().get(1).addPawn(new Pawn("000099",3)); //Blue
+        game.getPlayers().get(0).addPawn(new Pawn("blue",0));
+        game.getPlayers().get(0).addPawn(new Pawn("blue",1));
+        game.getPlayers().get(1).addPawn(new Pawn("green",2));
+        game.getPlayers().get(1).addPawn(new Pawn("green",3));
         if (game.getPlayers().size() == 3) {
-            game.getPlayers().get(2).addPawn(new Pawn("009900",4)); //Green
-            game.getPlayers().get(2).addPawn(new Pawn("009900",5)); //Green
+            game.getPlayers().get(2).addPawn(new Pawn("orange",4));
+            game.getPlayers().get(2).addPawn(new Pawn("orange",5));
         }
         game.setCurrentPlayer(game.getPlayers().get(0));
         //firstly send the message to the other players to start the game
