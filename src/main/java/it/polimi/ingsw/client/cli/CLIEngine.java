@@ -9,10 +9,11 @@ import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CLIEngine implements UserInterface {
     private ClientView clientView;
@@ -117,6 +118,7 @@ public class CLIEngine implements UserInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the block type to construct from the ones below:");
         for(int i=0; i<availableBlockTypes.size(); i++){
@@ -135,7 +137,18 @@ public class CLIEngine implements UserInterface {
             }
         }
         System.out.print("Choice (0->"+(availableBlockTypes.size()-1)+"): ");
-        int input=scanner.nextInt();
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int i=0; i<availableBlockTypes.size(); i++){
+            options.add(i);
+        }
+        do {
+            input = scanner.nextInt();
+            if(!isTheOptionValid(options,input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (!isTheOptionValid(options,input));
+
         clientView.update(new ChosenBlockTypeSetMessage(availableBlockTypes.get(input)));
     }
     @Override public void onChosenCardRequest(ArrayList<CardView> availableCards) {
@@ -151,7 +164,17 @@ public class CLIEngine implements UserInterface {
             System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) + " | "+availableCards.get(i).getDescription());
         }
         System.out.print("Choice (0->"+(availableCards.size()-1)+"): ");
-        int input=scanner.nextInt();
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int i=0; i<availableCards.size(); i++){
+            options.add(i);
+        }
+        do {
+            input = scanner.nextInt();
+            if(!isTheOptionValid(options,input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (!isTheOptionValid(options,input));
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
     @Override public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
@@ -171,7 +194,17 @@ public class CLIEngine implements UserInterface {
             }
         }
         System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
-        int input=scanner.nextInt();
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int i=0; i<availablePositions.size(); i++){
+            options.add(i);
+        }
+        do {
+            input = scanner.nextInt();
+            if(!isTheOptionValid(options,input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (!isTheOptionValid(options,input));
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
     @Override public void onFirstPlayerRequest() {
@@ -188,7 +221,17 @@ public class CLIEngine implements UserInterface {
             i++;
         }
         System.out.print("Choice (0->"+(clientView.getModelView().getPlayerList().size()-1)+"): ");
-        int input=scanner.nextInt();
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int j=0; i<clientView.getModelView().getPlayerList().size(); i++){
+            options.add(j);
+        }
+        do {
+            input = scanner.nextInt();
+            if(!isTheOptionValid(options,input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (!isTheOptionValid(options,input));
         clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
     }
     @Override public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
@@ -200,22 +243,38 @@ public class CLIEngine implements UserInterface {
         }
 
         printEqualsRow();
-        ArrayList<Integer> chosenCards = new ArrayList<>();
+        ArrayList<Integer> chosenCards;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select "+clientView.getModelView().getPlayerList().size()+" cards from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
             System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
-        for(int i=0; i<clientView.getModelView().getPlayerList().size(); i++){
-            System.out.print("Card "+(i+1)+" of "+clientView.getModelView().getPlayerList().size()+" | Choice (0->"+(availableCards.size()-1)+"): ");
-            chosenCards.add(scanner.nextInt());
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int i=0; i<availableCards.size(); i++){
+            options.add(i);
         }
+        do {
+            chosenCards = new ArrayList<>();
+            for (int i = 0; i < clientView.getModelView().getPlayerList().size(); i++) {
+                System.out.print("Card " + (i + 1) + " of " + clientView.getModelView().getPlayerList().size() + " | Choice (0->" + (availableCards.size() - 1) + "): ");
+                chosenCards.add(scanner.nextInt());
+            }
+            if(areThereAnyDuplicates(chosenCards)){
+                System.out.println("No duplicates allowed, retry: ");
+            }
+            else if(!areTheOptionsValid(options,chosenCards)){
+                System.out.println("Not a valid sequence, retry: ");
+            }
+        }while (areThereAnyDuplicates(chosenCards)||!areTheOptionsValid(options,chosenCards));
+
         printEqualsRow();
 
         clientView.update(new InGameCardsSetMessage(chosenCards));
 
     }
+
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         try {
             Runtime.getRuntime().exec("clear");
@@ -223,16 +282,40 @@ public class CLIEngine implements UserInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayList<Position> pawnsPositions = new ArrayList<>();
+        ArrayList<Position> pawnsPositions;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the positions for your pawns from the ones below:");
         for(int i=0; i<availablePositions.size(); i++){
             System.out.print(i+") x:"+availablePositions.get(i).getX()+" y: "+availablePositions.get(i).getY());
         }
-        System.out.print("First pawn position choice (0->"+(availablePositions.size()-1)+"): ");
-        pawnsPositions.add(availablePositions.get(scanner.nextInt()));
-        System.out.print("Second pawn position choice (0->"+(availablePositions.size()-1)+"): ");
-        pawnsPositions.add(availablePositions.get(scanner.nextInt()));
+        printSingleScoreRow();
+        Position one;
+        Position two;
+        int choice1;
+        int choice2;
+        ArrayList<Integer> options = new ArrayList<>();
+        for(int i=0; i<availablePositions.size(); i++){
+            options.add(i);
+        }
+
+        do {
+            pawnsPositions = new ArrayList<>();
+            System.out.print("First pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
+            choice1=scanner.nextInt();
+            System.out.print("Second pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
+            choice2=scanner.nextInt();
+            if(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2)){
+                System.out.println("Not valid options, retry: ");
+            }
+        }while(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2));
+
+
+        one=availablePositions.get(choice1);
+        two=availablePositions.get(choice2);
+
+        pawnsPositions.add(one);
+        pawnsPositions.add(two);
+
         ArrayList<Integer> pawnsId=new ArrayList<>();
         for(PlayerView playerView : clientView.getModelView().getPlayerList()){
             if(playerView.getName().equals(clientView.getName())){
@@ -242,9 +325,9 @@ public class CLIEngine implements UserInterface {
             }
         }
 
-
         clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0),pawnsId.get(1),pawnsPositions.get(0),pawnsPositions.get(1)));
     }
+
     @Override public void onNicknameRequest() {
         try {
             Runtime.getRuntime().exec("clear");
@@ -260,7 +343,13 @@ public class CLIEngine implements UserInterface {
     @Override public void onNumberOfPlayersRequest() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select the number of players in the game (2 or 3): ");
-        int number = scanner.nextInt();
+        int number;
+        do {
+            number = scanner.nextInt();
+            if(number!=3 && number!=2){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (number!=3 && number!=2);
         clientView.update(new NumberOfPlayersSetMessage(number));
     }
     @Override public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
@@ -288,7 +377,17 @@ public class CLIEngine implements UserInterface {
             }
         }
         System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
-        int input=scanner.nextInt();
+        ArrayList<Integer> options = new ArrayList<>();
+        int input;
+        for(int j=0; i<availablePositions.size(); i++){
+            options.add(j);
+        }
+        do {
+            input = scanner.nextInt();
+            if(!isTheOptionValid(options,input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        }while (!isTheOptionValid(options,input));
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
     }
 
@@ -315,6 +414,22 @@ public class CLIEngine implements UserInterface {
         }
         return null;
     }
+    private boolean isTheOptionValid(ArrayList<Integer> options, Integer option){
+        return options.contains(option);
+    }
+    private boolean areTheOptionsValid(ArrayList<Integer> options, ArrayList<Integer> chosenOptions){
+        for(Integer a : chosenOptions){
+            if(!options.contains(a)){
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean areThereAnyDuplicates(ArrayList<Integer> integers){
+        Set<Integer> a = new HashSet<>(integers);
+        return a.size()<integers.size();
+    }
+
 
     private void printSingleUnderscoreRow(){
         System.out.println("_________________________________________");
