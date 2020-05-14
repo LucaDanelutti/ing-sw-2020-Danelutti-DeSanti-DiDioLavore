@@ -5,13 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.utility.ActionDeserializer;
 import it.polimi.ingsw.utility.UtilityClass;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
-import it.polimi.ingsw.view.modelview.CardView;
-import it.polimi.ingsw.view.modelview.PawnView;
-import it.polimi.ingsw.view.modelview.PlayerView;
+import it.polimi.ingsw.view.modelview.*;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -396,17 +396,34 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         for(Pawn p : player.getPawnList()){
             pawnViews.add(new PawnView(p.getId(),p.getColor()));
         }
-        return new PlayerView(player.getName(),pawnViews);
+        PlayerView playerView =new PlayerView(player.getName(),pawnViews);
+        playerView.setLoser(player.getLoser());
+        playerView.setCard(modelCard_to_viewCard(player.getCurrentCard()));
+        playerView.setWinner(player.getWinner());
+        return playerView;
     }
     private CardView modelCard_to_viewCard(Card card){
+        if(card==null){
+            return null;
+        }
         return new CardView(card.getId(),card.getName(),card.getDescription());
     }
+
     private ArrayList<CardView>loadedCards_to_viewCards(){
         ArrayList<CardView> availableViewCards = new ArrayList<>();
         for(Card card : game.getAvailableCards()){
             availableViewCards.add(modelCard_to_viewCard(card));
         }
         return availableViewCards;
+    }
+    private CellView[][] cellMatrix_to_cellViewMatrix(Cell[][] matrix){
+        CellView[][] copiedMatrix=new CellView[5][5];
+        for(int row=0; row<matrix.length; row++){
+            for(int col=0; col<matrix[0].length;col++){
+                copiedMatrix[row][col]=matrix[row][col].cell_to_cellView();
+            }
+        }
+        return  copiedMatrix;
     }
 
     private Boolean isThisPositionInTheAvailableCells(Position toBeChecked){
@@ -463,6 +480,25 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return null;
     }
+    public ModelView createModelViewFromThisGame(Game game){
+        ArrayList<PlayerView> playersList=new ArrayList<>();
+        for(Player p : game.getPlayers()){
+            PlayerView playerView=modelPlayer_to_viewPlayer(p);
+            for(PawnView pawnView : playerView.getPawnList()){
+                for(Pawn pawn : p.getPawnList()){
+                    if(pawnView.getId()==pawn.getId()){
+                        pawnView.setPawnPosition(new Position(pawn.getPosition()));
+                    }
+                }
+            }
+            playersList.add(playerView);
+        }
+
+        CellView[][] matrix=cellMatrix_to_cellViewMatrix(game.getBoard().getMatrixCopy());
+
+        return new ModelView(matrix,playersList);
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 

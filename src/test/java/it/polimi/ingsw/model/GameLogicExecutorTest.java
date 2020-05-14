@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
+import it.polimi.ingsw.view.modelview.ModelView;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -1100,7 +1101,6 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL3);
 
-
         //Player1 Turn3 Apollo
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
         ArrayList<Position> a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
@@ -1112,6 +1112,7 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
         a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
+
 
         assertEquals(true,game.getPlayer("Player2").getWinner());
         assertEquals(true,game.getPlayer("Player1").getLoser());

@@ -22,6 +22,11 @@ public class ModelView {
         playerList = new ArrayList<>();
     }
 
+    public ModelView(CellView[][] matrix,ArrayList<PlayerView> playerViews){
+        this.matrix=matrix;
+        this.playerList=playerViews;
+    }
+
     public ArrayList<PlayerView> getPlayerList() {
         return playerList;
     }

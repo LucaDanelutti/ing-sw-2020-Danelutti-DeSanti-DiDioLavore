@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
+import it.polimi.ingsw.view.modelview.CellView;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -37,6 +38,15 @@ public class Cell{
         for (Object i : temp){
             this.blockStack.push((BlockType)i);
         }
+    }
+
+    public CellView cell_to_cellView(){
+        CellView copy=new CellView();
+        Object[] temp= this.blockStack.toArray();
+        for (int i=1; i<temp.length; i++){
+            copy.addBlock((BlockType)temp[i]);
+        }
+        return copy;
     }
 
     public Cell getCellCopyWithoutPawn(){

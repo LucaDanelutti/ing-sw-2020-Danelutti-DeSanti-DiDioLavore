@@ -160,7 +160,11 @@ public class Game {
                 this.setLoadedCardsCopy(toBeCopied.getLoadedCards());
                 this.setInGameCardsCopy(toBeCopied.getInGameCards());
                 this.setInGamePlayersAndBoardCopy(toBeCopied);
-                this.currentAction=toBeCopied.currentAction.duplicate();
+                if(toBeCopied.currentAction==null){
+                    this.currentAction=null;
+                }else {
+                    this.currentAction = toBeCopied.currentAction.duplicate();
+                }
                 for(Player p : this.getPlayers()){
                     if(p.getName().equals(toBeCopied.getCurrentPlayer().getName())){
                         this.currentPlayer=p;
