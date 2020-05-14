@@ -14,6 +14,8 @@ import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.Math.abs;
 
@@ -21,6 +23,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private Game game;
     private ArrayList<String> lobby;
     private int numberOfPlayers; //set to -1 by constructor
+    private static final int maxX=4;
+    private static final int maxY=4;
 
     /**
      * This is the constructor for the class GameLogicExecutor
@@ -426,6 +430,45 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return false;
     }
+    private Boolean isThisAPlayer(String name){
+        for(Player p : game.getPlayers()){
+            if(p.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+    private Boolean areThoseCardIdsDifferent(ArrayList<Integer> cardIds){
+        Set<Integer> set = new HashSet<>(cardIds);
+        if(cardIds.size()>set.size()){
+            return false;
+        }
+        return true;
+    }
+    private Boolean areThoseCardsIdsLegal(ArrayList<Integer> cardIds){
+        for(Integer cardId : cardIds){
+            if(game.getLoadedCardCopy(cardId)==null){
+                return false;
+            }
+        }
+        return true;
+    }
+    private Boolean isThisALegalPosition(Position pos){
+        int x=pos.getX();
+        int y=pos.getY();
+        if(x<maxX &&x>=0 && y<maxY && y>=0){
+            return true;
+        }
+        return false;
+    }
+    private Boolean isThisPositionInTheAvailableOnes(Position chosenPos){
+        if(game.getBoard().availablePositionsForPawnInitialPlacement().contains(chosenPos)){
+            return true;
+        }
+        else{
+            return  false;
+        }
+    }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 
@@ -734,20 +777,25 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * Setup method setFirstPlayer to set the first player that will start to play the game
      */
     public Boolean setStartPlayer(String player){
-        //this also sets current action to null
-        game.setCurrentPlayer(game.getPlayer(player));
-        notifyListeners(generateInitialPawnPositionRequest());
-        return true;
+        if(isThisAPlayer(player)) {
+            //this also sets current action to null
+            game.setCurrentPlayer(game.getPlayer(player));
+            notifyListeners(generateInitialPawnPositionRequest());
+            return true;
+        }
+        else{
+           notifyListeners(generateFirstPlayerRequest());
+           return false;
+        }
     }
     /**
      * Setup method setInGameCards to set the cards that will be available to players
      * Players will choose a card in ChooseCardState
      */
     public Boolean setInGameCards(ArrayList<Integer> cards){
-        if (cards.size() == game.getPlayers().size()) { //Every player must have one and only one card
+        if(areThoseCardIdsDifferent(cards) && areThoseCardsIdsLegal(cards) && cards.size()==game.getPlayers().size()) {
             ArrayList<Card> inGameCards = new ArrayList<>();
             for (int cardID : cards) {
-                if (game.getLoadedCardCopy(cardID) == null) return false;
                 inGameCards.add(game.getLoadedCardCopy(cardID));
             }
             game.setInGameCardsCopy(inGameCards);
@@ -756,7 +804,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             notifyListeners(generateChosenCardRequest());
             return true;
         }
-        return false;
+        else{
+            notifyListeners(generateInGameCardRequest());
+            return false;
+        }
     }
     /**
      * Setup method setChosenCard to set the chosen card in the player
@@ -781,21 +832,32 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             }
             return true;
         }
-        return false;
+        else {
+            notifyListeners(generateChosenCardRequest());
+            return false;
+        }
     }
-    /**
-     * Setup method setPawnsPositions to set the two pawns of the current player
-     */
-    public Boolean setPawnsPositions(ArrayList<Position> positions){
-        if (positions.get(0).getX() >= 0 & positions.get(0).getX() < 5 & positions.get(0).getY() >= 0 & positions.get(0).getY() < 5 & positions.get(1).getX() >= 0 & positions.get(1).getX() < 5 & positions.get(1).getY() >= 0 & positions.get(1).getY() < 5) {
-            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(0), positions.get(0));
-            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(1), positions.get(1));
-            notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(0).getId(),game.getCurrentPlayer().getPawnList().get(1).getId(),positions.get(0),positions.get(1)));
+    public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
+        if(isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2)) {
+            int indexWorker1 = 0;
+            int indexWorker2 = 0;
+            for (int i = 0; i < game.getCurrentPlayer().getPawnList().size(); i++) {
+                Pawn p = game.getCurrentPlayer().getPawnList().get(i);
+                if (p.getId() == idWorker1) {
+                    indexWorker1 = i;
+                    game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
+                } else if (p.getId() == idWorker2) {
+                    indexWorker2 = i;
+                    game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
+                } else {
+                    return false;
+                }
+            }
+            notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(), game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(), workerPos1, workerPos2));
             Player nextPlayer = game.getNextPlayer();
             if (nextPlayer.getPawnList().get(0).getPosition() != null & nextPlayer.getPawnList().get(1).getPosition() != null) {
                 //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
                 notifyListeners(generateSelectPawnRequest());
-
             } else {
                 //otherwise i have to ask the next player to set its initial pawn positions
                 //this function will also set CurrentAction to null
@@ -804,40 +866,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             }
             return true;
         }
-
-        return false;
-    }
-    public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
-        int indexWorker1=0;
-        int indexWorker2=0;
-        for(int i=0; i<game.getCurrentPlayer().getPawnList().size(); i++){
-            Pawn p=game.getCurrentPlayer().getPawnList().get(i);
-            if(p.getId()==idWorker1){
-                indexWorker1=i;
-                game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
-            }
-            else if(p.getId()==idWorker2){
-                indexWorker2=i;
-                game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
-            }
-            else{
-                return false;
-            }
-        }
-        notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(),game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(),workerPos1,workerPos2));
-        Player nextPlayer = game.getNextPlayer();
-        if (nextPlayer.getPawnList().get(0).getPosition() != null & nextPlayer.getPawnList().get(1).getPosition() != null) {
-            //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
-            notifyListeners(generateSelectPawnRequest());
-
-        } else {
-            //otherwise i have to ask the next player to set its initial pawn positions
-            //this function will also set CurrentAction to null
-            game.setCurrentPlayer(nextPlayer);
+        else{
             notifyListeners(generateInitialPawnPositionRequest());
+            return false;
         }
-
-        return true;
     }
     public Boolean addPlayerToLobby(String name){
         this.lobby.add(name);
@@ -851,6 +883,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
     public Boolean setNumberOfPlayers(int numberOfPlayers){
         if(numberOfPlayers<=1 || numberOfPlayers>3){
+            notifyListeners(generateNumberOfPlayersRequest());
             return false;
         }
         else {
@@ -881,6 +914,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     this.lobby.remove(name);
                     if(lobby.size()>0){
                         //let's send a new number of player request to the new first player
+                        this.numberOfPlayers=-1;
                         notifyListeners(generateNumberOfPlayersRequest());
                     }
                 }
@@ -904,16 +938,32 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return true;
     }
-
     /**
      * startGame method to start the game. After shuffling the players one player is set in SelectGameCardsState,
      * the other players are set in IdleState
      */
-    private Boolean startGame() {
+    private void startGame() {
         //add the correct amount of player to the game
         for (int i=0; i<numberOfPlayers; i++){
             game.addPlayer(new Player(lobby.get(i)));
         }
+        loadCards();
+        //the most godLike -> random shuffle will chose the Cards in the game
+        game.shufflePlayers();
+        game.getPlayers().get(0).addPawn(new Pawn("990000",0)); //Red
+        game.getPlayers().get(0).addPawn(new Pawn("990000",1)); //Red
+        game.getPlayers().get(1).addPawn(new Pawn("000099",2)); //Blue
+        game.getPlayers().get(1).addPawn(new Pawn("000099",3)); //Blue
+        if (game.getPlayers().size() == 3) {
+            game.getPlayers().get(2).addPawn(new Pawn("009900",4)); //Green
+            game.getPlayers().get(2).addPawn(new Pawn("009900",5)); //Green
+        }
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        //firstly send the message to the other players to start the game
+        notifyListeners(generateGameStart()); //contains the list of players
+        //and then send the current player to start choosing the cards
+        notifyListeners(generateInGameCardRequest()); //contains the list of players
+
 
         //notify other players that the game is full
         ArrayList<String> notToBeAddedPlayers = new ArrayList<>();
@@ -921,36 +971,36 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             notToBeAddedPlayers.add(lobby.get(i));
         }
         notifyListeners(new gameStartedAndYouAreNotSelectedMessage(notToBeAddedPlayers));
-
-
-        //the most godLike -> random shuffle will chose the Cards in the game
-        if (game.getPlayers().size() > 1) {
-            loadCards();
-            game.shufflePlayers();
-            game.getPlayers().get(0).addPawn(new Pawn("990000",0)); //Red
-            game.getPlayers().get(0).addPawn(new Pawn("990000",1)); //Red
-            game.getPlayers().get(1).addPawn(new Pawn("000099",2)); //Blue
-            game.getPlayers().get(1).addPawn(new Pawn("000099",3)); //Blue
-            if (game.getPlayers().size() == 3) {
-                game.getPlayers().get(2).addPawn(new Pawn("009900",4)); //Green
-                game.getPlayers().get(2).addPawn(new Pawn("009900",5)); //Green
-            }
-            game.setCurrentPlayer(game.getPlayers().get(0));
-            //firstly send the message to the other players to start the game
-            notifyListeners(generateGameStart()); //contains the list of players
-            //and then send the current player to start choosing the cards
-            notifyListeners(generateInGameCardRequest()); //contains the list of players
-            return true;
-        } else {
-            return false;
-        }
     }
-
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
 
 
+    //DEPRECATED SHOULD BE AVOIDED!
+    /**
+     * Setup method setPawnsPositions to set the two pawns of the current player
+     */
+    public Boolean setPawnsPositions(ArrayList<Position> positions){
+        if (positions.get(0).getX() >= 0 & positions.get(0).getX() < 5 & positions.get(0).getY() >= 0 & positions.get(0).getY() < 5 & positions.get(1).getX() >= 0 & positions.get(1).getX() < 5 & positions.get(1).getY() >= 0 & positions.get(1).getY() < 5) {
+            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(0), positions.get(0));
+            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(1), positions.get(1));
+            notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(0).getId(),game.getCurrentPlayer().getPawnList().get(1).getId(),positions.get(0),positions.get(1)));
+            Player nextPlayer = game.getNextPlayer();
+            if (nextPlayer.getPawnList().get(0).getPosition() != null & nextPlayer.getPawnList().get(1).getPosition() != null) {
+                //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
+                notifyListeners(generateSelectPawnRequest());
 
+            } else {
+                //otherwise i have to ask the next player to set its initial pawn positions
+                //this function will also set CurrentAction to null
+                game.setCurrentPlayer(nextPlayer);
+                notifyListeners(generateInitialPawnPositionRequest());
+            }
+            return true;
+        }
+
+        return false;
+    }
 
 
 
