@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -9,16 +10,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <Scene stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
-   <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mainGridPane">
+   <GridPane fx:id="mainGridPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="450.0" minWidth="750.0" styleClass="mainGridPane">
      <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="200.0" />
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="350.0" />
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="200.0" />
+       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="252.78297424316406" />
+       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="325.0" />
+         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="248.193115234375" />
      </columnConstraints>
      <rowConstraints>
-       <RowConstraints maxHeight="158.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="350.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="125.60781860351562" valignment="CENTER" vgrow="ALWAYS" />
+       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="325.0" valignment="CENTER" vgrow="ALWAYS" />
+       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="90.43264770507812" valignment="CENTER" vgrow="ALWAYS" />
      </rowConstraints>
       <children>
          <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
@@ -27,7 +28,7 @@
            </columnConstraints>
            <rowConstraints>
              <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
-             <RowConstraints maxHeight="294.0" minHeight="10.0" prefHeight="268.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="275.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
                <Label fx:id="clientPlayerNameLabel" text="Player  name">
@@ -35,11 +36,7 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </GridPane.margin>
                </Label>
-               <ImageView fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                  <GridPane.margin>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                  </GridPane.margin>
-               </ImageView>
+               <ImageView fx:id="clientPlayerCardImageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
             </children>
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -53,15 +50,14 @@
            <rowConstraints>
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
+               <ImageView fx:id="enemy1PlayerCardImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </GridPane.margin>
                </ImageView>
-               <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <ImageView fx:id="enemy2PlayerCardImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </GridPane.margin>
@@ -78,11 +74,6 @@
                      <Label fx:id="enemy1PlayerNameLabel" text="Enemy's name">
                         <GridPane.margin>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </GridPane.margin>
-                     </Label>
-                     <Label text="Enemy's god" GridPane.rowIndex="1">
-                        <GridPane.margin>
-                           <Insets bottom="30.0" left="5.0" right="5.0" top="5.0" />
                         </GridPane.margin>
                      </Label>
                   </children>
@@ -104,11 +95,6 @@
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </GridPane.margin>
                      </Label>
-                     <Label text="Enemy's god" GridPane.rowIndex="1">
-                        <GridPane.margin>
-                           <Insets bottom="30.0" left="5.0" right="5.0" top="5.0" />
-                        </GridPane.margin>
-                     </Label>
                   </children>
                </GridPane>
             </children>
@@ -116,25 +102,26 @@
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </GridPane.margin>
          </GridPane>
-         <GridPane styleClass="boardGridPane" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane fx:id="boardGridPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="boardGridPane" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
            <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
            </columnConstraints>
            <rowConstraints>
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
            </rowConstraints>
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
+            <GridPane.margin>
+               <Insets />
+            </GridPane.margin>
          </GridPane>
+         <Button mnemonicParsing="false" onAction="#buildMainScene" text="Button" />
       </children>
    </GridPane>
 </Scene>
