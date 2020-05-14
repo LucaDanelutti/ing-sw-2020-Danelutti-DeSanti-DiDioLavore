@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.modelview;
 
+import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 
@@ -116,6 +117,16 @@ public class ModelView {
             if (!player.getName().equals(playerName)) enemiesCardsList.add(player.getCard());
         }
         return enemiesCardsList;
+    }
+
+    public ArrayList<PawnView> getPawns() {
+        ArrayList<PawnView> pawnsList =  new ArrayList<>();
+        for (PlayerView player : playerList) {
+            for(PawnView pawn : player.getPawnList()) {
+                pawnsList.add(pawn);
+            }
+        }
+        return pawnsList;
     }
 
 }

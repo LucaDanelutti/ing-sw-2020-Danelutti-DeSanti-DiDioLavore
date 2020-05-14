@@ -1,15 +1,15 @@
 package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.GUIController;
+import it.polimi.ingsw.client.gui.GUIEngine;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.view.modelview.CardView;
-import it.polimi.ingsw.view.modelview.CellView;
-import it.polimi.ingsw.view.modelview.ModelView;
+import it.polimi.ingsw.view.modelview.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -26,7 +26,8 @@ import java.util.ArrayList;
 
 public class MainSceneController extends GUIController {
 
-    private static final double BOARD_PADDING_RATIO = 0.76;
+    private static final double BOARD_PADDING_RATIO = 0.74;
+    private static final double BOARD_PADDING_PERCENTAGE = 0.13;
 
     /* ===== FXML elements ===== */
     @FXML
@@ -53,6 +54,7 @@ public class MainSceneController extends GUIController {
 
 
     /* ===== FXML Properties ===== */
+    private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
@@ -70,6 +72,9 @@ public class MainSceneController extends GUIController {
        boardAnchorPane.setPrefHeight(mainGridPane.heightProperty().multiply(0.5).getValue());
        boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(0.5));
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
+
+       boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
+       System.out.println(boardGridPane.paddingProperty());
    }
 
 
@@ -82,8 +87,21 @@ public class MainSceneController extends GUIController {
        updateBoard(); //TODO: has to be remove from here
    }
 
+   public void updateBoardTest() {
+       ((GUIEngine)clientView.getUserInterface()).updateModelView();
+       clientView.getUserInterface().refreshView();
+       updatePlayersName();
+       //TODO: RANDOM TEST HERE, IT HAS TO BE REMOVED ASAP
+       clientView.getUserInterface().onNumberOfPlayersRequest();
+   }
 
+
+    /**
+     * clears the boardGridPane and renders the updated board from the modelView loading first the block types imageViews
+     * and then the pawns imageViews
+     */
    public void updateBoard() {
+       boardGridPane.getChildren().clear();
        ModelView modelView = clientView.getModelView();
        for(int i = 0; i < modelView.getMatrix().length; i++){
            for(int  j = 0; j < modelView.getMatrix()[0].length; j++){
@@ -98,6 +116,21 @@ public class MainSceneController extends GUIController {
                }
            }
        }
+       updatePawns();
+   }
+
+   private void updatePawns() {
+       ModelView modelView = clientView.getModelView();
+       ArrayList<PawnView> pawnsList = modelView.getPawns();
+       for (PawnView pawn: pawnsList) {
+           Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
+           ImageView pawnImageView = new ImageView(pawnImage);
+           pawnImageView.setPreserveRatio(true);
+           pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(5).multiply(BOARD_PADDING_RATIO));
+           pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(5).multiply(BOARD_PADDING_RATIO));
+           boardGridPane.add(pawnImageView, pawn.getPawnPosition().getX(), pawn.getPawnPosition().getY());
+       }
+
    }
 
    public void updatePlayersName() {
