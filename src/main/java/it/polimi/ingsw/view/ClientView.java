@@ -7,6 +7,7 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
+import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
 import java.util.ArrayList;
@@ -110,32 +111,39 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(CellUpdateMessage cellUpdateMessage) {
         modelView.onCellUpdate(cellUpdateMessage.getPosition(), cellUpdateMessage.getBlockType());
+        userInterface.refreshView(modelView.getMatrix()[cellUpdateMessage.getPosition().getX()][cellUpdateMessage.getPosition().getY()]);
     }
 
     @Override
     public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
         modelView.onChosenCardUpdate(chosenCardUpdateMessage.getChosenCard(), chosenCardUpdateMessage.getName());
+        userInterface.refreshView(chosenCardUpdateMessage.getChosenCard());
     }
 
     @Override
     public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage) {
         modelView.onDoublePawnPositionUpdate(doublePawnPositionUpdateMessage.getWorkerId1(), doublePawnPositionUpdateMessage.getWorkerPos1(), doublePawnPositionUpdateMessage.getWorkerId2(), doublePawnPositionUpdateMessage.getWorkerPos2());
+        userInterface.refreshView(modelView.getPawn(doublePawnPositionUpdateMessage.getWorkerId1()));
+        userInterface.refreshView(modelView.getPawn(doublePawnPositionUpdateMessage.getWorkerId2()));
     }
 
     @Override
     public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage) {
         modelView.onPawnPositionUpdate(pawnPositionUpdateMessage.getWorkerId(), pawnPositionUpdateMessage.getWorkerPos());
+        userInterface.refreshView(modelView.getPawn(pawnPositionUpdateMessage.getWorkerId()));
     }
 
     @Override
     public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage) {
         modelView.onPawnRemoved(pawnRemoveUpdateMessage.getWorkerId());
+        userInterface.refreshView();
     }
 
 
     @Override
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
         modelView.onSelectPawnUpdate(selectedPawnUpdateMessage.getWorkerId());
+        userInterface.refreshView(modelView.getPawn(selectedPawnUpdateMessage.getWorkerId()));
     }
 
     @Override
@@ -143,41 +151,42 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         for(PlayerView p : gameStartMessage.getInGamePlayers()){
             modelView.onPlayerUpdate(p.getName(), p.getPawnList().get(0).getColor(), p.getPawnList().get(0).getId(), p.getPawnList().get(1).getId());
         }
-        System.out.println("GameStartMessage message received!");
+        userInterface.refreshView();
     }
 
     @Override
     public void update(TurnEndedMessage turnEndedMessage) {
-
+        userInterface.refreshView();
     }
 
     @Override
     public void update(YouLostMessage youLostMessage) {
-
+        userInterface.refreshView();
     }
 
     @Override
     public void update(YouWonMessage youWonMessage) {
-
+        userInterface.refreshView();
     }
 
     @Override
     public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
+        //TODO
     }
 
     @Override
     public void update(GameEndedMessage gameEndedMessage) {
-
+        userInterface.refreshView();
     }
 
     @Override
-    public void update(UndoUpdateMessage m) {
-
+    public void update(UndoUpdateMessage undoUpdateMessage) {
+        //TODO
     }
 
     @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
-
+        userInterface.refreshView();
     }
 
     @Override

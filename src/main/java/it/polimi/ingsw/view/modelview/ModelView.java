@@ -134,4 +134,15 @@ public class ModelView {
         return pawnsList;
     }
 
+    public PawnView getPawn(int pawnId) {
+        for (PlayerView player : playerList) {
+            for(PawnView pawn : player.getPawnList()) {
+                if (pawn.getId() == pawnId) {
+                    return pawn;
+                }
+            }
+        }
+        return null;
+    }
+
 }
