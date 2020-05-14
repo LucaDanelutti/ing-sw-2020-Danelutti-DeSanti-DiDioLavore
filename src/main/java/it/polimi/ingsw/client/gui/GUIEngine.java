@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.controllers.NicknameRequestController;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.ClientView;
@@ -10,11 +9,8 @@ import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,8 +29,30 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
+        setUpTest();
+
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
         showScene("/fxml/loginScene.fxml", false);
+    }
+
+    private void setUpTest() {
+        clientView.getModelView().onPlayerUpdate("Ian","009900",0,1);
+        clientView.getModelView().onPlayerUpdate("Luca","990000",2,3);
+        clientView.getModelView().onPlayerUpdate("Riccardo","000099",4,5);
+        clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
+        clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
+        clientView.getModelView().onPawnPositionUpdate(2,new Position(1,0));
+        clientView.getModelView().onPawnPositionUpdate(3,new Position(1,1));
+        clientView.getModelView().onPawnPositionUpdate(4,new Position(0,2));
+        clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
+        clientView.getModelView().onCellUpdate(new Position(3,3), BlockType.LEVEL1);
+        clientView.getModelView().onCellUpdate(new Position(1,1), BlockType.LEVEL2);
+        clientView.getModelView().onCellUpdate(new Position(4,0), BlockType.LEVEL3);
+        clientView.getModelView().onCellUpdate(new Position(2,2), BlockType.DOME);
+        clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
+        clientView.getModelView().onChosenCardUpdate(new CardView(2,"Arthemis","do as he wishes"),"Luca");
+        clientView.getModelView().onChosenCardUpdate(new CardView(3,"Athena","do as he wishes"),"Riccardo");
+        clientView.setName("Riccardo");
     }
 
     @Override
@@ -73,6 +91,8 @@ public class GUIEngine extends Application implements UserInterface {
         } catch (IOException e) {
             //TODO: manage exception properly
             System.out.println("Exception while loading fxml resource.");
+            System.out.println(e.toString());
+            System.out.println(e.getCause().toString());
         }
 
     }
@@ -138,7 +158,7 @@ public class GUIEngine extends Application implements UserInterface {
     @Override
     public void onNicknameRequest() {
 //        Platform.runLater(() -> {
-////            showScene("/fxml/nicknameRequest.fxml", false);
+////            showScene("/fxml/nicknameRequestScene.fxml", false);
 ////        });
     }
 
