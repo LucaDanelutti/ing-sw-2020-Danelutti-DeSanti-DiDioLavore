@@ -23,6 +23,7 @@ public class GUIEngine extends Application implements UserInterface {
     private GUIController currentController;
     private static final String SANTORINI_STAGE_TITLE = "Santorini";
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
@@ -32,7 +33,7 @@ public class GUIEngine extends Application implements UserInterface {
         setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
-        showScene("/fxml/loginScene.fxml", false);
+        showScene("/fxml/mainScene.fxml");
     }
 
     private void setUpTest() {
@@ -60,7 +61,7 @@ public class GUIEngine extends Application implements UserInterface {
         launch();
     }
 
-    public void showScene(String fxmlResource, Boolean isFullScreen) {
+    public void showScene(String fxmlResource) {
         if (fxmlResource == null) {
             return;
         }
@@ -71,7 +72,7 @@ public class GUIEngine extends Application implements UserInterface {
 
             currentController = loader.getController();
 
-            stage.setMaximized(isFullScreen ? true : false);
+            stage.setMaximized(false);
 
             if (stage != null) {
                 stage.hide();
@@ -118,11 +119,11 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
     public void showMainScene() {
-        showScene("/fxml/mainScene.fxml", true);
+        showScene("/fxml/mainScene.fxml");
     }
 
     public void showWaitingScene() {
-        showScene("/fxml/waitingScene.fxml", false);
+        showScene("/fxml/waitingScene.fxml");
     }
 
     @Override
