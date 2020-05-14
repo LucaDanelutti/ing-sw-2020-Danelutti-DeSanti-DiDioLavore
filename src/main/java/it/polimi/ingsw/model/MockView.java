@@ -199,6 +199,14 @@ public class MockView implements RequestsAndUpdateListener {
         receivedMessages.add(m);
     }
 
+    @Override
+    public void update(GameEndedMessage m) {
+        if(!isThisMessageForMe(m)){
+            return;
+        }
+        receivedMessages.add(m);
+    }
+
     public String getName() {
         return name;
     }

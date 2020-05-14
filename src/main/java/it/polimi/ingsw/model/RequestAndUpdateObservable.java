@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.utility.messages.Message;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
-import it.polimi.ingsw.view.listeners.Listener;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 
 import java.util.ArrayList;
@@ -123,6 +121,12 @@ public class RequestAndUpdateObservable {
         }
     }
     public void notifyListeners(gameStartedAndYouAreNotSelectedMessage m) {
+        for(RequestsAndUpdateListener l : this.listeners){
+            l.update(m);
+        }
+    }
+
+    public void notifyListeners(GameEndedMessage m) {
         for(RequestsAndUpdateListener l : this.listeners){
             l.update(m);
         }

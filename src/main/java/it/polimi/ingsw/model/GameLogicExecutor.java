@@ -572,6 +572,13 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         recipients.add(game.getCurrentPlayer().getName());
         return new TurnEndedMessage(recipients);
     }
+    private GameEndedMessage generateGameEnded(String reason){
+        ArrayList<String> recipients=new ArrayList<>();
+        for(Player p : game.getPlayers()){
+            recipients.add(p.getName());
+        }
+        return new GameEndedMessage(recipients,reason);
+    }
 
 
 
@@ -790,6 +797,46 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
     public String getCurrentPlayerName(){
         return game.getCurrentPlayer().getName();
+    }
+    public Boolean removePlayer(String name){
+        //the game is not yet started
+        if(getCurrentPlayerName()==null){
+            //let's find the index of the player to be removed
+            int indexToBeRemoved=-1;
+            for(int i=0; i<this.lobby.size(); i++){
+                if(lobby.get(i).equals(name)){
+                    indexToBeRemoved=i;
+                }
+            }
+            switch (indexToBeRemoved){
+                case -1:
+                    return false;
+                case 0:{
+                    this.lobby.remove(name);
+                    if(lobby.size()>0){
+                        //let's send a new number of player request to the new first player
+                        notifyListeners(generateNumberOfPlayersRequest());
+                    }
+                }
+                default:{
+                    //no other action is needed, just remove the player from the lobby
+                    this.lobby.remove(name);
+                }
+
+
+            }
+        }
+        //the game is started, so we have to crash the connection for everyone
+        else{
+            for(Player p : game.getPlayers()){
+                if(p.getName().equals(name)){
+                    game.removePlayer(p);
+                    break;
+                }
+            }
+            notifyListeners(generateGameEnded("Player disconnection"));
+        }
+        return true;
     }
 
     /**

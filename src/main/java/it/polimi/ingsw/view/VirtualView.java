@@ -215,6 +215,11 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     }
 
     @Override
+    public void update(GameEndedMessage gameEndedMessage) {
+
+    }
+
+    @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
         if (youLostAndSomeoneWonMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(youLostAndSomeoneWonMessage);
