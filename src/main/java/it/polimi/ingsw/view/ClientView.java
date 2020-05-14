@@ -32,7 +32,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         this.serverConnection = c;
         c.addListener(this);
         this.modelView = new ModelView();
-        this.userInterface = new CLIEngine(this);
+        this.userInterface = new CLIEngine();
         //System.out.println("ClientView created!"); //TODO: logging
     }
 
