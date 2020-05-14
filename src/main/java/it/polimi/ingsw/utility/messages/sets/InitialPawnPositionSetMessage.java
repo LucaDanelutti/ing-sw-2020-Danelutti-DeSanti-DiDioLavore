@@ -20,6 +20,22 @@ public class InitialPawnPositionSetMessage extends SetMessage implements Seriali
         this.workerPos2 = workerPos2;
     }
 
+    public int getWorkerId1() {
+        return workerId1;
+    }
+
+    public int getWorkerId2() {
+        return workerId2;
+    }
+
+    public Position getWorkerPos1() {
+        return workerPos1;
+    }
+
+    public Position getWorkerPos2() {
+        return workerPos2;
+    }
+
     public void accept(SetObservable visitor) {
         visitor.notifyListeners(this);
     }

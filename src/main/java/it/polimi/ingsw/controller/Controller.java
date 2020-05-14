@@ -49,7 +49,7 @@ public class Controller implements SetsListener {
     @Override
     public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
         if (gameLogic.getCurrentPlayerName().equals(initialPawnPositionSetMessage.getNameOfTheSender())) {
-            //TODO
+            gameLogic.setPawnsPositions(initialPawnPositionSetMessage.getWorkerId1(), initialPawnPositionSetMessage.getWorkerPos1(), initialPawnPositionSetMessage.getWorkerId2(), initialPawnPositionSetMessage.getWorkerPos2());
         }
     }
 
