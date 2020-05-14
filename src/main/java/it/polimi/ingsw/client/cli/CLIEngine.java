@@ -196,12 +196,16 @@ public class CLIEngine implements UserInterface {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the position from the ones below:");
         for(int i=0; i<availablePositions.size(); i++){
+            if(i%5==0&&i>0){
+                System.out.println();
+            }
             if(availablePositions.get(i)==null){
-                System.out.print(i + ") SKIP");
+                System.out.print(i + ") SKIP ");
             }else {
-                System.out.print(i + ") x:" + availablePositions.get(i).getX() + " y: " + availablePositions.get(i).getY());
+                System.out.print(i + ") x:" + availablePositions.get(i).getX() + " y: " + availablePositions.get(i).getY()+" ");
             }
         }
+        System.out.println();
         System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
         ArrayList<Integer> options = new ArrayList<>();
         int input;
@@ -389,7 +393,7 @@ public class CLIEngine implements UserInterface {
         System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
         ArrayList<Integer> options = new ArrayList<>();
         int input;
-        for(int j=0; i<availablePositions.size(); i++){
+        for(int j=0; j<availablePositions.size(); j++){
             options.add(j);
         }
         do {
