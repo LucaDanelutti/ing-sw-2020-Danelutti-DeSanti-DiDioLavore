@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.controllers.MainSceneController;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.ClientView;
@@ -9,8 +10,10 @@ import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -120,7 +123,6 @@ public class GUIEngine extends Application implements UserInterface {
 
     }
 
-    //TODO: implement update() function within GuiController and call them within the methods below
     @Override
     public void refreshView(PawnView pawnView) {
     }
@@ -142,7 +144,9 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshView() {
-
+        Platform.runLater(() -> {
+            ((MainSceneController)currentController).updateBoard();
+        });
     }
 
     public void showMainScene() {
@@ -150,7 +154,11 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
     public void showWaitingScene() {
-        showScene("/fxml/waitingScene.fxml");
+        Platform.runLater(() -> {
+            showScene("/fxml/waitingScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/3);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+        });
     }
 
     @Override
@@ -185,14 +193,20 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onNicknameRequest() {
-//        Platform.runLater(() -> {
-////            showScene("/fxml/nicknameRequestScene.fxml", false);
-////        });
+        Platform.runLater(() -> {
+            showScene("/fxml/nicknameRequestScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+        });
     }
 
     @Override
     public void onNumberOfPlayersRequest() {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/numberOfPlayersRequestScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+        });
     }
 
     @Override
