@@ -1,6 +1,7 @@
 [{
   "name": "Apollo",
   "id": 1,
+  "description": "Your Move: Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",
   "defaultActionList": [
     {
       "isOptional": false,
@@ -33,6 +34,7 @@
   {
     "name": "Artemis",
     "id": 2,
+    "description": "Your Move: Your Worker may move one additional time, but not back to its initial space.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -80,6 +82,7 @@
   {
     "name": "Athena",
     "id": 3,
+    "description": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -112,6 +115,7 @@
   {
     "name": "Atlas",
     "id": 4,
+    "description": "Your Build: Your Worker may build a dome at any level.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -144,6 +148,7 @@
   {
     "name": "Demeter",
     "id": 5,
+    "description": "Your Build: Your Worker may build one additional time, but not on the same space.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -187,6 +192,7 @@
   {
     "name": "Hephaestus",
     "id": 6,
+    "description": "Your Build: Your Worker may build one additional block (not dome) on top of your first block.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -230,6 +236,7 @@
   {
     "name": "Minotaur",
     "id": 8,
+    "description": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -262,6 +269,7 @@
   {
     "name": "Pan",
     "id": 9,
+    "description": "Win Condition: You also win if your Worker moves down two or more levels.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -294,6 +302,7 @@
   {
     "name": "Prometheus",
     "id": 10,
+    "description": "Your Turn: If your Worker does not move up, it may build both before and after moving.",
     "defaultActionList": [
       {
         "isOptional": true,
@@ -337,6 +346,7 @@
   {
     "name": "Hera",
     "id": 20,
+    "description": "Opponent’s Turn: An opponent cannot win by moving into a perimeter space.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -378,6 +388,7 @@
   {
     "name": "Hestia",
     "id": 21,
+    "description": "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -438,6 +449,7 @@
   {
     "name": "Medusa",
     "id": 24,
+    "description": "End of Your Turn: If possible, your Workers build in lower neighboring spaces that are occupied by opponent Workers, removing the opponent Workers from the game.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -478,6 +490,7 @@
   {
     "name": "Triton",
     "id": 29,
+    "description": "Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.",
     "defaultActionList": [
       {
         "isOptional": false,
@@ -527,6 +540,7 @@
   {
     "name": "Zeus",
     "id": 30,
+    "description": "Your Build: Your Worker may build a block under itself.",
     "defaultActionList": [
       {
         "isOptional": false,

@@ -13,6 +13,7 @@ public class Card {
     private int id;
     private ArrayList<Action> defaultActionList = new ArrayList<>();
     private ArrayList<Action> currentActionList = new ArrayList<>();
+    private String description;
 
     /**
      This is the constructor of the class Card
@@ -37,6 +38,7 @@ public class Card {
     public Card(Card toBeCopied){
         this.name = toBeCopied.name;
         this.id = toBeCopied.id;
+        this.description = toBeCopied.description;
         if(toBeCopied.defaultActionList != null) {
             for (Action action : toBeCopied.defaultActionList) {
                 this.defaultActionList.add(action);
@@ -71,6 +73,14 @@ public class Card {
 
     int getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     ArrayList<Action> getDefaultActionListCopy() {

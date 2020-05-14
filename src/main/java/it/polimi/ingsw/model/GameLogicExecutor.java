@@ -711,6 +711,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 updatedActionList.add(updatedAction);
             }
             Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
+            updatedCard.setDescription(card.getDescription());
             updatedCardList.add(updatedCard);
 
         }
