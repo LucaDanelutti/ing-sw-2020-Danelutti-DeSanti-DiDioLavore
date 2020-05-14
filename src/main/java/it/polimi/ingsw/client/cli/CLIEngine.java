@@ -73,6 +73,10 @@ public class CLIEngine implements UserInterface {
         //call function of ClientView
     }
 
+    @Override public void refreshView() {
+
+    }
+
     @Override public void refreshView(PawnView pawnView) {
         try {
             Runtime.getRuntime().exec("clear");

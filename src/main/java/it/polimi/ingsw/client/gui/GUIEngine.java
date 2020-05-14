@@ -36,10 +36,11 @@ public class GUIEngine extends Application implements UserInterface {
         showScene("/fxml/mainScene.fxml");
     }
 
+    //test function
     private void setUpTest() {
-        clientView.getModelView().onPlayerUpdate("Ian","009900",0,1);
-        clientView.getModelView().onPlayerUpdate("Luca","990000",2,3);
-        clientView.getModelView().onPlayerUpdate("Riccardo","000099",4,5);
+        clientView.getModelView().onPlayerUpdate("Ian","blue",0,1);
+        clientView.getModelView().onPlayerUpdate("Luca","green",2,3);
+        clientView.getModelView().onPlayerUpdate("Riccardo","orange",4,5);
         clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
         clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
         clientView.getModelView().onPawnPositionUpdate(2,new Position(1,0));
@@ -53,6 +54,27 @@ public class GUIEngine extends Application implements UserInterface {
         clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
         clientView.getModelView().onChosenCardUpdate(new CardView(2,"Arthemis","do as he wishes"),"Luca");
         clientView.getModelView().onChosenCardUpdate(new CardView(3,"Athena","do as he wishes"),"Riccardo");
+        clientView.setName("Riccardo");
+    }
+
+    //test function
+    public void updateModelView() {
+        clientView.getModelView().onPlayerUpdate("Ian","blue",0,1);
+        clientView.getModelView().onPlayerUpdate("Luca","green",2,3);
+        clientView.getModelView().onPlayerUpdate("Riccardo","orange",4,5);
+        clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
+        clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
+        clientView.getModelView().onPawnPositionUpdate(2,new Position(4,4));
+        clientView.getModelView().onPawnPositionUpdate(3,new Position(3,3));
+        clientView.getModelView().onPawnPositionUpdate(4,new Position(4,3));
+        clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
+        clientView.getModelView().onCellUpdate(new Position(1,4), BlockType.LEVEL2);
+        clientView.getModelView().onCellUpdate(new Position(4,0), BlockType.DOME);
+        clientView.getModelView().onCellUpdate(new Position(2,2), BlockType.DOME);
+        clientView.getModelView().onCellUpdate(new Position(4,4), BlockType.DOME);
+        clientView.getModelView().onChosenCardUpdate(new CardView(2,"Apollo","do as he wishes"),"Ian");
+        clientView.getModelView().onChosenCardUpdate(new CardView(4,"Arthemis","do as he wishes"),"Luca");
+        clientView.getModelView().onChosenCardUpdate(new CardView(6,"Athena","do as he wishes"),"Riccardo");
         clientView.setName("Riccardo");
     }
 
@@ -115,6 +137,11 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshView(CellView cellView) {
+
+    }
+
+    @Override
+    public void refreshView() {
 
     }
 

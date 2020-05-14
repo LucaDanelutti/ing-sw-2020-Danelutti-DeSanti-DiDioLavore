@@ -35,6 +35,11 @@ public interface UserInterface {
 
     /**
      * Refreshes the user interface after an update within the ModelView instance.
+     */
+    void refreshView();
+
+    /**
+     * Refreshes the user interface after an update within the ModelView instance.
      * @param cellView is the updated object.
      */
     void refreshView(CellView cellView);
