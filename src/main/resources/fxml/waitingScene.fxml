@@ -20,7 +20,7 @@
         </rowConstraints>
          <children>
             <Label fx:id="waitLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Waiting Screen..." textAlignment="CENTER" GridPane.rowIndex="1" />
-            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#testPopUp" text="Test NicknameRequest" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#testScene" text="Test NicknameRequest" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
          </children>
       </GridPane>
    </root>

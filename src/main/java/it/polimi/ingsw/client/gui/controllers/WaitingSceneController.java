@@ -8,12 +8,15 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+
+//TODO: add loading animation, logo etc.
 public class WaitingSceneController extends GUIController {
 
     @FXML
     private Label waitLabel;
 
     private StringProperty waitString;
+
     @FXML
     public void initialize() {
         waitString = new SimpleStringProperty("Waiting Screen");
@@ -21,10 +24,10 @@ public class WaitingSceneController extends GUIController {
     }
 
     @FXML
-    public void testPopUp() {
+    public void testScene() {
         //testing pop-up
         Platform.runLater(() -> {
-            ((GUIEngine)clientView.getUserInterface()).showScene("/fxml/nicknameRequest.fxml", false);
+            ((GUIEngine)clientView.getUserInterface()).showScene("/fxml/mainScene.fxml", true);
         });
     }
 }
