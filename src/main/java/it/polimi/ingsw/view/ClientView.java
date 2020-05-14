@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ServerConnection;
+import it.polimi.ingsw.client.cli.CLIEngine;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.utility.messages.updates.*;
@@ -31,6 +32,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         this.serverConnection = c;
         c.addListener(this);
         this.modelView = new ModelView();
+        this.userInterface = new CLIEngine(this);
         //System.out.println("ClientView created!"); //TODO: logging
     }
 
@@ -86,6 +88,9 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
         //System.out.println("inGameCardsRequestMessage message received!"); //TODO: remove
+        for(PlayerView p : inGameCardsRequestMessage.getInGamePlayers()){
+            modelView.onPlayerUpdate(p.getName(), p.getPawnList().get(0).getColor(), p.getPawnList().get(0).getId(), p.getPawnList().get(1).getId());
+        }
         userInterface.onInGameCardsRequest(inGameCardsRequestMessage.getAvailableCards());
     }
 
