@@ -20,8 +20,8 @@ import java.util.Set;
 import static java.lang.Math.abs;
 
 public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor {
-    private Game game;
-    private ArrayList<String> lobby;
+    private final Game game;
+    private final ArrayList<String> lobby;
     private int numberOfPlayers; //set to -1 by constructor
     private static final int maxX=4;
     private static final int maxY=4;
@@ -151,7 +151,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
                 //notify all players of the pawns position change
                 notifyListeners(generateDoublePawnPositionUpdate(moveAction.getSelectedPawn().getId(),opponentPawn.getId(),newPos,oldPos));
-
             }
             else if (moveAction.getPushEnable()) { //an opponent pawn is present && you have to push him
                 Position opponentPawnNewPos;
@@ -411,16 +410,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
 
     private Boolean isThisPositionInTheAvailableCells(Position toBeChecked){
-        if(game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy()).contains(toBeChecked)){
-            return true;
-        }
-        return false;
+        return game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy()).contains(toBeChecked);
     }
     private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
-        if(game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(),game.getBoard().getMatrixCopy()).contains(blockType)){
-            return true;
-        }
-        return false;
+        return game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(), game.getBoard().getMatrixCopy()).contains(blockType);
     }
     private Boolean isThisSelectedPawnValid(Position selectedPawnPos){
         for(Pawn p : game.getCurrentPlayer().getPawnList()){
@@ -440,10 +433,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
     private Boolean areThoseCardIdsDifferent(ArrayList<Integer> cardIds){
         Set<Integer> set = new HashSet<>(cardIds);
-        if(cardIds.size()>set.size()){
-            return false;
-        }
-        return true;
+        return cardIds.size() <= set.size();
     }
     private Boolean areThoseCardsIdsLegal(ArrayList<Integer> cardIds){
         for(Integer cardId : cardIds){
@@ -456,18 +446,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private Boolean isThisALegalPosition(Position pos){
         int x=pos.getX();
         int y=pos.getY();
-        if(x<maxX &&x>=0 && y<maxY && y>=0){
-            return true;
-        }
-        return false;
+        return x <= maxX && x >= 0 && y <= maxY && y >= 0;
     }
     private Boolean isThisPositionInTheAvailableOnes(Position chosenPos){
-        if(game.getBoard().availablePositionsForPawnInitialPlacement().contains(chosenPos)){
-            return true;
-        }
-        else{
-            return  false;
-        }
+        return game.getBoard().availablePositionsForPawnInitialPlacement().contains(chosenPos);
     }
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
 
@@ -838,7 +820,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
     }
     public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
-        if(isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2)) {
+        if(isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2)&&isThisPositionInTheAvailableOnes(workerPos1)&&isThisPositionInTheAvailableOnes(workerPos2)) {
             int indexWorker1 = 0;
             int indexWorker2 = 0;
             for (int i = 0; i < game.getCurrentPlayer().getPawnList().size(); i++) {
@@ -981,7 +963,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * Setup method setPawnsPositions to set the two pawns of the current player
      */
     public Boolean setPawnsPositions(ArrayList<Position> positions){
-        if (positions.get(0).getX() >= 0 & positions.get(0).getX() < 5 & positions.get(0).getY() >= 0 & positions.get(0).getY() < 5 & positions.get(1).getX() >= 0 & positions.get(1).getX() < 5 & positions.get(1).getY() >= 0 & positions.get(1).getY() < 5) {
+        if (isThisALegalPosition(positions.get(0))&&isThisALegalPosition(positions.get(1))&&isThisPositionInTheAvailableOnes(positions.get(0))&&isThisPositionInTheAvailableOnes(positions.get(1))) {
             game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(0), positions.get(0));
             game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(1), positions.get(1));
             notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(0).getId(),game.getCurrentPlayer().getPawnList().get(1).getId(),positions.get(0),positions.get(1)));
@@ -998,7 +980,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             }
             return true;
         }
-
         return false;
     }
 
