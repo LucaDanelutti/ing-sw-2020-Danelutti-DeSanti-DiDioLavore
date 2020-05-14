@@ -12,7 +12,6 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -397,8 +396,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         return new PlayerView(player.getName(),pawnViews);
     }
     private CardView modelCard_to_viewCard(Card card){
-        //TODO: change blabla to current description
-        return new CardView(card.getId(),card.getName(),"blabla");
+        return new CardView(card.getId(),card.getName(),card.getDescription());
     }
     private ArrayList<CardView>loadedCards_to_viewCards(){
         ArrayList<CardView> availableViewCards = new ArrayList<>();
@@ -417,6 +415,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
         if(game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(),game.getBoard().getMatrixCopy()).contains(blockType)){
             return true;
+        }
+        return false;
+    }
+    private Boolean isThisSelectedPawnValid(Position selectedPawnPos){
+        for(Pawn p : game.getCurrentPlayer().getPawnList()){
+            if(p.getPosition().equals(selectedPawnPos)){
+                return true;
+            }
         }
         return false;
     }
@@ -532,8 +538,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         for(Player p : game.getPlayers()){
             recipients.add(p.getName());
         }
-        //TODO: change blabla to correct
-        return new ChosenCardUpdateMessage(recipients,new CardView(card.getId(),card.getName(),"BlaBla"),game.getCurrentPlayer().getName());
+        return new ChosenCardUpdateMessage(recipients,new CardView(card.getId(),card.getName(),card.getDescription()),game.getCurrentPlayer().getName());
     }
 
     private GameStartMessage generateGameStart(){
@@ -605,30 +610,35 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition){
-        //load the first action to be executed
-        game.setCurrentAction();
+        if(isThisSelectedPawnValid(selectedPawnPosition)) {
+            //load the first action to be executed
+            game.setCurrentAction();
 
-        //aggiorna i selectedPawn e i pawn dentro la currentAction
-        Position unselected=null;
-        for(Pawn p : game.getCurrentPlayer().getPawnList()){
-            if(p.getPosition()!=selectedPawnPosition){
-                unselected=p.getPosition();
+            //aggiorna i selectedPawn e i pawn dentro la currentAction
+            Position unselected = null;
+            for (Pawn p : game.getCurrentPlayer().getPawnList()) {
+                if (p.getPosition() != selectedPawnPosition) {
+                    unselected = p.getPosition();
+                }
             }
-        }
-        if(unselected==null) {
-            game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition),null);
-        }else {
-            game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), game.getBoard().getPawnCopy(unselected));
-        }
-        //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
-        notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
+            if (unselected == null) {
+                game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), null);
+            } else {
+                game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), game.getBoard().getPawnCopy(unselected));
+            }
+            //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
+            notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
 
-        //process the action, aka. ask the user for the chosen position for the selected pawn
-        game.getCurrentAction().acceptForProcess(); //this will generate the requestMessage for the chosen position
+            //process the action, aka. ask the user for the chosen position for the selected pawn
+            game.getCurrentAction().acceptForProcess(); //this will generate the requestMessage for the chosen position
 
-        return true;
+            return true;
+        }
+        else{
+            notifyListeners(generateSelectPawnRequest());
+            return false;
+        }
     }
-
     /**
      * This function is called when the view pass to the controller the position for the current action
      * if this is moveAction setChosenPosition will call back the gameLogicExecutor to execute the action
