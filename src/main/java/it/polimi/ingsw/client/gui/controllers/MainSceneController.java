@@ -73,6 +73,7 @@ public class MainSceneController extends GUIController {
        boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(0.5));
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
 
+       //TODO: improve padding management
        boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
        System.out.println(boardGridPane.paddingProperty());
    }
@@ -92,7 +93,24 @@ public class MainSceneController extends GUIController {
        clientView.getUserInterface().refreshView();
        updatePlayersName();
        //TODO: RANDOM TEST HERE, IT HAS TO BE REMOVED ASAP
-       clientView.getUserInterface().onNumberOfPlayersRequest();
+       ArrayList<CardView> availableCards = new ArrayList<>();
+       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
+       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
+       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
+       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
+       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
+       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
+       clientView.getUserInterface().onInGameCardsRequest(availableCards);
    }
 
 
