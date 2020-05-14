@@ -13,7 +13,6 @@ public class InGameCardsRequestMessage extends RequestAndUpdateMessage implement
 
     ArrayList<CardView> availableCards=new ArrayList<>();
 
-
     ArrayList<PlayerView> inGamePlayers;
 
     public ArrayList<PlayerView> getInGamePlayers() {
@@ -24,6 +23,10 @@ public class InGameCardsRequestMessage extends RequestAndUpdateMessage implement
         super(recipients);
         this.inGamePlayers=inGamePlayers;
         this.availableCards.addAll(availableCards);
+    }
+
+    public ArrayList<CardView> getAvailableCards() {
+        return availableCards;
     }
 
     public void accept(RequestAndUpdateObservable visitor) {

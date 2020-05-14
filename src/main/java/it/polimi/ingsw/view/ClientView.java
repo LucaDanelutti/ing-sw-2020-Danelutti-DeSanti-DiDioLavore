@@ -30,7 +30,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         this.serverConnection = c;
         c.addListener(this);
         this.modelView = new ModelView();
-        System.out.println("ClientView created!");
+        //System.out.println("ClientView created!"); //TODO: logging
     }
 
     public UserInterface getUserInterface() {
@@ -55,53 +55,56 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(NicknameRequestMessage nicknameRequestMessage) {
-        System.out.println("What's your name?");
-        Scanner stdin = new Scanner(System.in);
-        String inputLine = stdin.nextLine();
-        this.update(new NicknameSetMessage(inputLine));
+        //System.out.println("What's your name?"); //TODO: remove
+        //Scanner stdin = new Scanner(System.in);
+        //String inputLine = stdin.nextLine();
+        //this.update(new NicknameSetMessage(inputLine));
+        userInterface.onNicknameRequest();
     }
 
     @Override
     public void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage) {
-
+        userInterface.onChosenBlockTypeRequest(chosenBlockTypeRequestMessage.getAvailableBlockTypes());
     }
 
     @Override
     public void update(ChosenCardRequestMessage chosenCardRequestMessage) {
-        System.out.println("ChosenCardRequestMessage message received!");
+        userInterface.onChosenCardRequest(chosenCardRequestMessage.getAvailableCards());
     }
 
     @Override
     public void update(ChosenPositionRequestMessage chosenPositionRequestMessage) {
-
+        userInterface.onChosenPositionRequest(chosenPositionRequestMessage.getAvailablePositions());
     }
 
     @Override
     public void update(FirstPlayerRequestMessage firstPlayerRequestMessage) {
-
+        userInterface.onFirstPlayerRequest();
     }
 
     @Override
     public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
-        System.out.println("inGameCardsRequestMessage message received!");
+        //System.out.println("inGameCardsRequestMessage message received!"); //TODO: remove
+        userInterface.onInGameCardsRequest(inGameCardsRequestMessage.getAvailableCards());
     }
 
     @Override
     public void update(InitialPawnPositionRequestMessage initialPawnPositionRequestMessage) {
-
+        userInterface.onInitialPawnPositionRequest(initialPawnPositionRequestMessage.getAvailablePositions());
     }
 
     @Override
     public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
-        System.out.println("How many players do you want to play with?");
-        Scanner stdin = new Scanner(System.in);
-        int inputLine = stdin.nextInt();
-        this.update(new NumberOfPlayersSetMessage(inputLine));
+        //System.out.println("How many players do you want to play with?"); //TODO: remove
+        //Scanner stdin = new Scanner(System.in);
+        //int inputLine = stdin.nextInt();
+        //this.update(new NumberOfPlayersSetMessage(inputLine));
+        userInterface.onNumberOfPlayersRequest();
     }
 
     @Override
     public void update(SelectPawnRequestMessage selectPawnRequestMessage) {
-
+        userInterface.onSelectPawnRequest(selectPawnRequestMessage.getAvailablePositions());
     }
 
     @Override
