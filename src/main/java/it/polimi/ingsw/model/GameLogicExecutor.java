@@ -474,7 +474,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     }
 
     private Game createGameHardCopy(Game toBeCopied){
-        Game hardCopy=new Game();
+        /*Game hardCopy=new Game();
         //since we call this function when the game is already started,let's be sure about that
         if(toBeCopied.getCurrentPlayer()!=null) {
             //TODO: we have to implement the hard copy of player, board and card
@@ -482,7 +482,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             hardCopy.setInGameCardsCopy(toBeCopied.getInGameCards());
             hardCopy.setInGamePlayersAndBoardCopy(toBeCopied);
         }
-        return null;
+        return hardCopy;*/
+
+        return new Game(toBeCopied);
     }
     public ModelView createModelViewFromThisGame(Game game){
         ArrayList<PlayerView> playersList=new ArrayList<>();
@@ -617,6 +619,13 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new ChosenCardUpdateMessage(recipients,new CardView(card.getId(),card.getName(),card.getDescription()),game.getCurrentPlayer().getName());
     }
+    private UndoUpdateMessage generateUndoUpdate(Game toBeRestored){
+        ArrayList<String> recipients = new ArrayList<>();
+        for(Player p : game.getPlayers()){
+            recipients.add(p.getName());
+        }
+        return new UndoUpdateMessage(recipients,createModelViewFromThisGame(toBeRestored));
+    }
 
     private GameStartMessage generateGameStart(){
         ArrayList<String> recipients = new ArrayList<>();
@@ -687,10 +696,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition){
-        beginningOfCurrentPlayerTurn=createGameHardCopy(game);
         if(isThisSelectedPawnValid(selectedPawnPosition)) {
             //load the first action to be executed
             game.setCurrentAction();
+            beginningOfCurrentPlayerTurn=createGameHardCopy(game);
 
             //aggiorna i selectedPawn e i pawn dentro la currentAction
             Position unselected = null;
@@ -1012,6 +1021,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public Boolean undoCurrentAction(){
         this.game=beginningOfCurrentAction;
 
+        //let's reset the modelView of the clients
+        notifyListeners(generateUndoUpdate(this.game));
+
         //let's ask again the currentPlayer for the ChosenPosition
         notifyListeners(generateChosenPositionRequest());
 
@@ -1020,6 +1032,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public Boolean undoTurn(){
         this.game=beginningOfCurrentPlayerTurn;
 
+        //let's reset the modelView of the clients
+        notifyListeners(generateUndoUpdate(this.game));
 
         //let's ask again the currentPlayer for the selectedPawn
         notifyListeners(generateSelectPawnRequest());

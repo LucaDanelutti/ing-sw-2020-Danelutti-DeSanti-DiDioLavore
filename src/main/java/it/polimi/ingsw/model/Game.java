@@ -63,7 +63,8 @@ public class Game {
         ArrayList<Action>actionList = getCurrentPlayerActionList();
         if (currentAction == null) {
             index = -1;
-        } else {
+        }
+        else {
             for (int i=0; i < actionList.size(); i++) {
                 if (actionList.get(i) == currentAction) {
                     index = i;
@@ -160,15 +161,18 @@ public class Game {
                 this.setLoadedCardsCopy(toBeCopied.getLoadedCards());
                 this.setInGameCardsCopy(toBeCopied.getInGameCards());
                 this.setInGamePlayersAndBoardCopy(toBeCopied);
-                if(toBeCopied.currentAction==null){
-                    this.currentAction=null;
-                }else {
-                    this.currentAction = toBeCopied.currentAction.duplicate();
-                }
+
                 for(Player p : this.getPlayers()){
                     if(p.getName().equals(toBeCopied.getCurrentPlayer().getName())){
                         this.currentPlayer=p;
                     }
+                }
+                if(toBeCopied.currentAction==null){
+                    this.currentAction=null;
+                }
+                else {
+                    int index=toBeCopied.getCurrentActionIndex();
+                    this.currentAction = getCurrentPlayer().getCurrentCard().getCurrentActionList().get(index);
                 }
             }
         }

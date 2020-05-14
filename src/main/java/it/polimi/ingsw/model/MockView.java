@@ -209,7 +209,10 @@ public class MockView implements RequestsAndUpdateListener {
 
     @Override
     public void update(UndoUpdateMessage m) {
-
+        if(!isThisMessageForMe(m)){
+            return;
+        }
+        receivedMessages.add(m);
     }
 
     public String getName() {

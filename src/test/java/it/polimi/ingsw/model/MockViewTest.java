@@ -466,6 +466,113 @@ class MockViewTest {
 
     }
 
+    @Test void UndoOfCompleteTurn(){
+        //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
+        gameLogicExecutor.addListener(mockViews.get(0));
+        gameLogicExecutor.addPlayerToLobby("p1");
+        gameLogicExecutor.addListener(mockViews.get(1));
+        gameLogicExecutor.addPlayerToLobby("p2");
+        gameLogicExecutor.addListener(mockViews.get(2));
+        gameLogicExecutor.addPlayerToLobby("p3");
+
+        //SETUP THE NUMBER OF PLAYERS
+        gameLogicExecutor.setNumberOfPlayers(3);
+
+        //CHOOSE IN-GAME CARDS
+        ArrayList<Integer> inGameCards=new ArrayList<>();
+        inGameCards.add(1);
+        inGameCards.add(2);
+        inGameCards.add(3);
+        gameLogicExecutor.setInGameCards(inGameCards);
+
+        //SET THE CARDS FOR EACH PLAYER
+        gameLogicExecutor.setChosenCard(1);
+        gameLogicExecutor.setChosenCard(2);
+        gameLogicExecutor.setChosenCard(3);
+
+        //SET THE FIRST PLAYER
+        gameLogicExecutor.setStartPlayer("p1");
+
+        //SET THE INITIAL PAWN POSITIONS FOR ALL THE PLAYER (RANDOMLY)
+        InitialPawnPositionRequestMessage m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        ArrayList<Position> positions = new ArrayList<>();
+        int randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        int randomNum2= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        while(randomNum2==randomNum1){
+            randomNum2=ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+        m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        positions = new ArrayList<>();
+        randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        randomNum2= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        while(randomNum2==randomNum1){
+            randomNum2=ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+        m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        positions = new ArrayList<>();
+        randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        randomNum2= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        while(randomNum2==randomNum1){
+            randomNum2=ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+
+
+        MockView currentP=getCurrentPlayerMockView();
+        SelectPawnRequestMessage selectPawnRequestMessage = (SelectPawnRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        randomNum1= ThreadLocalRandom.current().nextInt(0,selectPawnRequestMessage.getAvailablePositions().size());
+        gameLogicExecutor.setSelectedPawn(selectPawnRequestMessage.getAvailablePositions().get(randomNum1));
+        //At this point we should have a ChosenPositionRequestMessage and SelectPawnUpdateMessage in the current mock and in the other a doublePawnPositionUpdate
+        for(MockView mockView : mockViews){
+            if(mockView.getName().equals(getCurrentPlayerMockView().getName())){
+                //the current player should have both the update and the select pawn message
+                assertTrue(mockView.getLastReceivedMessage() instanceof ChosenPositionRequestMessage);
+                assertTrue(mockView.getReceivedMessages().get(mockView.getReceivedMessages().size()-2) instanceof SelectedPawnUpdateMessage);
+            }
+            else{
+                assertTrue(mockView.getLastReceivedMessage() instanceof DoublePawnPositionUpdateMessage);
+            }
+        }
+
+        int numberOfChosenPositionDone=0;
+        while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage)){
+
+            if(currentP.getLastReceivedMessage() instanceof ChosenPositionRequestMessage){
+                ChosenPositionRequestMessage chosenPositionRequestMessage = (ChosenPositionRequestMessage) currentP.getLastReceivedMessage();
+                numberOfChosenPositionDone++;
+                if(m.getAvailablePositions().size()<1){
+                    System.out.println("BOT INCASTRATO player:"+currentP.getName()+"selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
+                    simpleCompleteBoardPrint();
+                    return;
+                }
+                randomNum1= ThreadLocalRandom.current().nextInt(0,chosenPositionRequestMessage.getAvailablePositions().size());
+                gameLogicExecutor.setChosenPosition(chosenPositionRequestMessage.getAvailablePositions().get(randomNum1));
+                if(numberOfChosenPositionDone==2){
+                    gameLogicExecutor.undoTurn();
+                }
+            }
+            else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
+                ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
+                randomNum1= ThreadLocalRandom.current().nextInt(0,chosenBlockTypeRequestMessage.getAvailableBlockTypes().size());
+                gameLogicExecutor.setChosenBlockType(chosenBlockTypeRequestMessage.getAvailableBlockTypes().get(randomNum1));
+            }
+            else if(currentP.getLastReceivedMessage() instanceof SelectPawnRequestMessage){
+                selectPawnRequestMessage = (SelectPawnRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+                randomNum1= ThreadLocalRandom.current().nextInt(0,selectPawnRequestMessage.getAvailablePositions().size());
+                gameLogicExecutor.setSelectedPawn(selectPawnRequestMessage.getAvailablePositions().get(randomNum1));
+            }
+        }
+        assertTrue(true);
+    }
+
     void CompleteGameWithBots(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
