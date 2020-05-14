@@ -415,7 +415,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
     private ArrayList<CardView>loadedCards_to_viewCards(){
         ArrayList<CardView> availableViewCards = new ArrayList<>();
-        for(Card card : game.getAvailableCards()){
+        for(Card card : game.getLoadedCards()){
             availableViewCards.add(modelCard_to_viewCard(card));
         }
         return availableViewCards;
