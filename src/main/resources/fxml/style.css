@@ -1,12 +1,16 @@
 .boardGridPane {
-    -fx-background-image: url('../images/boardImage.png');
+    -fx-background-image: url('../images/board/board.png');
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-background-color: rgb(193, 221, 230);
  }
 
  .mainGridPane {
-    -fx-background-color: rgb(161, 226, 247);
+    -fx-background-image: url('../images/board/title_water.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
  }
 
 .nicknameRequest {
