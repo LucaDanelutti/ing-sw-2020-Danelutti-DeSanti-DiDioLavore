@@ -27,9 +27,9 @@ public class NicknameRequestSceneController extends GUIController {
 
     public void confirm() {
         System.out.println("nickname:" + nickname.getValue());
-        clientView.update(new NicknameSetMessage(nickname.getValue()));
+//        clientView.update(new NicknameSetMessage(nickname.getValue())); //TODO: togliere commento, è il Set corretto
 
-        //opens the WaitingScene
+        //loads the WaitingScene
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
     }
 }
