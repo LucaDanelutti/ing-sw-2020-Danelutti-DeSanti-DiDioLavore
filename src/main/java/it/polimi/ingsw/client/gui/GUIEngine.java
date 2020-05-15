@@ -87,6 +87,10 @@ public class GUIEngine extends Application implements UserInterface {
         launch();
     }
 
+    @Override
+    public void quickInitialize(String hostname, int port) {
+    }
+
     public void showScene(String fxmlResource) {
         if (fxmlResource == null) {
             return;

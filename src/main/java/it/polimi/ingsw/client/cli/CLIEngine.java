@@ -82,6 +82,13 @@ public class CLIEngine implements UserInterface {
         clientView.startServerConnection(serverIP, serverPORT);
     }
 
+    @Override
+    public void quickInitialize(String hostname, int port) {
+        clientView = new ClientView();
+        clientView.setUserInterface(this);
+        clientView.startServerConnection(hostname, port);
+    }
+
     @Override public void refreshView() {
         try {
             Runtime.getRuntime().exec("clear");

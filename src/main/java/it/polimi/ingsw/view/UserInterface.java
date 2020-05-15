@@ -15,6 +15,7 @@ public interface UserInterface {
      * Initializes the selected user interface
      */
     void initialize();
+    void quickInitialize(String hostname, int port);
     /**
      * Refreshes the user interface after an update within the ModelView instance.
      * @param pawnView is the updated object.

@@ -10,7 +10,9 @@ public class ClientApp
 {
     public static void main(String[] args) {
 
-        String selectedUserInterface = args.length > 0 ? args[0] : "";
+        String selectedUserInterface = args.length > 0 ? args[0] : null;
+        String hostname = args.length > 0 ? args[1] : null;
+        String port = args.length > 0 ? args[2] : null;
 
         UserInterface userInterface;
         if (selectedUserInterface.equals("gui")) {
@@ -19,6 +21,10 @@ public class ClientApp
             userInterface = new CLIEngine();
         }
 
-        userInterface.initialize();
+        if (hostname == null && port == null) {
+            userInterface.initialize();
+        } else {
+            userInterface.quickInitialize(hostname, Integer.parseInt(port));
+        }
     }
 }
