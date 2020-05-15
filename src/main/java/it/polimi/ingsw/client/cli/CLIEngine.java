@@ -25,6 +25,12 @@ public class CLIEngine implements UserInterface {
         this.clientView = clientView;
     }
 
+    public CLIEngine() {
+    }
+
+    public CLIEngine(ClientView clientView) {
+        this.clientView = clientView;
+    }
 
     public static void main(String[] args) {
         ClientView clientView = new ClientView();
@@ -202,7 +208,7 @@ public class CLIEngine implements UserInterface {
             if(availablePositions.get(i)==null){
                 System.out.print(i + ") SKIP ");
             }else {
-                System.out.print(i + ") x:" + availablePositions.get(i).getX() + " y: " + availablePositions.get(i).getY()+" ");
+                System.out.print(i + ") x:" + availablePositions.get(i).getX() + " y:" + availablePositions.get(i).getY()+"   ");
             }
         }
         System.out.println();
@@ -230,7 +236,7 @@ public class CLIEngine implements UserInterface {
         System.out.println("Select the first player from the ones below:");
         int i=0;
         for(PlayerView playerView : clientView.getModelView().getPlayerList()){
-            System.out.print(i+") "+playerView.getName());
+            System.out.println(i+") "+playerView.getName());
             i++;
         }
         System.out.print("Choice (0->"+(clientView.getModelView().getPlayerList().size()-1)+"): ");
@@ -299,7 +305,7 @@ public class CLIEngine implements UserInterface {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the positions for your pawns from the ones below:");
         for(int i=0; i<availablePositions.size(); i++){
-            System.out.print(i+") x:"+availablePositions.get(i).getX()+" y: "+availablePositions.get(i).getY());
+            System.out.print(i+") x:"+availablePositions.get(i).getX()+" y:"+availablePositions.get(i).getY() + "  ");
         }
         printSingleScoreRow();
         Position one;
@@ -351,6 +357,7 @@ public class CLIEngine implements UserInterface {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select your nickname: ");
         String name = scanner.nextLine();
+        clientView.setName(name);
         clientView.update(new NicknameSetMessage(name));
     }
     @Override public void onNumberOfPlayersRequest() {
@@ -384,7 +391,7 @@ public class CLIEngine implements UserInterface {
         for(Position position : availablePositions) {
             for (PawnView pawnView : pawnViews) {
                 if (pawnView.getPawnPosition().equals(position)) {
-                    System.out.print(i + ") pawn: " + pawnView.getId());
+                    System.out.println(i + ") pawn: " + pawnView.getId());
                     i++;
                 }
             }
@@ -474,8 +481,8 @@ public class CLIEngine implements UserInterface {
 
             for(int j=0; j<matrix[0].length; j++){
                 //let's get the pawn (or null) in the current position to be printed
-                p = isThereAPawnHere(i,j);
-                level= matrix[i][j].getPeek().getLevel();
+                p = isThereAPawnHere(j,i);
+                level= matrix[j][i].getPeek().getLevel();
                 StringBuilder a = new StringBuilder();
                 if(j==0){
                     a.append("y:").append(i).append("  #|");
