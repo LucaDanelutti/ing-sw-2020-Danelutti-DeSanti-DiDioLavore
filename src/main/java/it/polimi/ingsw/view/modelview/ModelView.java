@@ -45,8 +45,11 @@ public class ModelView {
 
     public void onPawnRemoved(int pawnId) {
         for (PlayerView player : playerList) {
-            for (PawnView pawn: player.getPawnList()) {
-                if (pawn.getId() == pawnId) player.getPawnList().remove(pawn);
+            for (int i=0; i<player.getPawnList().size();i++) {
+                if (player.getPawnList().get(i).getId()==pawnId) {
+                    player.getPawnList().remove(i);
+                    return;
+                }
             }
         }
     }
