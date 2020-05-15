@@ -68,6 +68,8 @@ public class CLIEngine implements UserInterface {
     }
 
     @Override public void initialize() {
+        clientView = new ClientView();
+        clientView.setUserInterface(this);
         printWelcome();
         System.out.println("SERVER CONNECTION SETUP:");
         Scanner n= new Scanner(System.in);
@@ -77,6 +79,7 @@ public class CLIEngine implements UserInterface {
         Integer serverPORT=n.nextInt();
         System.out.println("CONNECTING...");
         //call function of ClientView
+        clientView.startServerConnection(serverIP, serverPORT);
     }
 
     @Override public void refreshView() {
@@ -357,7 +360,6 @@ public class CLIEngine implements UserInterface {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select your nickname: ");
         String name = scanner.nextLine();
-        clientView.setName(name);
         clientView.update(new NicknameSetMessage(name));
     }
     @Override public void onNumberOfPlayersRequest() {

@@ -108,7 +108,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
     public void run() throws IOException {
         socket = new Socket(ip, port);
-        System.out.println("Connection established");
+        System.out.println("Connection established"); //TODO: logging
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         out = new ObjectOutputStream(socket.getOutputStream());
 

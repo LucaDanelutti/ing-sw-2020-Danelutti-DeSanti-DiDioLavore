@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.client.cli.CLIEngine;
 import it.polimi.ingsw.utility.messages.requests.*;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.view.modelview.ModelView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,13 +29,24 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         this.serverConnection = null;
     };
 
-    //TODO: replace with set
+    //TODO: DEPRECATED
     public ClientView(ServerConnection c) {
         this.serverConnection = c;
         c.addListener(this);
+        this.userInterface = new CLIEngine(this);
         this.modelView = new ModelView();
-        this.userInterface = new CLIEngine();
         //System.out.println("ClientView created!"); //TODO: logging
+    }
+
+    public void startServerConnection(String hostname, int port) {
+        Client client = new Client(hostname, port);
+        try{
+            client.run();
+        }catch (IOException e){
+            System.err.println(e.getMessage()); //TODO: logging
+        }
+        serverConnection = client;
+        serverConnection.addListener(this);
     }
 
     public UserInterface getUserInterface() {
@@ -226,6 +239,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(NicknameSetMessage nicknameSetMessage) {
+        this.setName(name);
         serverConnection.asyncSend(nicknameSetMessage);
     }
 
