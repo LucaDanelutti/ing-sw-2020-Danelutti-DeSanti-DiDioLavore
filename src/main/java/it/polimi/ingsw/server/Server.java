@@ -34,8 +34,8 @@ public class Server {
     }
 
     public synchronized void removeConnection(ClientConnection c) {
+        gameLogicExecutor.removePlayer(playingConnection.get(c));
         playingConnection.remove(c);
-        //TODO: remove player from gameLogic
     }
 
     public synchronized boolean addConnection(ClientConnection c, String name) {
