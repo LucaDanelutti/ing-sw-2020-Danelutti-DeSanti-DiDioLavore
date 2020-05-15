@@ -139,6 +139,8 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             System.err.println("ClassNotFoundException!");
         } catch (IllegalArgumentException e) {
             System.err.println("IllegalArgumentException!");
+        } catch (Exception e) {
+            System.err.println("Connection closed due to a server Exception!");
         } finally {
             close();
         }

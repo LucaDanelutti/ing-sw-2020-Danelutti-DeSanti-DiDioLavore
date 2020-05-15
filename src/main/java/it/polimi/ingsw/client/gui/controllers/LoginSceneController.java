@@ -33,6 +33,8 @@ public class LoginSceneController extends GUIController {
         System.out.println(serverHostname.getValue());
         System.out.println(port.getValue());
 
+        //TODO: check port type, it must be an int
+        clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()));
 
         //opens the WaitingScene
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
