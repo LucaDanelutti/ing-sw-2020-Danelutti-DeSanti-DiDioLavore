@@ -82,7 +82,7 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-    synchronized public void notifyListeners(CellUpdateMessage m) {
+    public void notifyListeners(CellUpdateMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
                 l.update(m);
