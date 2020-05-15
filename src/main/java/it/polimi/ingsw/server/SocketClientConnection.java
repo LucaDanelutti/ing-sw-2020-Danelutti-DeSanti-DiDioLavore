@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utility.messages.PingMessage;
 import it.polimi.ingsw.utility.messages.PongMessage;
 import it.polimi.ingsw.utility.messages.SetMessage;
-import it.polimi.ingsw.utility.messages.requests.InGameCardsRequestMessage;
 import it.polimi.ingsw.utility.messages.requests.NicknameRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.NicknameSetMessage;
 
@@ -23,6 +22,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     private ObjectOutputStream out;
     private Server server;
 
+    private int timerFrequency = 10;
     private boolean pong = true;
 
     private boolean active = true;
@@ -108,7 +108,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                         timer.cancel();
                     }
                 }
-            }, 10000, 10000);
+            }, timerFrequency * 1000, timerFrequency * 1000);
 
             NicknameSetMessage nicknameSetMessage;
             do {

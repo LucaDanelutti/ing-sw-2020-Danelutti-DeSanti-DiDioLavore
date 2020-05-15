@@ -21,6 +21,8 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
     private int port;
     private ObjectOutputStream out;
 
+    private int timerFrequency = 10;
+
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
@@ -41,7 +43,6 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
     @Override
     public synchronized void closeConnection() {
-        //send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
@@ -117,13 +118,13 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (System.currentTimeMillis() - lastPing.getTime() > 15*1000) {
+                    if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
                         //System.out.println("No ping received!");
                         closeConnection();
                         timer.cancel();
                     }
                 }
-            }, 1000, 10*1000);
+            }, 1000, timerFrequency * 1000);
 
             Thread t0 = asyncReadFromSocket(socketIn);
             ClientView clientView = new ClientView(this);
