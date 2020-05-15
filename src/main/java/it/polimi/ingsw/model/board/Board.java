@@ -140,6 +140,10 @@ public class Board{
             System.out.println("HAI CHIESTO LA COPIA MA HAI PASSATO UNA POSITION NULL!");
             return null;
         }
+        else if(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn()==null){
+            System.out.println("HAI CHIESTO LA COPIA MA HAI PASSATO UNA POSITION DOVE DENTRO LA BOARD NON C'E' NESSUN PAWN!");
+            return null;
+        }
         return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
     }
 
