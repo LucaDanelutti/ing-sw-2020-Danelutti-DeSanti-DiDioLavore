@@ -335,10 +335,10 @@ public class CLIEngine implements UserInterface {
             choice1=scanner.nextInt();
             System.out.print("Second pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
             choice2=scanner.nextInt();
-            if(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2)){
+            if(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2) || choice1==choice2){
                 System.out.println("Not valid options, retry: ");
             }
-        }while(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2));
+        }while(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2)|| (choice1==choice2));
 
 
         one=availablePositions.get(choice1);
