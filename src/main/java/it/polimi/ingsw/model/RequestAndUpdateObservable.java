@@ -20,121 +20,167 @@ public class RequestAndUpdateObservable {
     //IMPLEMENTATION OF REQUEST_AND_UPDATE_MESSAGE_VISITOR
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
     public void notifyListeners(ChosenBlockTypeRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(ChosenCardRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(ChosenPositionRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(FirstPlayerRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(InGameCardsRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(InitialPawnPositionRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(NicknameRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(NumberOfPlayersRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(SelectPawnRequestMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
-    public void notifyListeners(CellUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+    synchronized public void notifyListeners(CellUpdateMessage m) {
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(ChosenCardUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(DoublePawnPositionUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(PawnRemoveUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(PawnPositionUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
 
     public void notifyListeners(SelectedPawnUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(TurnEndedMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(YouLostAndSomeoneWonMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(YouLostMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(YouWonMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(GameStartMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
     public void notifyListeners(gameStartedAndYouAreNotSelectedMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
 
     public void notifyListeners(GameEndedMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
 
     public void notifyListeners(UndoUpdateMessage m) {
-        for(RequestsAndUpdateListener l : this.listeners){
-            l.update(m);
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
         }
     }
 
