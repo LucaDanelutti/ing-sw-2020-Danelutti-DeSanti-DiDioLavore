@@ -114,7 +114,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.1</version>
         <configuration>
-          <mainClass>it.polimi.ingsw.client.ClientLauncher</mainClass>
+          <mainClass>it.polimi.ingsw.ClientApp</mainClass>
         </configuration>
       </plugin>
     </plugins>

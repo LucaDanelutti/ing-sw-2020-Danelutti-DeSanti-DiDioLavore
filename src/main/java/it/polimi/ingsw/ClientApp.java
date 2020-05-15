@@ -1,17 +1,24 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.cli.CLIEngine;
+import it.polimi.ingsw.client.gui.GUIEngine;
+import it.polimi.ingsw.view.UserInterface;
 
 import java.io.IOException;
 
 public class ClientApp
 {
-    public static void main(String[] args){
-        Client client = new Client("127.0.0.1", 12345);
-        try{
-            client.run();
-        }catch (IOException e){
-            System.err.println(e.getMessage());
+    public static void main(String[] args) {
+
+        String selectedUserInterface = args.length > 0 ? args[0] : "";
+
+        UserInterface userInterface;
+        if (selectedUserInterface.equals("gui")) {
+            userInterface = new GUIEngine();
+        } else {
+            userInterface = new CLIEngine();
         }
+
+        userInterface.initialize();
     }
 }
