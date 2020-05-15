@@ -436,9 +436,7 @@ public class CLIEngine implements UserInterface {
     private PawnView isThereAPawnHere(int x, int y){
         for(PlayerView p : clientView.getModelView().getPlayerList()){
             for(PawnView pawnView : p.getPawnList()){
-                if(pawnView.getPawnPosition()==null)
-                    return null;
-                if(pawnView.getPawnPosition().getY()==y && pawnView.getPawnPosition().getX()==x){
+                if(pawnView.getPawnPosition() != null && pawnView.getPawnPosition().getY()==y && pawnView.getPawnPosition().getX()==x){
                     return pawnView;
                 }
             }
