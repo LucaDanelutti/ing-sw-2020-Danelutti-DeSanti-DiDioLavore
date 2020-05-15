@@ -940,11 +940,13 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
     }
     public String getCurrentPlayerName(){
+        if(game.getCurrentPlayer()==null)
+            return null;
         return game.getCurrentPlayer().getName();
     }
     public Boolean removePlayer(String name){
         //the game is not yet started
-        if(getCurrentPlayerName()==null){
+        if(game.getPlayers().size()==0){
             //let's find the index of the player to be removed
             int indexToBeRemoved=-1;
             for(int i=0; i<this.lobby.size(); i++){

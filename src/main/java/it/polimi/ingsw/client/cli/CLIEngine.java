@@ -311,9 +311,11 @@ public class CLIEngine implements UserInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         ArrayList<Position> pawnsPositions;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the positions for your pawns from the ones below:");
+
         for(int i=0; i<availablePositions.size(); i++){
             System.out.print(i+") x:"+availablePositions.get(i).getX()+" y:"+availablePositions.get(i).getY() + "  ");
         }

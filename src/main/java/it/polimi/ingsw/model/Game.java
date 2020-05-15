@@ -37,12 +37,14 @@ public class Game {
     }
 
     private Pawn getCurrentPlayerSelectedPawn(){
-
+        if(currentPlayer==null)
+            return null;
         return this.currentPlayer.getSelectedPawn();
     }
 
     private Pawn getCurrentPlayerUnselectedPawn(){
-
+        if(currentPlayer==null)
+            return null;
         return this.currentPlayer.getUnselectedPawn();
     }
 
