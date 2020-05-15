@@ -239,7 +239,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(NicknameSetMessage nicknameSetMessage) {
-        this.setName(name);
+        this.setName(nicknameSetMessage.getName());
         serverConnection.asyncSend(nicknameSetMessage);
     }
 
