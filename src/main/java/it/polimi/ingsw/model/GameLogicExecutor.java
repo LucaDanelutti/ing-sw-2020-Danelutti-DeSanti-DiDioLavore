@@ -704,7 +704,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             //aggiorna i selectedPawn e i pawn dentro la currentAction
             Position unselected = null;
             for (Pawn p : game.getCurrentPlayer().getPawnList()) {
-                if (p.getPosition() != selectedPawnPosition) {
+                if (!p.getPosition().equals(selectedPawnPosition)) {
                     unselected = p.getPosition();
                 }
             }

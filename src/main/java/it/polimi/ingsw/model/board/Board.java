@@ -136,6 +136,10 @@ public class Board{
      * @return the copy of the pawn
      */
     public Pawn getPawnCopy(Position pawnPosition){
+        if(pawnPosition==null) {
+            System.out.println("HAI CHIESTO LA COPIA MA HAI PASSATO UNA POSITION NULL!");
+            return null;
+        }
         return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
     }
 
