@@ -890,10 +890,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 if (p.getId() == idWorker1) {
                     indexWorker1 = i;
                     game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
-                } else if (p.getId() == idWorker2) {
+                }
+                else if (p.getId() == idWorker2) {
                     indexWorker2 = i;
                     game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
-                } else {
+                }
+                else {
                     return false;
                 }
             }

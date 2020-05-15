@@ -280,24 +280,29 @@ public class CLIEngine implements UserInterface {
             System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
+
         ArrayList<Integer> options = new ArrayList<>();
-        int input;
         for(int i=0; i<availableCards.size(); i++){
             options.add(i);
         }
+        ArrayList<Integer> chosenOptions = new ArrayList<>();
+
+        int input;
         do {
             chosenCards = new ArrayList<>();
             for (int i = 0; i < clientView.getModelView().getPlayerList().size(); i++) {
                 System.out.print("Card " + (i + 1) + " of " + clientView.getModelView().getPlayerList().size() + " | Choice (0->" + (availableCards.size() - 1) + "): ");
-                chosenCards.add(availableCards.get(scanner.nextInt()).getId());
+                input=scanner.nextInt();
+                chosenOptions.add(input);
+                chosenCards.add(availableCards.get(input).getId());
             }
-            if(areThereAnyDuplicates(chosenCards)){
+            if(areThereAnyDuplicates(chosenOptions)){
                 System.out.println("No duplicates allowed, retry: ");
             }
-            else if(!areTheOptionsValid(options,chosenCards)){
+            else if(!areTheOptionsValid(options,chosenOptions)){
                 System.out.println("Not a valid sequence, retry: ");
             }
-        }while (areThereAnyDuplicates(chosenCards)||!areTheOptionsValid(options,chosenCards));
+        }while (areThereAnyDuplicates(chosenOptions)||!areTheOptionsValid(options,chosenOptions));
 
         printEqualsRow();
 
@@ -506,7 +511,8 @@ public class CLIEngine implements UserInterface {
                     else {
                         if (p == null) {
                             a.append("   ");
-                        } else {
+                        }
+                        else {
                             if(level!=0) {
                                 a.append(" ").append(p.getId()).append(",");
                             }else{
