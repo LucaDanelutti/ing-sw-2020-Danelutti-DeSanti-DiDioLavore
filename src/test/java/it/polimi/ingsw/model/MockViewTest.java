@@ -701,7 +701,7 @@ class MockViewTest {
         return cardIds;
     }
 
-    @Test void loopBotsGame(){
+    void loopBotsGame(){
         //SETUP VARIABLES
         int counter=0;
         int numberOfCardsRandomCombinationSwitch=100;
