@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import java.util.ArrayList;
 
 public class RequestAndUpdateObservable {
-    ArrayList<RequestsAndUpdateListener> listeners = new ArrayList<>();
+    final ArrayList<RequestsAndUpdateListener> listeners = new ArrayList<>();
     public void addListener(RequestsAndUpdateListener listener){
         this.listeners.add(listener);
     }
