@@ -33,7 +33,7 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-    public void notifyListeners(ChosenPositionRequestMessage m) {
+    public void notifyListeners(ChosenPositionForMoveRequestMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
                 l.update(m);
@@ -177,6 +177,14 @@ public class RequestAndUpdateObservable {
     }
 
     public void notifyListeners(UndoUpdateMessage m) {
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
+        }
+    }
+
+    public void notifyListeners(ChosenPositionForConstructRequestMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
                 l.update(m);

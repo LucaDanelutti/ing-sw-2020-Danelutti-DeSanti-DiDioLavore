@@ -6,7 +6,6 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class MockView implements RequestsAndUpdateListener {
     private String name;
@@ -56,7 +55,7 @@ public class MockView implements RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(ChosenPositionRequestMessage m) {
+    public void update(ChosenPositionForMoveRequestMessage m) {
         if(!isThisMessageForMe(m)){
             return;
         }
@@ -209,6 +208,14 @@ public class MockView implements RequestsAndUpdateListener {
 
     @Override
     public void update(UndoUpdateMessage m) {
+        if(!isThisMessageForMe(m)){
+            return;
+        }
+        receivedMessages.add(m);
+    }
+
+    @Override
+    public void update(ChosenPositionForConstructRequestMessage m) {
         if(!isThisMessageForMe(m)){
             return;
         }

@@ -436,7 +436,7 @@ class MockViewTest {
            for(MockView mockView : mockViews){
                 if(mockView.getName().equals(getCurrentPlayerMockView().getName())){
                     //the current player should have both the update and the select pawn message
-                    assertTrue(mockView.getLastReceivedMessage() instanceof ChosenPositionRequestMessage);
+                    assertTrue(mockView.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage);
                     assertTrue(mockView.getReceivedMessages().get(mockView.getReceivedMessages().size()-2) instanceof SelectedPawnUpdateMessage);
                 }
                 else{
@@ -445,15 +445,15 @@ class MockViewTest {
             }
         while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage)){
 
-            if(currentP.getLastReceivedMessage() instanceof ChosenPositionRequestMessage){
-                ChosenPositionRequestMessage chosenPositionRequestMessage = (ChosenPositionRequestMessage) currentP.getLastReceivedMessage();
+            if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
+                ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                 if(m.getAvailablePositions().size()<1){
                     System.out.println("BOT INCASTRATO player:"+currentP.getName()+"selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
                     simpleCompleteBoardPrint();
                     return;
                 }
-                randomNum1= ThreadLocalRandom.current().nextInt(0,chosenPositionRequestMessage.getAvailablePositions().size());
-                gameLogicExecutor.setChosenPosition(chosenPositionRequestMessage.getAvailablePositions().get(randomNum1));
+                randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
+                gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
             }
             else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
                 ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
@@ -540,16 +540,16 @@ class MockViewTest {
 
             while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage) && !someOneWon()){
 
-                if(currentP.getLastReceivedMessage() instanceof ChosenPositionRequestMessage){
+                if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
 
-                    ChosenPositionRequestMessage chosenPositionRequestMessage = (ChosenPositionRequestMessage) currentP.getLastReceivedMessage();
-                    if(chosenPositionRequestMessage.getAvailablePositions().size()==0){
+                    ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
+                    if(chosenPositionForMoveRequestMessage.getAvailablePositions().size()==0){
                         System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
                         simpleCompleteBoardPrint();
                         return;
                     }
-                    randomNum1= ThreadLocalRandom.current().nextInt(0,chosenPositionRequestMessage.getAvailablePositions().size());
-                    gameLogicExecutor.setChosenPosition(chosenPositionRequestMessage.getAvailablePositions().get(randomNum1));
+                    randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
+                    gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
                 }
                 else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
                     ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
@@ -650,13 +650,13 @@ class MockViewTest {
 
             while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage) && !someOneWon()){
 
-                if(currentP.getLastReceivedMessage() instanceof ChosenPositionRequestMessage){
-                    ChosenPositionRequestMessage chosenPositionRequestMessage = (ChosenPositionRequestMessage) currentP.getLastReceivedMessage();
-                    if(chosenPositionRequestMessage.getAvailablePositions().size()==0){
+                if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
+                    ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
+                    if(chosenPositionForMoveRequestMessage.getAvailablePositions().size()==0){
                         return 0;
                     }
-                    randomNum1= ThreadLocalRandom.current().nextInt(0,chosenPositionRequestMessage.getAvailablePositions().size());
-                    gameLogicExecutor.setChosenPosition(chosenPositionRequestMessage.getAvailablePositions().get(randomNum1));
+                    randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
+                    gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
                     /*if(game.getCurrentPlayer().getCurrentCard().getName().equals("Triton")) {
                         if (chosenPositionRequestMessage.getAvailablePositions().get(randomNum1) == null) {
                             System.out.println("SKIPPO");

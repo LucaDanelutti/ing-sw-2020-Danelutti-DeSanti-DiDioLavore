@@ -223,4 +223,14 @@ public class GUIEngine extends Application implements UserInterface {
     public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
 
     }
+
+    @Override
+    public void onUndoAction() {
+
+    }
+
+    @Override
+    public void onUndoTurn() {
+
+    }
 }

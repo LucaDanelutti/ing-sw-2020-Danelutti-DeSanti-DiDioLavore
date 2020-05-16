@@ -66,6 +66,16 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
         notifyListeners(selectedPawnSetMessage);
     }
 
+    @Override
+    public void update(UndoTurnSetMessage message) {
+
+    }
+
+    @Override
+    public void update(UndoActionSetMessage message) {
+
+    }
+
     public VirtualView(ClientConnection c, String name) {
         this.clientConnection = c;
         this.name = name;
@@ -95,9 +105,9 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     }
 
     @Override
-    public void update(ChosenPositionRequestMessage chosenPositionRequestMessage) {
-        if (chosenPositionRequestMessage.getRecipients().contains(name)) {
-            clientConnection.asyncSend(chosenPositionRequestMessage);
+    public void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage) {
+        if (chosenPositionForMoveRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenPositionForMoveRequestMessage);
         }
     }
 
@@ -221,6 +231,11 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
 
     @Override
     public void update(UndoUpdateMessage m) {
+
+    }
+
+    @Override
+    public void update(ChosenPositionForConstructRequestMessage m) {
 
     }
 

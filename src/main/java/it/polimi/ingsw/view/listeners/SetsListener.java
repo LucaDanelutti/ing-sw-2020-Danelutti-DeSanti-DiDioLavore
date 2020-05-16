@@ -12,4 +12,8 @@ public interface SetsListener {
     void update(NicknameSetMessage nicknameSetMessage);
     void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage);
     void update(SelectedPawnSetMessage selectedPawnSetMessage);
+
+    void update(UndoTurnSetMessage message);
+
+    void update(UndoActionSetMessage message);
 }

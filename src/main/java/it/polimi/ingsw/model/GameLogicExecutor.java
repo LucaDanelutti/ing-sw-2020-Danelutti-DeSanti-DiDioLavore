@@ -512,14 +512,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
                                                 //FUNCTIONS THAT GENERATE MESSAGES
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
-    private ChosenPositionRequestMessage generateChosenPositionRequest(){
+    private ChosenPositionForMoveRequestMessage generateChosenPositionRequest(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         ArrayList<Position> availablePositions = game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         if(game.getCurrentAction().getIsOptional()){
             availablePositions.add(null);
         }
-        return new ChosenPositionRequestMessage(recipients, availablePositions);
+        return new ChosenPositionForMoveRequestMessage(recipients, availablePositions);
     }
     private ChosenBlockTypeRequestMessage generateChosenBlockTypeRequest(ConstructAction constructAction){
         ArrayList<String> recipients=new ArrayList<>();

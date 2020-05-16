@@ -71,4 +71,14 @@ public class Controller implements SetsListener {
             gameLogic.setSelectedPawn(selectedPawnSetMessage.getWorkerPos());
         }
     }
+
+    @Override
+    public void update(UndoTurnSetMessage message) {
+
+    }
+
+    @Override
+    public void update(UndoActionSetMessage message) {
+
+    }
 }

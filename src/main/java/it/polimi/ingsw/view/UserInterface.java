@@ -46,21 +46,16 @@ public interface UserInterface {
     void refreshView(CellView cellView);
 
     void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes);
-
     void onChosenCardRequest(ArrayList<CardView> availableCards);
-
     void onChosenPositionRequest(ArrayList<Position> availablePositions);
-
     void onFirstPlayerRequest();
-
     void onInGameCardsRequest(ArrayList<CardView> availableCards);
-
     void onInitialPawnPositionRequest(ArrayList<Position> availablePositions);
-
     void onNicknameRequest();
-
     void onNumberOfPlayersRequest();
-
     void onSelectPawnRequest(ArrayList<Position> availablePositions);
+
+    void onUndoAction();
+    void onUndoTurn();
 
 }

@@ -7,7 +7,7 @@ public interface RequestsAndUpdateListener{
     void update(NicknameRequestMessage nicknameRequestMessage);
     void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage);
     void update(ChosenCardRequestMessage chosenCardRequestMessage);
-    void update(ChosenPositionRequestMessage chosenPositionRequestMessage);
+    void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage);
     void update(FirstPlayerRequestMessage firstPlayerRequestMessage);
     void update(InGameCardsRequestMessage inGameCardsRequestMessage);
     void update(InitialPawnPositionRequestMessage initialPawnPositionRequestMessage);
@@ -31,4 +31,6 @@ public interface RequestsAndUpdateListener{
     void update(GameEndedMessage gameEndedMessage);
 
     void update(UndoUpdateMessage m);
+
+    void update(ChosenPositionForConstructRequestMessage m);
 }

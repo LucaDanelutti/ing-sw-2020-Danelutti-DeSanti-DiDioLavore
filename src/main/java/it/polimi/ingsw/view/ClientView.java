@@ -9,12 +9,9 @@ import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
-import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ClientView implements SetsListener, RequestsAndUpdateListener {
     private String name;
@@ -89,8 +86,8 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(ChosenPositionRequestMessage chosenPositionRequestMessage) {
-        userInterface.onChosenPositionRequest(chosenPositionRequestMessage.getAvailablePositions());
+    public void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage) {
+        userInterface.onChosenPositionRequest(chosenPositionForMoveRequestMessage.getAvailablePositions());
     }
 
     @Override
@@ -203,6 +200,11 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
+    public void update(ChosenPositionForConstructRequestMessage m) {
+
+    }
+
+    @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
         userInterface.refreshView();
     }
@@ -251,5 +253,15 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
         serverConnection.asyncSend(selectedPawnSetMessage);
+    }
+
+    @Override
+    public void update(UndoTurnSetMessage message) {
+
+    }
+
+    @Override
+    public void update(UndoActionSetMessage message) {
+
     }
 }

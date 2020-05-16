@@ -90,59 +90,40 @@ public class CLIEngine implements UserInterface {
     }
 
     @Override public void refreshView() {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
     }
 
     @Override public void refreshView(PawnView pawnView) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
     }
     @Override public void refreshView(CardView cardView) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printPlayersWith_Cards_WinnerStatus_PawnsIds();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
     @Override public void refreshView(PlayerView playerView) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            if(isThereAnyPawnOnTheBoard()){
-                printCompleteGameStatus();
-            }else{
-                printPlayersWith_Cards_WinnerStatus_PawnsIds();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        if(isThereAnyPawnOnTheBoard()){
+            printCompleteGameStatus();
+        }else{
+            printPlayersWith_Cards_WinnerStatus_PawnsIds();
         }
     }
     @Override public void refreshView(CellView cellView) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
     }
 
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the block type to construct from the ones below:");
@@ -177,12 +158,9 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenBlockTypeSetMessage(availableBlockTypes.get(input)));
     }
     @Override public void onChosenCardRequest(ArrayList<CardView> availableCards) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printPlayersWith_Cards_WinnerStatus_PawnsIds();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select your card from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
@@ -203,12 +181,9 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
     @Override public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the position from the ones below:");
         for(int i=0; i<availablePositions.size(); i++){
@@ -237,11 +212,9 @@ public class CLIEngine implements UserInterface {
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
     @Override public void onFirstPlayerRequest() {
-        try {
-            Runtime.getRuntime().exec("clear");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the first player from the ones below:");
         int i=0;
@@ -264,12 +237,9 @@ public class CLIEngine implements UserInterface {
         clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
     }
     @Override public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
 
         printEqualsRow();
         ArrayList<Integer> chosenCards;
@@ -308,14 +278,10 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new InGameCardsSetMessage(chosenCards));
     }
-
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
 
         ArrayList<Position> pawnsPositions;
         Scanner scanner = new Scanner(System.in);
@@ -363,14 +329,10 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0),pawnsId.get(1),pawnsPositions.get(0),pawnsPositions.get(1)));
     }
-
     @Override public void onNicknameRequest() {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printWelcome();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printWelcome();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select your nickname: ");
         String name = scanner.nextLine();
@@ -389,12 +351,9 @@ public class CLIEngine implements UserInterface {
         clientView.update(new NumberOfPlayersSetMessage(number));
     }
     @Override public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
-        try {
-            Runtime.getRuntime().exec("clear");
-            printCompleteGameStatus();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        printCompleteGameStatus();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select the pawns from the ones below:");
         ArrayList<PawnView> pawnViews = new ArrayList<>();
@@ -425,6 +384,12 @@ public class CLIEngine implements UserInterface {
             }
         }while (!isTheOptionValid(options,input));
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
+    }
+    @Override public void onUndoAction() {
+        clientView.update(new UndoActionSetMessage());
+    }
+    @Override public void onUndoTurn() {
+        clientView.update(new UndoTurnSetMessage());
     }
 
     private boolean isThereAnyPawnOnTheBoard(){

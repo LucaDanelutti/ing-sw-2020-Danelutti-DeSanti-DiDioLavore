@@ -69,4 +69,16 @@ public class SetObservable {
             l.update(message);
         }
     }
+
+    public void notifyListeners(UndoTurnSetMessage message) {
+        for(SetsListener l : this.listeners){
+            l.update(message);
+        }
+    }
+
+    public void notifyListeners(UndoActionSetMessage message) {
+        for(SetsListener l : this.listeners){
+            l.update(message);
+        }
+    }
 }
