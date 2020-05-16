@@ -9,8 +9,8 @@ import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
 
 public class VirtualView extends SetObservable implements RequestsAndUpdateListener, SetsListener{
-    private ClientConnection clientConnection;
-    private String name;
+    final private ClientConnection clientConnection;
+    final private String name;
 
     @Override
     public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
@@ -67,20 +67,22 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     }
 
     @Override
-    public void update(UndoTurnSetMessage message) {
-
+    public void update(UndoTurnSetMessage undoTurnSetMessage) {
+        undoTurnSetMessage.setNameOfTheSender(name);
+        notifyListeners(undoTurnSetMessage);
     }
 
     @Override
-    public void update(UndoActionSetMessage message) {
-
+    public void update(UndoActionSetMessage undoActionSetMessage) {
+        undoActionSetMessage.setNameOfTheSender(name);
+        notifyListeners(undoActionSetMessage);
     }
 
     public VirtualView(ClientConnection c, String name) {
         this.clientConnection = c;
         this.name = name;
         c.addListener(this);
-        System.out.println(name + ": virtualView created!");
+        System.out.println(name + ": virtualView created!");    //TODO: logging
     }
 
     @Override
@@ -108,6 +110,13 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage) {
         if (chosenPositionForMoveRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenPositionForMoveRequestMessage);
+        }
+    }
+
+    @Override
+    public void update(ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage) {
+        if (chosenPositionForConstructRequestMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(chosenPositionForConstructRequestMessage);
         }
     }
 
@@ -197,6 +206,13 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     }
 
     @Override
+    public void update(GameEndedMessage gameEndedMessage) {
+        if (gameEndedMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(gameEndedMessage);
+        }
+    }
+
+    @Override
     public void update(TurnEndedMessage turnEndedMessage) {
         if (turnEndedMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(turnEndedMessage);
@@ -207,6 +223,13 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(YouLostMessage youLostMessage) {
         if (youLostMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(youLostMessage);
+        }
+    }
+
+    @Override
+    public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
+        if (youLostAndSomeoneWonMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(youLostAndSomeoneWonMessage);
         }
     }
 
@@ -225,24 +248,9 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     }
 
     @Override
-    public void update(GameEndedMessage gameEndedMessage) {
-
-    }
-
-    @Override
-    public void update(UndoUpdateMessage m) {
-
-    }
-
-    @Override
-    public void update(ChosenPositionForConstructRequestMessage m) {
-
-    }
-
-    @Override
-    public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
-        if (youLostAndSomeoneWonMessage.getRecipients().contains(name)) {
-            clientConnection.asyncSend(youLostAndSomeoneWonMessage);
+    public void update(UndoUpdateMessage undoUpdateMessage) {
+        if (undoUpdateMessage.getRecipients().contains(name)) {
+            clientConnection.asyncSend(undoUpdateMessage);
         }
     }
 }
