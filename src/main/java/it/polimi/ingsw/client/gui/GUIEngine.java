@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.controllers.GameCardsSceneController;
+import it.polimi.ingsw.client.gui.controllers.ChosenCardRequestSceneController;
+import it.polimi.ingsw.client.gui.controllers.GameCardsRequestSceneController;
 import it.polimi.ingsw.client.gui.controllers.MainSceneController;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
@@ -173,7 +174,12 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onChosenCardRequest(ArrayList<CardView> availableCards) {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/chosenCardRequestScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            ((ChosenCardRequestSceneController)currentController).loadCards(availableCards);
+        });
     }
 
     @Override
@@ -194,10 +200,10 @@ public class GUIEngine extends Application implements UserInterface {
     @Override
     public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
-            showScene("/fxml/gameCardsScene.fxml");
+            showScene("/fxml/gameCardsRequestScene.fxml");
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
             stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
-            ((GameCardsSceneController)currentController).loadCards(availableCards);
+            ((GameCardsRequestSceneController)currentController).loadCards(availableCards);
         });
     }
 

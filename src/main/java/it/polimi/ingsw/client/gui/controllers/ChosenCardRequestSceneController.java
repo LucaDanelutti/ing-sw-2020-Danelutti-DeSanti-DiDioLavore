@@ -1,0 +1,73 @@
+package it.polimi.ingsw.client.gui.controllers;
+
+import it.polimi.ingsw.client.gui.GUIController;
+import it.polimi.ingsw.client.gui.GUIEngine;
+import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
+import it.polimi.ingsw.view.modelview.CardView;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+
+import java.util.ArrayList;
+
+//TODO: make HBox grow vertically
+public class ChosenCardRequestSceneController extends GUIController {
+
+
+    @FXML
+    private GridPane mainGridPane;
+    @FXML
+    private HBox cardsHBox;
+    @FXML
+    private Label cardDescriptionLabel;
+
+
+
+    private ArrayList<CardView> availableCards = new ArrayList<>();
+    private int chosenCardId;
+
+    public void initialize() {
+        cardsHBox.spacingProperty().bind(cardsHBox.widthProperty().divide(10));
+    }
+
+    public void loadCards(ArrayList<CardView> availableCards) {
+        this.availableCards.addAll(availableCards);
+        for (CardView card : availableCards) {
+            Image cardImage = new Image("images/cards/card_" + card.getId() + ".png");
+            ImageView cardImageView = new ImageView(cardImage);
+            cardImageView.setPreserveRatio(true);
+            cardImageView.setId(String.valueOf(card.getId()));
+            cardImageView.fitWidthProperty().bind(cardsHBox.widthProperty().divide(availableCards.size()));
+            cardImageView.fitHeightProperty().bind(cardsHBox.heightProperty());
+            cardsHBox.getChildren().add(cardImageView);
+            cardImageView.setOnMouseClicked(e -> {
+                Node source = (Node)e.getSource();
+                int cardId = Integer.parseInt(source.getId());
+                System.out.printf("cardId: %d %n", cardId);
+                updateDescriptionLabel(cardId);
+                chosenCardId = cardId;
+            });
+        }
+    }
+
+    private void updateDescriptionLabel(int cardId) {
+        for (CardView card: availableCards) {
+            if (card.getId() == cardId) {
+                cardDescriptionLabel.setText(card.getDescription());
+            }
+        }
+    }
+
+    public void confirm() {
+        System.out.println("chosenCardId:" + chosenCardId);
+        //TODO: scommentare la riga successiva, è corretta
+//        clientView.update(new ChosenCardSetMessage(chosenCardId));
+
+        ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
+    }
+
+}

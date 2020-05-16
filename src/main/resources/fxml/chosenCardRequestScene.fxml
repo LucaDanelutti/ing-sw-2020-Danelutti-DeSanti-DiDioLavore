@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.ChosenCardRequestSceneController">
+   <GridPane fx:id="mainGridPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="379.0" prefWidth="511.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="77.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="201.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="127.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label text="Pick your card!" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         <HBox fx:id="cardsHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="nicknameRequest" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+         <Button mnemonicParsing="false" onAction="#confirm" text="Pick it!" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+         <Label fx:id="cardDescriptionLabel" text="description" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+      </children>
+   </GridPane>
+</Scene>

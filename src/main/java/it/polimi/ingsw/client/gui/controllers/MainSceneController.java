@@ -97,20 +97,7 @@ public class MainSceneController extends GUIController {
        availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
        availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
        availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
-       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
-       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
-       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
-       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       clientView.getUserInterface().onInGameCardsRequest(availableCards);
+       clientView.getUserInterface().onChosenCardRequest(availableCards);
    }
 
 
