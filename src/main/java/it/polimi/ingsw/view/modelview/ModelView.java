@@ -148,4 +148,15 @@ public class ModelView {
         return null;
     }
 
+    public String getPlayerColor(String playerName) {
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) {
+                if (player.getPawnList() != null && player.getPawnList().size() > 0) {
+                    return player.getPawnList().get(0).getColor();
+                }
+            }
+        }
+        return null;
+    }
+
 }

@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.gui.GUIController;
 import it.polimi.ingsw.client.gui.GUIEngine;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
+import it.polimi.ingsw.utility.messages.sets.ChosenPositionSetMessage;
 import it.polimi.ingsw.utility.messages.sets.SelectedPawnSetMessage;
 import it.polimi.ingsw.view.modelview.*;
 import javafx.beans.binding.Bindings;
@@ -20,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.scene.image.ImageView;
@@ -37,6 +40,8 @@ public class MainSceneController extends GUIController {
     /* ===== FXML elements ===== */
     @FXML
     private Label phaseLabel;
+    @FXML
+    private HBox blockTypesHBox;
     @FXML
     private GridPane mainGridPane;
 
@@ -70,6 +75,8 @@ public class MainSceneController extends GUIController {
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
     public void initialize() {
+       phaseLabel.setText("");
+
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(6));
        clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(2.5));
@@ -87,6 +94,11 @@ public class MainSceneController extends GUIController {
        //TODO: improve padding management
        boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
        System.out.println(boardGridPane.paddingProperty());
+
+       //binds HBox (used for BlockType selection) padding and internal spacing
+       blockTypesHBox.spacingProperty().bind(blockTypesHBox.widthProperty().divide(10));
+       //TODO: add padding to the blockType selection HBox
+//       blockTypesHBox.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(blockTypesHBox.widthProperty().divide(10).doubleValue()), blockTypesHBox.widthProperty().divide(10))));
    }
 
 
@@ -101,11 +113,12 @@ public class MainSceneController extends GUIController {
 //       clientView.getUserInterface().refreshView();
    }
 
+   //TODO: remove this method and the relative button. It is just for test
    public void updateBoardTest() {
-       ArrayList<Position> availablePositions = new ArrayList<>();
-       availablePositions.add(new Position(4, 1));
-       availablePositions.add(new Position(2, 1));
-       clientView.getUserInterface().onSelectPawnRequest(availablePositions);
+       ArrayList<BlockType> availableBlockTypes = new ArrayList<>();
+       availableBlockTypes.add(BlockType.LEVEL1);
+//       availableBlockTypes.add(BlockType.DOME);
+       clientView.getUserInterface().onChosenBlockTypeRequest(availableBlockTypes);
    }
 
 
@@ -179,11 +192,14 @@ public class MainSceneController extends GUIController {
    }
 
    private void loadEnlightenedImageViews() {
+       ModelView modelView = clientView.getModelView();
+       String playerColor = modelView.getPlayerColor(clientView.getName());
        //loads the panes that will be used to enlighten the board cells
        for (int i = 0; i < BOARD_SIZE; i++) {
            for (int j = 0; j < BOARD_SIZE; j++) {
-               Image enlightenedImage = new Image("images/board/block_lv_4.png");
+               Image enlightenedImage = new Image("images/board/enlightened_cell_" + playerColor +".png");
                ImageView enlightenedImageView = new ImageView(enlightenedImage);
+               enlightenedImageView.setOpacity(0.5);
                enlightenedImageViewsArray[i][j] = enlightenedImageView;
                enlightenedImageView.setPreserveRatio(true);
                enlightenedImageView.setVisible(false);
@@ -212,6 +228,7 @@ public class MainSceneController extends GUIController {
    }
 
    private void chosenPawn(Position chosenPawnPosition) {
+       phaseLabel.setText("");
        System.out.println("chosenPawnPosition:" + chosenPawnPosition.getX() + " " + chosenPawnPosition.getY());
        //TODO: scommentare la riga successiva, è corretta
 
@@ -228,5 +245,73 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    public void chooseMovePosition(ArrayList<Position> availablePositions) {
+       phaseLabel.setText("Choose a position to Move!");
+       enablePositionSelection(availablePositions);
+    }
 
+    public void chooseConstructPosition(ArrayList<Position> availablePositions) {
+       phaseLabel.setText("Choose a position to Build!");
+       enablePositionSelection(availablePositions);
+    }
+
+    public void enablePositionSelection(ArrayList<Position> availablePositions) {
+        for (Position position : availablePositions) {
+            //makes the ImageViews visible
+            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
+            //adds an action recognizer to the ImageView
+            enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
+                Node source = (Node)e.getSource();
+                int colIndex = GridPane.getColumnIndex(source);
+                int rowIndex = GridPane.getRowIndex(source);
+                //cols -> x, rows -> y
+                setPosition(new Position(rowIndex, colIndex));
+            });
+        }
+    }
+
+    private void setPosition(Position chosenPosition) {
+        phaseLabel.setText("");
+        System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
+        //TODO: scommentare la riga successiva, è corretta
+//        clientView.update(new ChosenPositionSetMessage(chosenPosition));
+        clearEnlightenedImageViews();
+    }
+
+    public void chooseBlockType(ArrayList<BlockType> availableBlockTypes) {
+        phaseLabel.setText("Choose a Block Type!");
+
+        for (BlockType blockType : availableBlockTypes) {
+            Image blockTypeImage = new Image("images/board/block_lv_" + blockType.getLevel() + ".png");
+            ImageView blockTypeImageView = new ImageView(blockTypeImage);
+            blockTypeImageView.setPreserveRatio(true);
+            blockTypeImageView.setId(String.valueOf(blockType.getLevel()));
+            blockTypeImageView.fitWidthProperty().bind(blockTypesHBox.widthProperty().divide(availableBlockTypes.size()));
+            blockTypeImageView.fitHeightProperty().bind(blockTypesHBox.heightProperty());
+            blockTypesHBox.getChildren().add(blockTypeImageView);
+            blockTypeImageView.setOnMouseClicked(e -> {
+                Node source = (Node)e.getSource();
+                int blockTypeLevel = Integer.parseInt(source.getId());
+                System.out.printf("blockType: %d %n", blockTypeLevel);
+                setBlockType(blockTypeLevel, availableBlockTypes);
+            });
+        }
+
+        blockTypesHBox.setVisible(true);
+    }
+
+    private void setBlockType(int chosenBlockTypeLevel, ArrayList<BlockType> availableBlockTypes) {
+       phaseLabel.setText("");
+       BlockType chosenBlockType = BlockType.LEVEL1;
+       for(BlockType blockType : availableBlockTypes) {
+           if (blockType.getLevel() == chosenBlockTypeLevel) chosenBlockType = blockType;
+       }
+
+       System.out.println("chosenBlockType.getLevel(): " + chosenBlockType.getLevel());
+       //TODO: scommentare la riga successiva, è corretta
+//       clientView.update(new ChosenBlockTypeSetMessage(chosenBlockType));
+
+        blockTypesHBox.getChildren().clear();
+        blockTypesHBox.setVisible(false);
+    }
 }

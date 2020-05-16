@@ -175,7 +175,9 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
-
+        Platform.runLater(() -> {
+            ((MainSceneController)currentController).chooseBlockType(availableBlockTypes);
+        });
     }
 
     @Override
@@ -190,12 +192,16 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
-
+        Platform.runLater(() -> {
+            ((MainSceneController)currentController).chooseMovePosition(availablePositions);
+        });
     }
 
     @Override
     public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
-
+        Platform.runLater(() -> {
+            ((MainSceneController)currentController).chooseConstructPosition(availablePositions);
+        });
     }
 
     @Override

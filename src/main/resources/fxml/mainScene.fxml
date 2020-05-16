@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <Scene stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
@@ -127,7 +128,19 @@
             </children>
          </AnchorPane>
          <Button mnemonicParsing="false" onAction="#updateBoardTest" text="Update" />
-         <Label fx:id="phaseLabel" text="phase" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         <GridPane GridPane.columnIndex="1">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints maxHeight="59.70424270629883" minHeight="10.0" prefHeight="38.28181838989258" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="87.71818161010742" minHeight="10.0" prefHeight="87.71818161010742" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+               <Label fx:id="phaseLabel" text="phase" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               <HBox fx:id="blockTypesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="nicknameRequest" stylesheets="@style.css" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+            </children>
+         </GridPane>
       </children>
    </GridPane>
 </Scene>
