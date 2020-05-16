@@ -87,7 +87,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage) {
-        userInterface.onChosenPositionRequest(chosenPositionForMoveRequestMessage.getAvailablePositions());
+        userInterface.onChosenPositionForMoveRequest(chosenPositionForMoveRequestMessage.getAvailablePositions());
     }
 
     @Override

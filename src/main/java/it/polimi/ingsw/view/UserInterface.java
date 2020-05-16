@@ -47,7 +47,8 @@ public interface UserInterface {
 
     void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes);
     void onChosenCardRequest(ArrayList<CardView> availableCards);
-    void onChosenPositionRequest(ArrayList<Position> availablePositions);
+    void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions);
+    void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions);
     void onFirstPlayerRequest();
     void onInGameCardsRequest(ArrayList<CardView> availableCards);
     void onInitialPawnPositionRequest(ArrayList<Position> availablePositions);

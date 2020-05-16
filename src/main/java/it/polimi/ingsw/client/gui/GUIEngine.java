@@ -177,7 +177,12 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
     @Override
-    public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
+    public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
+
+    }
+
+    @Override
+    public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
 
     }
 

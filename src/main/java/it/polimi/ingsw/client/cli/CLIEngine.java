@@ -180,7 +180,7 @@ public class CLIEngine implements UserInterface {
         }while (!isTheOptionValid(options,input));
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
-    @Override public void onChosenPositionRequest(ArrayList<Position> availablePositions) {
+    @Override public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         printCompleteGameStatus();
@@ -211,6 +211,12 @@ public class CLIEngine implements UserInterface {
         }while (!isTheOptionValid(options,input));
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
+
+    @Override
+    public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
+
+    }
+
     @Override public void onFirstPlayerRequest() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
