@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ChosenPositionForConstructRequestMessage extends RequestAndUpdateMessage implements Serializable {
+    private static final long serialVersionUID = -4316648528033190504L;
 
     public ArrayList<Position> getAvailablePositions() {
         return availablePositions;

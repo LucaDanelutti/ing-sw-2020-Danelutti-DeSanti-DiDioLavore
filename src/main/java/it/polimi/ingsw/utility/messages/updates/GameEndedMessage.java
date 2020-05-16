@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameEndedMessage extends RequestAndUpdateMessage implements Serializable {
+    private static final long serialVersionUID = -5296998152404109286L;
 
     String reason;
 

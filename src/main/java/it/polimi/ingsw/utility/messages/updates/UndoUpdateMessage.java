@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class UndoUpdateMessage extends RequestAndUpdateMessage implements Serializable {
+    private static final long serialVersionUID = -562998159831645238L;
 
     ModelView restoredModelView;
 
