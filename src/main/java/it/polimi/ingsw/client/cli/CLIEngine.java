@@ -10,10 +10,11 @@ import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class CLIEngine implements UserInterface {
     private ClientView clientView;
@@ -58,7 +59,7 @@ public class CLIEngine implements UserInterface {
         arrayList.add(new CardView(4,"LALA","fsdfggfdgfds  sgfd sfdg "));
         cliEngine.onInGameCardsRequest(arrayList);*/
 
-        cliEngine.undoOrConfirmHandler(9);
+        System.out.println(cliEngine.undoOrConfirmHandler(9));
     }
 
 
@@ -613,22 +614,77 @@ public class CLIEngine implements UserInterface {
         System.out.println("==============================================================");
     }
 
-    public int undoOrConfirmHandler(int timeToWait){
-        Scanner s= new Scanner(System.in);
-        int input = 0;
-        Thread timer = new Thread(new TimerPrinter(timeToWait));
-        timer.start();
-        do{
-            if(timer.isAlive()) {
-                input = s.nextInt();
+    public int undoOrConfirmHandler(int timeToWait) {
+        int input;
 
-                if (input == 0 || input == 1 || input == 2) {
-                    timer.interrupt();
+        Scanner s = new Scanner(System.in);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+
+        ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
+        Future<String> future = executorService.submit(inputHandler);
+        String in = "0";
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            private int count = 0;
+            private void clearConsole(){
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+            @Override
+            public void run() {
+                if (count < timeToWait) {
+                    clearConsole();
+                    System.out.println("Press: 0 -> CONFIRM  |  1 -> UNDO ACTION  |  2 -> UNDO TURN");
+                    System.out.println("If no key is pressed, the action will be CONFIRMED  |  # " + (timeToWait-count) + "s remaining #");
+                    System.out.print("Choice: ");
+                    count++;
+                } else {
+                    timer.cancel();
                 }
             }
-        }while (!(input == 0 || input == 1 || input == 2) && timer.isAlive());
+        }, 0,  1000);
 
+        try {
+            in = future.get(timeToWait, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            timer.cancel();
+        }
+
+        timer.cancel();
+        input = Integer.parseInt(in);
+        executorService.shutdown();
         return input;
+    }
+
+    private class ConsoleInputReadTask implements Callable<String> {
+        private boolean enabled = true;
+
+        public void disable() {
+            enabled = false;
+        }
+
+        public String call() throws IOException {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(System.in));
+            String input;
+            do {
+                //System.out.println("Please type something: ");
+                try {
+                    // wait until we have data to complete a readLine()
+                    while (!br.ready()) {
+                        Thread.sleep(200);
+                    }
+                    input = br.readLine();
+                } catch (InterruptedException e) {
+                    return "0";
+                }
+            } while (!(input.equals("0") || input.equals("1") || input.equals("2")));
+            return input;
+        }
     }
 
     public ClientView getClientView() {
@@ -638,38 +694,5 @@ public class CLIEngine implements UserInterface {
         this.clientView = clientView;
     }
 
-}
-
-class TimerPrinter implements Runnable{
-    int timerLength;
-
-    TimerPrinter(int timerLength){
-        this.timerLength=timerLength;
-    }
-
-    private void clearConsole(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    @Override
-    public void run() {
-        long startTime=System.currentTimeMillis(),elapsedTime,elapsedSeconds;
-        int seconds=0;
-        int lastValue=-1;
-
-        while(!Thread.currentThread().isInterrupted() && seconds<timerLength){
-            elapsedTime=System.currentTimeMillis()-startTime;
-            seconds= (int)(elapsedTime/1000);
-
-            if(lastValue!=seconds) {
-                clearConsole();
-                System.out.println("Press: 0 -> CONFIRM  |  1 -> UNDO ACTION  |  2 -> UNDO TURN");
-                System.out.println("If no key is pressed, the action will be CONFIRMED  |  # " + (timerLength - seconds) + "s remaining #");
-                System.out.print("Choice: ");
-                lastValue=seconds;
-            }
-        }
-    }
 }
 
