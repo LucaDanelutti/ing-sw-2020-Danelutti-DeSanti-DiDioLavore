@@ -27,7 +27,7 @@ public class WaitingSceneController extends GUIController {
     public void testScene() {
         //testing pop-up
         Platform.runLater(() -> {
-            clientView.getUserInterface().onNicknameRequest();
+            ((GUIEngine)clientView.getUserInterface()).showMainScene();
         });
     }
 }
