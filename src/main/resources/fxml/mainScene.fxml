@@ -126,8 +126,8 @@
                </GridPane>
             </children>
          </AnchorPane>
-         <Button mnemonicParsing="false" onAction="#buildMainScene" text="Button" />
-         <Button mnemonicParsing="false" onAction="#updateBoardTest" text="Update" GridPane.columnIndex="1" />
+         <Button mnemonicParsing="false" onAction="#updateBoardTest" text="Update" />
+         <Label fx:id="phaseLabel" text="phase" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       </children>
    </GridPane>
 </Scene>

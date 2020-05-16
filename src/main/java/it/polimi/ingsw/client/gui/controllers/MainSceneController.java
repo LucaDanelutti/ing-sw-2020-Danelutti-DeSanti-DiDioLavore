@@ -2,7 +2,9 @@ package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.GUIController;
 import it.polimi.ingsw.client.gui.GUIEngine;
+import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.utility.messages.sets.SelectedPawnSetMessage;
 import it.polimi.ingsw.view.modelview.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -12,6 +14,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.scene.image.ImageView;
 
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -28,8 +32,11 @@ public class MainSceneController extends GUIController {
 
     private static final double BOARD_PADDING_RATIO = 0.74;
     private static final double BOARD_PADDING_PERCENTAGE = 0.13;
+    private static final int BOARD_SIZE = 5;
 
     /* ===== FXML elements ===== */
+    @FXML
+    private Label phaseLabel;
     @FXML
     private GridPane mainGridPane;
 
@@ -55,6 +62,10 @@ public class MainSceneController extends GUIController {
 
     /* ===== FXML Properties ===== */
     private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
+    private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
+
+    /* ===== Variables ===== */
+    private ArrayList<Position> clickableCells = new ArrayList<>();
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
@@ -80,24 +91,21 @@ public class MainSceneController extends GUIController {
 
 
    public void buildMainScene() {
-       stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
-       stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
-
        updatePlayersName();
        updatePlayersCard();
-       updateBoard(); //TODO: has to be remove from here
+       updateBoard();
+       loadEnlightenedImageViews();
+
+       //TODO: remove the following 3 lines, just testing
+//       ((GUIEngine)clientView.getUserInterface()).updateModelView();
+//       clientView.getUserInterface().refreshView();
    }
 
    public void updateBoardTest() {
-       ((GUIEngine)clientView.getUserInterface()).updateModelView();
-       clientView.getUserInterface().refreshView();
-       updatePlayersName();
-       //TODO: RANDOM TEST HERE, IT HAS TO BE REMOVED ASAP
-       ArrayList<CardView> availableCards = new ArrayList<>();
-       availableCards.add(new CardView(1, "Apollo", "Apollo_description"));
-       availableCards.add(new CardView(4, "Atlas", "Atlas_description"));
-       availableCards.add(new CardView(8, "Minotaur", "Minotaur_description"));
-       clientView.getUserInterface().onChosenCardRequest(availableCards);
+       ArrayList<Position> availablePositions = new ArrayList<>();
+       availablePositions.add(new Position(4, 1));
+       availablePositions.add(new Position(2, 1));
+       clientView.getUserInterface().onSelectPawnRequest(availablePositions);
    }
 
 
@@ -115,9 +123,9 @@ public class MainSceneController extends GUIController {
                    Image blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
                    ImageView blockImageView = new ImageView(blockImage);
                    blockImageView.setPreserveRatio(true);
-                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(5).multiply(BOARD_PADDING_RATIO));
-                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(5).multiply(BOARD_PADDING_RATIO));
-                   boardGridPane.add(blockImageView, i, j);
+                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+                   boardGridPane.add(blockImageView, j, i);
                }
            }
        }
@@ -131,9 +139,9 @@ public class MainSceneController extends GUIController {
            Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
            ImageView pawnImageView = new ImageView(pawnImage);
            pawnImageView.setPreserveRatio(true);
-           pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(5).multiply(BOARD_PADDING_RATIO));
-           pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(5).multiply(BOARD_PADDING_RATIO));
-           boardGridPane.add(pawnImageView, pawn.getPawnPosition().getX(), pawn.getPawnPosition().getY());
+           pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+           pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+           boardGridPane.add(pawnImageView, pawn.getPawnPosition().getY(), pawn.getPawnPosition().getX());
        }
 
    }
@@ -169,6 +177,56 @@ public class MainSceneController extends GUIController {
            }
        }
    }
+
+   private void loadEnlightenedImageViews() {
+       //loads the panes that will be used to enlighten the board cells
+       for (int i = 0; i < BOARD_SIZE; i++) {
+           for (int j = 0; j < BOARD_SIZE; j++) {
+               Image enlightenedImage = new Image("images/board/block_lv_4.png");
+               ImageView enlightenedImageView = new ImageView(enlightenedImage);
+               enlightenedImageViewsArray[i][j] = enlightenedImageView;
+               enlightenedImageView.setPreserveRatio(true);
+               enlightenedImageView.setVisible(false);
+               enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               enlightenedImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               boardGridPane.add(enlightenedImageView, j, i);
+           }
+       }
+   }
+
+
+   public void enablePawnSelection(ArrayList<Position> availablePositions) {
+       phaseLabel.setText("Select one of your pawns!");
+       for (Position position : availablePositions) {
+           //makes the ImageViews visible
+           enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
+           //adds an action recognizer to the ImageView
+           enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
+               Node source = (Node)e.getSource();
+               int colIndex = GridPane.getColumnIndex(source);
+               int rowIndex = GridPane.getRowIndex(source);
+               //cols -> x, rows -> y
+               chosenPawn(new Position(rowIndex, colIndex));
+           });
+       }
+   }
+
+   private void chosenPawn(Position chosenPawnPosition) {
+       System.out.println("chosenPawnPosition:" + chosenPawnPosition.getX() + " " + chosenPawnPosition.getY());
+       //TODO: scommentare la riga successiva, è corretta
+
+//        clientView.update(new SelectedPawnSetMessage(chosenPawnPosition));
+       clearEnlightenedImageViews();
+   }
+
+    private void clearEnlightenedImageViews() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                enlightenedImageViewsArray[i][j].setVisible(false);
+                enlightenedImageViewsArray[i][j].setOnMouseClicked(null);
+            }
+        }
+    }
 
 
 }
