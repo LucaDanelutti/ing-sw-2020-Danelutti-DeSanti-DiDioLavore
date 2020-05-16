@@ -73,12 +73,16 @@ public class Controller implements SetsListener {
     }
 
     @Override
-    public void update(UndoTurnSetMessage message) {
-
+    public void update(UndoTurnSetMessage undoTurnSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(undoTurnSetMessage.getNameOfTheSender())) {
+            gameLogic.undoTurn();
+        }
     }
 
     @Override
-    public void update(UndoActionSetMessage message) {
-
+    public void update(UndoActionSetMessage undoActionSetMessage) {
+        if (gameLogic.getCurrentPlayerName().equals(undoActionSetMessage.getNameOfTheSender())) {
+            gameLogic.undoCurrentAction();
+        }
     }
 }
