@@ -24,26 +24,17 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         this.modelView = new ModelView();
         this.userInterface = null;
         this.serverConnection = null;
-    };
-
-    //TODO: DEPRECATED
-    public ClientView(ServerConnection c) {
-        this.serverConnection = c;
-        c.addListener(this);
-        this.userInterface = new CLIEngine(this);
-        this.modelView = new ModelView();
-        //System.out.println("ClientView created!"); //TODO: logging
     }
 
     public void startServerConnection(String hostname, int port) {
+        this.modelView = new ModelView();
         Client client = new Client(hostname, port);
+        serverConnection = client;
         try{
-            client.run();
+            client.run(this);
         }catch (IOException e){
             System.err.println(e.getMessage()); //TODO: logging
         }
-        serverConnection = client;
-        serverConnection.addListener(this);
     }
 
     public UserInterface getUserInterface() {

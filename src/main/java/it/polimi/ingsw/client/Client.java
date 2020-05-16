@@ -107,7 +107,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         }
     }
 
-    public void run() throws IOException {
+    public void run(ClientView clientView) throws IOException {
         socket = new Socket(ip, port);
         System.out.println("Connection established"); //TODO: logging
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
@@ -126,8 +126,8 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
                 }
             }, 1000, timerFrequency * 1000);
 
+            addListener(clientView);
             Thread t0 = asyncReadFromSocket(socketIn);
-            ClientView clientView = new ClientView(this);
             t0.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
