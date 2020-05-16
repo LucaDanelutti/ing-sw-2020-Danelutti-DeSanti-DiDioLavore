@@ -56,7 +56,4 @@ public interface UserInterface {
     void onNumberOfPlayersRequest();
     void onSelectPawnRequest(ArrayList<Position> availablePositions);
 
-    void onUndoAction();
-    void onUndoTurn();
-
 }

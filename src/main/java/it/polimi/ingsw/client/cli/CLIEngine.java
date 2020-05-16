@@ -430,13 +430,13 @@ public class CLIEngine implements UserInterface {
         }while (!isTheOptionValid(options,input));
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
     }
-    @Override public void onUndoAction() {
+
+    private void onUndoAction() {
         clientView.update(new UndoActionSetMessage());
     }
-    @Override public void onUndoTurn() {
+    private void onUndoTurn() {
         clientView.update(new UndoTurnSetMessage());
     }
-
 
     private boolean isThereAnyPawnOnTheBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();

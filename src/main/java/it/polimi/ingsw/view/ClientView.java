@@ -91,6 +91,11 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
+    public void update(ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage) {
+        userInterface.onChosenPositionForConstructRequest(chosenPositionForConstructRequestMessage.getAvailablePositions());
+    }
+
+    @Override
     public void update(FirstPlayerRequestMessage firstPlayerRequestMessage) {
         userInterface.onFirstPlayerRequest();
     }
@@ -154,7 +159,6 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         userInterface.refreshView();
     }
 
-
     @Override
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
         modelView.onSelectPawnUpdate(selectedPawnUpdateMessage.getWorkerId());
@@ -196,12 +200,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(UndoUpdateMessage undoUpdateMessage) {
-        //TODO
-    }
-
-    @Override
-    public void update(ChosenPositionForConstructRequestMessage m) {
-
+        userInterface.refreshView();
     }
 
     @Override
@@ -256,12 +255,12 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(UndoTurnSetMessage message) {
-
+    public void update(UndoTurnSetMessage undoTurnSetMessage) {
+        serverConnection.asyncSend(undoTurnSetMessage);
     }
 
     @Override
-    public void update(UndoActionSetMessage message) {
-
+    public void update(UndoActionSetMessage undoActionSetMessage) {
+        serverConnection.asyncSend(undoActionSetMessage);
     }
 }
