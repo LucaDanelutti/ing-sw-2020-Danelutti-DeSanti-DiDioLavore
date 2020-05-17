@@ -333,7 +333,10 @@ public class CLIEngine implements UserInterface {
         System.out.println("Select the positions for your pawns from the ones below:");
 
         for(int i=0; i<availablePositions.size(); i++){
-            System.out.print(i+") x:"+availablePositions.get(i).getX()+" y:"+availablePositions.get(i).getY() + "  ");
+            System.out.print(i+") x:"+availablePositions.get(i).getX()+" y:"+availablePositions.get(i).getY() + " | ");
+            if(i%5==0 && i!=0){
+                System.out.println();
+            }
         }
         printSingleScoreRow();
         Position one;
