@@ -707,8 +707,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public Boolean setSelectedPawn(Position selectedPawnPosition){
         if(isThisSelectedPawnValid(selectedPawnPosition)) {
             //load the first action to be executed
-            game.setCurrentAction();
             beginningOfCurrentPlayerTurn=createGameHardCopy(game);
+            game.setCurrentAction();
 
             //aggiorna i selectedPawn e i pawn dentro la currentAction
             Position unselected = null;
