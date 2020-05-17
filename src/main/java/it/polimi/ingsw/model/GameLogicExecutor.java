@@ -46,7 +46,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public void processAction(MoveAction moveAction) {
         if (moveAction.getChosenPosition() == null) {
             beginningOfCurrentAction=createGameHardCopy(game);
-            notifyListeners(generateChosenPositionRequest());
+            notifyListeners(generateChosenPositionForMoveRequest());
         } else {
             executeAction(moveAction);
         }
@@ -55,7 +55,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public void processAction(ConstructAction constructAction){
         if(constructAction.getChosenPosition()==null){
             beginningOfCurrentAction=createGameHardCopy(game);
-            notifyListeners(generateChosenPositionRequest());
+            notifyListeners(generateChosenPositionForConstructRequest());
         }
         else if(constructAction.getSelectedBlockType()==null){
             notifyListeners(generateChosenBlockTypeRequest(constructAction));
@@ -512,7 +512,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
                                                 //FUNCTIONS THAT GENERATE MESSAGES
     /* ------------------------------------------------------------------------------------------------------------------------------------ */
-    private ChosenPositionForMoveRequestMessage generateChosenPositionRequest(){
+    private ChosenPositionForMoveRequestMessage generateChosenPositionForMoveRequest(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         ArrayList<Position> availablePositions = game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
@@ -520,6 +520,15 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             availablePositions.add(null);
         }
         return new ChosenPositionForMoveRequestMessage(recipients, availablePositions);
+    }
+    private ChosenPositionForConstructRequestMessage generateChosenPositionForConstructRequest(){
+        ArrayList<String> recipients = new ArrayList<>();
+        recipients.add(game.getCurrentPlayer().getName());
+        ArrayList<Position> availablePositions = game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+        if(game.getCurrentAction().getIsOptional()){
+            availablePositions.add(null);
+        }
+        return new ChosenPositionForConstructRequestMessage(recipients, availablePositions);
     }
     private ChosenBlockTypeRequestMessage generateChosenBlockTypeRequest(ConstructAction constructAction){
         ArrayList<String> recipients=new ArrayList<>();
@@ -1030,7 +1039,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         notifyListeners(generateUndoUpdate(this.game));
 
         //let's ask again the currentPlayer for the ChosenPosition
-        notifyListeners(generateChosenPositionRequest());
+        notifyListeners(generateChosenPositionForConstructRequest());
 
         return true;
     }
