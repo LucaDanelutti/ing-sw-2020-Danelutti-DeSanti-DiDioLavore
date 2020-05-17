@@ -17,6 +17,10 @@ public class UndoUpdateMessage extends RequestAndUpdateMessage implements Serial
         this.restoredModelView=restoredModelView;
     }
 
+    public ModelView getRestoredModelView() {
+        return restoredModelView;
+    }
+
     public void accept(RequestAndUpdateObservable visitor) {
         visitor.notifyListeners(this);
     }
