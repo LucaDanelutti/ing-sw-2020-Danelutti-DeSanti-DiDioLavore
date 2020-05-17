@@ -133,14 +133,14 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                 Object inputObject = in.readObject();
                 handleMessage(inputObject);
             }
-        } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error! " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.err.println("ClassNotFoundException!");
+            System.err.println("ClassNotFoundException: the server received an unknown sequence of bytes!");
         } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException!");
+            System.err.println("IllegalArgumentException: the server received an unknown message!");
         } catch (Exception e) {
-            System.err.println("Connection closed due to a server Exception!");
+            System.err.println("Connection closed due to a general server Exception!");
         } finally {
             close();
         }
