@@ -4,9 +4,11 @@ import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ModelView {
+public class ModelView implements Serializable {
+    private static final long serialVersionUID = 3254276399680710323L;
     private static final int MATRIX_SIZE = 5;
 
     private ArrayList<PlayerView> playerList;

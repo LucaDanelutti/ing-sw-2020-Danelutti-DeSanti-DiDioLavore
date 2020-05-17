@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.board;
 
-
-import java.awt.font.GlyphVector;
-
 /**
  * This enum is used to represent the level of a block, each block will have its own "type" from one of the following:
  * TERRAIN :- 0, LEVEL1 :- 1, LEVEL2 :- 2, LEVEL3 :- 3 or DOME :- 4

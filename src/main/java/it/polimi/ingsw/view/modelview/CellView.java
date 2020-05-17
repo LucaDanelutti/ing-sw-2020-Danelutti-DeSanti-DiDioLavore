@@ -2,9 +2,11 @@ package it.polimi.ingsw.view.modelview;
 
 import it.polimi.ingsw.model.board.BlockType;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class CellView {
+public class CellView implements Serializable {
+    private static final long serialVersionUID = 7375597085576141328L;
     private Stack<BlockType> blockStack;
 
     public CellView(){
