@@ -114,7 +114,6 @@ public class CLIEngine implements UserInterface {
         printCompleteGameStatus();
     }
 
-
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -432,7 +431,6 @@ public class CLIEngine implements UserInterface {
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
     }
 
-
     private boolean isThereAnyPawnOnTheBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();
         for(int i=0; i<matrix.length; i++){
@@ -469,7 +467,6 @@ public class CLIEngine implements UserInterface {
         Set<Integer> a = new HashSet<>(integers);
         return a.size()<integers.size();
     }
-
 
     private void printSingleUnderscoreRow(){
         System.out.println("_________________________________________");

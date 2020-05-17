@@ -1039,7 +1039,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         notifyListeners(generateUndoUpdate(this.game));
 
         //let's ask again the currentPlayer for the ChosenPosition
-        notifyListeners(generateChosenPositionForConstructRequest());
+        game.getCurrentAction().acceptForProcess();
 
         return true;
     }
