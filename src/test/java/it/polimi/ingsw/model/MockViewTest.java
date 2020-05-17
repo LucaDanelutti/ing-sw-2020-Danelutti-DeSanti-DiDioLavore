@@ -147,7 +147,7 @@ class MockViewTest {
 
     }
 
-    @Test  void receiveGameStartedAndInGameCardsRequest(){
+    void receiveGameStartedAndInGameCardsRequest(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -177,7 +177,7 @@ class MockViewTest {
         }
     }
 
-    @Test void everyOneReceiveChosenCardRequest(){
+    void everyOneReceiveChosenCardRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
         gameLogicExecutor.addListener(mockViews.get(1));
@@ -270,7 +270,7 @@ class MockViewTest {
         }
     }
 
-    @Test void ReceiveInitialPawnsPositionsRequest(){
+    void ReceiveInitialPawnsPositionsRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
         gameLogicExecutor.addListener(mockViews.get(1));
@@ -366,7 +366,7 @@ class MockViewTest {
         //simpleBoardPrint();
     }
 
-    @Test void CompleteTurnOfFirstPlayer(){
+    void CompleteTurnOfFirstPlayer(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
