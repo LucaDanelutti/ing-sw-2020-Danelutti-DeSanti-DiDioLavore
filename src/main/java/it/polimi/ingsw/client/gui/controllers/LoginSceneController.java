@@ -28,6 +28,10 @@ public class LoginSceneController extends GUIController {
         portTextField.textProperty().bindBidirectional(port);
     }
 
+    /**
+     * It is activated when the player clicks on the connect button.
+     * It calls a method within ClientView which sets up the connection.
+     */
     public void connect() {
         System.out.println("clicked connect");
         System.out.println(serverHostname.getValue());

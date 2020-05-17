@@ -42,6 +42,10 @@ public class GameCardsRequestSceneController extends GUIController {
     public void initialize() {
     }
 
+    /**
+     * It loads the ImageViews of the CardViews contained within availableCards.
+     * @param availableCards is the list of CardViews that have to be rendered.
+     */
     public void loadCards(ArrayList<CardView> availableCards) {
         //sets the expectedNumberOfCards
         ModelView modelView = clientView.getModelView();
@@ -58,6 +62,12 @@ public class GameCardsRequestSceneController extends GUIController {
         }
     }
 
+    /**
+     * It adds a card ImageView to the cardsGridPane
+     * @param i is the y coordinate in which the card ImageView has to be rendered
+     * @param j is the x coordinate in which the card ImageView has to be rendered
+     * @param cardId is the id of the CardView that is rendered
+     */
     private void addImageView(int i, int j, int cardId) {
         Image cardImage = new Image("images/cards/card_" + cardId + ".png");
         ImageView cardImageView = new ImageView(cardImage);
@@ -73,6 +83,11 @@ public class GameCardsRequestSceneController extends GUIController {
         cardsGridPane.add(cardImageView, j, i);
     }
 
+    /**
+     * It updates the details shown in the bottom part of the screen (bigImage and the card description)
+     * with the ones of the card currently selected.
+     * @param cardId is the id of the card currently selected.
+     */
     private void showInsight(int cardId) {
         //updates bigCardImageView image
         currentCardId = cardId;
@@ -87,14 +102,26 @@ public class GameCardsRequestSceneController extends GUIController {
         }
     }
 
+    /**
+     * It is activated when the user clicks on the "pick it" button.
+     * It adds the card to the list of the selected card.
+     */
     public void pickCard() {
         cardsSelectedList.add(currentCardId);
     }
 
+    /**
+     * It is activated when the user clicks on the "unpick it" button.
+     * It removes the card from the list of the selected cards.
+     */
     public void unpickCard() {
         cardsSelectedList.remove((Object)currentCardId);
     }
 
+    /**
+     * It is activated when the user clicks on the confirm button.
+     * It forwards the list of selected cards to the ClientView.
+     */
     public void confirm() {
         if (cardsSelectedList.size() == expectedNumberOfCards) {
             //TODO: scommentare la riga successiva, è corretta

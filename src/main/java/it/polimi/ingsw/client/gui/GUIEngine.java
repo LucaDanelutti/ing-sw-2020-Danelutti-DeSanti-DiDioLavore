@@ -29,7 +29,6 @@ public class GUIEngine extends Application implements UserInterface {
     private GUIController currentController;
     private static final String SANTORINI_STAGE_TITLE = "Santorini";
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
@@ -93,6 +92,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void quickInitialize(String hostname, int port) {
     }
 
+    /**
+     * Loads a scene and its relative controller from an fxml file
+     * @param fxmlResource is the path of the fxml file that will be loaded
+     */
     public void showScene(String fxmlResource) {
         if (fxmlResource == null) {
             return;
@@ -161,6 +164,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the main scene controller and fxml scene
+     */
     public void showMainScene() {
         Platform.runLater(() -> {
             showScene("/fxml/mainScene.fxml");
@@ -170,6 +176,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the waiting scene controller and fxml scene
+     */
     public void showWaitingScene() {
         Platform.runLater(() -> {
             showScene("/fxml/waitingScene.fxml");

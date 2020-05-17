@@ -26,6 +26,9 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
 
     }
 
+    /**
+     * It is activated when the button "2" is clicked and temporarily saves the player choice
+     */
     public void choose2Players() {
         button2Players.setStyle("-fx-background-color: #99ccff; ");
         button3Players.setStyle("-fx-background-color: #ffffff; ");
@@ -33,12 +36,19 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
 
     }
 
+    /**
+     * It is activated when the button "3" is clicked and temporarily saves the player choice
+     */
     public void choose3Players() {
         button3Players.setStyle("-fx-background-color: #99ccff; ");
         button2Players.setStyle("-fx-background-color: #ffffff; ");
         selectedNumberOfPlayers = 3;
     }
 
+    /**
+     * It is activated when the player clicks on the confirm button.
+     * It forwards the selected number of players to the ClientView
+     */
     public void confirm() {
         System.out.println("selectedNumberOfPlayers:" + selectedNumberOfPlayers);
 //        TODO: togliere commento, chiama la Set correttamente

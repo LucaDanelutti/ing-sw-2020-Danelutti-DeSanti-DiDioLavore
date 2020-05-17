@@ -25,10 +25,14 @@ public class NicknameRequestSceneController extends GUIController {
         nicknameTextField.textProperty().bindBidirectional(nickname);
     }
 
+    /**
+     * It is activated when the player clicks on the confirm button.
+     * It forwards the selected nickname to the ClientView
+     */
     public void confirm() {
         System.out.println("nickname:" + nickname.getValue());
 //        clientView.update(new NicknameSetMessage(nickname.getValue())); //TODO: togliere commento, è il Set corretto
-
+        //TODO: capire se deve anche settarlo nella ClientView
         //loads the WaitingScene
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
     }

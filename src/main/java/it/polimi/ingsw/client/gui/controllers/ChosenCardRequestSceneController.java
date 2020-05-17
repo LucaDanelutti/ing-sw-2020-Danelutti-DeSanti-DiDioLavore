@@ -34,6 +34,10 @@ public class ChosenCardRequestSceneController extends GUIController {
         cardsHBox.spacingProperty().bind(cardsHBox.widthProperty().divide(10));
     }
 
+    /**
+     * It loads the ImageViews of the CardViews contained within availableCards.
+     * @param availableCards is the list of CardViews that have to be rendered.
+     */
     public void loadCards(ArrayList<CardView> availableCards) {
         this.availableCards.addAll(availableCards);
         for (CardView card : availableCards) {
@@ -54,6 +58,10 @@ public class ChosenCardRequestSceneController extends GUIController {
         }
     }
 
+    /**
+     * Updates the description label setting the description of the card currently selected.
+     * @param cardId is the id of the card currently selected.
+     */
     private void updateDescriptionLabel(int cardId) {
         for (CardView card: availableCards) {
             if (card.getId() == cardId) {
@@ -62,6 +70,10 @@ public class ChosenCardRequestSceneController extends GUIController {
         }
     }
 
+    /**
+     * It is activated when the user clicks on the confirm button.
+     * It forwards the chosen card to the ClientView.
+     */
     public void confirm() {
         System.out.println("chosenCardId:" + chosenCardId);
         //TODO: scommentare la riga successiva, è corretta
