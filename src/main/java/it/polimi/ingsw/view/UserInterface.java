@@ -45,6 +45,8 @@ public interface UserInterface {
      */
     void refreshView(CellView cellView);
 
+    void refreshViewOnlyGameInfo();
+
     void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes);
     void onChosenCardRequest(ArrayList<CardView> availableCards);
     void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions);
@@ -55,5 +57,7 @@ public interface UserInterface {
     void onNicknameRequest();
     void onNumberOfPlayersRequest();
     void onSelectPawnRequest(ArrayList<Position> availablePositions);
-
+    void onWin();
+    void onYouLostAndSomeOneWon(String winnerName);
+    void onGameEnded(String reason);
 }

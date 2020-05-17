@@ -150,6 +150,11 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
     @Override
+    public void refreshViewOnlyGameInfo() {
+
+    }
+
+    @Override
     public void refreshView() {
         Platform.runLater(() -> {
             ((MainSceneController)currentController).updateBoard();
@@ -250,5 +255,20 @@ public class GUIEngine extends Application implements UserInterface {
         Platform.runLater(() -> {
             ((MainSceneController)currentController).enablePawnSelection(availablePositions);
         });
+    }
+
+    @Override
+    public void onWin() {
+
+    }
+
+    @Override
+    public void onYouLostAndSomeOneWon(String winnerName) {
+
+    }
+
+    @Override
+    public void onGameEnded(String reason) {
+
     }
 }

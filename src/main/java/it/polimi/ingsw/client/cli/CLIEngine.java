@@ -59,7 +59,7 @@ public class CLIEngine implements UserInterface {
         arrayList.add(new CardView(4,"LALA","fsdfggfdgfds  sgfd sfdg "));
         cliEngine.onInGameCardsRequest(arrayList);*/
 
-        System.out.println(cliEngine.undoOrConfirmHandler(9));
+        cliEngine.onYouLostAndSomeOneWon("ian");
     }
 
 
@@ -112,6 +112,31 @@ public class CLIEngine implements UserInterface {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         printCompleteGameStatus();
+    }
+
+    @Override
+    public void refreshViewOnlyGameInfo() {
+        clearScreen();
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
+    }
+
+    @Override public void onWin() {
+        clearScreen();
+        printEqualsRow();
+        System.out.println("                           YOU WON!");
+        printEqualsRow();
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
+    }
+    @Override public void onYouLostAndSomeOneWon(String winnerName) {
+        clearScreen();
+        printEqualsRow();
+        System.out.println("                          YOU LOST!");
+        printEqualsRow();
+        printPlayersWith_Cards_WinnerStatus_PawnsIds();
+    }
+    @Override public void onGameEnded(String reason) {
+        clearScreen();
+        System.out.println("GAME ENDED: "+reason);
     }
 
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
@@ -338,6 +363,7 @@ public class CLIEngine implements UserInterface {
                 System.out.println();
             }
         }
+        System.out.println();
         printSingleScoreRow();
         Position one;
         Position two;
@@ -434,6 +460,8 @@ public class CLIEngine implements UserInterface {
         clientView.update(new SelectedPawnSetMessage(availablePositions.get(input)));
     }
 
+
+
     private boolean isThereAnyPawnOnTheBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();
         for(int i=0; i<matrix.length; i++){
@@ -471,6 +499,11 @@ public class CLIEngine implements UserInterface {
         return a.size()<integers.size();
     }
 
+    private void clearScreen(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     private void printSingleUnderscoreRow(){
         System.out.println("_________________________________________");
     }
@@ -478,7 +511,7 @@ public class CLIEngine implements UserInterface {
         System.out.println("         x:0     x:1     x:2     x:3     x:4   ");
     }
     private void printEqualsRow(){
-        System.out.println("===================================================");
+        System.out.println("==============================================================");
 
     }
     private void printSingleScoreRow(){
@@ -590,6 +623,15 @@ public class CLIEngine implements UserInterface {
             str=String.format("%-15s|",b.toString());
             a.append(str);
             a.append(String.format("%-17s|"," Card: "+cardName));
+            if(p.getWinner()){
+                a.append(String.format("%-10s|"," Winner"));
+            }
+            else if(p.getLoser()){
+                a.append(String.format("%-10s|"," Loser"));
+            }
+            else{
+                a.append(String.format("%-10s|"," "));
+            }
 
             System.out.println(a.toString());
 
