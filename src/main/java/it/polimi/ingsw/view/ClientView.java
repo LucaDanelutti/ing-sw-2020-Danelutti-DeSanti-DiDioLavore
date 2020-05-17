@@ -191,6 +191,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(UndoUpdateMessage undoUpdateMessage) {
+        modelView = undoUpdateMessage.getRestoredModelView();
         userInterface.refreshView();
     }
 
