@@ -20,120 +20,6 @@ class MockViewTest {
     GameLogicExecutor gameLogicExecutor;
     ArrayList<MockView> mockViews;
 
-    private MockView getCurrentPlayerMockView(){
-        String currentPlayerName=gameLogicExecutor.getCurrentPlayerName();
-        for(MockView mock : mockViews){
-            if(mock.getName().equals(currentPlayerName)){
-                return mock;
-            }
-        }
-        return null;
-    }
-
-    private void simpleBoardPrintWithoutBlocks(){
-        Cell[][] matrix=game.getBoard().getMatrixCopy();
-        for(int i=0; i<matrix.length; i++){
-            if(i==0){
-                System.out.println("_____________________");
-            }
-            for(int j=0; j<matrix[0].length; j++){
-                Pawn p =matrix[i][j].getPawn();
-                if(j==0){
-                    System.out.print("|");
-                }
-                if(p==null) {
-                    System.out.print("   |");
-                }
-                else{
-                    System.out.print(" "+p.getId()+" |");
-                }
-                if(j==matrix[0].length-1){
-                    System.out.print("\n");
-                }
-            }
-            System.out.println("_____________________");
-        }
-
-    }
-
-    private boolean someOneWon(){
-        for(MockView mockView : mockViews){
-            for(RequestAndUpdateMessage m : mockView.getReceivedMessages()){
-                if(m instanceof YouWonMessage){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void simpleCompleteBoardPrint(){
-        Cell[][] matrix=game.getBoard().getMatrixCopy();
-        for(int i=0; i<matrix.length; i++){
-            if(i==0){
-                System.out.println("___________________________________");
-            }
-            for(int j=0; j<matrix[0].length; j++){
-                Pawn p =matrix[i][j].getPawn();
-                BlockType blockType = matrix[i][j].peekBlock();
-                int level = blockType.getLevel();
-                if(j==0){
-                    System.out.print("|");
-                }
-                if(p==null) {
-                    if(level!=0) {
-                        System.out.print("l:" + level + "   |");
-                    }else{
-                        System.out.print("     |");
-                    }
-                }
-                else {
-                    if(level!=0) {
-                        System.out.print("l:" + level + " "+p.getId()+"|");
-                    }else{
-                        System.out.print("    "+p.getId()+"|");
-                    }
-                }
-                if(j==matrix[0].length-1){
-                    System.out.print("\n");
-                }
-            }
-            System.out.println("___________________________________");
-        }
-        System.out.println(" ");
-    }
-
-    private void printCurrentActionInfo(Game currentGame,Position chosen,BlockType blockType){
-        String playerName=currentGame.getCurrentPlayer().getName();
-        int selectedPawnId=currentGame.getCurrentAction().getSelectedPawn().getId();
-        int fromX=currentGame.getCurrentAction().getSelectedPawn().getPosition().getX();
-        int fromY=currentGame.getCurrentAction().getSelectedPawn().getPosition().getY();
-        int toX;
-        int toY;
-        if(chosen!=null) {
-            toX = chosen.getX();
-            toY = chosen.getY();
-            if(currentGame.getCurrentAction() instanceof MoveAction){
-                System.out.println("Player: "+playerName+" MOVE with: "+selectedPawnId+"from: "+fromX+","+fromY+" to: "+toX+","+toY);
-            }
-            else if(currentGame.getCurrentAction() instanceof ConstructAction){
-                if(((ConstructAction) currentGame.getCurrentAction()).getSelectedBlockType()!=null) {
-                    int level=blockType.getLevel();
-                    System.out.println("Player: " + playerName + " CONSTRUCT with: " + selectedPawnId +" lvl: "+level+ " from: " + fromX + "," + fromY + " to: " + toX + "," + toY);
-                }
-            }
-        }
-        else{
-            if(currentGame.getCurrentAction() instanceof MoveAction){
-                System.out.println("Player: "+playerName+" MOVE SKIPPED");
-            }
-            else if(currentGame.getCurrentAction() instanceof ConstructAction){
-                System.out.println("Player: " + playerName + " CONSTRUCT SKIPPED");
-            }
-        }
-
-    }
-
     @BeforeEach  void init_of_3_players(){
         //create the mock views
         mockViews=new ArrayList<>();
@@ -147,7 +33,7 @@ class MockViewTest {
 
     }
 
-    void receiveGameStartedAndInGameCardsRequest(){
+    @Test void receiveGameStartedAndInGameCardsRequest(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -177,7 +63,7 @@ class MockViewTest {
         }
     }
 
-    void everyOneReceiveChosenCardRequest(){
+    @Test void everyOneReceiveChosenCardRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
         gameLogicExecutor.addListener(mockViews.get(1));
@@ -270,7 +156,7 @@ class MockViewTest {
         }
     }
 
-    void ReceiveInitialPawnsPositionsRequest(){
+    @Test void ReceiveInitialPawnsPositionsRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
         gameLogicExecutor.addListener(mockViews.get(1));
@@ -366,7 +252,7 @@ class MockViewTest {
         //simpleBoardPrint();
     }
 
-    void CompleteTurnOfFirstPlayer(){
+    @Test void CompleteTurnOfFirstPlayer(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -455,6 +341,17 @@ class MockViewTest {
                 randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
                 gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
             }
+            else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage) {
+                ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
+                if (m.getAvailablePositions().size() < 1) {
+                    System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
+                    simpleCompleteBoardPrint();
+                    return;
+                }
+                randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
+                gameLogicExecutor.setChosenPosition(chosenPositionForConstructRequestMessage.getAvailablePositions().get(randomNum1));
+
+            }
             else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
                 ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
                 randomNum1= ThreadLocalRandom.current().nextInt(0,chosenBlockTypeRequestMessage.getAvailableBlockTypes().size());
@@ -466,7 +363,7 @@ class MockViewTest {
 
     }
 
-    void CompleteGameWithBots(){
+    @Test void CompleteGameWithBots(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -533,23 +430,38 @@ class MockViewTest {
             randomNum1= ThreadLocalRandom.current().nextInt(0,selectPawnRequestMessage.getAvailablePositions().size());
             gameLogicExecutor.setSelectedPawn(selectPawnRequestMessage.getAvailablePositions().get(randomNum1));
 
-            System.out.println("----------------------------------------------------------------------------");
+/*            System.out.println("----------------------------------------------------------------------------");
             System.out.println("---- PLAYER: "+currentP.getName()+" Pawn: "+game.getSelectedPawnCopy().getId()+" GOD: "+game.getPlayer(currentP.getName()).getCurrentCard().getName()+" ----");
             System.out.println("BEFORE TURN:");
-            simpleCompleteBoardPrint();
+            simpleCompleteBoardPrint();*/
 
             while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage) && !someOneWon()){
 
                 if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
-
                     ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                     if(chosenPositionForMoveRequestMessage.getAvailablePositions().size()==0){
+/*
                         System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
+*/
+/*
                         simpleCompleteBoardPrint();
+*/
                         return;
                     }
                     randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
                     gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
+                }
+                else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage){
+                    ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
+                    if(chosenPositionForConstructRequestMessage.getAvailablePositions().size()==0){
+/*
+                        System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
+*/
+                        simpleCompleteBoardPrint();
+                        return;
+                    }
+                    randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
+                    gameLogicExecutor.setChosenPosition(chosenPositionForConstructRequestMessage.getAvailablePositions().get(randomNum1));
                 }
                 else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
                     ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
@@ -560,15 +472,79 @@ class MockViewTest {
 
             }
             numberOfTurns++;
-            System.out.println("AFTER TURN");
+            /*System.out.println("AFTER TURN");
             simpleCompleteBoardPrint();
-            System.out.println("----------------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------------");*/
 
         }
+/*
         System.out.println("VINCITAAA");
+*/
 
 
     }
+
+    void loopBotsGame(){
+        //SETUP VARIABLES
+        int counter=0;
+        int numberOfCardsRandomCombinationSwitch=100;
+        int numberOfGamesToRunWithSameCards=100;
+        int maxTurns=100;
+
+        //COMMODITY VARIABLES
+        int blocked,winner,unknown,maxNumberOfTurns;
+        int totalBlocked=0, totalWinner=0,totalUnknown=0,totalMaxNumberOfTurns=0;
+        int res,numberOfGamesTriedWithSameCards=0,numberOfCardsRandomCombinationSwitchTried=0;
+        ArrayList<Integer> cardIds;
+
+        do {
+            blocked=0;
+            winner=0;
+            unknown=0;
+            maxNumberOfTurns=0;
+            numberOfGamesTriedWithSameCards=0;
+
+            do {
+                cardIds = randomCards();
+                res = threeBotsGame(cardIds.get(0), cardIds.get(1), cardIds.get(2), maxTurns);
+                numberOfGamesTriedWithSameCards++;
+                counter++;
+                if (res == 0) {
+                    blocked++;
+                }
+                else if (res == -1) {
+                    maxNumberOfTurns++;
+                }
+                else if (res == 2) {
+                    unknown++;
+                }
+                else if (res == 1) {
+                    winner++;
+                }
+                else{
+                    System.out.println("==========================ERROR=================================");
+                }
+            } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
+
+            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+
+            totalBlocked+=blocked;
+            totalWinner+=winner;
+            totalMaxNumberOfTurns+=maxNumberOfTurns;
+            totalUnknown+=unknown;
+
+            numberOfCardsRandomCombinationSwitchTried++;
+        }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
+
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
+        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
+        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+
+
+    }
+
 
     private int threeBotsGame(int indexCard1,int indexCard2,int indexCard3, int maxTurns){
         //create the mock views
@@ -686,7 +662,6 @@ class MockViewTest {
         }
 
     }
-
     private ArrayList<Integer> randomCards(){
         ArrayList<Integer> cardIds = new ArrayList<>();
         //cardIds.add(11); //WE WANT MEDUSA
@@ -700,65 +675,113 @@ class MockViewTest {
         }
         return cardIds;
     }
-
-    void loopBotsGame(){
-        //SETUP VARIABLES
-        int counter=0;
-        int numberOfCardsRandomCombinationSwitch=100;
-        int numberOfGamesToRunWithSameCards=100;
-        int maxTurns=100;
-
-        //COMMODITY VARIABLES
-        int blocked,winner,unknown,maxNumberOfTurns;
-        int totalBlocked=0, totalWinner=0,totalUnknown=0,totalMaxNumberOfTurns=0;
-        int res,numberOfGamesTriedWithSameCards=0,numberOfCardsRandomCombinationSwitchTried=0;
-        ArrayList<Integer> cardIds;
-
-        do {
-            blocked=0;
-            winner=0;
-            unknown=0;
-            maxNumberOfTurns=0;
-            numberOfGamesTriedWithSameCards=0;
-
-            do {
-                cardIds = randomCards();
-                res = threeBotsGame(cardIds.get(0), cardIds.get(1), cardIds.get(2), maxTurns);
-                numberOfGamesTriedWithSameCards++;
-                counter++;
-                if (res == 0) {
-                    blocked++;
+    private MockView getCurrentPlayerMockView(){
+        String currentPlayerName=gameLogicExecutor.getCurrentPlayerName();
+        for(MockView mock : mockViews){
+            if(mock.getName().equals(currentPlayerName)){
+                return mock;
+            }
+        }
+        return null;
+    }
+    private void simpleBoardPrintWithoutBlocks(){
+        Cell[][] matrix=game.getBoard().getMatrixCopy();
+        for(int i=0; i<matrix.length; i++){
+            if(i==0){
+                System.out.println("_____________________");
+            }
+            for(int j=0; j<matrix[0].length; j++){
+                Pawn p =matrix[i][j].getPawn();
+                if(j==0){
+                    System.out.print("|");
                 }
-                else if (res == -1) {
-                    maxNumberOfTurns++;
-                }
-                else if (res == 2) {
-                    unknown++;
-                }
-                else if (res == 1) {
-                    winner++;
+                if(p==null) {
+                    System.out.print("   |");
                 }
                 else{
-                    System.out.println("==========================ERROR=================================");
+                    System.out.print(" "+p.getId()+" |");
                 }
-            } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
+                if(j==matrix[0].length-1){
+                    System.out.print("\n");
+                }
+            }
+            System.out.println("_____________________");
+        }
 
-            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
-
-            totalBlocked+=blocked;
-            totalWinner+=winner;
-            totalMaxNumberOfTurns+=maxNumberOfTurns;
-            totalUnknown+=unknown;
-
-            numberOfCardsRandomCombinationSwitchTried++;
-        }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
-
-        System.out.println("-----------------------------------------------------------------------------------------------------");
-        int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
-        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
-        System.out.println("-----------------------------------------------------------------------------------------------------");
-
+    }
+    private boolean someOneWon(){
+        for(MockView mockView : mockViews){
+            for(RequestAndUpdateMessage m : mockView.getReceivedMessages()){
+                if(m instanceof YouWonMessage){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private void simpleCompleteBoardPrint(){
+        Cell[][] matrix=game.getBoard().getMatrixCopy();
+        for(int i=0; i<matrix.length; i++){
+            if(i==0){
+                System.out.println("___________________________________");
+            }
+            for(int j=0; j<matrix[0].length; j++){
+                Pawn p =matrix[i][j].getPawn();
+                BlockType blockType = matrix[i][j].peekBlock();
+                int level = blockType.getLevel();
+                if(j==0){
+                    System.out.print("|");
+                }
+                if(p==null) {
+                    if(level!=0) {
+                        System.out.print("l:" + level + "   |");
+                    }else{
+                        System.out.print("     |");
+                    }
+                }
+                else {
+                    if(level!=0) {
+                        System.out.print("l:" + level + " "+p.getId()+"|");
+                    }else{
+                        System.out.print("    "+p.getId()+"|");
+                    }
+                }
+                if(j==matrix[0].length-1){
+                    System.out.print("\n");
+                }
+            }
+            System.out.println("___________________________________");
+        }
+        System.out.println(" ");
+    }
+    private void printCurrentActionInfo(Game currentGame,Position chosen,BlockType blockType){
+        String playerName=currentGame.getCurrentPlayer().getName();
+        int selectedPawnId=currentGame.getCurrentAction().getSelectedPawn().getId();
+        int fromX=currentGame.getCurrentAction().getSelectedPawn().getPosition().getX();
+        int fromY=currentGame.getCurrentAction().getSelectedPawn().getPosition().getY();
+        int toX;
+        int toY;
+        if(chosen!=null) {
+            toX = chosen.getX();
+            toY = chosen.getY();
+            if(currentGame.getCurrentAction() instanceof MoveAction){
+                System.out.println("Player: "+playerName+" MOVE with: "+selectedPawnId+"from: "+fromX+","+fromY+" to: "+toX+","+toY);
+            }
+            else if(currentGame.getCurrentAction() instanceof ConstructAction){
+                if(((ConstructAction) currentGame.getCurrentAction()).getSelectedBlockType()!=null) {
+                    int level=blockType.getLevel();
+                    System.out.println("Player: " + playerName + " CONSTRUCT with: " + selectedPawnId +" lvl: "+level+ " from: " + fromX + "," + fromY + " to: " + toX + "," + toY);
+                }
+            }
+        }
+        else{
+            if(currentGame.getCurrentAction() instanceof MoveAction){
+                System.out.println("Player: "+playerName+" MOVE SKIPPED");
+            }
+            else if(currentGame.getCurrentAction() instanceof ConstructAction){
+                System.out.println("Player: " + playerName + " CONSTRUCT SKIPPED");
+            }
+        }
 
     }
 
