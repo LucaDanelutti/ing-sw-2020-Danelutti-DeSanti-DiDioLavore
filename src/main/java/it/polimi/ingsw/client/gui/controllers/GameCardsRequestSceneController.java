@@ -20,6 +20,7 @@ import java.util.ArrayList;
 //TODO: add graphic effect on the ImageViews of the cards within cardsSelectedList
 public class GameCardsRequestSceneController extends GUIController {
 
+    /* ===== Constants ===== */
     private static final int NUM_ROWS = 2;
     private static final int NUM_COLUMNS = 7;
 
@@ -38,6 +39,7 @@ public class GameCardsRequestSceneController extends GUIController {
     private ArrayList<CardView> availableCards = new ArrayList<>();
     private int expectedNumberOfCards;
     private ArrayList<Integer>  cardsSelectedList = new ArrayList<>();
+
     /* ===== FXML Set Up and Bindings ===== */
     public void initialize() {
     }

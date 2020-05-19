@@ -17,7 +17,7 @@ import java.util.ArrayList;
 //TODO: make HBox grow vertically
 public class ChosenCardRequestSceneController extends GUIController {
 
-
+    /* ===== FXML elements ===== */
     @FXML
     private GridPane mainGridPane;
     @FXML
@@ -26,7 +26,7 @@ public class ChosenCardRequestSceneController extends GUIController {
     private Label cardDescriptionLabel;
 
 
-
+    /* ===== Variables ===== */
     private ArrayList<CardView> availableCards = new ArrayList<>();
     private int chosenCardId;
 

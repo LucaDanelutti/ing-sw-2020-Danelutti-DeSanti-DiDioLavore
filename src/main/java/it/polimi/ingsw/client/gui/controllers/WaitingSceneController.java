@@ -12,9 +12,11 @@ import javafx.scene.control.Label;
 //TODO: add loading animation, logo etc.
 public class WaitingSceneController extends GUIController {
 
+    /* ===== FXML elements ===== */
     @FXML
     private Label waitLabel;
 
+    /* ===== FXML Properties ===== */
     private StringProperty waitString;
 
     @FXML

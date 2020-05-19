@@ -33,9 +33,16 @@ import java.util.ArrayList;
 
 public class MainSceneController extends GUIController {
 
+    /* ===== Constants ===== */
     private static final double BOARD_PADDING_RATIO = 0.74;
     private static final double BOARD_PADDING_PERCENTAGE = 0.13;
     private static final int BOARD_SIZE = 5;
+    private static final double CLIENT_CARD_WIDTH_RATIO = 6;
+    private static final double CLIENT_CARD_HEIGHT_RATIO = 2.5;
+    private static final double ENEMY_CARD_WIDTH_RATIO = 12;
+    private static final double ENEMY_CARD_HEIGHT_RATIO = 5;
+    private static final double BOARD_PANE_RATIO = 0.5;
+
 
     /* ===== FXML elements ===== */
     @FXML
@@ -67,10 +74,9 @@ public class MainSceneController extends GUIController {
 
     /* ===== FXML Properties ===== */
     private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
-    private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
 
     /* ===== Variables ===== */
-    private ArrayList<Position> clickableCells = new ArrayList<>();
+    private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
@@ -78,17 +84,17 @@ public class MainSceneController extends GUIController {
        phaseLabel.setText("");
 
        //player cards dimensions bindings
-       clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(6));
-       clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(2.5));
-       enemy1PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(12));
-       enemy1PlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(5));
-       enemy2PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(12));
-       enemy2PlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(5));
+       clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
+       clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(CLIENT_CARD_HEIGHT_RATIO));
+       enemy1PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(ENEMY_CARD_WIDTH_RATIO));
+       enemy1PlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(ENEMY_CARD_HEIGHT_RATIO));
+       enemy2PlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(ENEMY_CARD_WIDTH_RATIO));
+       enemy2PlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(ENEMY_CARD_HEIGHT_RATIO));
 
        //board dimensions bindings
-       boardAnchorPane.setPrefWidth(mainGridPane.heightProperty().multiply(0.5).getValue());
-       boardAnchorPane.setPrefHeight(mainGridPane.heightProperty().multiply(0.5).getValue());
-       boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(0.5));
+       boardAnchorPane.setPrefWidth(mainGridPane.heightProperty().multiply(BOARD_PANE_RATIO).getValue());
+       boardAnchorPane.setPrefHeight(mainGridPane.heightProperty().multiply(BOARD_PANE_RATIO).getValue());
+       boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(BOARD_PANE_RATIO));
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
 
        //TODO: improve padding management
@@ -108,7 +114,7 @@ public class MainSceneController extends GUIController {
        updateBoard();
        loadEnlightenedImageViews();
 
-       //TODO: remove the following 3 lines, just testing
+       //TODO: remove the following 2 lines, just testing
 //       ((GUIEngine)clientView.getUserInterface()).updateModelView();
 //       clientView.getUserInterface().refreshView();
    }
