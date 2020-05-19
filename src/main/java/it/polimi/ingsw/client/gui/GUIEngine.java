@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.gui.controllers.ChosenCardRequestSceneController;
+import it.polimi.ingsw.client.gui.controllers.FirstPlayerRequestSceneController;
 import it.polimi.ingsw.client.gui.controllers.GameCardsRequestSceneController;
 import it.polimi.ingsw.client.gui.controllers.MainSceneController;
 import it.polimi.ingsw.model.Position;
@@ -35,10 +36,10 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
-        setUpTest();
+//        setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
-        showScene("/fxml/waitingScene.fxml");
+        showScene("/fxml/loginScene.fxml");
     }
 
     //test function
@@ -154,13 +155,25 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshViewOnlyGameInfo() {
-
+        //TODO: rimuovere l'instanceof
+        Platform.runLater(() -> {
+            try {
+                ((MainSceneController) currentController).updateGameInfo();
+            } catch (Exception e) {
+                System.out.println("Problem while refreshViewOnlyGameInfo(): MainSceneController may not be the currentController");
+            }
+        });
     }
 
     @Override
     public void refreshView() {
         Platform.runLater(() -> {
-            ((MainSceneController)currentController).updateBoard();
+            try {
+                //TODO: rimuovere l'instanceof
+                ((MainSceneController) currentController).updateBoard();
+            } catch (Exception e) {
+                System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
+            }
         });
     }
 
@@ -220,7 +233,12 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onFirstPlayerRequest() {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/firstPlayerRequestScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            ((FirstPlayerRequestSceneController)currentController).loadPlayers();
+        });
     }
 
     @Override
@@ -236,8 +254,9 @@ public class GUIEngine extends Application implements UserInterface {
     @Override
     public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
+            //TODO: la validità di questa condizione è deterministica, valutarla e togliere l'if
             if (!(currentController instanceof MainSceneController)) showMainScene();
-            //call the controller method that lets place the pawns on the board.
+            ((MainSceneController)currentController).placeInitialPawns(availablePositions);
         });
     }
 

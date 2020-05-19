@@ -76,8 +76,7 @@ public class ChosenCardRequestSceneController extends GUIController {
      */
     public void confirm() {
         System.out.println("chosenCardId:" + chosenCardId);
-        //TODO: scommentare la riga successiva, è corretta
-//        clientView.update(new ChosenCardSetMessage(chosenCardId));
+        clientView.update(new ChosenCardSetMessage(chosenCardId));
 
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
     }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
 import it.polimi.ingsw.utility.messages.sets.ChosenPositionSetMessage;
+import it.polimi.ingsw.utility.messages.sets.InitialPawnPositionSetMessage;
 import it.polimi.ingsw.utility.messages.sets.SelectedPawnSetMessage;
 import it.polimi.ingsw.view.modelview.*;
 import javafx.beans.binding.Bindings;
@@ -77,6 +78,7 @@ public class MainSceneController extends GUIController {
 
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
+    private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
@@ -113,18 +115,22 @@ public class MainSceneController extends GUIController {
        updatePlayersCard();
        updateBoard();
        loadEnlightenedImageViews();
-
-       //TODO: remove the following 2 lines, just testing
-//       ((GUIEngine)clientView.getUserInterface()).updateModelView();
-//       clientView.getUserInterface().refreshView();
    }
 
    //TODO: remove this method and the relative button. It is just for test
    public void updateBoardTest() {
-       ArrayList<BlockType> availableBlockTypes = new ArrayList<>();
-       availableBlockTypes.add(BlockType.LEVEL1);
-//       availableBlockTypes.add(BlockType.DOME);
-       clientView.getUserInterface().onChosenBlockTypeRequest(availableBlockTypes);
+       ((GUIEngine)clientView.getUserInterface()).updateModelView();
+       ArrayList<Position> availableCells = new ArrayList<>();
+       availableCells.add(new Position(1, 1));
+       availableCells.add(new Position(1, 3));
+       availableCells.add(new Position(1, 4));
+       availableCells.add(new Position(2, 4));
+       clientView.getUserInterface().onInitialPawnPositionRequest(availableCells);
+   }
+
+   public void updateGameInfo() {
+       updatePlayersName();
+       updatePlayersCard();
    }
 
 
@@ -236,9 +242,7 @@ public class MainSceneController extends GUIController {
    private void chosenPawn(Position chosenPawnPosition) {
        phaseLabel.setText("");
        System.out.println("chosenPawnPosition:" + chosenPawnPosition.getX() + " " + chosenPawnPosition.getY());
-       //TODO: scommentare la riga successiva, è corretta
-
-//        clientView.update(new SelectedPawnSetMessage(chosenPawnPosition));
+       clientView.update(new SelectedPawnSetMessage(chosenPawnPosition));
        clearEnlightenedImageViews();
    }
 
@@ -279,8 +283,7 @@ public class MainSceneController extends GUIController {
     private void setPosition(Position chosenPosition) {
         phaseLabel.setText("");
         System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
-        //TODO: scommentare la riga successiva, è corretta
-//        clientView.update(new ChosenPositionSetMessage(chosenPosition));
+        clientView.update(new ChosenPositionSetMessage(chosenPosition));
         clearEnlightenedImageViews();
     }
 
@@ -314,10 +317,45 @@ public class MainSceneController extends GUIController {
        }
 
        System.out.println("chosenBlockType.getLevel(): " + chosenBlockType.getLevel());
-       //TODO: scommentare la riga successiva, è corretta
-//       clientView.update(new ChosenBlockTypeSetMessage(chosenBlockType));
+       clientView.update(new ChosenBlockTypeSetMessage(chosenBlockType));
 
         blockTypesHBox.getChildren().clear();
         blockTypesHBox.setVisible(false);
     }
+
+    public void placeInitialPawns(ArrayList<Position> availablePositions) {
+        phaseLabel.setText("Place your 2 pawns!");
+        //TODO: questa parte di codice è condivisa con enablePositionSelection. Potrei scrivere un metodo a cui si passa la funzione da attivare con l'action.
+        for (Position position : availablePositions) {
+            //makes the ImageViews visible
+            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
+            //adds an action recognizer to the ImageView
+            enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
+                Node source = (Node)e.getSource();
+                int colIndex = GridPane.getColumnIndex(source);
+                int rowIndex = GridPane.getRowIndex(source);
+                //cols -> x, rows -> y
+                selectInitialPawnPosition(new Position(rowIndex, colIndex));
+            });
+        }
+    }
+
+    private void selectInitialPawnPosition(Position position) {
+       ModelView modelView = clientView.getModelView();
+       ArrayList<Integer> pawnsId = modelView.getPlayerPawnsId(clientView.getName());
+
+       initialPawnPositionsList.add(position);
+       if (initialPawnPositionsList.size() == 2) {
+           phaseLabel.setText("");
+           clearEnlightenedImageViews();
+           System.out.println("firstPawnPosition1:" + initialPawnPositionsList.get(0).getX() + " " + initialPawnPositionsList.get(0).getY());
+           System.out.println("firstPawnPosition2:" + initialPawnPositionsList.get(1).getX() + " " + initialPawnPositionsList.get(1).getY());
+           clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0), pawnsId.get(1), initialPawnPositionsList.get(0), initialPawnPositionsList.get(1)));
+       } else {
+           phaseLabel.setText("Place the pawn left!");
+           enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(false);
+           enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(null);
+       }
+    }
+
 }

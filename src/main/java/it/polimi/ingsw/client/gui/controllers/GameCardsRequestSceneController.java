@@ -126,8 +126,7 @@ public class GameCardsRequestSceneController extends GUIController {
      */
     public void confirm() {
         if (cardsSelectedList.size() == expectedNumberOfCards) {
-            //TODO: scommentare la riga successiva, è corretta
-//            clientView.update(new InGameCardsSetMessage(cardsSelectedList));
+            clientView.update(new InGameCardsSetMessage(cardsSelectedList));
             ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
             System.out.println("The number of Cards is correct.");
         }

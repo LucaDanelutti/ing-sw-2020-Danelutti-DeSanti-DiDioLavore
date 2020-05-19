@@ -51,8 +51,7 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
      */
     public void confirm() {
         System.out.println("selectedNumberOfPlayers:" + selectedNumberOfPlayers);
-//        TODO: togliere commento, chiama la Set correttamente
-//        clientView.update(new NumberOfPlayersSetMessage(selectedNumberOfPlayers));
+        clientView.update(new NumberOfPlayersSetMessage(selectedNumberOfPlayers));
 
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
     }
