@@ -21,70 +21,30 @@ import java.util.concurrent.*;
 public class CLIEngine implements UserInterface {
     private ClientView clientView;
 
+                                                //CONSTRUCTORS
+
+    /**
+     * This is the default constructor for the CLIEngine
+     */
     public CLIEngine() {
     }
+
+    /**
+     * This is the parametric constructor for the CLIEngine
+     * @param clientView the clientView to be assigned
+     */
     public CLIEngine(ClientView clientView) {
         this.clientView = clientView;
     }
 
-    public static void main(String[] args) {
-        ClientView clientView = new ClientView();
-        clientView.getModelView().onPlayerUpdate("Ian","009900",0,1);
-        clientView.getModelView().onPlayerUpdate("Luca","990000",2,3);
-        clientView.getModelView().onPlayerUpdate("Riccardo","000099",4,5);
-        clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
-        clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
-        clientView.getModelView().onPawnPositionUpdate(2,new Position(1,0));
-        clientView.getModelView().onPawnRemoved(2);
-        clientView.getModelView().onPawnPositionUpdate(3,new Position(1,1));
-        clientView.getModelView().onPawnPositionUpdate(4,new Position(0,2));
-        clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
-        clientView.getModelView().onCellUpdate(new Position(3,3), BlockType.LEVEL1);
-        clientView.getModelView().onCellUpdate(new Position(0,0), BlockType.LEVEL2);
-        clientView.getModelView().onCellUpdate(new Position(4,4), BlockType.DOME);
-
-        clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
-        //clientView.getModelView().onChosenCardUpdate(new CardView(2,"Medusa","do as he wishes"),"Luca");
-        clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
-        CLIEngine cliEngine = new CLIEngine();
-        cliEngine.setClientView(clientView);
-
-        /*ArrayList<BlockType> arrayList = new ArrayList<>();
-        arrayList.add(BlockType.LEVEL1);
-        arrayList.add(BlockType.DOME);
-        cliEngine.onChosenBlockTypeRequest(arrayList);*/
-
-        /*ArrayList<CardView> arrayList = new ArrayList<>();
-        arrayList.add(new CardView(1,"Apollo","ciao ciao ciao"));
-        arrayList.add(new CardView(2,"Dimetrio","cdsfsdfsdf fevdsvsf sfdv"));
-        arrayList.add(new CardView(3,"Medusa","fsdfggfdgfds  sgfd sfdg "));
-        arrayList.add(new CardView(4,"LALA","fsdfggfdgfds  sgfd sfdg "));
-        cliEngine.onInGameCardsRequest(arrayList);*/
-
-        ArrayList<Position> arrayList = new ArrayList<>();
-        arrayList.add(new Position(0,0));
-        arrayList.add(new Position(0,1));
-        arrayList.add(new Position(0,2));
-        arrayList.add(new Position(0,3));
-        arrayList.add(new Position(0,4));
-        arrayList.add(new Position(0,5));
-        arrayList.add(new Position(1,5));
-        arrayList.add(new Position(2,5));
-        arrayList.add(new Position(3,5));
-        arrayList.add(new Position(0,0));
-        arrayList.add(new Position(0,1));
-        arrayList.add(new Position(0,2));
-        arrayList.add(null);
-        arrayList.add(new Position(0,3));
-        arrayList.add(new Position(0,4));
-        arrayList.add(new Position(0,5));
-        arrayList.add(new Position(1,5));
-        arrayList.add(new Position(2,5));
-        arrayList.add(new Position(3,5));
-        cliEngine.onFirstPlayerRequest();
-    }
 
 
+
+                                                //SETUP FUNCTIONS
+
+    /**
+     * This function is called to ask the user for information about the server (port and address)
+     */
     @Override public void initialize() {
         clientView = new ClientView();
         clientView.setUserInterface(this);
@@ -99,6 +59,12 @@ public class CLIEngine implements UserInterface {
         //call function of ClientView
         clientView.startServerConnection(serverIP, serverPORT);
     }
+
+    /**
+     * This function is called for a quick start of the connection to the server giving directly the port and the address
+     * @param hostname the address of the server
+     * @param port the port of the server
+     */
     @Override public void quickInitialize(String hostname, int port) {
         clientView = new ClientView();
         clientView.setUserInterface(this);
@@ -106,15 +72,28 @@ public class CLIEngine implements UserInterface {
     }
 
 
-    //THOSE TWO ARE THE ONLY FUNCTIONS NEEDED TO BE CALLED WHEN AN UPDATES ARRIVE
+
+                                         //TO BE CALLED WHEN AN UPDATE ARRIVES
+
+    /**
+     * This function refreshes all the screen with the information about the board and the user table
+     */
     @Override public void refreshView() {
         clearScreen();
         printCompleteGameStatus();
     }
+
+    /**
+     * This function refreshes the screen with the information about the users
+     */
     @Override public void refreshViewOnlyGameInfo() {
         clearScreen();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
+
+    /**
+     * This function is called when the user win the game
+     */
     @Override public void onWin() {
         clearScreen();
         printEqualsRow();
@@ -122,6 +101,11 @@ public class CLIEngine implements UserInterface {
         printEqualsRow();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
+
+    /**
+     * This function is called when the user lost and we have a winner in the game
+     * @param winnerName the winner name
+     */
     @Override public void onYouLostAndSomeOneWon(String winnerName) {
         clearScreen();
         printEqualsRow();
@@ -129,13 +113,24 @@ public class CLIEngine implements UserInterface {
         printEqualsRow();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
+
+    /**
+     * This function is called when the game ends for an unexpected reason, for example a user disconnection
+     * @param reason the string containing the reason
+     */
     @Override public void onGameEnded(String reason) {
         clearScreen();
         System.out.println("GAME ENDED: "+reason);
     }
 
 
-    //FUNCTIONS TO BE CALLED FROM THE CLIENT WHEN A REQUEST ARRIVES
+
+                                        //TO BE CALLED WHEN A REQUEST ARRIVES
+
+    /**
+     * This function is called when the user has to select the blockType for a construct action
+     * @param availableBlockTypes the available block types to chose from
+     */
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
         Scanner scanner = new Scanner(System.in);
 
@@ -185,6 +180,11 @@ public class CLIEngine implements UserInterface {
             clientView.update(new UndoTurnSetMessage());
         }
     }
+
+    /**
+     * This function is called when the user has to select his card
+     * @param availableCards the available cards to chose from
+     */
     @Override public void onChosenCardRequest(ArrayList<CardView> availableCards) {
         Scanner scanner = new Scanner(System.in);
 
@@ -213,6 +213,11 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
+
+    /**
+     * This function is called when the user has to select the position for a move action
+     * @param availablePositions the positions to chose from
+     */
     @Override public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
 
@@ -250,6 +255,11 @@ public class CLIEngine implements UserInterface {
         }
 
     }
+
+    /**
+     * This function is called when the user has to selec the position for a construct action
+     * @param availablePositions the positions to chose from
+     */
     @Override public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
 
@@ -277,6 +287,10 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
+
+    /**
+     * This function is called to select the first player to start
+     */
     @Override public void onFirstPlayerRequest() {
         Scanner scanner = new Scanner(System.in);
 
@@ -307,6 +321,11 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
     }
+
+    /**
+     * This function is called when the user has to select the cards to for every player
+     * @param availableCards the list of all the available cards
+     */
     @Override public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Scanner scanner = new Scanner(System.in);
 
@@ -315,7 +334,7 @@ public class CLIEngine implements UserInterface {
         printSingleScoreRow();
         System.out.println("Select "+clientView.getModelView().getPlayerList().size()+" cards from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
-            System.out.println(i+") "+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
+            System.out.println(String.format("%-4s",i+")")+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
 
@@ -346,6 +365,11 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new InGameCardsSetMessage(chosenCards));
     }
+
+    /**
+     * This functions is called when the user has to chose the initial position for the pawns
+     * @param availablePositions the available positions to chose from
+     */
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
 
@@ -396,6 +420,10 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0),pawnsId.get(1),pawnsPositions.get(0),pawnsPositions.get(1)));
     }
+
+    /**
+     * This function is called when the user has to select his nickname
+     */
     @Override public void onNicknameRequest() {
         clearScreen();
         printWelcome();
@@ -404,6 +432,10 @@ public class CLIEngine implements UserInterface {
         String name = scanner.nextLine();
         clientView.update(new NicknameSetMessage(name));
     }
+
+    /**
+     * This function is called when  the user has to select the number of players in the game
+     */
     @Override public void onNumberOfPlayersRequest() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select the number of players in the game (2 or 3): ");
@@ -417,6 +449,11 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new NumberOfPlayersSetMessage(number));
     }
+
+    /**
+     * This function is called when the user has to select the pawn for the current turn
+     * @param availablePositions the positions of his pawns, from where to chose from
+     */
     @Override public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
 
@@ -440,6 +477,7 @@ public class CLIEngine implements UserInterface {
         }
         printSingleScoreRow();
 
+        //TODO: place the number of the pawn not the number of the option
         System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
 
         ArrayList<Integer> options = new ArrayList<>();
@@ -478,6 +516,7 @@ public class CLIEngine implements UserInterface {
         }
         return false;
     }
+
     private PawnView isThereAPawnHere(int x, int y){
         for(PlayerView p : clientView.getModelView().getPlayerList()){
             for(PawnView pawnView : p.getPawnList()){
@@ -488,9 +527,11 @@ public class CLIEngine implements UserInterface {
         }
         return null;
     }
+
     private boolean isTheOptionValid(ArrayList<Integer> options, Integer option){
         return options.contains(option);
     }
+
     private boolean areTheOptionsValid(ArrayList<Integer> options, ArrayList<Integer> chosenOptions){
         for(Integer a : chosenOptions){
             if(!options.contains(a)){
@@ -499,10 +540,85 @@ public class CLIEngine implements UserInterface {
         }
         return true;
     }
+
     private boolean areThereAnyDuplicates(ArrayList<Integer> integers){
         Set<Integer> a = new HashSet<>(integers);
         return a.size()<integers.size();
     }
+
+    public int undoOrConfirmHandler(int timeToWait) {
+        int input;
+
+        Scanner s = new Scanner(System.in);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+
+        ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
+        Future<String> future = executorService.submit(inputHandler);
+        String in = "0";
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            private int count = 0;
+            private void clearConsole(){
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+            @Override
+            public void run() {
+                if (count < timeToWait) {
+                    clearConsole();
+                    System.out.println("Press: 0 -> CONFIRM  |  1 -> UNDO ACTION  |  2 -> UNDO TURN");
+                    System.out.println("If no key is pressed, the action will be CONFIRMED  |  # " + (timeToWait-count) + "s remaining #");
+                    System.out.print("Choice: ");
+                    count++;
+                } else {
+                    timer.cancel();
+                }
+            }
+        }, 0,  1000);
+
+        try {
+            in = future.get(timeToWait, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            timer.cancel();
+        }
+
+        timer.cancel();
+        input = Integer.parseInt(in);
+        executorService.shutdown();
+        return input;
+    }
+
+    private class ConsoleInputReadTask implements Callable<String> {
+        private boolean enabled = true;
+
+        public void disable() {
+            enabled = false;
+        }
+
+        public String call() throws IOException {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(System.in));
+            String input;
+            do {
+                //System.out.println("Please type something: ");
+                try {
+                    // wait until we have data to complete a readLine()
+                    while (!br.ready()) {
+                        Thread.sleep(200);
+                    }
+                    input = br.readLine();
+                } catch (InterruptedException e) {
+                    return "0";
+                }
+            } while (!(input.equals("0") || input.equals("1") || input.equals("2")));
+            return input;
+        }
+    }
+
 
     //COMMODITY PRINT FUNCTIONS
     public void printListOfPositions(ArrayList<Position> arrayList){
@@ -671,84 +787,68 @@ public class CLIEngine implements UserInterface {
     }
 
 
-    public int undoOrConfirmHandler(int timeToWait) {
-        int input;
-
-        Scanner s = new Scanner(System.in);
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-
-        ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
-        Future<String> future = executorService.submit(inputHandler);
-        String in = "0";
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            private int count = 0;
-            private void clearConsole(){
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-            @Override
-            public void run() {
-                if (count < timeToWait) {
-                    clearConsole();
-                    System.out.println("Press: 0 -> CONFIRM  |  1 -> UNDO ACTION  |  2 -> UNDO TURN");
-                    System.out.println("If no key is pressed, the action will be CONFIRMED  |  # " + (timeToWait-count) + "s remaining #");
-                    System.out.print("Choice: ");
-                    count++;
-                } else {
-                    timer.cancel();
-                }
-            }
-        }, 0,  1000);
-
-        try {
-            in = future.get(timeToWait, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        } catch (TimeoutException e) {
-            future.cancel(true);
-            timer.cancel();
-        }
-
-        timer.cancel();
-        input = Integer.parseInt(in);
-        executorService.shutdown();
-        return input;
-    }
     public ClientView getClientView() {
         return clientView;
     }
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
     }
-    private class ConsoleInputReadTask implements Callable<String> {
-        private boolean enabled = true;
+    public static void main(String[] args) {
+        ClientView clientView = new ClientView();
+        clientView.getModelView().onPlayerUpdate("Ian","009900",0,1);
+        clientView.getModelView().onPlayerUpdate("Luca","990000",2,3);
+        clientView.getModelView().onPlayerUpdate("Riccardo","000099",4,5);
+        clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
+        clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
+        clientView.getModelView().onPawnPositionUpdate(2,new Position(1,0));
+        clientView.getModelView().onPawnRemoved(2);
+        clientView.getModelView().onPawnPositionUpdate(3,new Position(1,1));
+        clientView.getModelView().onPawnPositionUpdate(4,new Position(0,2));
+        clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
+        clientView.getModelView().onCellUpdate(new Position(3,3), BlockType.LEVEL1);
+        clientView.getModelView().onCellUpdate(new Position(0,0), BlockType.LEVEL2);
+        clientView.getModelView().onCellUpdate(new Position(4,4), BlockType.DOME);
 
-        public void disable() {
-            enabled = false;
-        }
+        clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
+        //clientView.getModelView().onChosenCardUpdate(new CardView(2,"Medusa","do as he wishes"),"Luca");
+        clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
+        CLIEngine cliEngine = new CLIEngine();
+        cliEngine.setClientView(clientView);
 
-        public String call() throws IOException {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(System.in));
-            String input;
-            do {
-                //System.out.println("Please type something: ");
-                try {
-                    // wait until we have data to complete a readLine()
-                    while (!br.ready()) {
-                        Thread.sleep(200);
-                    }
-                    input = br.readLine();
-                } catch (InterruptedException e) {
-                    return "0";
-                }
-            } while (!(input.equals("0") || input.equals("1") || input.equals("2")));
-            return input;
-        }
+        /*ArrayList<BlockType> arrayList = new ArrayList<>();
+        arrayList.add(BlockType.LEVEL1);
+        arrayList.add(BlockType.DOME);
+        cliEngine.onChosenBlockTypeRequest(arrayList);*/
+
+        /*ArrayList<CardView> arrayList = new ArrayList<>();
+        arrayList.add(new CardView(1,"Apollo","ciao ciao ciao"));
+        arrayList.add(new CardView(2,"Dimetrio","cdsfsdfsdf fevdsvsf sfdv"));
+        arrayList.add(new CardView(3,"Medusa","fsdfggfdgfds  sgfd sfdg "));
+        arrayList.add(new CardView(4,"LALA","fsdfggfdgfds  sgfd sfdg "));
+        cliEngine.onInGameCardsRequest(arrayList);*/
+
+        ArrayList<Position> arrayList = new ArrayList<>();
+        arrayList.add(new Position(0,0));
+        arrayList.add(new Position(0,1));
+        arrayList.add(new Position(0,2));
+        arrayList.add(new Position(0,3));
+        arrayList.add(new Position(0,4));
+        arrayList.add(new Position(0,5));
+        arrayList.add(new Position(1,5));
+        arrayList.add(new Position(2,5));
+        arrayList.add(new Position(3,5));
+        arrayList.add(new Position(0,0));
+        arrayList.add(new Position(0,1));
+        arrayList.add(new Position(0,2));
+        arrayList.add(null);
+        arrayList.add(new Position(0,3));
+        arrayList.add(new Position(0,4));
+        arrayList.add(new Position(0,5));
+        arrayList.add(new Position(1,5));
+        arrayList.add(new Position(2,5));
+        arrayList.add(new Position(3,5));
+        cliEngine.onFirstPlayerRequest();
     }
-
 
 
     //FOR NOW, NOT NEEDED
@@ -776,6 +876,8 @@ public class CLIEngine implements UserInterface {
         System.out.flush();
         printCompleteGameStatus();
     }
+
+
 
 }
 
