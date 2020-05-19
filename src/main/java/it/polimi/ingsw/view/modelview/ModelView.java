@@ -174,4 +174,16 @@ public class ModelView implements Serializable {
         return null;
     }
 
+    public ArrayList<Integer> getPlayerPawnsId(String playerName) {
+        ArrayList<Integer> pawnsIdList = new ArrayList<>();
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) {
+                for (PawnView pawn : player.getPawnList()) {
+                    pawnsIdList.add(pawn.getId());
+                }
+            }
+        }
+        return pawnsIdList;
+    }
+
 }
