@@ -91,12 +91,12 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     @Override
     public void run() {
         ObjectInputStream in;
+        Timer pingTimer = new Timer();
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+            pingTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (pong) {
@@ -105,7 +105,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                     } else {
                         System.out.println("No pong received!");
                         close();
-                        timer.cancel();
+                        pingTimer.cancel();
                     }
                 }
             }, timerFrequency * 1000, timerFrequency * 1000);
@@ -142,6 +142,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         } catch (Exception e) {
             System.err.println("Connection closed due to a general server Exception!");
         } finally {
+            pingTimer.cancel();
             close();
         }
     }

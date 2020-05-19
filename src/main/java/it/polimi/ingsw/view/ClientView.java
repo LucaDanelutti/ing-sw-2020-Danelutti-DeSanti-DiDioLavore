@@ -189,6 +189,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(GameEndedMessage gameEndedMessage) {
         userInterface.onGameEnded("A player disconnected!");
+        serverConnection.closeConnection();
     }
 
     @Override
