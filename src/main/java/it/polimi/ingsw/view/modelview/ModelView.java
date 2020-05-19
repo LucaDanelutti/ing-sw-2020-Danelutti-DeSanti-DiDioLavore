@@ -99,6 +99,18 @@ public class ModelView implements Serializable {
         }
     }
 
+    public void setWinner(String playerName) {
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) player.setWinner(true);
+        }
+    }
+
+    public void setLooser(String playerName) {
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) player.setLoser(true);
+        }
+    }
+
     /**
      *
      * @param playerName is the name of the client player

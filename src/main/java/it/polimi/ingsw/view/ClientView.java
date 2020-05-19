@@ -171,12 +171,14 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(YouLostMessage youLostMessage) {
+        modelView.setLooser(name);
         userInterface.refreshView();
     }
 
     @Override
     public void update(YouWonMessage youWonMessage) {
-        userInterface.refreshView();
+        modelView.setWinner(name);
+        userInterface.onWin();
     }
 
     @Override
@@ -186,7 +188,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(GameEndedMessage gameEndedMessage) {
-        userInterface.refreshView();
+        userInterface.onGameEnded("A player disconnected!");
     }
 
     @Override
@@ -197,7 +199,9 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
 
     @Override
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
-        userInterface.refreshView();
+        modelView.setWinner(youLostAndSomeoneWonMessage.getWinnerName());
+        modelView.setLooser(name);
+        userInterface.onYouLostAndSomeOneWon(youLostAndSomeoneWonMessage.getWinnerName());
     }
 
     @Override
