@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.FirstPlayerRequestSceneController">
+   <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="251.0" prefWidth="204.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="62.51713180541992" minHeight="10.0" prefHeight="40.15008354187012" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="120.79445266723633" minHeight="10.0" prefHeight="41.79853057861328" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="120.79445266723633" minHeight="5.407012939453125" prefHeight="43.37275695800781" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="120.79445266723633" minHeight="10.0" prefHeight="40.446990966796875" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="86.78303527832031" minHeight="10.0" prefHeight="81.55300903320312" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label text="Pick the first player!" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         <Button fx:id="buttonPlayer1" mnemonicParsing="false" onAction="#selectPlayer1" text="Button" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
+         <Button fx:id="buttonPlayer2" mnemonicParsing="false" onAction="#selectPlayer2" text="Button" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
+         <Button fx:id="buttonPlayer3" mnemonicParsing="false" onAction="#selectPlayer3" text="Button" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
+         <Button mnemonicParsing="false" onAction="#confirm" text="Confirm" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
+      </children>
+   </GridPane>
+</Scene>
