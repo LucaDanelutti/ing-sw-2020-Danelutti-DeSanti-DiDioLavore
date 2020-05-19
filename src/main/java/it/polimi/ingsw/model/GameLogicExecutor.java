@@ -28,6 +28,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private Game beginningOfCurrentAction;
     private Game beginningOfCurrentPlayerTurn;
 
+
+    private Boolean isGameEnded=false;
+
                                                         //CONSTRUCTOR
 
     /**
@@ -52,35 +55,37 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setSelectedPawn(Position selectedPawnPosition){
-        if(isThisSelectedPawnValid(selectedPawnPosition)) {
-            //load the first action to be executed
-            beginningOfCurrentPlayerTurn=createGameHardCopy(game);
-            game.setCurrentAction();
+        if(!getGameEnded()) {
+            if (isThisSelectedPawnValid(selectedPawnPosition)) {
+                //load the first action to be executed
+                beginningOfCurrentPlayerTurn = createGameHardCopy(game);
+                game.setCurrentAction();
 
-            //aggiorna i selectedPawn e i pawn dentro la currentAction
-            Position unselected = null;
-            for (Pawn p : game.getCurrentPlayer().getPawnList()) {
-                if (!p.getPosition().equals(selectedPawnPosition)) {
-                    unselected = p.getPosition();
+                //aggiorna i selectedPawn e i pawn dentro la currentAction
+                Position unselected = null;
+                for (Pawn p : game.getCurrentPlayer().getPawnList()) {
+                    if (!p.getPosition().equals(selectedPawnPosition)) {
+                        unselected = p.getPosition();
+                    }
                 }
-            }
-            if (unselected == null) {
-                game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), null);
+                if (unselected == null) {
+                    game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), null);
+                } else {
+                    game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), game.getBoard().getPawnCopy(unselected));
+                }
+                //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
+                notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
+
+                //process the action, aka. ask the user for the chosen position for the selected pawn
+                game.getCurrentAction().acceptForProcess(); //this will generate the requestMessage for the chosen position
+
+                return true;
             } else {
-                game.updatePawns(game.getBoard().getPawnCopy(selectedPawnPosition), game.getBoard().getPawnCopy(unselected));
+                notifyListeners(generateSelectPawnRequest());
+                return false;
             }
-            //notify all the virtualViews of the change in the selected pawn but recipients is composed by only the name of the current player
-            notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
-
-            //process the action, aka. ask the user for the chosen position for the selected pawn
-            game.getCurrentAction().acceptForProcess(); //this will generate the requestMessage for the chosen position
-
-            return true;
         }
-        else{
-            notifyListeners(generateSelectPawnRequest());
-            return false;
-        }
+        return false;
     }
     /**
      * This function is called when the view pass to the controller the position for the current action
@@ -94,31 +99,28 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setChosenPosition(Position chosenPos){
-        //this call activates the execution of the moveAction but for the constructAction we have to ask the user for the selectedBlockType
-        if(game.getCurrentAction().getIsOptional()){
-            if(chosenPos==null) {
-                game.getCurrentAction().setChosenPosition(null);
-                game.currentAction.accept(this); //to be executed(skipped) directly this will call the executeAction
-            }
-            else if(isThisPositionInTheAvailableCells(chosenPos)){
-                game.getCurrentAction().setChosenPosition(chosenPos);
-                game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
-            }
-            else{
-                game.getCurrentAction().acceptForProcess();
+        if(!getGameEnded()) {
+            //this call activates the execution of the moveAction but for the constructAction we have to ask the user for the selectedBlockType
+            if (game.getCurrentAction().getIsOptional()) {
+                if (chosenPos == null) {
+                    game.getCurrentAction().setChosenPosition(null);
+                    game.currentAction.accept(this); //to be executed(skipped) directly this will call the executeAction
+                } else if (isThisPositionInTheAvailableCells(chosenPos)) {
+                    game.getCurrentAction().setChosenPosition(chosenPos);
+                    game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
+                } else {
+                    game.getCurrentAction().acceptForProcess();
+                }
+            } else {
+                if (isThisPositionInTheAvailableCells(chosenPos)) {
+                    game.getCurrentAction().setChosenPosition(chosenPos);
+                    game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
+                } else {
+                    game.getCurrentAction().acceptForProcess();
+                }
+
             }
         }
-        else{
-            if(isThisPositionInTheAvailableCells(chosenPos)){
-                game.getCurrentAction().setChosenPosition(chosenPos);
-                game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
-            }
-            else{
-                game.getCurrentAction().acceptForProcess();
-            }
-
-        }
-
 
         return true;
     }
@@ -130,112 +132,87 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the success of the operation
      */
     public Boolean setChosenBlockType(BlockType blockType){
-        if(isThisBlockTypeInTheAvailableBlockTypes(blockType)){
-            game.getCurrentAction().blockSelected(blockType);
-            game.getCurrentAction().acceptForProcess();
-        }
-        else{
-            game.getCurrentAction().acceptForProcess();
-            return false;
-        }
-        return true;
-    }
-    /**
-     * Setup method loadCards to load cards in the game. We read cards from a JSON config file
-     */
-    public Boolean loadCards() {
-        String json = UtilityClass.getResource("configFiles/config.json");
-
-        //Sets Action typeAdapter so as to instance the correct subtype of Action
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
-        Gson gson = gsonBuilder.create();
-
-        //Deserialization
-        Type cardListType = new TypeToken<ArrayList<Card>>(){}.getType();
-        ArrayList<Card> cardList = gson.fromJson(json, cardListType);
-
-        //Adds the observers to the Actions within cardList
-        ArrayList<Card> updatedCardList = new ArrayList<>();
-        for(Card card: cardList) {
-            ArrayList<Action> updatedActionList = new ArrayList<>();
-            for(Action updatedAction: card.getDefaultActionListCopy()) {
-                updatedAction.addVisitor(this);
-                updatedActionList.add(updatedAction);
+        if(!getGameEnded()) {
+            if (isThisBlockTypeInTheAvailableBlockTypes(blockType)) {
+                game.getCurrentAction().blockSelected(blockType);
+                game.getCurrentAction().acceptForProcess();
+            } else {
+                game.getCurrentAction().acceptForProcess();
+                return false;
             }
-            Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
-            updatedCard.setDescription(card.getDescription());
-            updatedCardList.add(updatedCard);
-
+            return true;
         }
-
-        game.setLoadedCardsCopy(updatedCardList);
-
-        return true;
+        return false;
     }
     /**
      * Setup method setFirstPlayer to set the first player that will start to play the game
      */
     public Boolean setStartPlayer(String player){
-        if(isThisAPlayer(player)) {
-            //this also sets current action to null
-            game.setCurrentPlayer(game.getPlayer(player));
-            notifyListeners(generateInitialPawnPositionRequest());
-            return true;
+        if(!getGameEnded()) {
+            if (isThisAPlayer(player)) {
+                //this also sets current action to null
+                game.setCurrentPlayer(game.getPlayer(player));
+                notifyListeners(generateInitialPawnPositionRequest());
+                return true;
+            } else {
+                notifyListeners(generateFirstPlayerRequest());
+                return false;
+            }
         }
-        else{
-            notifyListeners(generateFirstPlayerRequest());
-            return false;
-        }
+        return false;
     }
     /**
      * Setup method setInGameCards to set the cards that will be available to players
      * Players will choose a card in ChooseCardState
      */
     public Boolean setInGameCards(ArrayList<Integer> cards){
-        if(areThoseCardIdsDifferent(cards) && areThoseCardsIdsLegal(cards) && cards.size()==game.getPlayers().size()) {
-            ArrayList<Card> inGameCards = new ArrayList<>();
-            for (int cardID : cards) {
-                inGameCards.add(game.getLoadedCardCopy(cardID));
+        if(!getGameEnded()) {
+            if (areThoseCardIdsDifferent(cards) && areThoseCardsIdsLegal(cards) && cards.size() == game.getPlayers().size()) {
+                ArrayList<Card> inGameCards = new ArrayList<>();
+                for (int cardID : cards) {
+                    inGameCards.add(game.getLoadedCardCopy(cardID));
+                }
+                game.setInGameCardsCopy(inGameCards);
+                Player nextPlayer = game.getNextPlayer();
+                game.setCurrentPlayer(nextPlayer);
+                notifyListeners(generateChosenCardRequest());
+                return true;
+            } else {
+                notifyListeners(generateInGameCardRequest());
+                return false;
             }
-            game.setInGameCardsCopy(inGameCards);
-            Player nextPlayer = game.getNextPlayer();
-            game.setCurrentPlayer(nextPlayer);
-            notifyListeners(generateChosenCardRequest());
-            return true;
         }
-        else{
-            notifyListeners(generateInGameCardRequest());
-            return false;
-        }
+        return false;
     }
     /**
      * Setup method setChosenCard to set the chosen card in the player
      */
     public Boolean setChosenCard(int cardID){
-        Card card = game.getInGameCardCopy(cardID);
-        if (game.getAvailableCards().contains(card)) {
-            game.getCurrentPlayer().setCurrentCard(new Card(card));
+        if(!getGameEnded()) {
+            Card card = game.getInGameCardCopy(cardID);
+            if (game.getAvailableCards().contains(card)) {
+                game.getCurrentPlayer().setCurrentCard(new Card(card));
 
-            //notify all listeners
-            notifyListeners(generateChosenCardUpdate(card));
+                //notify all listeners
+                notifyListeners(generateChosenCardUpdate(card));
 
-            //Pass turn
-            if (game.getAvailableCards().size() == 0) {
-                //All cards are linked to a player
-                notifyListeners(generateFirstPlayerRequest());
+                //Pass turn
+                if (game.getAvailableCards().size() == 0) {
+                    //All cards are linked to a player
+                    notifyListeners(generateFirstPlayerRequest());
+                } else {
+                    //next one should select its card
+                    Player nextPlayer = game.getNextPlayer();
+                    game.setCurrentPlayer(nextPlayer);
+                    notifyListeners(generateChosenCardRequest());
+                }
+                return true;
             } else {
-                //next one should select its card
-                Player nextPlayer = game.getNextPlayer();
-                game.setCurrentPlayer(nextPlayer);
                 notifyListeners(generateChosenCardRequest());
+                return false;
             }
-            return true;
         }
-        else {
-            notifyListeners(generateChosenCardRequest());
-            return false;
-        }
+        return false;
     }
     /**
      * This function sets the initial pawn position for the passed pawns
@@ -246,41 +223,41 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the result of the operation
      */
     public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
-        if(isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2)&&isThisPositionInTheAvailableOnes(workerPos1)&&isThisPositionInTheAvailableOnes(workerPos2)) {
-            int indexWorker1 = 0;
-            int indexWorker2 = 0;
-            for (int i = 0; i < game.getCurrentPlayer().getPawnList().size(); i++) {
-                Pawn p = game.getCurrentPlayer().getPawnList().get(i);
-                if (p.getId() == idWorker1) {
-                    indexWorker1 = i;
-                    game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
+        if(!getGameEnded()) {
+            if (isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2) && isThisPositionInTheAvailableOnes(workerPos1) && isThisPositionInTheAvailableOnes(workerPos2)) {
+                int indexWorker1 = 0;
+                int indexWorker2 = 0;
+                for (int i = 0; i < game.getCurrentPlayer().getPawnList().size(); i++) {
+                    Pawn p = game.getCurrentPlayer().getPawnList().get(i);
+                    if (p.getId() == idWorker1) {
+                        indexWorker1 = i;
+                        game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos1);
+                    } else if (p.getId() == idWorker2) {
+                        indexWorker2 = i;
+                        game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
+                    } else {
+                        return false;
+                    }
                 }
-                else if (p.getId() == idWorker2) {
-                    indexWorker2 = i;
-                    game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(i), workerPos2);
+                notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(), game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(), workerPos1, workerPos2));
+                Player nextPlayer = game.getNextPlayer();
+                if (nextPlayer.getPawnList().get(0).getPosition() != null && nextPlayer.getPawnList().get(1).getPosition() != null) {
+                    //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
+                    game.setCurrentPlayer(nextPlayer);
+                    notifyListeners(generateSelectPawnRequest());
+                } else {
+                    //otherwise i have to ask the next player to set its initial pawn positions
+                    //this function will also set CurrentAction to null
+                    game.setCurrentPlayer(nextPlayer);
+                    notifyListeners(generateInitialPawnPositionRequest());
                 }
-                else {
-                    return false;
-                }
-            }
-            notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(), game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(), workerPos1, workerPos2));
-            Player nextPlayer = game.getNextPlayer();
-            if (nextPlayer.getPawnList().get(0).getPosition() != null && nextPlayer.getPawnList().get(1).getPosition() != null) {
-                //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
-                game.setCurrentPlayer(nextPlayer);
-                notifyListeners(generateSelectPawnRequest());
+                return true;
             } else {
-                //otherwise i have to ask the next player to set its initial pawn positions
-                //this function will also set CurrentAction to null
-                game.setCurrentPlayer(nextPlayer);
                 notifyListeners(generateInitialPawnPositionRequest());
+                return false;
             }
-            return true;
         }
-        else{
-            notifyListeners(generateInitialPawnPositionRequest());
-            return false;
-        }
+        return false;
     }
     /**
      * This function is used to add a player to the lobby
@@ -288,14 +265,17 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the result of the operation
      */
     public Boolean addPlayerToLobby(String name){
-        this.lobby.add(name);
-        if(this.lobby.size()==1){
-            notifyListeners(generateNumberOfPlayersRequest());
+        if(!getGameEnded()) {
+            this.lobby.add(name);
+            if (this.lobby.size() == 1) {
+                notifyListeners(generateNumberOfPlayersRequest());
+            }
+            if (this.lobby.size() >= numberOfPlayers && numberOfPlayers > 1) {
+                startGame();
+            }
+            return true;
         }
-        if(this.lobby.size()>=numberOfPlayers && numberOfPlayers>1){
-            startGame();
-        }
-        return true;
+        return false;
     }
     /**
      * This function is used to set the number of players in the game
@@ -303,17 +283,19 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the result of the operation
      */
     public Boolean setNumberOfPlayers(int numberOfPlayers){
-        if(numberOfPlayers<=1 || numberOfPlayers>3){
-            notifyListeners(generateNumberOfPlayersRequest());
-            return false;
-        }
-        else {
-            this.numberOfPlayers = numberOfPlayers;
-            if (this.lobby.size() >= numberOfPlayers) {
-                startGame();
+        if(!getGameEnded()) {
+            if (numberOfPlayers <= 1 || numberOfPlayers > 3) {
+                notifyListeners(generateNumberOfPlayersRequest());
+                return false;
+            } else {
+                this.numberOfPlayers = numberOfPlayers;
+                if (this.lobby.size() >= numberOfPlayers) {
+                    startGame();
+                }
+                return true;
             }
-            return true;
         }
+        return false;
     }
     /**
      * This function returns the name of the current player
@@ -331,75 +313,85 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the result of the operation
      */
     public Boolean removePlayer(String name){
-        //the game is not yet started
-        if(game.getPlayers().size()==0){
-            //let's find the index of the player to be removed
-            int indexToBeRemoved=-1;
-            for(int i=0; i<this.lobby.size(); i++){
-                if(lobby.get(i).equals(name)){
-                    indexToBeRemoved=i;
-                }
-            }
-            switch (indexToBeRemoved){
-                case -1:
-                    return false;
-                case 0:{
-                    this.lobby.remove(name);
-                    if(lobby.size()>0){
-                        //let's send a new number of player request to the new first player
-                        this.numberOfPlayers=-1;
-                        notifyListeners(generateNumberOfPlayersRequest());
+        if(!getGameEnded()) {
+            //the game is not yet started
+            if (game.getPlayers().size() == 0) {
+                //let's find the index of the player to be removed
+                int indexToBeRemoved = -1;
+                for (int i = 0; i < this.lobby.size(); i++) {
+                    if (lobby.get(i).equals(name)) {
+                        indexToBeRemoved = i;
                     }
                 }
-                default:{
-                    //no other action is needed, just remove the player from the lobby
-                    this.lobby.remove(name);
-                }
+                switch (indexToBeRemoved) {
+                    case -1:
+                        return false;
+                    case 0: {
+                        this.lobby.remove(name);
+                        if (lobby.size() > 0) {
+                            //let's send a new number of player request to the new first player
+                            this.numberOfPlayers = -1;
+                            notifyListeners(generateNumberOfPlayersRequest());
+                        }
+                    }
+                    default: {
+                        //no other action is needed, just remove the player from the lobby
+                        this.lobby.remove(name);
+                    }
 
 
-            }
-        }
-        //the game is started, so we have to crash the connection for everyone
-        else{
-            for(Player p : game.getPlayers()){
-                if(p.getName().equals(name)){
-                    game.removePlayer(p);
-                    break;
                 }
             }
-            notifyListeners(generateGameEnded("Player disconnection"));
+            //the game is started, so we have to crash the connection for everyone
+            else {
+                this.setGameEnded(true);
+                for (Player p : game.getPlayers()) {
+                    if (p.getName().equals(name)) {
+                        game.removePlayer(p);
+                        break;
+                    }
+                }
+                notifyListeners(generateGameEnded("Player disconnection"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
     /**
      * This function is used to undo the current action and restore the game to the status before the action, it also generates the new request to the current player
      * @return the result of the operation
      */
     public Boolean undoCurrentAction(){
-        this.game=beginningOfCurrentAction;
+        if(!getGameEnded()) {
+            this.game = beginningOfCurrentAction;
 
-        //let's reset the modelView of the clients
-        notifyListeners(generateUndoUpdate(this.game));
+            //let's reset the modelView of the clients
+            notifyListeners(generateUndoUpdate(this.game));
 
-        //let's ask again the currentPlayer for the ChosenPosition
-        game.getCurrentAction().acceptForProcess();
+            //let's ask again the currentPlayer for the ChosenPosition
+            game.getCurrentAction().acceptForProcess();
 
-        return true;
+            return true;
+        }
+        return false;
     }
     /**
      * This function is used to undo the whole turn, and restart from the selectedPawn message
      * @return the result of the operation
      */
     public Boolean undoTurn(){
-        this.game=beginningOfCurrentPlayerTurn;
+        if(!getGameEnded()) {
+            this.game = beginningOfCurrentPlayerTurn;
 
-        //let's reset the modelView of the clients
-        notifyListeners(generateUndoUpdate(this.game));
+            //let's reset the modelView of the clients
+            notifyListeners(generateUndoUpdate(this.game));
 
-        //let's ask again the currentPlayer for the selectedPawn
-        notifyListeners(generateSelectPawnRequest());
+            //let's ask again the currentPlayer for the selectedPawn
+            notifyListeners(generateSelectPawnRequest());
 
-        return true;
+            return true;
+        }
+        return false;
     }
 
 
@@ -905,12 +897,52 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         return new ModelView(matrix,playersList);
     }
+    private Boolean getGameEnded() {
+        return isGameEnded;
+    }
+    private void setGameEnded(Boolean gameEnded) {
+        isGameEnded = gameEnded;
+    }
+    /**
+     * Setup method loadCards to load cards in the game. We read cards from a JSON config file
+     */
+    public Boolean loadCards() {
+        String json = UtilityClass.getResource("configFiles/config.json");
+
+        //Sets Action typeAdapter so as to instance the correct subtype of Action
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson gson = gsonBuilder.create();
+
+        //Deserialization
+        Type cardListType = new TypeToken<ArrayList<Card>>(){}.getType();
+        ArrayList<Card> cardList = gson.fromJson(json, cardListType);
+
+        //Adds the observers to the Actions within cardList
+        ArrayList<Card> updatedCardList = new ArrayList<>();
+        for(Card card: cardList) {
+            ArrayList<Action> updatedActionList = new ArrayList<>();
+            for(Action updatedAction: card.getDefaultActionListCopy()) {
+                updatedAction.addVisitor(this);
+                updatedActionList.add(updatedAction);
+            }
+            Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
+            updatedCard.setDescription(card.getDescription());
+            updatedCardList.add(updatedCard);
+
+        }
+
+        game.setLoadedCardsCopy(updatedCardList);
+
+        return true;
+    }
 
 
 
 
 
-                                                //FUNCTIONS THAT GENERATE MESSAGES
+
+    //FUNCTIONS THAT GENERATE MESSAGES
 
     private ChosenPositionForMoveRequestMessage generateChosenPositionForMoveRequest(){
         ArrayList<String> recipients = new ArrayList<>();
