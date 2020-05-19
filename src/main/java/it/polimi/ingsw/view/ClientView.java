@@ -27,14 +27,20 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     public void startServerConnection(String hostname, int port) {
-        this.modelView = new ModelView();
-        Client client = new Client(hostname, port);
-        serverConnection = client;
-        try{
-            client.run(this);
-        }catch (IOException e){
-            System.err.println(e.getMessage()); //TODO: logging
-        }
+        ClientView clientView = this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                modelView = new ModelView();
+                Client client = new Client(hostname, port);
+                serverConnection = client;
+                try{
+                    client.run(clientView);
+                }catch (IOException e){
+                    System.err.println(e.getMessage()); //TODO: logging
+                }
+            }
+        }).start();
     }
 
     public UserInterface getUserInterface() {
