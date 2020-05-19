@@ -102,6 +102,7 @@ public class ModelView implements Serializable {
     public void setWinner(String playerName) {
         for (PlayerView player : playerList) {
             if (player.getName().equals(playerName)) player.setWinner(true);
+            else player.setLoser(true);
         }
     }
 
