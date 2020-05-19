@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameLogicExecutor;
@@ -19,6 +20,7 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<ClientConnection, String> playingConnection = new HashMap<>();
+    private Map<ClientConnection, VirtualView> playingVirtualViews = new HashMap<>();
     private GameLogicExecutor gameLogicExecutor;
     private Controller controller;
 
@@ -34,6 +36,7 @@ public class Server {
     }
 
     public synchronized void removeConnection(ClientConnection c) {
+        gameLogicExecutor.removeListener(playingVirtualViews.get(c));
         gameLogicExecutor.removePlayer(playingConnection.get(c));
         playingConnection.remove(c);
     }
@@ -47,6 +50,7 @@ public class Server {
         } else {
             playingConnection.put(c, name);
             VirtualView playerView = new VirtualView(c, name);
+            playingVirtualViews.put(c, playerView);
             playerView.addListener(controller);
             gameLogicExecutor.addListener(playerView);
             gameLogicExecutor.addPlayerToLobby(name);
