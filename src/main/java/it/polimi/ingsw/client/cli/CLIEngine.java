@@ -80,6 +80,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void refreshView() {
         clearScreen();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         printCompleteGameStatus();
     }
 
@@ -88,6 +93,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void refreshViewOnlyGameInfo() {
         clearScreen();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
 
@@ -849,22 +859,55 @@ public class CLIEngine implements UserInterface {
         arrayList.add(new Position(3,5));
         cliEngine.onFirstPlayerRequest();
     }
+    private boolean isThereAnyWinner(){
+        for(PlayerView  p : clientView.getModelView().getPlayerList()){
+            if(p.getWinner()){
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean haveILost(){
+        for(PlayerView p : clientView.getModelView().getPlayerList()){
+            if(p.getName().equals(clientView.getName())){
+                if(p.getLoser()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 
     //FOR NOW, NOT NEEDED
     @Override public void refreshView(PawnView pawnView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         printCompleteGameStatus();
     }
     @Override public void refreshView(CardView cardView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
     @Override public void refreshView(PlayerView playerView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         if(isThereAnyPawnOnTheBoard()){
             printCompleteGameStatus();
         }else{
@@ -874,6 +917,11 @@ public class CLIEngine implements UserInterface {
     @Override public void refreshView(CellView cellView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        if(!isThereAnyWinner() && haveILost()){
+            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
+            printSingleScoreRow();
+            System.out.println();
+        }
         printCompleteGameStatus();
     }
 
