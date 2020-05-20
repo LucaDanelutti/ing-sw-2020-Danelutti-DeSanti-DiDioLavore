@@ -24,9 +24,25 @@ class GameLogicExecutorTest {
     ArrayList<Action> basicActionList1;
     ArrayList<Action> basicActionList2;
     ArrayList<Action> basicActionList3;
+    ArrayList<MockView> mockViews;
 
 
-    //MoveAction tests
+    @BeforeEach
+    void init_of_3_players(){
+        //create the mock views
+        mockViews=new ArrayList<>();
+        mockViews.add(new MockView("p1"));
+        mockViews.add(new MockView("p2"));
+        mockViews.add(new MockView("p3"));
+
+        //create the game accordingly adding the mock views
+        game= new Game();
+        gameLogicExecutor=new GameLogicExecutor(game);
+
+    }
+
+
+                                                            //MoveAction tests
 
     /**
      * This test checks that the execution of a moveAction in the simpleGameSetup works properly
@@ -50,7 +66,6 @@ class GameLogicExecutorTest {
         assertEquals(positions.get(0),selectedPawn.getPosition());
 
     }
-
     /**
      * This test checks that if an action with denyMoveUp enabled and with a selectedPawn that has moved up, disables moveUp for other players
      */
@@ -91,7 +106,6 @@ class GameLogicExecutorTest {
             assertEquals(false, moveAction.getMoveUpEnable());
         }
     }
-
     /**
      * This test checks that if a MoveAction with addMoveIfOn actually move to one of those cells, another Move is correctly added to its ActionList
      * This is done two times to check that the execution of the added move works fine
@@ -132,7 +146,6 @@ class GameLogicExecutorTest {
 
 
     }
-
     /**
      * This test checks that if a MoveAction with swapEnable actually moves into an opponent cell the pawns are swapped
      */
@@ -162,7 +175,6 @@ class GameLogicExecutorTest {
 
 
     }
-
     /**
      * This test checks that if a MoveAction with pushEnable actually moves into an opponent cell the pawn is pushed away correctly
      */
@@ -193,7 +205,6 @@ class GameLogicExecutorTest {
         assertEquals(new Position(1,2),currentPlayer.getPawnList().get(0).getPosition());
 
     }
-
     /**
      * This test checks that if a MoveAction gets a pawn to the top level, that player wins, and the correct states are set
      */
@@ -218,7 +229,7 @@ class GameLogicExecutorTest {
 
 
 
-    //ConstructAction tests
+                                                            //ConstructAction tests
 
     /**
      * This test checks that the execution of a constructAction in the simpleGameSetup works properly and the turn is passed
@@ -249,7 +260,6 @@ class GameLogicExecutorTest {
         assertEquals(blockTypes.get(0),game.getBoard().getMatrixCopy()[positions.get(0).getX()][positions.get(0).getY()].peekBlock());
 
     }
-
     /**
      * This test checks that if an OptionalConstruct with disableMoveUp is actually run, the value of moveUP is turned off in the next actions
      */
@@ -282,7 +292,6 @@ class GameLogicExecutorTest {
         //at this time the next action should be loaded, and it is the moveAction, this moveAction must have MoveUp set to true
         assertEquals(false, ((MoveAction)game.getCurrentAction()).getMoveUpEnable());
     }
-
     /**
      * This test checks that if an optional Action (in this case a ConstructAction) is actually skipped, no changes are made to the pawn and the next
      * action is correctly loaded.
@@ -312,7 +321,7 @@ class GameLogicExecutorTest {
     }
 
 
-    //generalAction tests
+                                                            //generalAction tests
 
     /**
      * This function tests that at the end of a turn if a general action is present that has destroyPawnAndBuildEnable activated
@@ -351,7 +360,6 @@ class GameLogicExecutorTest {
         assertNull(game.getBoard().getMatrixCopy()[1][2].getPawn());
 
     }
-
     /**
      * This test checks that if a player lose all of his pawn, the player is set in loser state
      */
@@ -391,7 +399,6 @@ class GameLogicExecutorTest {
         assertEquals(true,game.getPlayer("luca").getLoser());
 
     }
-
     /**
      * This test checks  that if a general Action is executed with enableNoWinOnPerimeter the actual variable is set accordingly
      */
@@ -428,7 +435,7 @@ class GameLogicExecutorTest {
 
 
 
-    //Setup tests
+                                                                //Setup tests
 
 
 
@@ -454,7 +461,6 @@ class GameLogicExecutorTest {
 
 
     }
-
     /**
      * The test checks that after a player has finished all of its actions, it is placed in idle and the next player is loaded
      */
@@ -483,7 +489,6 @@ class GameLogicExecutorTest {
         testGameLogicExecutor.addPlayer("testPlayer1");
         assertEquals(1, testGame.getPlayers().size());
     }*/
-
     /**
      * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
      */
@@ -514,7 +519,6 @@ class GameLogicExecutorTest {
         assertNotNull(testGame.getCurrentPlayer());
         assertTrue(testNameArrays.contains(testGame.getCurrentPlayer().getName()));
     }
-
     /**
      * The scope of this test function is to test that startGame method correctly starts the game
      */
@@ -566,7 +570,6 @@ class GameLogicExecutorTest {
         assertEquals(testCard1, testPlayer1.getCurrentCard());
         assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
-
     /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
      */
@@ -597,7 +600,6 @@ class GameLogicExecutorTest {
     /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
      */
-    //TODO: add this function
     /*@Test void setChosenCard_WrongCard() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
@@ -641,8 +643,6 @@ class GameLogicExecutorTest {
         assertEquals(new Position(1, 1), testGame.getBoard().getMatrixCopy()[1][1].getPawn().getPosition());
         assertEquals(testPlayer2.getName(),testGame.getCurrentPlayer().getName());
     }
-
-
     /**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
      */
@@ -658,7 +658,6 @@ class GameLogicExecutorTest {
         testPositionArray.add(new Position(5, 5));
         assertFalse(testGameLogicExecutor.setPawnsPositions(testPositionArray));
     }
-
     /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
      */
@@ -689,7 +688,6 @@ class GameLogicExecutorTest {
         assertEquals(testCard2, testGame.getInGameCards().get(1));
         assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
-
     /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
      */
@@ -770,7 +768,6 @@ class GameLogicExecutorTest {
 
         assertEquals(testPlayer2, testGame.getCurrentPlayer());
     }
-
     /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
      */
@@ -792,7 +789,6 @@ class GameLogicExecutorTest {
     /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
      */
-    //TODO: check other functions too
     /*@Test void setStartPlayer_NotOkPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
@@ -864,12 +860,10 @@ class GameLogicExecutorTest {
 
         assertEquals(new Position(0, 0), testGame.getPlayer("testPlayer1").getPawnList().get(0).getPosition());
     }
-
     /**
      * The scope of this test function is to test that loadCards properly loads the json into Cards
      */
-    @Test
-    void loadCards() {
+    @Test void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
 
         ArrayList<Position> expectedList = new ArrayList<Position>() {{
@@ -897,7 +891,7 @@ class GameLogicExecutorTest {
     }
 
 
-    //Complete game tests
+                                                            //Complete game tests
 
     /**
      * full simple gamePlay with god 1,2,3 no effects activated
@@ -1004,23 +998,8 @@ class GameLogicExecutorTest {
 
 
 
+                                                    // TESTS USING MOCKVIEWS TO EMULATE CLIENTS
 
-
-    ArrayList<MockView> mockViews;
-
-    @BeforeEach
-    void init_of_3_players(){
-        //create the mock views
-        mockViews=new ArrayList<>();
-        mockViews.add(new MockView("p1"));
-        mockViews.add(new MockView("p2"));
-        mockViews.add(new MockView("p3"));
-
-        //create the game accordingly adding the mock views
-        game= new Game();
-        gameLogicExecutor=new GameLogicExecutor(game);
-
-    }
 
     @Test void receiveGameStartedAndInGameCardsRequest(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
@@ -1051,7 +1030,6 @@ class GameLogicExecutorTest {
             }
         }
     }
-
     @Test void everyOneReceiveChosenCardRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -1144,7 +1122,6 @@ class GameLogicExecutorTest {
             }
         }
     }
-
     @Test void ReceiveInitialPawnsPositionsRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -1240,7 +1217,6 @@ class GameLogicExecutorTest {
         //UNCOMMENT TO SEE THE BOARD SETUP
         //simpleBoardPrint();
     }
-
     @Test void CompleteTurnOfFirstPlayer(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1351,7 +1327,6 @@ class GameLogicExecutorTest {
 
 
     }
-
     @Test void CompleteGameWithBots(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1472,7 +1447,6 @@ class GameLogicExecutorTest {
 
 
     }
-
     @Test void loopBotsGame(){
         //SETUP VARIABLES
         int counter=0;
@@ -1535,7 +1509,9 @@ class GameLogicExecutorTest {
     }
 
 
-    //COMMODITY FUNCTIONS
+
+
+                                                             //COMMODITY FUNCTIONS
     /**
      * This function creates a simple setup for a game of three players Ian, Luca, Riccardo.
      * The players play like a game with no gods, with one simple move and one simple create loaded in their actionList.
