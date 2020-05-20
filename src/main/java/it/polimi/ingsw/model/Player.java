@@ -99,7 +99,13 @@ class Player {
      * @param pawn is the pawn to remove
      */
     void removePawn(Pawn pawn) {
+        if(pawn==null){
+            return;
+        }
         this.pawnList.remove(pawn);
+    }
+    void removeAllPawns(){
+        this.pawnList=new ArrayList<>();
     }
 
     Card getCurrentCard() {

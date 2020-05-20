@@ -488,4 +488,15 @@ public class Game {
         return availableCards;
     }
 
+    void removePlayerPawns(String nickname){
+        for(Player player : this.inGamePlayers){
+            if(player.getName().equals(nickname)){
+                for(Pawn pawn : player.getPawnList()){
+                    this.board.removePawnFromGame(pawn);
+                }
+                player.removeAllPawns();
+            }
+        }
+    }
+
 }

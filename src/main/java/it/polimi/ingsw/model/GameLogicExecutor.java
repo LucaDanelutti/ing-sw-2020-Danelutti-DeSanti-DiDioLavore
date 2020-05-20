@@ -727,7 +727,15 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     else {
                         //the third player can be putted in ActionState
                         game.getCurrentPlayer().getCurrentCard().resetCurrentActionList();
+
+                        //remove the pawn for the tempLoser player, send the removePawnUpdate and send the youLost message
+                        for(Pawn p : tempLoser.getPawnList()){
+                            notifyListeners(generatePawnRemoveUpdate(p.getId()));
+                        }
+                        this.game.removePlayerPawns(tempLoser.getName());
                         notifyListeners(generateYouLost(tempLoser.getName()));
+
+
                         notifyListeners(generateTurnEnded());//this will send turn ended to the currentUser before setting a new one
                         game.setCurrentPlayer(nextPlayer);
                         notifyListeners(generateSelectPawnRequest());
