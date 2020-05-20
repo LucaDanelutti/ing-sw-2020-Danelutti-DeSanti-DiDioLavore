@@ -298,7 +298,11 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onWin() {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/winScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+        });
     }
 
     @Override
