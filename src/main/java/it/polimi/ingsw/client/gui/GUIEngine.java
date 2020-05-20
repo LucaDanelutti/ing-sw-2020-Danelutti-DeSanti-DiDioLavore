@@ -136,21 +136,22 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshView(PawnView pawnView) {
+        refreshView();
     }
 
     @Override
     public void refreshView(CardView cardView) {
-
+        refreshView();
     }
 
     @Override
     public void refreshView(PlayerView playerView) {
-
+        refreshView();
     }
 
     @Override
     public void refreshView(CellView cellView) {
-
+        refreshView();
     }
 
     @Override
@@ -158,7 +159,7 @@ public class GUIEngine extends Application implements UserInterface {
         //TODO: rimuovere l'instanceof
         Platform.runLater(() -> {
             try {
-                ((MainSceneController) currentController).updateGameInfo();
+                if (currentController instanceof MainSceneController) ((MainSceneController) currentController).updateGameInfo();
             } catch (Exception e) {
                 System.out.println("Problem while refreshViewOnlyGameInfo(): MainSceneController may not be the currentController");
             }
@@ -170,7 +171,7 @@ public class GUIEngine extends Application implements UserInterface {
         Platform.runLater(() -> {
             try {
                 //TODO: rimuovere l'instanceof
-                ((MainSceneController) currentController).updateBoard();
+                if (currentController instanceof MainSceneController) ((MainSceneController) currentController).updateBoard();
             } catch (Exception e) {
                 System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
             }
@@ -254,10 +255,20 @@ public class GUIEngine extends Application implements UserInterface {
     @Override
     public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
-            //TODO: la validità di questa condizione è deterministica, valutarla e togliere l'if
-            if (!(currentController instanceof MainSceneController)) showMainScene();
-            ((MainSceneController)currentController).placeInitialPawns(availablePositions);
+            try {
+                showMainSceneSynch();
+                ((MainSceneController)currentController).placeInitialPawns(availablePositions);
+            } catch (Exception e) {
+                System.out.println("Problem while executing onInitialPawnPositionRequest():" + e.toString());
+            }
         });
+    }
+
+    private void showMainSceneSynch() {
+        showScene("/fxml/mainScene.fxml");
+        stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+        stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+        ((MainSceneController)currentController).buildMainScene();
     }
 
     @Override
