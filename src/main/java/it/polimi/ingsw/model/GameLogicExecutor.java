@@ -11,14 +11,17 @@ import it.polimi.ingsw.utility.UtilityClass;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.*;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
 import static java.lang.Math.abs;
 
+/**
+ * This class is the center of the whole model in the server, all the requests for an update to the model from the controller
+ * pass from calls to this class. This class is also responsible of the execution of actions and the generation of the requests
+ * to the clients
+ */
 public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor {
     private Game game;
     private final ArrayList<String> lobby;
@@ -27,8 +30,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     private static final int maxY=4;
     private Game beginningOfCurrentAction;
     private Game beginningOfCurrentPlayerTurn;
-
-
     private Boolean isGameEnded=false;
 
                                                         //CONSTRUCTOR
@@ -224,7 +225,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      */
     public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
         if(!getGameEnded()) {
-            if (isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2) && isThisPositionInTheAvailableOnes(workerPos1) && isThisPositionInTheAvailableOnes(workerPos2)) {
+            if (isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos1) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos2)) {
                 int indexWorker1 = 0;
                 int indexWorker2 = 0;
                 for (int i = 0; i < game.getCurrentPlayer().getPawnList().size(); i++) {
@@ -791,6 +792,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         notifyListeners(new gameStartedAndYouAreNotSelectedMessage(notToBeAddedPlayers));
     }
+    /**
+     * This function is used to create a playerView from a player inside of the model
+     * @param player the player from the model
+     * @return the new playerView generated from the model
+     */
     private PlayerView modelPlayer_to_viewPlayer(Player player){
         ArrayList<PawnView> pawnViews = new ArrayList<>();
         for(Pawn p : player.getPawnList()){
@@ -802,12 +808,21 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         playerView.setWinner(player.getWinner());
         return playerView;
     }
+    /**
+     * This function is used to create a viewCard from a card in the model
+     * @param card the card from the model
+     * @return the new cardView
+     */
     private CardView modelCard_to_viewCard(Card card){
         if(card==null){
             return null;
         }
         return new CardView(card.getId(),card.getName(),card.getDescription());
     }
+    /**
+     * This function is used to create an array of ViewCards from the ones loaded in the model
+     * @return the array of the viewCards
+     */
     private ArrayList<CardView>loadedCards_to_viewCards(){
         ArrayList<CardView> availableViewCards = new ArrayList<>();
         for(Card card : game.getLoadedCards()){
@@ -815,6 +830,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return availableViewCards;
     }
+    /**
+     * This function is used to create a cellView matrix from the matrix of cell inside of the model
+     * @param matrix the matrix within the model
+     * @return the new cellView matrix
+     */
     private CellView[][] cellMatrix_to_cellViewMatrix(Cell[][] matrix){
         CellView[][] copiedMatrix=new CellView[5][5];
         for(int row=0; row<matrix.length; row++){
@@ -824,12 +844,27 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return  copiedMatrix;
     }
+    /**
+     * This function is used to check if the position is in the position available from the current action
+     * @param toBeChecked the position to be checked
+     * @return a boolean of the check operation
+     */
     private Boolean isThisPositionInTheAvailableCells(Position toBeChecked){
         return game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy()).contains(toBeChecked);
     }
+    /**
+     * This function is used to check if the blocktype is in the blocktypes avaiable from the current action
+     * @param blockType the blocktype to be checked
+     * @return the value of the operation
+     */
     private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
         return game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(), game.getBoard().getMatrixCopy()).contains(blockType);
     }
+    /**
+     * This function checks that the position of the selected pawn is a valid position for the current player
+     * @param selectedPawnPos the position of the selected pawn
+     * @return the value of the operation
+     */
     private Boolean isThisSelectedPawnValid(Position selectedPawnPos){
         for(Pawn p : game.getCurrentPlayer().getPawnList()){
             if(p.getPosition().equals(selectedPawnPos)){
@@ -838,6 +873,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return false;
     }
+    /**
+     * This function is used to check if a nickname is a valid nickname from one fo the player in the game
+     * @param name the nickname to be checked
+     * @return the value of the operation
+     */
     private Boolean isThisAPlayer(String name){
         for(Player p : game.getPlayers()){
             if(p.getName().equals(name)){
@@ -846,10 +886,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return false;
     }
+    /**
+     * This function is used to check if the arrayList of card ids are legit in the sense that there are no repetitions
+     * @param cardIds the ids to be checked
+     * @return the value of the operation
+     */
     private Boolean areThoseCardIdsDifferent(ArrayList<Integer> cardIds){
         Set<Integer> set = new HashSet<>(cardIds);
         return cardIds.size() <= set.size();
     }
+    /**
+     * This function is used to check if the ids of the cards are legal in the sense that there are the corresponding cards loaded in the model
+     * @param cardIds the ids to be checked
+     * @return the value of the operation
+     */
     private Boolean areThoseCardsIdsLegal(ArrayList<Integer> cardIds){
         for(Integer cardId : cardIds){
             if(game.getLoadedCardCopy(cardId)==null){
@@ -858,27 +908,37 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return true;
     }
+    /**
+     * This function is used to check if a position is a legal one in the sense of not overcoming the board limits
+     * @param pos the position to be checked
+     * @return the return value of the operation
+     */
     private Boolean isThisALegalPosition(Position pos){
         int x=pos.getX();
         int y=pos.getY();
         return x <= maxX && x >= 0 && y <= maxY && y >= 0;
     }
-    private Boolean isThisPositionInTheAvailableOnes(Position chosenPos){
+    /**
+     * This function is used to check if a position is in the available ones for the initial pawn positioning
+     * @param chosenPos the position to be checked
+     * @return the return value of the operation
+     */
+    private Boolean isThisPositionInTheAvailableOnesForInitialPawnPositioning(Position chosenPos){
         return game.getBoard().availablePositionsForPawnInitialPlacement().contains(chosenPos);
     }
+    /**
+     * This function is used to create an hard copy (no dangling reference inside of it) of the game passed as a parameter
+     * @param toBeCopied the game to be copied
+     * @return the new hard copied game
+     */
     private Game createGameHardCopy(Game toBeCopied){
-        /*Game hardCopy=new Game();
-        //since we call this function when the game is already started,let's be sure about that
-        if(toBeCopied.getCurrentPlayer()!=null) {
-            //TODO: we have to implement the hard copy of player, board and card
-            hardCopy.setLoadedCardsCopy(toBeCopied.getLoadedCards());
-            hardCopy.setInGameCardsCopy(toBeCopied.getInGameCards());
-            hardCopy.setInGamePlayersAndBoardCopy(toBeCopied);
-        }
-        return hardCopy;*/
-
         return new Game(toBeCopied);
     }
+    /**
+     * This function is used to create a modelView from the game passed as a parameter
+     * @param game the game from which to take the informations
+     * @return the new modelView
+     */
     public ModelView createModelViewFromThisGame(Game game){
         ArrayList<PlayerView> playersList=new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -897,9 +957,17 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         return new ModelView(matrix,playersList);
     }
+    /**
+     * this is the getter for the variable gameEnded
+     * @return the value of gameEnded
+     */
     private Boolean getGameEnded() {
         return isGameEnded;
     }
+    /**
+     * This function is the setter for the variable gameEnded
+     * @param gameEnded the value to be assigned
+     */
     private void setGameEnded(Boolean gameEnded) {
         isGameEnded = gameEnded;
     }
@@ -942,8 +1010,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
 
 
-    //FUNCTIONS THAT GENERATE MESSAGES
+                                                //FUNCTIONS THAT GENERATE MESSAGES
 
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private ChosenPositionForMoveRequestMessage generateChosenPositionForMoveRequest(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -953,6 +1025,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new ChosenPositionForMoveRequestMessage(recipients, availablePositions);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private ChosenPositionForConstructRequestMessage generateChosenPositionForConstructRequest(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -962,12 +1038,21 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new ChosenPositionForConstructRequestMessage(recipients, availablePositions);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param constructAction the action from which to generate the available positions
+     * @return the generated message
+     */
     private ChosenBlockTypeRequestMessage generateChosenBlockTypeRequest(ConstructAction constructAction){
         ArrayList<String> recipients=new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         ArrayList<BlockType> blockTypes = constructAction.availableBlockTypes(constructAction.getChosenPosition(),game.getBoard().getMatrixCopy());
         return new ChosenBlockTypeRequestMessage(recipients,blockTypes);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private SelectPawnRequestMessage generateSelectPawnRequest(){
         ArrayList<String> recipients=new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -977,6 +1062,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new SelectPawnRequestMessage(recipients, availablePawnsPos);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private ChosenCardRequestMessage generateChosenCardRequest(){
         ArrayList<String> recipients=new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -986,11 +1075,19 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new ChosenCardRequestMessage(recipients,cards);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private FirstPlayerRequestMessage generateFirstPlayerRequest(){
         ArrayList<String> recipients=new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         return new FirstPlayerRequestMessage(recipients);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private InGameCardsRequestMessage generateInGameCardRequest(){
         ArrayList<String> recipients=new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -1002,16 +1099,28 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         return new InGameCardsRequestMessage(recipients,playerViews,loadedCards_to_viewCards());
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private InitialPawnPositionRequestMessage generateInitialPawnPositionRequest() {
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         return new InitialPawnPositionRequestMessage(recipients, game.getBoard().availablePositionsForPawnInitialPlacement());
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private NumberOfPlayersRequestMessage generateNumberOfPlayersRequest(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(this.lobby.get(0));
         return new NumberOfPlayersRequestMessage(recipients);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private SelectedPawnUpdateMessage generateSelectedPawnUpdate(Position selectedPawnPosition){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
@@ -1024,6 +1133,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new SelectedPawnUpdateMessage(recipients,id);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private PawnPositionUpdateMessage generatePawnPositionUpdate(){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1031,6 +1144,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new PawnPositionUpdateMessage(recipients,game.getCurrentAction().getSelectedPawn().getId(),game.getCurrentAction().getChosenPosition());
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param yourPawnId the id of your pawn
+     * @param otherPlayerPawnId the id of the other pawn to be updated
+     * @param yourPawnPos the position of your pawn
+     * @param otherPlayerNewPawnPosition the position of the other pawn
+     * @return the generated message
+     */
     private DoublePawnPositionUpdateMessage generateDoublePawnPositionUpdate(int yourPawnId, int otherPlayerPawnId, Position yourPawnPos, Position otherPlayerNewPawnPosition){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1038,6 +1159,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new DoublePawnPositionUpdateMessage(recipients,yourPawnId,otherPlayerPawnId,yourPawnPos,otherPlayerNewPawnPosition);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param newBlock the modified block on the cell
+     * @param updatedCellPosition the position of the modified cell
+     * @return the generated message
+     */
     private CellUpdateMessage generateCellUpdate(BlockType newBlock,Position updatedCellPosition){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1045,6 +1172,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new CellUpdateMessage(recipients,newBlock,updatedCellPosition);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param pawnId the id of the pawn to be removed
+     * @return the generated message
+     */
     private PawnRemoveUpdateMessage generatePawnRemoveUpdate(int pawnId){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1052,6 +1184,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new PawnRemoveUpdateMessage(recipients,pawnId);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param card the card that one player has selected
+     * @return the generated message
+     */
     private ChosenCardUpdateMessage generateChosenCardUpdate(Card card){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1059,6 +1196,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new ChosenCardUpdateMessage(recipients,new CardView(card.getId(),card.getName(),card.getDescription()),game.getCurrentPlayer().getName());
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param toBeRestored the game to be restored after an undo request
+     * @return the generated message
+     */
     private UndoUpdateMessage generateUndoUpdate(Game toBeRestored){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1066,6 +1208,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new UndoUpdateMessage(recipients,createModelViewFromThisGame(toBeRestored));
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private GameStartMessage generateGameStart(){
         ArrayList<String> recipients = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1081,6 +1227,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         return new GameStartMessage(recipients,playerViews);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private YouWonMessage generateYouWon(){
         ArrayList<String> recipients=new ArrayList<>();
 
@@ -1091,6 +1241,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new YouWonMessage(recipients);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param winnerName  the winner name
+     * @return the generated message
+     */
     private YouLostAndSomeoneWonMessage generateYouLostAndSomeOneWon(String winnerName){
         ArrayList<String> recipients=new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1101,6 +1256,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         return new YouLostAndSomeoneWonMessage(recipients,winnerName);
 
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param loserName the loser name
+     * @return the generated message
+     */
     private YouLostMessage generateYouLost(String loserName){
         ArrayList<String> recipients=new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1108,11 +1268,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new YouLostMessage(recipients,loserName);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @return the generated message
+     */
     private TurnEndedMessage generateTurnEnded(){
         ArrayList<String> recipients = new ArrayList<>();
         recipients.add(game.getCurrentPlayer().getName());
         return new TurnEndedMessage(recipients);
     }
+    /**
+     * This function is called to generate the message specified in the function name
+     * @param reason the reason of the game ended message
+     * @return the generated message
+     */
     private GameEndedMessage generateGameEnded(String reason){
         ArrayList<String> recipients=new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1125,7 +1294,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                                                     //DEPRECATED SHOULD BE AVOIDED!
     //TODO: remove those functions
     public Boolean setPawnsPositions(ArrayList<Position> positions){
-        if (isThisALegalPosition(positions.get(0))&&isThisALegalPosition(positions.get(1))&&isThisPositionInTheAvailableOnes(positions.get(0))&&isThisPositionInTheAvailableOnes(positions.get(1))) {
+        if (isThisALegalPosition(positions.get(0))&&isThisALegalPosition(positions.get(1))&& isThisPositionInTheAvailableOnesForInitialPawnPositioning(positions.get(0))&& isThisPositionInTheAvailableOnesForInitialPawnPositioning(positions.get(1))) {
             game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(0), positions.get(0));
             game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(1), positions.get(1));
             notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(0).getId(),game.getCurrentPlayer().getPawnList().get(1).getId(),positions.get(0),positions.get(1)));
