@@ -84,6 +84,9 @@ public class MainSceneController extends GUIController {
    @FXML
     public void initialize() {
        phaseLabel.setText("");
+       clientPlayerNameLabel.setText("");
+       enemy1PlayerNameLabel.setText("");
+       enemy2PlayerNameLabel.setText("");
 
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
@@ -119,13 +122,10 @@ public class MainSceneController extends GUIController {
 
    //TODO: remove this method and the relative button. It is just for test
    public void updateBoardTest() {
-       ((GUIEngine)clientView.getUserInterface()).updateModelView();
-       ArrayList<Position> availableCells = new ArrayList<>();
-       availableCells.add(new Position(1, 1));
-       availableCells.add(new Position(1, 3));
-       availableCells.add(new Position(1, 4));
-       availableCells.add(new Position(2, 4));
-       clientView.getUserInterface().onInitialPawnPositionRequest(availableCells);
+       ArrayList<Position> availablePositions = new ArrayList<>();
+       availablePositions.add(new Position(1,1));
+       availablePositions.add(new Position(1,2));
+       clientView.getUserInterface().onInitialPawnPositionRequest(availablePositions);
    }
 
    public void updateGameInfo() {
@@ -139,6 +139,7 @@ public class MainSceneController extends GUIController {
      * and then the pawns imageViews
      */
    public void updateBoard() {
+       //TODO: there may be a way to avoid re-loading the ImageViews within enlightenedImageViewsArray
        boardGridPane.getChildren().clear();
        ModelView modelView = clientView.getModelView();
        for(int i = 0; i < modelView.getMatrix().length; i++){
@@ -155,18 +156,21 @@ public class MainSceneController extends GUIController {
            }
        }
        updatePawns();
+       loadEnlightenedImageViews();
    }
 
    private void updatePawns() {
        ModelView modelView = clientView.getModelView();
        ArrayList<PawnView> pawnsList = modelView.getPawns();
        for (PawnView pawn: pawnsList) {
-           Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
-           ImageView pawnImageView = new ImageView(pawnImage);
-           pawnImageView.setPreserveRatio(true);
-           pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
-           pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
-           boardGridPane.add(pawnImageView, pawn.getPawnPosition().getY(), pawn.getPawnPosition().getX());
+           if (pawn.getPawnPosition() != null) {
+               Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
+               ImageView pawnImageView = new ImageView(pawnImage);
+               pawnImageView.setPreserveRatio(true);
+               pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               boardGridPane.add(pawnImageView, pawn.getPawnPosition().getY(), pawn.getPawnPosition().getX());
+           }
        }
 
    }
@@ -211,8 +215,9 @@ public class MainSceneController extends GUIController {
            for (int j = 0; j < BOARD_SIZE; j++) {
                Image enlightenedImage = new Image("images/board/enlightened_cell_" + playerColor +".png");
                ImageView enlightenedImageView = new ImageView(enlightenedImage);
-               enlightenedImageView.setOpacity(0.5);
+               enlightenedImageView.setOpacity(0.7);
                enlightenedImageViewsArray[i][j] = enlightenedImageView;
+               enlightenedImageView.setId("permanent");
                enlightenedImageView.setPreserveRatio(true);
                enlightenedImageView.setVisible(false);
                enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
@@ -226,8 +231,10 @@ public class MainSceneController extends GUIController {
    public void enablePawnSelection(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Select one of your pawns!");
        for (Position position : availablePositions) {
+           System.out.println("X:" +  position.getX() + ", Y:" +  position.getY());
            //makes the ImageViews visible
            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
+           enlightenedImageViewsArray[position.getX()][position.getY()].toFront();
            //adds an action recognizer to the ImageView
            enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
                Node source = (Node)e.getSource();
