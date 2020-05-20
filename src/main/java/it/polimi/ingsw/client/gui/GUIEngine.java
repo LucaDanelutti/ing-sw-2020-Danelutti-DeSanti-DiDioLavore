@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import com.sun.tools.javac.Main;
-import it.polimi.ingsw.client.gui.controllers.ChosenCardRequestSceneController;
-import it.polimi.ingsw.client.gui.controllers.FirstPlayerRequestSceneController;
-import it.polimi.ingsw.client.gui.controllers.GameCardsRequestSceneController;
-import it.polimi.ingsw.client.gui.controllers.MainSceneController;
+import it.polimi.ingsw.client.gui.controllers.*;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.ClientView;
@@ -307,7 +304,12 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onYouLostAndSomeOneWon(String winnerName) {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/youLost.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            ((YouLostSceneController)currentController).loadData(winnerName);
+        });
     }
 
     @Override
