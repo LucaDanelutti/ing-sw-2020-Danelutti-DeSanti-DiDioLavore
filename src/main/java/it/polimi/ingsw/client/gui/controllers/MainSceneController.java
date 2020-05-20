@@ -18,6 +18,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -72,6 +73,9 @@ public class MainSceneController extends GUIController {
     @FXML
     private ImageView enemy2PlayerCardImageView;
 
+    @FXML
+    private Button skipButton;
+
 
     /* ===== FXML Properties ===== */
     private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
@@ -87,6 +91,7 @@ public class MainSceneController extends GUIController {
        clientPlayerNameLabel.setText("");
        enemy1PlayerNameLabel.setText("");
        enemy2PlayerNameLabel.setText("");
+       skipButton.setVisible(false);
 
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
@@ -264,11 +269,13 @@ public class MainSceneController extends GUIController {
 
     public void chooseMovePosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Move!");
+        if (availablePositions.contains(null)) skipButton.setVisible(true);
        enablePositionSelection(availablePositions);
     }
 
     public void chooseConstructPosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Build!");
+       if (availablePositions.contains(null)) skipButton.setVisible(true);
        enablePositionSelection(availablePositions);
     }
 
@@ -289,7 +296,11 @@ public class MainSceneController extends GUIController {
 
     private void setPosition(Position chosenPosition) {
         phaseLabel.setText("");
-        System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
+        if (chosenPosition != null) {
+            System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
+        } else {
+            System.out.println("Action Skipped");
+        }
         clientView.update(new ChosenPositionSetMessage(chosenPosition));
         clearEnlightenedImageViews();
     }
@@ -363,6 +374,13 @@ public class MainSceneController extends GUIController {
            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(false);
            enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(null);
        }
+    }
+
+    public void skipAction() {
+        phaseLabel.setText("");
+        skipButton.setVisible(false);
+        setPosition(null);
+        clearEnlightenedImageViews();
     }
 
 }

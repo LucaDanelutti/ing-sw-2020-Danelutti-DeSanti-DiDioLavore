@@ -141,6 +141,7 @@
                <HBox fx:id="blockTypesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="nicknameRequest" stylesheets="@style.css" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             </children>
          </GridPane>
+         <Button fx:id="skipButton" mnemonicParsing="false" onAction="#skipAction" text="Skip" GridPane.columnIndex="2" />
       </children>
    </GridPane>
 </Scene>
