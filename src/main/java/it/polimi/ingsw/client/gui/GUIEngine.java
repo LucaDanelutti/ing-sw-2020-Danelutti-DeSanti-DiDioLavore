@@ -26,6 +26,7 @@ public class GUIEngine extends Application implements UserInterface {
     private ClientView clientView;
     private GUIController currentController;
     private static final String SANTORINI_STAGE_TITLE = "Santorini";
+    private boolean isGameStarted = false;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -153,10 +154,9 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshViewOnlyGameInfo() {
-        //TODO: rimuovere l'instanceof
         Platform.runLater(() -> {
             try {
-                if (currentController instanceof MainSceneController) ((MainSceneController) currentController).updateGameInfo();
+                if (isGameStarted) ((MainSceneController) currentController).updateGameInfo();
             } catch (Exception e) {
                 System.out.println("Problem while refreshViewOnlyGameInfo(): MainSceneController may not be the currentController");
             }
@@ -167,8 +167,13 @@ public class GUIEngine extends Application implements UserInterface {
     public void refreshView() {
         Platform.runLater(() -> {
             try {
-                //TODO: rimuovere l'instanceof
-                if (currentController instanceof MainSceneController) ((MainSceneController) currentController).updateBoard();
+                if (isGameStarted) {
+                    ((MainSceneController) currentController).updateBoard();
+                } else {
+                    showMainSceneSynch();
+                    isGameStarted = true;
+                    ((MainSceneController) currentController).updateBoard();
+                }
             } catch (Exception e) {
                 System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
             }

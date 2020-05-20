@@ -66,7 +66,7 @@ public class FirstPlayerRequestSceneController extends GUIController {
     public void confirm() {
         System.out.println("firstPlayerSelected: " + firstPlayerSelected);
         clientView.update(new FirstPlayerSetMessage(firstPlayerSelected));
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
+        ((GUIEngine)clientView.getUserInterface()).showMainScene();
     }
 
 }

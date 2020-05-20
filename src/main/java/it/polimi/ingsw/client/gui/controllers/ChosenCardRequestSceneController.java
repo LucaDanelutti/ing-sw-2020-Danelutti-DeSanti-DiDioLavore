@@ -78,7 +78,7 @@ public class ChosenCardRequestSceneController extends GUIController {
         System.out.println("chosenCardId:" + chosenCardId);
         clientView.update(new ChosenCardSetMessage(chosenCardId));
 
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
+        ((GUIEngine)clientView.getUserInterface()).showMainScene();
     }
 
 }
