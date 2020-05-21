@@ -41,6 +41,6 @@ public class LoginSceneController extends GUIController {
         clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()));
 
         //opens the WaitingScene
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
+        ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false);
     }
 }

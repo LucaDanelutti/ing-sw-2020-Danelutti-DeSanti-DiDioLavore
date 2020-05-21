@@ -8,31 +8,31 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Text?>
 
 <Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.NicknameRequestSceneController">
    <GridPane alignment="CENTER" styleClass="nicknameRequest" stylesheets="@style.css">
-      <Text text="Welcome!" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
-         <GridPane.margin>
-            <Insets bottom="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Text>
 
-      <Label text="Pick your nickname" GridPane.columnIndex="0" GridPane.rowIndex="1">
+      <Label styleClass="regularText" stylesheets="@style.css" text="Pick your nickname" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="3.0" right="10.0" top="10.0" />
          </GridPane.margin></Label>
-      <TextField fx:id="nicknameTextField" promptText="Nickname" GridPane.rowIndex="2">
+      <TextField fx:id="nicknameTextField" promptText="Nickname" styleClass="classicTextField" stylesheets="@style.css" GridPane.rowIndex="2">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <GridPane.margin>
             <Insets bottom="5.0" right="10.0" top="3.0" />
          </GridPane.margin></TextField>
-      <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#confirm" text="Confirm" textAlignment="CENTER" GridPane.rowIndex="7">
+      <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#confirm" styleClass="classicButton" stylesheets="@style.css" text="Go!" textAlignment="CENTER" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets bottom="5.0" right="5.0" top="15.0" />
          </GridPane.margin>
       </Button>
+      <Label fx:id="titleLabel" styleClass="titleText" stylesheets="@style.css" text="Hi !">
+         <GridPane.margin>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </Label>
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />

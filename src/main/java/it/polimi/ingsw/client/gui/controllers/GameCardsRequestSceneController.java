@@ -166,7 +166,7 @@ public class GameCardsRequestSceneController extends GUIController {
     public void confirm() {
         if (cardsSelectedList.size() == expectedNumberOfCards) {
             clientView.update(new InGameCardsSetMessage(cardsSelectedList));
-            ((GUIEngine)clientView.getUserInterface()).showWaitingScene();
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
             System.out.println("The number of Cards is correct.");
         }
         else {

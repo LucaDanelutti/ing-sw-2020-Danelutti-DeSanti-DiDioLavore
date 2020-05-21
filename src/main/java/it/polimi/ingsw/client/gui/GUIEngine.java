@@ -196,11 +196,16 @@ public class GUIEngine extends Application implements UserInterface {
     /**
      * Loads the waiting scene controller and fxml scene
      */
-    public void showWaitingScene() {
+    public void showWaitingScene(Boolean setMinDim) {
         Platform.runLater(() -> {
             showScene("/fxml/waitingScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+            if (setMinDim) {
+                stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+                stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+            } else {
+                stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+                stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            }
         });
     }
 
@@ -251,6 +256,8 @@ public class GUIEngine extends Application implements UserInterface {
             showScene("/fxml/gameCardsRequestScene.fxml");
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
             stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
             ((GameCardsRequestSceneController)currentController).setUpScene(availableCards);
         });
     }
@@ -278,8 +285,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void onNicknameRequest() {
         Platform.runLater(() -> {
             showScene("/fxml/nicknameRequestScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
         });
     }
 
@@ -340,6 +349,8 @@ public class GUIEngine extends Application implements UserInterface {
             showScene("/fxml/loginScene.fxml");
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
             stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
         });
     }
 }
