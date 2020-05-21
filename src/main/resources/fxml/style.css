@@ -33,6 +33,14 @@
     -fx-font-family: 'Rubik-Medium';
  }
 
+  .selectedDarkButton {
+     -fx-background-color: rgb(61, 61, 61);
+     -fx-text-fill: rgb(245, 245, 245);
+     -fx-padding: 10, 20;
+     -fx-background-radius: 20;
+     -fx-font-family: 'Rubik-Medium';
+  }
+
  .classicTextField {
     -fx-background-color: rgb(227, 227, 227);
     -fx-text-fill: rgb(61, 61, 61);
@@ -56,4 +64,10 @@
     -fx-font-size: 16pt;
     -fx-text-fill: rgb(61, 61, 61);
     -fx-font-family: 'Rubik-Bold';
+}
+
+.roundedImageView {
+    -fx-padding: 10, 20;
+    -fx-border-radius: 20;
+    -fx-background-color: black;
 }

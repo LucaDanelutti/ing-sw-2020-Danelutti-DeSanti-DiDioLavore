@@ -69,6 +69,8 @@ public class GameCardsRequestSceneController extends GUIController {
                 enlightenedImageView.setOpacity(0.7);
                 enlightenedImageViewsArray[i][j] = enlightenedImageView;
                 enlightenedImageView.toBack();
+//                enlightenedImageView.getStyleClass().removeAll();
+//                enlightenedImageView.getStyleClass().add("roundedImageView");
                 enlightenedImageView.setVisible(false);
                 enlightenedImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL).add(10));
                 enlightenedImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_HGAP).divide(CARD_GRID_ROWS).add(10));

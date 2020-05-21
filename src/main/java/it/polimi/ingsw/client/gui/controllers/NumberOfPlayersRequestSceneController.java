@@ -28,8 +28,8 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
     /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
-        button2Players.setStyle("-fx-background-color: #99ccff; ");
-        button3Players.setStyle("-fx-background-color: #ffffff; ");
+        button2Players.getStyleClass().removeAll();
+        button2Players.getStyleClass().add("selectedDarkButton");
 
         Image players2Image = new Image("images/utility/2players_game.png");
         players2ImageView.setImage(players2Image);
@@ -42,8 +42,10 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
      * It is activated when the button "2" is clicked and temporarily saves the player choice
      */
     public void choose2Players() {
-        button2Players.setStyle("-fx-background-color: #99ccff; ");
-        button3Players.setStyle("-fx-background-color: #ffffff; ");
+        button2Players.getStyleClass().removeAll("classicButton", "selectedDarkButton");
+        button2Players.getStyleClass().add("selectedDarkButton");
+        button3Players.getStyleClass().removeAll("classicButton", "selectedDarkButton");
+        button3Players.getStyleClass().add("classicButton");
         selectedNumberOfPlayers = 2;
 
     }
@@ -52,8 +54,10 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
      * It is activated when the button "3" is clicked and temporarily saves the player choice
      */
     public void choose3Players() {
-        button3Players.setStyle("-fx-background-color: #99ccff; ");
-        button2Players.setStyle("-fx-background-color: #ffffff; ");
+        button2Players.getStyleClass().removeAll("classicButton", "selectedDarkButton");
+        button2Players.getStyleClass().add("classicButton");
+        button3Players.getStyleClass().removeAll("classicButton", "selectedDarkButton");
+        button3Players.getStyleClass().add("selectedDarkButton");
         selectedNumberOfPlayers = 3;
     }
 

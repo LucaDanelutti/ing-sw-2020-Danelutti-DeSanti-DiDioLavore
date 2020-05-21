@@ -220,8 +220,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void onChosenCardRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
             showScene("/fxml/chosenCardRequestScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
             ((ChosenCardRequestSceneController)currentController).loadCards(availableCards);
         });
     }
@@ -296,8 +298,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void onNumberOfPlayersRequest() {
         Platform.runLater(() -> {
             showScene("/fxml/numberOfPlayersRequestScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/2);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/2);
         });
     }
 

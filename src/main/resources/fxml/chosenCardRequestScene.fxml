@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -15,15 +16,18 @@
      </columnConstraints>
      <rowConstraints>
        <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="77.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="201.0" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="127.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="194.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="253.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="127.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <Label text="Pick your card!" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-         <HBox fx:id="cardsHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="nicknameRequest" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-         <Button mnemonicParsing="false" onAction="#confirm" text="Pick it!" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-         <Label fx:id="cardDescriptionLabel" text="description" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+         <Label styleClass="titleText" stylesheets="@style.css" text="Pick your card!" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         <HBox fx:id="cardsHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+         <Button mnemonicParsing="false" onAction="#confirm" styleClass="classicButton" stylesheets="@style.css" text="Pick it!" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+         <Label fx:id="cardDescriptionLabel" styleClass="regularText" stylesheets="@style.css" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </GridPane.margin></Label>
       </children>
    </GridPane>
 </Scene>
