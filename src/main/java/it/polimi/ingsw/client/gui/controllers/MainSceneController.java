@@ -59,6 +59,8 @@ public class MainSceneController extends GUIController {
     private GridPane boardGridPane;
     @FXML
     private AnchorPane boardAnchorPane;
+    @FXML
+    private ImageView boardImageView;
 
     @FXML
     private Label clientPlayerNameLabel;
@@ -90,11 +92,12 @@ public class MainSceneController extends GUIController {
 
     /* ===== FXML Properties ===== */
     private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
+    private DoubleProperty boardGridPaneWidth = new SimpleDoubleProperty();
 
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
     private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
-    private Position chosenPosition = new Position(0,0);
+    private Position chosenPosition = new Position(-1,-1);
     private BlockType chosenBlockType = null;
     private Timer undoProcessTimer;
 
@@ -112,6 +115,11 @@ public class MainSceneController extends GUIController {
        undoActionButton.setVisible(false);
        undoTurnButton.setVisible(false);
 
+       Image boardImage = new Image("images/board/board.png");
+       boardImageView.setImage(boardImage);
+       boardImageView.fitWidthProperty().bind(boardGridPane.widthProperty().multiply(1.4));
+       boardImageView.fitHeightProperty().bind(boardGridPane.widthProperty().multiply(1.4));
+
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
        clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(CLIENT_CARD_HEIGHT_RATIO));
@@ -127,8 +135,7 @@ public class MainSceneController extends GUIController {
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
 
        //TODO: improve padding management
-       boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
-       System.out.println(boardGridPane.paddingProperty());
+//       boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
 
        //binds HBox (used for BlockType selection) padding and internal spacing
        blockTypesHBox.spacingProperty().bind(blockTypesHBox.widthProperty().divide(10));
@@ -146,7 +153,8 @@ public class MainSceneController extends GUIController {
 
    //TODO: remove this method and the relative button. It is just for test
    public void updateBoardTest() {
-       clientView.getUserInterface().onGameEnded("Game ended reason test.");
+       ((GUIEngine)clientView.getUserInterface()).updateModelView();
+       ((GUIEngine)clientView.getUserInterface()).showMainScene();
    }
 
    public void updateGameInfo() {
@@ -170,8 +178,8 @@ public class MainSceneController extends GUIController {
                    Image blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
                    ImageView blockImageView = new ImageView(blockImage);
                    blockImageView.setPreserveRatio(true);
-                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
-                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
+                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
                    boardGridPane.add(blockImageView, j, i);
                }
            }
@@ -188,8 +196,8 @@ public class MainSceneController extends GUIController {
                Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
                ImageView pawnImageView = new ImageView(pawnImage);
                pawnImageView.setPreserveRatio(true);
-               pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
-               pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
+               pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
                boardGridPane.add(pawnImageView, pawn.getPawnPosition().getY(), pawn.getPawnPosition().getX());
            }
        }
@@ -241,8 +249,8 @@ public class MainSceneController extends GUIController {
                enlightenedImageView.setId("permanent");
                enlightenedImageView.setPreserveRatio(true);
                enlightenedImageView.setVisible(false);
-               enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
-               enlightenedImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BOARD_PADDING_RATIO));
+               enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
+               enlightenedImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
                boardGridPane.add(enlightenedImageView, j, i);
            }
        }
@@ -297,23 +305,25 @@ public class MainSceneController extends GUIController {
 
     public void enablePositionSelection(ArrayList<Position> availablePositions, String actionType) {
         for (Position position : availablePositions) {
-            //makes the ImageViews visible
-            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
-            //adds an action recognizer to the ImageView
-            enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
-                Node source = (Node)e.getSource();
-                int colIndex = GridPane.getColumnIndex(source);
-                int rowIndex = GridPane.getRowIndex(source);
+            if (position != null) {
+                //makes the ImageViews visible
+                enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
+                //adds an action recognizer to the ImageView
+                enlightenedImageViewsArray[position.getX()][position.getY()].setOnMouseClicked(e -> {
+                    Node source = (Node)e.getSource();
+                    int colIndex = GridPane.getColumnIndex(source);
+                    int rowIndex = GridPane.getRowIndex(source);
 
-                chosenPosition.setX(rowIndex);
-                chosenPosition.setY(colIndex);
+                    chosenPosition.setX(rowIndex);
+                    chosenPosition.setY(colIndex);
 
-                if (actionType.equals("move")) {
-                    startUndoProcess();
-                } else {
-                    setPosition();
-                }
-            });
+                    if (actionType.equals("move")) {
+                        startUndoProcess();
+                    } else {
+                        setPosition();
+                    }
+                });
+            }
         }
     }
 
@@ -325,6 +335,7 @@ public class MainSceneController extends GUIController {
             System.out.println("Action Skipped");
         }
         clientView.update(new ChosenPositionSetMessage(chosenPosition));
+        chosenPosition = new Position(-1,-1);
         clearEnlightenedImageViews();
 
         skipButton.setVisible(false);
@@ -409,7 +420,7 @@ public class MainSceneController extends GUIController {
         phaseLabel.setText("");
         skipButton.setVisible(false);
         chosenPosition = null;
-        clearEnlightenedImageViews();
+        startUndoProcess();
     }
 
     private void startUndoProcess() {
@@ -466,11 +477,13 @@ public class MainSceneController extends GUIController {
 
     public void undoAction() {
        clientView.update(new UndoActionSetMessage());
+       chosenPosition = new Position(-1,-1);
        endUndoProcess();
     }
 
     public void undoTurn() {
        clientView.update(new UndoTurnSetMessage());
+       chosenPosition = new Position(-1,-1);
        endUndoProcess();
     }
 

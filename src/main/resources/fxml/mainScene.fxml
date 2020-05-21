@@ -24,6 +24,7 @@
        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="90.43264770507812" valignment="CENTER" vgrow="ALWAYS" />
      </rowConstraints>
       <children>
+         <ImageView fx:id="boardImageView" fitHeight="325.0" fitWidth="327.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
          <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
            <columnConstraints>
              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -109,7 +110,7 @@
                <Insets />
             </GridPane.margin>
             <children>
-               <GridPane fx:id="boardGridPane" alignment="CENTER" layoutX="-2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="327.0" styleClass="boardGridPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <GridPane fx:id="boardGridPane" alignment="CENTER" layoutX="-2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="327.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
                  <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
