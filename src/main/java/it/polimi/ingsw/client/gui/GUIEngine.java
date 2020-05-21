@@ -42,7 +42,7 @@ public class GUIEngine extends Application implements UserInterface {
 //        setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
-//        showScene("/fxml/loginScene.fxml");
+//        showScene("/fxml/numberOfPlayersRequestScene.fxml");
         loadLoginScene();
     }
 

@@ -5,6 +5,8 @@ import it.polimi.ingsw.client.gui.GUIEngine;
 import it.polimi.ingsw.utility.messages.sets.NumberOfPlayersSetMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class NumberOfPlayersRequestSceneController extends GUIController {
 
@@ -13,6 +15,11 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
     private Button button2Players;
     @FXML
     private Button button3Players;
+    @FXML
+    private ImageView players2ImageView;
+    @FXML
+    private ImageView players3ImageView;
+
 
 
     /* ===== FXML Properties ===== */
@@ -24,6 +31,11 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
         button2Players.setStyle("-fx-background-color: #99ccff; ");
         button3Players.setStyle("-fx-background-color: #ffffff; ");
 
+        Image players2Image = new Image("images/utility/2players_game.png");
+        players2ImageView.setImage(players2Image);
+
+        Image players3Image = new Image("images/utility/3players_game.png");
+        players3ImageView.setImage(players3Image);
     }
 
     /**
