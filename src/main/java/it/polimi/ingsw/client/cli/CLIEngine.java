@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.utility.messages.requests.ChosenPositionForMoveRequestMessage;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.view.ClientView;
 import it.polimi.ingsw.view.UserInterface;
@@ -10,7 +9,6 @@ import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.CellView;
 import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
-import javafx.geometry.Pos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +16,9 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * This is the CLI engine class that implements the functions called by the clientView to display or request
+ */
 public class CLIEngine implements UserInterface {
     private ClientView clientView;
 
@@ -29,18 +30,9 @@ public class CLIEngine implements UserInterface {
     public CLIEngine() {
     }
 
-    /**
-     * This is the parametric constructor for the CLIEngine
-     * @param clientView the clientView to be assigned
-     */
-    public CLIEngine(ClientView clientView) {
-        this.clientView = clientView;
-    }
 
 
-
-
-                                                //SETUP FUNCTIONS
+    //SETUP FUNCTIONS
 
     /**
      * This function is called to ask the user for information about the server (port and address)
@@ -54,12 +46,11 @@ public class CLIEngine implements UserInterface {
         System.out.print("Server IP (xxx.xxx.xxx.xxx): ");
         String serverIP=n.nextLine();
         System.out.print("Server PORT (0-65535): ");
-        Integer serverPORT=n.nextInt();
+        int serverPORT=n.nextInt();
         System.out.println("CONNECTING...");
         //call function of ClientView
         clientView.startServerConnection(serverIP, serverPORT);
     }
-
     /**
      * This function is called for a quick start of the connection to the server giving directly the port and the address
      * @param hostname the address of the server
@@ -73,6 +64,8 @@ public class CLIEngine implements UserInterface {
 
 
 
+
+
                                          //TO BE CALLED WHEN AN UPDATE ARRIVES
 
     /**
@@ -80,27 +73,25 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void refreshView() {
         clearScreen();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
         }
         printCompleteGameStatus();
     }
-
     /**
      * This function refreshes the screen with the information about the users
      */
     @Override public void refreshViewOnlyGameInfo() {
         clearScreen();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
         }
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
-
     /**
      * This function is called when the user win the game
      */
@@ -111,7 +102,6 @@ public class CLIEngine implements UserInterface {
         printEqualsRow();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
-
     /**
      * This function is called when the user lost and we have a winner in the game
      * @param winnerName the winner name
@@ -123,7 +113,6 @@ public class CLIEngine implements UserInterface {
         printEqualsRow();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
     }
-
     /**
      * This function is called when the game ends for an unexpected reason, for example a user disconnection
      * @param reason the string containing the reason
@@ -135,7 +124,9 @@ public class CLIEngine implements UserInterface {
 
 
 
-                                        //TO BE CALLED WHEN A REQUEST ARRIVES
+
+
+                                                    //TO BE CALLED WHEN A REQUEST ARRIVES
 
     /**
      * This function is called when the user has to select the blockType for a construct action
@@ -174,10 +165,10 @@ public class CLIEngine implements UserInterface {
         int input;
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         int undoChoice = undoOrConfirmHandler(5);
         if(undoChoice==0){
@@ -190,7 +181,6 @@ public class CLIEngine implements UserInterface {
             clientView.update(new UndoTurnSetMessage());
         }
     }
-
     /**
      * This function is called when the user has to select his card
      * @param availableCards the available cards to chose from
@@ -216,14 +206,13 @@ public class CLIEngine implements UserInterface {
         int input;
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
     }
-
     /**
      * This function is called when the user has to select the position for a move action
      * @param availablePositions the positions to chose from
@@ -248,10 +237,10 @@ public class CLIEngine implements UserInterface {
         int input;
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         int undoChoice = undoOrConfirmHandler(5);
         if(undoChoice==0){
@@ -265,7 +254,6 @@ public class CLIEngine implements UserInterface {
         }
 
     }
-
     /**
      * This function is called when the user has to selec the position for a construct action
      * @param availablePositions the positions to chose from
@@ -290,14 +278,13 @@ public class CLIEngine implements UserInterface {
         int input;
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
     }
-
     /**
      * This function is called to select the first player to start
      */
@@ -324,14 +311,13 @@ public class CLIEngine implements UserInterface {
         int input;
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
     }
-
     /**
      * This function is called when the user has to select the cards to for every player
      * @param availableCards the list of all the available cards
@@ -368,14 +354,13 @@ public class CLIEngine implements UserInterface {
             if(areThereAnyDuplicates(chosenOptions)){
                 System.out.println("No duplicates allowed, retry: ");
             }
-            else if(!areTheOptionsValid(options,chosenOptions)){
+            else if(areTheOptionsNotValid(options, chosenOptions)){
                 System.out.println("Not a valid sequence, retry: ");
             }
-        }while (areThereAnyDuplicates(chosenOptions)||!areTheOptionsValid(options,chosenOptions));
+        }while (areThereAnyDuplicates(chosenOptions)|| areTheOptionsNotValid(options, chosenOptions));
 
         clientView.update(new InGameCardsSetMessage(chosenCards));
     }
-
     /**
      * This functions is called when the user has to chose the initial position for the pawns
      * @param availablePositions the available positions to chose from
@@ -407,10 +392,10 @@ public class CLIEngine implements UserInterface {
             choice1=scanner.nextInt();
             System.out.print("Second pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
             choice2=scanner.nextInt();
-            if(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2) || choice1==choice2){
+            if(isTheOptionNotValid(options, choice1) || isTheOptionNotValid(options, choice2) || choice1==choice2){
                 System.out.println("Not valid options, retry: ");
             }
-        }while(!isTheOptionValid(options,choice1)||!isTheOptionValid(options,choice2)|| (choice1==choice2));
+        }while(isTheOptionNotValid(options, choice1) || isTheOptionNotValid(options, choice2) || (choice1==choice2));
 
 
         one=availablePositions.get(choice1);
@@ -430,7 +415,6 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0),pawnsId.get(1),pawnsPositions.get(0),pawnsPositions.get(1)));
     }
-
     /**
      * This function is called when the user has to select his nickname
      */
@@ -442,7 +426,6 @@ public class CLIEngine implements UserInterface {
         String name = scanner.nextLine();
         clientView.update(new NicknameSetMessage(name));
     }
-
     /**
      * This function is called when  the user has to select the number of players in the game
      */
@@ -459,7 +442,6 @@ public class CLIEngine implements UserInterface {
 
         clientView.update(new NumberOfPlayersSetMessage(number));
     }
-
     /**
      * This function is called when the user has to select the pawn for the current turn
      * @param availablePositions the positions of his pawns, from where to chose from
@@ -492,16 +474,16 @@ public class CLIEngine implements UserInterface {
 
         ArrayList<Integer> options = new ArrayList<>();
         int input;
-        for(int j=0; j<pawnViews.size(); j++){
-            options.add(pawnViews.get(j).getId());
+        for (PawnView view : pawnViews) {
+            options.add(view.getId());
         }
 
         do {
             input = scanner.nextInt();
-            if(!isTheOptionValid(options,input)){
+            if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
-        }while (!isTheOptionValid(options,input));
+        }while (isTheOptionNotValid(options, input));
 
         Position selectedPawnPosition=null;
         for(PawnView pawnView : pawnViews){
@@ -514,7 +496,16 @@ public class CLIEngine implements UserInterface {
     }
 
 
-    //COMMODITY FUNCTIONS
+
+
+
+
+                                                            //COMMODITY FUNCTIONS
+
+    /**
+     * This function is used to check if there are any pawns on the board
+     * @return the boolean response
+     */
     private boolean isThereAnyPawnOnTheBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();
         for(int i=0; i<matrix.length; i++){
@@ -526,7 +517,12 @@ public class CLIEngine implements UserInterface {
         }
         return false;
     }
-
+    /**
+     * This function is used to check if there is a pawn in that specific location
+     * @param x the x of the position to be checked
+     * @param y the y of the position to be checked
+     * @return the result of the operation
+     */
     private PawnView isThereAPawnHere(int x, int y){
         for(PlayerView p : clientView.getModelView().getPlayerList()){
             for(PawnView pawnView : p.getPawnList()){
@@ -537,29 +533,46 @@ public class CLIEngine implements UserInterface {
         }
         return null;
     }
-
-    private boolean isTheOptionValid(ArrayList<Integer> options, Integer option){
-        return options.contains(option);
+    /**
+     * This function checks that the option selected is within the options passed
+     * @param options the list of the available options
+     * @param option the option chosen
+     * @return the result of the operation
+     */
+    private boolean isTheOptionNotValid(ArrayList<Integer> options, Integer option){
+        return !options.contains(option);
     }
-
-    private boolean areTheOptionsValid(ArrayList<Integer> options, ArrayList<Integer> chosenOptions){
+    /**
+     * This function checks that the options selected are within the options passed
+     * @param options the list of available options
+     * @param chosenOptions the chosen options
+     * @return the result of the operation
+     */
+    private boolean areTheOptionsNotValid(ArrayList<Integer> options, ArrayList<Integer> chosenOptions){
         for(Integer a : chosenOptions){
             if(!options.contains(a)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
-
+    /**
+     * This function is used to check if there are duplicates in the list of integer passed
+     * @param integers the list to be checked
+     * @return the result of the operation
+     */
     private boolean areThereAnyDuplicates(ArrayList<Integer> integers){
         Set<Integer> a = new HashSet<>(integers);
         return a.size()<integers.size();
     }
-
+    /**
+     * This function is used to give the user an option to confirm, undo the action or undo the current turn for X seconds where X is specified by a parameter
+     * @param timeToWait the time that the user has to choose (default is CONFIRM)
+     * @return the result of the operation
+     */
     public int undoOrConfirmHandler(int timeToWait) {
         int input;
 
-        Scanner s = new Scanner(System.in);
         ExecutorService executorService = Executors.newFixedThreadPool(3);
 
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
@@ -589,8 +602,8 @@ public class CLIEngine implements UserInterface {
 
         try {
             in = future.get(timeToWait, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
+        }
+        catch (InterruptedException | ExecutionException ignored) {
         } catch (TimeoutException e) {
             future.cancel(true);
             timer.cancel();
@@ -601,36 +614,57 @@ public class CLIEngine implements UserInterface {
         executorService.shutdown();
         return input;
     }
-
-    private class ConsoleInputReadTask implements Callable<String> {
-        private boolean enabled = true;
-
-        public void disable() {
-            enabled = false;
+    /**
+     * This is the getter for the clientView
+     * @return the client view
+     */
+    public ClientView getClientView() {
+        return clientView;
+    }
+    /**
+     * This is the setter for the clientView
+     * @param clientView the client view to set
+     */
+    public void setClientView(ClientView clientView) {
+        this.clientView = clientView;
+    }
+    /**
+     * This function checks if there is any winner in the modelView
+     * @return the result of the operation
+     */
+    private boolean noWinnerInModel(){
+        for(PlayerView  p : clientView.getModelView().getPlayerList()){
+            if(p.getWinner()){
+                return false;
+            }
         }
-
-        public String call() throws IOException {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(System.in));
-            String input;
-            do {
-                //System.out.println("Please type something: ");
-                try {
-                    // wait until we have data to complete a readLine()
-                    while (!br.ready()) {
-                        Thread.sleep(200);
-                    }
-                    input = br.readLine();
-                } catch (InterruptedException e) {
-                    return "0";
+        return true;
+    }
+    /**
+     * This function checks if the current clientView has lost
+     * @return the result of the operation
+     */
+    private boolean haveILost(){
+        for(PlayerView p : clientView.getModelView().getPlayerList()){
+            if(p.getName().equals(clientView.getName())){
+                if(p.getLoser()){
+                    return true;
                 }
-            } while (!(input.equals("0") || input.equals("1") || input.equals("2")));
-            return input;
+            }
         }
+        return false;
     }
 
 
-    //COMMODITY PRINT FUNCTIONS
+
+
+
+                                                        //COMMODITY PRINT FUNCTIONS
+
+    /**
+     * This function is used to print a list of positions
+     * @param arrayList the list to be printed
+     */
     public void printListOfPositions(ArrayList<Position> arrayList){
         for(int i=0; i<arrayList.size(); i++){
             if(i%4==0 && i!=0){
@@ -646,23 +680,35 @@ public class CLIEngine implements UserInterface {
 
         }
     }
+    /**
+     * This function is called to clear the screen
+     */
     private void clearScreen(){
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    private void printSingleUnderscoreRow(){
-        System.out.println("_________________________________________");
-    }
+    /**
+     * This function prints the horizontal coordinates
+     */
     private void printHorizontalCoordinates(){
         System.out.println("         x:0     x:1     x:2     x:3     x:4   ");
     }
+    /**
+     * This function prints a row of equals signs
+     */
     private void printEqualsRow(){
         System.out.println("==============================================================");
 
     }
+    /**
+     * This function prints a row of single score sign
+     */
     private void printSingleScoreRow(){
         System.out.println("--------------------------------------------------------------");
     }
+    /**
+     * This function prints the board
+     */
     public void printBoard(){
         CellView[][] matrix=clientView.getModelView().getMatrix();
         PawnView p;
@@ -737,6 +783,9 @@ public class CLIEngine implements UserInterface {
         }
         System.out.println(" ");
     }
+    /**
+     * This function prints the player table with corresponding pawns, card and winner status
+     */
     private void printPlayersWith_Cards_WinnerStatus_PawnsIds(){
         printEqualsRow();
         int maxNickLength=0;
@@ -786,10 +835,16 @@ public class CLIEngine implements UserInterface {
         }
         printEqualsRow();
     }
+    /**
+     * This function prints the complete game status
+     */
     private void printCompleteGameStatus(){
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
         printBoard();
     }
+    /**
+     * This function prints the welcome screen for Santorini
+     */
     private void printWelcome(){
         System.out.println("==============================================================");
         System.out.println("                         SANTORINI                            ");
@@ -797,93 +852,12 @@ public class CLIEngine implements UserInterface {
     }
 
 
-    public ClientView getClientView() {
-        return clientView;
-    }
-    public void setClientView(ClientView clientView) {
-        this.clientView = clientView;
-    }
-    public static void main(String[] args) {
-        ClientView clientView = new ClientView();
-        clientView.getModelView().onPlayerUpdate("Ian","009900",0,1);
-        clientView.getModelView().onPlayerUpdate("Luca","990000",2,3);
-        clientView.getModelView().onPlayerUpdate("Riccardo","000099",4,5);
-        clientView.getModelView().onPawnPositionUpdate(0,new Position(0,0));
-        clientView.getModelView().onPawnPositionUpdate(1,new Position(0,1));
-        clientView.getModelView().onPawnPositionUpdate(2,new Position(1,0));
-        clientView.getModelView().onPawnRemoved(2);
-        clientView.getModelView().onPawnPositionUpdate(3,new Position(1,1));
-        clientView.getModelView().onPawnPositionUpdate(4,new Position(0,2));
-        clientView.getModelView().onPawnPositionUpdate(5,new Position(2,0));
-        clientView.getModelView().onCellUpdate(new Position(3,3), BlockType.LEVEL1);
-        clientView.getModelView().onCellUpdate(new Position(0,0), BlockType.LEVEL2);
-        clientView.getModelView().onCellUpdate(new Position(4,4), BlockType.DOME);
 
-        clientView.getModelView().onChosenCardUpdate(new CardView(1,"Apollo","do as he wishes"),"Ian");
-        //clientView.getModelView().onChosenCardUpdate(new CardView(2,"Medusa","do as he wishes"),"Luca");
-        clientView.getModelView().onChosenCardUpdate(new CardView(3,"Dimetrio","do as he wishes"),"Riccardo");
-        CLIEngine cliEngine = new CLIEngine();
-        cliEngine.setClientView(clientView);
-
-        /*ArrayList<BlockType> arrayList = new ArrayList<>();
-        arrayList.add(BlockType.LEVEL1);
-        arrayList.add(BlockType.DOME);
-        cliEngine.onChosenBlockTypeRequest(arrayList);*/
-
-        /*ArrayList<CardView> arrayList = new ArrayList<>();
-        arrayList.add(new CardView(1,"Apollo","ciao ciao ciao"));
-        arrayList.add(new CardView(2,"Dimetrio","cdsfsdfsdf fevdsvsf sfdv"));
-        arrayList.add(new CardView(3,"Medusa","fsdfggfdgfds  sgfd sfdg "));
-        arrayList.add(new CardView(4,"LALA","fsdfggfdgfds  sgfd sfdg "));
-        cliEngine.onInGameCardsRequest(arrayList);*/
-
-        ArrayList<Position> arrayList = new ArrayList<>();
-        arrayList.add(new Position(0,0));
-        arrayList.add(new Position(0,1));
-        arrayList.add(new Position(0,2));
-        arrayList.add(new Position(0,3));
-        arrayList.add(new Position(0,4));
-        arrayList.add(new Position(0,5));
-        arrayList.add(new Position(1,5));
-        arrayList.add(new Position(2,5));
-        arrayList.add(new Position(3,5));
-        arrayList.add(new Position(0,0));
-        arrayList.add(new Position(0,1));
-        arrayList.add(new Position(0,2));
-        arrayList.add(null);
-        arrayList.add(new Position(0,3));
-        arrayList.add(new Position(0,4));
-        arrayList.add(new Position(0,5));
-        arrayList.add(new Position(1,5));
-        arrayList.add(new Position(2,5));
-        arrayList.add(new Position(3,5));
-        cliEngine.onFirstPlayerRequest();
-    }
-    private boolean isThereAnyWinner(){
-        for(PlayerView  p : clientView.getModelView().getPlayerList()){
-            if(p.getWinner()){
-                return true;
-            }
-        }
-        return false;
-    }
-    private boolean haveILost(){
-        for(PlayerView p : clientView.getModelView().getPlayerList()){
-            if(p.getName().equals(clientView.getName())){
-                if(p.getLoser()){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    //FOR NOW, NOT NEEDED
+                                            //DEPRECATED, TO BE REMOVED
     @Override public void refreshView(PawnView pawnView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
@@ -893,7 +867,7 @@ public class CLIEngine implements UserInterface {
     @Override public void refreshView(CardView cardView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
@@ -903,7 +877,7 @@ public class CLIEngine implements UserInterface {
     @Override public void refreshView(PlayerView playerView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
@@ -917,7 +891,7 @@ public class CLIEngine implements UserInterface {
     @Override public void refreshView(CellView cellView) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        if(!isThereAnyWinner() && haveILost()){
+        if(noWinnerInModel() && haveILost()){
             System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
             printSingleScoreRow();
             System.out.println();
@@ -925,7 +899,28 @@ public class CLIEngine implements UserInterface {
         printCompleteGameStatus();
     }
 
-
-
 }
 
+
+/**
+ * This class is used to handle the console input for the "undo" implementation to interrupt the user request for an input after X seconds passed
+ */
+class ConsoleInputReadTask implements Callable<String> {
+    public String call() throws IOException {
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(System.in));
+        String input;
+        do {
+            try {
+                // wait until we have data to complete a readLine()
+                while (!br.ready()) {
+                    Thread.sleep(200);
+                }
+                input = br.readLine();
+            } catch (InterruptedException e) {
+                return "0";
+            }
+        } while (!(input.equals("0") || input.equals("1") || input.equals("2")));
+        return input;
+    }
+}
