@@ -251,7 +251,7 @@ public class GUIEngine extends Application implements UserInterface {
             showScene("/fxml/gameCardsRequestScene.fxml");
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
             stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
-            ((GameCardsRequestSceneController)currentController).loadCards(availableCards);
+            ((GameCardsRequestSceneController)currentController).setUpScene(availableCards);
         });
     }
 

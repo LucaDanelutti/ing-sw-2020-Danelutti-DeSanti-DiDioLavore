@@ -2,17 +2,20 @@ package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.GUIController;
 import it.polimi.ingsw.client.gui.GUIEngine;
+import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.utility.messages.sets.InGameCardsSetMessage;
 import it.polimi.ingsw.view.modelview.CardView;
 import it.polimi.ingsw.view.modelview.ModelView;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
+import javafx.scene.control.Alert.AlertType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class GameCardsRequestSceneController extends GUIController {
     private static final int NUM_COLUMNS = 7;
     private static final double CARD_GRIDPANE_HGAP = 10;
     private static final double CARD_GRIDPANE_VGAP = 10;
+    private static final int CARD_GRID_ROWS = 2;
+    private static final int CARD_GRID_COL = 7;
 
     /* ===== FXML elements ===== */
     @FXML
@@ -38,9 +43,11 @@ public class GameCardsRequestSceneController extends GUIController {
 
     /* ===== Variables ===== */
     private int currentCardId;
+    private Position currentCardPosition;
     private ArrayList<CardView> availableCards = new ArrayList<>();
     private int expectedNumberOfCards;
     private ArrayList<Integer>  cardsSelectedList = new ArrayList<>();
+    private ImageView[][] enlightenedImageViewsArray = new ImageView[CARD_GRID_ROWS][CARD_GRID_COL];
 
     /* ===== FXML Set Up and Bindings ===== */
     public void initialize() {
@@ -48,11 +55,33 @@ public class GameCardsRequestSceneController extends GUIController {
         cardsGridPane.setVgap(CARD_GRIDPANE_VGAP);
     }
 
+    public void setUpScene(ArrayList<CardView> availableCards) {
+        loadCards(availableCards);
+        loadEnlightenedImageViews();
+    }
+
+    private void loadEnlightenedImageViews() {
+        //loads the panes that will be used to enlighten the board cells
+        for (int i = 0; i < cardsGridPane.getRowCount(); i++) {
+            for (int j = 0; j < cardsGridPane.getColumnCount(); j++) {
+                Image enlightenedImage = new Image("images/utility/selection_background.png");
+                ImageView enlightenedImageView = new ImageView(enlightenedImage);
+                enlightenedImageView.setOpacity(0.7);
+                enlightenedImageViewsArray[i][j] = enlightenedImageView;
+                enlightenedImageView.toBack();
+                enlightenedImageView.setVisible(false);
+                enlightenedImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL).add(10));
+                enlightenedImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_HGAP).divide(CARD_GRID_ROWS).add(10));
+                cardsGridPane.add(enlightenedImageView, j, i);
+            }
+        }
+    }
+
     /**
      * It loads the ImageViews of the CardViews contained within availableCards.
      * @param availableCards is the list of CardViews that have to be rendered.
      */
-    public void loadCards(ArrayList<CardView> availableCards) {
+    private void loadCards(ArrayList<CardView> availableCards) {
         //sets the expectedNumberOfCards
         ModelView modelView = clientView.getModelView();
         expectedNumberOfCards = modelView.getPlayerList().size();
@@ -79,11 +108,14 @@ public class GameCardsRequestSceneController extends GUIController {
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setPreserveRatio(true);
         cardImageView.setId(String.valueOf(cardId));
-        cardImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(7));
-        cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_VGAP).divide(2));
+        cardImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL));
+        cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_VGAP).divide(CARD_GRID_ROWS));
         cardImageView.setOnMouseClicked(e -> {
             Node source = (Node)e.getSource();
             System.out.printf("Mouse enetered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));
+            int colIndex = GridPane.getColumnIndex(source);
+            int rowIndex = GridPane.getRowIndex(source);
+            currentCardPosition = new Position(rowIndex, colIndex);
             showInsight(Integer.parseInt(source.getId()));
         });
         cardsGridPane.add(cardImageView, j, i);
@@ -114,6 +146,8 @@ public class GameCardsRequestSceneController extends GUIController {
      */
     public void pickCard() {
         cardsSelectedList.add(currentCardId);
+        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].toBack();
+        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(true);
     }
 
     /**
@@ -122,6 +156,7 @@ public class GameCardsRequestSceneController extends GUIController {
      */
     public void unpickCard() {
         cardsSelectedList.remove((Object)currentCardId);
+        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(false);
     }
 
     /**
@@ -135,7 +170,7 @@ public class GameCardsRequestSceneController extends GUIController {
             System.out.println("The number of Cards is correct.");
         }
         else {
-            //TODO: show Alert View with the following message
+            ((GUIEngine)clientView.getUserInterface()).showMessage("The number of Cards is wrong.", AlertType.INFORMATION);
             System.out.println("The number of Cards is wrong.");
         }
     }
