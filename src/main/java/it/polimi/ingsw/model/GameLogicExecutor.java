@@ -253,7 +253,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     notifyListeners(generateInitialPawnPositionRequest());
                 }
                 return true;
-            } else {
+            }
+            else {
                 notifyListeners(generateInitialPawnPositionRequest());
                 return false;
             }

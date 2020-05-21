@@ -132,11 +132,4 @@ class Player {
         isWinner = winner;
     }
 
-    /*PlayerState getState() {
-        return state;
-    }
-
-    void setState(PlayerState state) {
-        this.state = state;
-    }*/
 }

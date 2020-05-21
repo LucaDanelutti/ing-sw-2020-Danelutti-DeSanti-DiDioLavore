@@ -2,11 +2,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.modelview.ModelView;
+import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +42,9 @@ class GameLogicExecutorTest {
         gameLogicExecutor=new GameLogicExecutor(game);
 
     }
+
+
+
 
 
                                                             //MoveAction tests
@@ -229,6 +234,9 @@ class GameLogicExecutorTest {
 
 
 
+
+
+
                                                             //ConstructAction tests
 
     /**
@@ -319,6 +327,9 @@ class GameLogicExecutorTest {
         assertEquals(prevPawn, currentPlayer.getPawnList().get(0));
         assertEquals(basicMove,game.getCurrentAction());
     }
+
+
+
 
 
                                                             //generalAction tests
@@ -435,9 +446,10 @@ class GameLogicExecutorTest {
 
 
 
+
+
+
                                                                 //Setup tests
-
-
 
     /**
      * The test checks that after the selection of the pawn for the current turn each variable is set correctly in the player state and the action to be executed.
@@ -478,29 +490,6 @@ class GameLogicExecutorTest {
         //so here we should have that luca is in actionState and ian is in idle state, riccardo too.
         assertEquals("luca",game.getCurrentPlayer().getName());
     }
-
-    /**
-     * The scope of this test function is to test that addPlayer method adds a player with the provided name in the right state
-     */
-    /*@Test void addPlayer_FirstPlayer() {
-        Game testGame = new Game();
-        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        assertEquals(0, testGame.getPlayers().size());
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        assertEquals(1, testGame.getPlayers().size());
-    }*/
-    /**
-     * The scope of this test function is to test that addPlayer method adds a player with the provided name in the correct state
-     */
-   /* @Test void addPlayer_NotFirstPlayer() {
-        Game testGame = new Game();
-        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        assertEquals(1, testGame.getPlayers().size());
-        testGameLogicExecutor.addPlayer("testPlayer2");
-        assertEquals(2, testGame.getPlayers().size());
-    }*/
-
     /**
      * The scope of this test function is to test that startGame method correctly starts the game
      */
@@ -529,23 +518,9 @@ class GameLogicExecutorTest {
 
         testGameLogicExecutor.addPlayerToLobby("testPlayer1");
         testGameLogicExecutor.addPlayerToLobby("testPlayer2");
-        ArrayList<String> testNameArrays = new ArrayList<>();
-        testNameArrays.add("testPlayer1");
-        testNameArrays.add("testPlayer2");
 
         assertNotNull(testGame.getCurrentPlayer());
     }
-
-    /**
-     * The scope of this test function is to test that startGame method correctly starts the game
-     */
-    /*@Test void startGame_1Players() {
-        Game testGame = new Game();
-        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        testGameLogicExecutor.addPlayer("testPlayer1");
-        assertFalse(testGameLogicExecutor.startGame());
-    }*/
-
     /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
      */
@@ -596,11 +571,10 @@ class GameLogicExecutorTest {
         assertEquals(testCard2, testPlayer2.getCurrentCard());
         assertEquals(testPlayer2.getName(), testGame.getCurrentPlayer().getName());
     }
-
     /**
      * The scope of this test function is to test that setChosenCard method correctly sets the player card
      */
-    /*@Test void setChosenCard_WrongCard() {
+    @Test void setChosenCard_WrongCard() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         Player testPlayer1 = new Player("testPlayer1");
@@ -612,16 +586,17 @@ class GameLogicExecutorTest {
 
         testGame.setInGameCardsCopy(testCardList);
         Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
+        testGame.setCurrentPlayer(testPlayer1);
         assertFalse(testGameLogicExecutor.setChosenCard(2));
         assertNull(testPlayer1.getCurrentCard());
-    }*/
-
+    }
     /**
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
      */
     @Test void setPawnsPositions_OkPositions() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+
         Player testPlayer1 = new Player("testPlayer1");
         Player testPlayer2 = new Player("testPlayer2");
         testPlayer1.addPawn(new Pawn("990000",0));
@@ -630,12 +605,10 @@ class GameLogicExecutorTest {
         testPlayer2.addPawn(new Pawn("009900",3));
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
-        ArrayList<Position> testPositionArray = new ArrayList<>();
-        testPositionArray.add(new Position(0, 0));
-        testPositionArray.add(new Position(1, 1));
 
         testGame.setCurrentPlayer(testPlayer1);
-        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+
+        testGameLogicExecutor.setPawnsPositions(0,new Position(0,0),1,new Position(1,1));
 
         assertEquals(new Position(0, 0), testPlayer1.getPawnList().get(0).getPosition());
         assertEquals(new Position(1, 1), testPlayer1.getPawnList().get(1).getPosition());
@@ -647,16 +620,9 @@ class GameLogicExecutorTest {
      * The scope of this test function is to test that setPawnsPositions method correctly sets the player pawns
      */
     @Test void setPawnsPositions_NotOkPositions() {
-        Game testGame = new Game();
-        GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
-        Player testPlayer1 = new Player("testPlayer1");
-        testPlayer1.addPawn(new Pawn("990000",0));
-        testPlayer1.addPawn(new Pawn("990000",1));
-        testGame.addPlayer(testPlayer1);
-        ArrayList<Position> testPositionArray = new ArrayList<>();
-        testPositionArray.add(new Position(0, 0));
-        testPositionArray.add(new Position(5, 5));
-        assertFalse(testGameLogicExecutor.setPawnsPositions(testPositionArray));
+        simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
+        boolean ret=gameLogicExecutor.setPawnsPositions(0,new Position(0,0),1,new Position(5,5));
+        assertFalse(ret);
     }
     /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
@@ -664,23 +630,28 @@ class GameLogicExecutorTest {
     @Test void setInGameCards_OkCards_2Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+
         Player testPlayer1 = new Player("testPlayer1");
         Player testPlayer2 = new Player("testPlayer2");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
+
         ArrayList<Card> testCardArray = new ArrayList<>();
         Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
         Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+
         testCardArray.add(testCard1);
         testCardArray.add(testCard2);
         testCardArray.add(testCard3);
         testGame.setLoadedCardsCopy(testCardArray);
+
         ArrayList<Integer> testCardIDArray = new ArrayList<>();
         testCardIDArray.add(1);
         testCardIDArray.add(2);
 
         testGame.setCurrentPlayer(testPlayer1);
+
         testGameLogicExecutor.setInGameCards(testCardIDArray);
 
         assertEquals(2, testGame.getInGameCards().size());
@@ -694,12 +665,14 @@ class GameLogicExecutorTest {
     @Test void setInGameCards_OkCards_3Players() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+
         Player testPlayer1 = new Player("testPlayer1");
         Player testPlayer2 = new Player("testPlayer2");
         Player testPlayer3 = new Player("testPlayer3");
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         testGame.addPlayer(testPlayer3);
+
         ArrayList<Card> testCardArray = new ArrayList<>();
         Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
         Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
@@ -726,30 +699,32 @@ class GameLogicExecutorTest {
         assertEquals(testCard4, testGame.getInGameCards().get(2));
         assertEquals(testPlayer2, testGame.getCurrentPlayer());
     }
-
     /**
      * The scope of this test function is to test that setInGameCards method correctly sets cards inside the game
      */
-    /*@Test void setInGameCards_NotOkCards() {
+    @Test void setInGameCards_NotOkCards() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
+
         Player testPlayer1 = new Player("testPlayer1");
         testGame.addPlayer(testPlayer1);
         testGame.setCurrentPlayer(testPlayer1);
+
         ArrayList<Card> testCardArray = new ArrayList<>();
         Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
         Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         Card testCard3 = new Card("testCard3", 3, new ArrayList<>());
+
         testCardArray.add(testCard1);
         testCardArray.add(testCard2);
         testCardArray.add(testCard3);
         testGame.setLoadedCardsCopy(testCardArray);
+
         ArrayList<Integer> testCardIDArray = new ArrayList<>();
         testCardIDArray.add(5);
         assertFalse(testGameLogicExecutor.setInGameCards(testCardIDArray));
-        assertTrue(testGame.getInGameCards().size() == 0);
-    }*/
-
+        assertEquals(0, testGame.getInGameCards().size());
+    }
     /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
      */
@@ -785,21 +760,22 @@ class GameLogicExecutorTest {
         testGameLogicExecutor.setStartPlayer("testPlayer1");
         assertEquals(testPlayer1,testGame.getCurrentPlayer());
     }
-
     /**
      * The scope of this test function is to test that setStartPlayer method correctly sets the first player
      */
-    /*@Test void setStartPlayer_NotOkPlayer() {
+    @Test void setStartPlayer_NotOkPlayer() {
         Game testGame = new Game();
         GameLogicExecutor testGameLogicExecutor = new GameLogicExecutor(testGame);
         Player testPlayer1 = new Player("testPlayer1");
         Player testPlayer2 = new Player("testPlayer2");
+
         testGame.addPlayer(testPlayer1);
         testGame.addPlayer(testPlayer2);
         testGame.setCurrentPlayer(testPlayer1);
-        testGameLogicExecutor.setStartPlayer("testPlayer3");
-    }*/
 
+        assertFalse(testGameLogicExecutor.setStartPlayer("testPlayer3"));
+
+    }
     /**
      * The scope of this test function is to test that the set-up phase works as expected
      */
@@ -889,6 +865,7 @@ class GameLogicExecutorTest {
         //checks whether the list of notAvailableCells loaded from the json is properly set to the action attribute
         assertTrue(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell().containsAll(expectedList) && expectedList.containsAll(game.getLoadedCards().get(10).getDefaultActionListCopy().get(2).getNotAvailableCell()));
     }
+
 
 
                                                             //Complete game tests
@@ -1450,9 +1427,9 @@ class GameLogicExecutorTest {
     @Test void loopBotsGame(){
         //SETUP VARIABLES
         int counter=0;
-        int numberOfCardsRandomCombinationSwitch=10;
+        int numberOfCardsRandomCombinationSwitch=20;
         int numberOfGamesToRunWithSameCards=20;
-        int maxTurns=100;
+        int maxTurns=200;
 
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
@@ -1507,11 +1484,69 @@ class GameLogicExecutorTest {
 
 
     }
+    @Test void removePlayerGameAlreadyStarted(){
+        //the first player is added to the lobby, so he should receive the request for the number of players in the game
+        gameLogicExecutor.addListener(mockViews.get(0));
+        gameLogicExecutor.addPlayerToLobby("p1");
+        assertTrue(mockViews.get(0).getLastReceivedMessage() instanceof NumberOfPlayersRequestMessage);
+        assertEquals(mockViews.get(0).getName(),mockViews.get(0).getLastReceivedMessage().getRecipients().get(0));
+
+        //other players are added to the lobby, check that their message is set to null
+        gameLogicExecutor.addListener(mockViews.get(1));
+        gameLogicExecutor.addPlayerToLobby("p2");
+        gameLogicExecutor.addListener(mockViews.get(2));
+        gameLogicExecutor.addPlayerToLobby("p3");
+        assertEquals(0,mockViews.get(1).getReceivedMessages().size());
+        assertEquals(0,mockViews.get(2).getReceivedMessages().size());
+
+        //we set the number of players to 3 so the game will start immediately
+        gameLogicExecutor.setNumberOfPlayers(3);
+
+        //at this point the startGame function is called and one player will receive the message to set the cards
+        String currentPlayerName=gameLogicExecutor.getCurrentPlayerName();
+        gameLogicExecutor.removePlayer(currentPlayerName);
+
+        for(MockView mockView : mockViews){
+            if(!mockView.getName().equals(currentPlayerName)){
+                assertTrue(mockView.getLastReceivedMessage() instanceof GameEndedMessage);
+            }
+        }
+
+
+    }
+    @Test void removePlayerGameNotStarted(){
+        //the first player is added to the lobby, so he should receive the request for the number of players in the game
+        gameLogicExecutor.addListener(mockViews.get(0));
+        gameLogicExecutor.addPlayerToLobby("p1");
+        assertTrue(mockViews.get(0).getLastReceivedMessage() instanceof NumberOfPlayersRequestMessage);
+        assertEquals(mockViews.get(0).getName(),mockViews.get(0).getLastReceivedMessage().getRecipients().get(0));
+
+        //other players are added to the lobby, check that their message is set to null
+        gameLogicExecutor.addListener(mockViews.get(1));
+        gameLogicExecutor.addPlayerToLobby("p2");
+        gameLogicExecutor.addListener(mockViews.get(2));
+        gameLogicExecutor.addPlayerToLobby("p3");
+        assertEquals(0,mockViews.get(1).getReceivedMessages().size());
+        assertEquals(0,mockViews.get(2).getReceivedMessages().size());
+
+        //at this point the startGame function is called and one player will receive the message to set the cards
+        gameLogicExecutor.removePlayer("p1");
+
+
+        for(MockView mockView : mockViews){
+            if(!mockView.getName().equals("p1")){
+                assertTrue(mockView.getReceivedMessages().size()==0 || mockView.getLastReceivedMessage() instanceof NumberOfPlayersRequestMessage);
+            }
+        }
+
+
+    }
 
 
 
 
-                                                             //COMMODITY FUNCTIONS
+
+    //COMMODITY FUNCTIONS
     /**
      * This function creates a simple setup for a game of three players Ian, Luca, Riccardo.
      * The players play like a game with no gods, with one simple move and one simple create loaded in their actionList.
@@ -1713,19 +1748,23 @@ class GameLogicExecutorTest {
                 if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
                     ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                     if(chosenPositionForMoveRequestMessage.getAvailablePositions().size()==0){
-                        return 0;
+                        gameLogicExecutor.undoTurn();
+                        break;
+                    }else {
+                        randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
+                        gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
                     }
-                    randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
-                    gameLogicExecutor.setChosenPosition(chosenPositionForMoveRequestMessage.getAvailablePositions().get(randomNum1));
                 }
                 else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage){
                     ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
                     if(chosenPositionForConstructRequestMessage.getAvailablePositions().size()==0){
-                        simpleCompleteBoardPrint();
-                        return 0;
+                        gameLogicExecutor.undoTurn();
+                        break;
                     }
-                    randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
-                    gameLogicExecutor.setChosenPosition(chosenPositionForConstructRequestMessage.getAvailablePositions().get(randomNum1));
+                    else {
+                        randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
+                        gameLogicExecutor.setChosenPosition(chosenPositionForConstructRequestMessage.getAvailablePositions().get(randomNum1));
+                    }
                 }
                 else if(currentP.getLastReceivedMessage() instanceof ChosenBlockTypeRequestMessage){
                     ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage = (ChosenBlockTypeRequestMessage) currentP.getLastReceivedMessage();
