@@ -139,6 +139,33 @@
             <children>
                <Label fx:id="phaseLabel" text="phase" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                <HBox fx:id="blockTypesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="nicknameRequest" stylesheets="@style.css" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+               <GridPane GridPane.rowIndex="1">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.09420776367188" minWidth="10.0" prefWidth="178.13064575195312" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.86935424804688" minWidth="10.0" prefWidth="146.86935424804688" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <GridPane GridPane.columnIndex="1">
+                       <columnConstraints>
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#confirmAction" text="Confirm Action" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           <Button fx:id="undoActionButton" mnemonicParsing="false" onAction="#undoAction" text="Undo Action" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                           <Button fx:id="undoTurnButton" mnemonicParsing="false" onAction="#undoTurn" text="Undo Turn" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        </children>
+                     </GridPane>
+                     <ImageView fx:id="timerImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                  </children>
+               </GridPane>
             </children>
          </GridPane>
          <Button fx:id="skipButton" mnemonicParsing="false" onAction="#skipAction" text="Skip" GridPane.columnIndex="2" />

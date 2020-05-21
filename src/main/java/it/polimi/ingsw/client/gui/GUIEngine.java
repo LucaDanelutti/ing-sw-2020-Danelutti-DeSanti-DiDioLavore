@@ -169,10 +169,10 @@ public class GUIEngine extends Application implements UserInterface {
             try {
                 if (isGameStarted) {
                     ((MainSceneController) currentController).updateBoard();
-                } else {
-                    showMainSceneSynch();
-                    isGameStarted = true;
-                    ((MainSceneController) currentController).updateBoard();
+//                } else {
+//                    showMainSceneSynch();
+//                    isGameStarted = true;
+//                    ((MainSceneController) currentController).updateBoard();
                 }
             } catch (Exception e) {
                 System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
@@ -189,6 +189,7 @@ public class GUIEngine extends Application implements UserInterface {
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
             stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
             ((MainSceneController)currentController).buildMainScene();
+            isGameStarted = true;
         });
     }
 

@@ -4,11 +4,9 @@ import it.polimi.ingsw.client.gui.GUIController;
 import it.polimi.ingsw.client.gui.GUIEngine;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.utility.messages.sets.ChosenBlockTypeSetMessage;
-import it.polimi.ingsw.utility.messages.sets.ChosenPositionSetMessage;
-import it.polimi.ingsw.utility.messages.sets.InitialPawnPositionSetMessage;
-import it.polimi.ingsw.utility.messages.sets.SelectedPawnSetMessage;
+import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.view.modelview.*;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -32,6 +30,8 @@ import javafx.scene.image.ImageView;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainSceneController extends GUIController {
 
@@ -44,6 +44,7 @@ public class MainSceneController extends GUIController {
     private static final double ENEMY_CARD_WIDTH_RATIO = 12;
     private static final double ENEMY_CARD_HEIGHT_RATIO = 5;
     private static final double BOARD_PANE_RATIO = 0.5;
+    private static final int TIME_TO_WAIT = 5;
 
 
     /* ===== FXML elements ===== */
@@ -76,6 +77,16 @@ public class MainSceneController extends GUIController {
     @FXML
     private Button skipButton;
 
+    @FXML
+    private ImageView timerImageView;
+    @FXML
+    private Button confirmActionButton;
+    @FXML
+    private Button undoActionButton;
+    @FXML
+    private Button undoTurnButton;
+
+
 
     /* ===== FXML Properties ===== */
     private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
@@ -83,6 +94,9 @@ public class MainSceneController extends GUIController {
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
     private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
+    private Position chosenPosition = new Position(0,0);
+    private BlockType chosenBlockType = null;
+    private Timer undoProcessTimer;
 
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
@@ -92,6 +106,11 @@ public class MainSceneController extends GUIController {
        enemy1PlayerNameLabel.setText("");
        enemy2PlayerNameLabel.setText("");
        skipButton.setVisible(false);
+       timerImageView.setVisible(false);
+       timerImageView.setPreserveRatio(true);
+       confirmActionButton.setVisible(false);
+       undoActionButton.setVisible(false);
+       undoTurnButton.setVisible(false);
 
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
@@ -201,11 +220,11 @@ public class MainSceneController extends GUIController {
        }
        ArrayList<CardView> enemiesCards = modelView.getEnemiesCards(clientView.getName());
        if (enemiesCards != null) {
-           if (enemiesCards.size() >= 1)  {
+           if (enemiesCards.size() >= 1 && enemiesCards.get(0) != null)  {
                Image enemy1CardImage = new Image("images/cards/card_" + enemiesCards.get(0).getId() + ".png");
                enemy1PlayerCardImageView.setImage(enemy1CardImage); //enemiesCards.get(0)
            }
-           if (enemiesCards.size() == 2) {
+           if (enemiesCards.size() == 2 && enemiesCards.get(0) != null && enemiesCards.get(1) != null) {
                Image enemy2CardImage = new Image("images/cards/card_" + enemiesCards.get(1).getId() + ".png");
                enemy2PlayerCardImageView.setImage(enemy2CardImage);
            }
@@ -269,17 +288,17 @@ public class MainSceneController extends GUIController {
 
     public void chooseMovePosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Move!");
-        if (availablePositions.contains(null)) skipButton.setVisible(true);
-       enablePositionSelection(availablePositions);
+       if (availablePositions.contains(null)) skipButton.setVisible(true);
+       enablePositionSelection(availablePositions, "move");
     }
 
     public void chooseConstructPosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Build!");
        if (availablePositions.contains(null)) skipButton.setVisible(true);
-       enablePositionSelection(availablePositions);
+       enablePositionSelection(availablePositions, "construct");
     }
 
-    public void enablePositionSelection(ArrayList<Position> availablePositions) {
+    public void enablePositionSelection(ArrayList<Position> availablePositions, String actionType) {
         for (Position position : availablePositions) {
             //makes the ImageViews visible
             enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
@@ -288,13 +307,20 @@ public class MainSceneController extends GUIController {
                 Node source = (Node)e.getSource();
                 int colIndex = GridPane.getColumnIndex(source);
                 int rowIndex = GridPane.getRowIndex(source);
-                //cols -> x, rows -> y
-                setPosition(new Position(rowIndex, colIndex));
+
+                chosenPosition.setX(rowIndex);
+                chosenPosition.setY(colIndex);
+
+                if (actionType.equals("move")) {
+                    startUndoProcess();
+                } else {
+                    setPosition();
+                }
             });
         }
     }
 
-    private void setPosition(Position chosenPosition) {
+    private void setPosition() {
         phaseLabel.setText("");
         if (chosenPosition != null) {
             System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
@@ -303,10 +329,13 @@ public class MainSceneController extends GUIController {
         }
         clientView.update(new ChosenPositionSetMessage(chosenPosition));
         clearEnlightenedImageViews();
+
+        skipButton.setVisible(false);
     }
 
     public void chooseBlockType(ArrayList<BlockType> availableBlockTypes) {
         phaseLabel.setText("Choose a Block Type!");
+        blockTypesHBox.toFront();
 
         for (BlockType blockType : availableBlockTypes) {
             Image blockTypeImage = new Image("images/board/block_lv_" + blockType.getLevel() + ".png");
@@ -320,25 +349,28 @@ public class MainSceneController extends GUIController {
                 Node source = (Node)e.getSource();
                 int blockTypeLevel = Integer.parseInt(source.getId());
                 System.out.printf("blockType: %d %n", blockTypeLevel);
-                setBlockType(blockTypeLevel, availableBlockTypes);
+
+                chosenBlockType = BlockType.LEVEL1;
+                for(BlockType blockTypeElement : availableBlockTypes) {
+                    if (blockType.getLevel() == blockTypeLevel) chosenBlockType = blockTypeElement;
+                }
+
+                blockTypesHBox.getChildren().clear();
+                blockTypesHBox.setVisible(false);
+                blockTypesHBox.toBack();
+                startUndoProcess();
             });
         }
 
         blockTypesHBox.setVisible(true);
     }
 
-    private void setBlockType(int chosenBlockTypeLevel, ArrayList<BlockType> availableBlockTypes) {
+    private void setBlockType() {
        phaseLabel.setText("");
-       BlockType chosenBlockType = BlockType.LEVEL1;
-       for(BlockType blockType : availableBlockTypes) {
-           if (blockType.getLevel() == chosenBlockTypeLevel) chosenBlockType = blockType;
-       }
 
        System.out.println("chosenBlockType.getLevel(): " + chosenBlockType.getLevel());
        clientView.update(new ChosenBlockTypeSetMessage(chosenBlockType));
-
-        blockTypesHBox.getChildren().clear();
-        blockTypesHBox.setVisible(false);
+       chosenBlockType = null;
     }
 
     public void placeInitialPawns(ArrayList<Position> availablePositions) {
@@ -379,8 +411,70 @@ public class MainSceneController extends GUIController {
     public void skipAction() {
         phaseLabel.setText("");
         skipButton.setVisible(false);
-        setPosition(null);
+        chosenPosition = null;
         clearEnlightenedImageViews();
+    }
+
+    private void startUndoProcess() {
+        Image timerImage = new Image("images/utility/timer_counter_5.png");
+        timerImageView.setImage(timerImage);
+
+        timerImageView.setVisible(true);
+        confirmActionButton.setVisible(true);
+        undoActionButton.setVisible(true);
+        undoTurnButton.setVisible(true);
+
+        undoProcessTimer  = new Timer();
+
+        undoProcessTimer.schedule( new TimerTask() {
+            private int count = 5;
+            @Override
+            public void run() {
+                if (count > 0) {
+                    System.out.println("count: " + count);
+                    Platform.runLater(() -> {
+
+                        Image updatedTimerImage =  new Image("images/utility/timer_counter_" + count + ".png");
+                        timerImageView.setImage(updatedTimerImage);
+                        count--;
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        confirmAction();
+                        undoProcessTimer.cancel();
+                    });
+                }
+            }
+        }, 0, 1000);
+    }
+
+    private void endUndoProcess() {
+        undoProcessTimer.cancel();
+        timerImageView.setVisible(false);
+        confirmActionButton.setVisible(false);
+        undoActionButton.setVisible(false);
+        undoTurnButton.setVisible(false);
+    }
+
+
+    public void confirmAction() {
+       if (chosenBlockType != null) {
+           setBlockType();
+       } else {
+           setPosition();
+       }
+        clearEnlightenedImageViews();
+        endUndoProcess();
+    }
+
+    public void undoAction() {
+       clientView.update(new UndoActionSetMessage());
+       endUndoProcess();
+    }
+
+    public void undoTurn() {
+       clientView.update(new UndoTurnSetMessage());
+       endUndoProcess();
     }
 
 }
