@@ -23,6 +23,8 @@ public class GameCardsRequestSceneController extends GUIController {
     /* ===== Constants ===== */
     private static final int NUM_ROWS = 2;
     private static final int NUM_COLUMNS = 7;
+    private static final double CARD_GRIDPANE_HGAP = 10;
+    private static final double CARD_GRIDPANE_VGAP = 10;
 
     /* ===== FXML elements ===== */
     @FXML
@@ -42,6 +44,8 @@ public class GameCardsRequestSceneController extends GUIController {
 
     /* ===== FXML Set Up and Bindings ===== */
     public void initialize() {
+        cardsGridPane.setHgap(CARD_GRIDPANE_HGAP);
+        cardsGridPane.setVgap(CARD_GRIDPANE_VGAP);
     }
 
     /**
@@ -75,8 +79,8 @@ public class GameCardsRequestSceneController extends GUIController {
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setPreserveRatio(true);
         cardImageView.setId(String.valueOf(cardId));
-        cardImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().divide(7));
-        cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().divide(2));
+        cardImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(7));
+        cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_VGAP).divide(2));
         cardImageView.setOnMouseClicked(e -> {
             Node source = (Node)e.getSource();
             System.out.printf("Mouse enetered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));

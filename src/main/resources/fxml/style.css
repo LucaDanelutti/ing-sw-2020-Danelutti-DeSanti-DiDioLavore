@@ -1,3 +1,16 @@
+@font-face {
+    src: url("fonts/Rubik-Medium.ttf");
+}
+@font-face {
+    src: url("fonts/Rubik-Light.ttf");
+}
+@font-face {
+    src: url("fonts/Rubik-Regular.ttf");
+}
+@font-face {
+    src: url("fonts/Rubik-Bold.ttf");
+}
+
 .boardGridPane {
     -fx-background-image: url('../images/board/board.png');
     -fx-background-size: contain;
@@ -12,6 +25,35 @@
     -fx-background-position: center;
  }
 
+ .classicButton {
+    -fx-background-color: rgb(227, 227, 227);
+    -fx-text-fill: rgb(61, 61, 61);
+    -fx-padding: 10, 20;
+    -fx-background-radius: 20;
+    -fx-font-family: 'Rubik-Medium';
+ }
+
+ .classicTextField {
+    -fx-background-color: rgb(227, 227, 227);
+    -fx-text-fill: rgb(61, 61, 61);
+    -fx-font-size: 11pt;
+    -fx-padding: 7;
+    -fx-background-radius: 15;
+    -fx-font-family: 'Rubik-Regular';
+ }
+
 .nicknameRequest {
     -fx-background-color: rgb(193, 221, 230);
+}
+
+.regularText {
+    -fx-font-size: 12pt;
+    -fx-text-fill: rgb(61, 61, 61);
+    -fx-font-family: 'Rubik-Regular';
+}
+
+.titleText {
+    -fx-font-size: 16pt;
+    -fx-text-fill: rgb(61, 61, 61);
+    -fx-font-family: 'Rubik-Bold';
 }

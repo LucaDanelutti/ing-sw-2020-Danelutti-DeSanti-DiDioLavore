@@ -21,15 +21,7 @@ public class WaitingSceneController extends GUIController {
 
     @FXML
     public void initialize() {
-        waitString = new SimpleStringProperty("Waiting Screen");
+        waitString = new SimpleStringProperty("Lobby");
         waitLabel.textProperty().bind(waitString);
-    }
-
-    @FXML
-    public void testScene() {
-        //testing pop-up
-        Platform.runLater(() -> {
-            ((GUIEngine)clientView.getUserInterface()).showMainScene();
-        });
     }
 }

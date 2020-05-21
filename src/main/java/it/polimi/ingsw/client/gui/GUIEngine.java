@@ -42,7 +42,8 @@ public class GUIEngine extends Application implements UserInterface {
 //        setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
-        showScene("/fxml/loginScene.fxml");
+//        showScene("/fxml/loginScene.fxml");
+        loadLoginScene();
     }
 
     //test function
@@ -248,8 +249,8 @@ public class GUIEngine extends Application implements UserInterface {
     public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
             showScene("/fxml/gameCardsRequestScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
             ((GameCardsRequestSceneController)currentController).loadCards(availableCards);
         });
     }
@@ -331,6 +332,14 @@ public class GUIEngine extends Application implements UserInterface {
             alertText.setWrappingWidth(alert.getDialogPane().getWidth());
             alert.getDialogPane().setContent(alertText);
             alert.show();
+        });
+    }
+
+    private void loadLoginScene() {
+        Platform.runLater(() -> {
+            showScene("/fxml/loginScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
         });
     }
 }
