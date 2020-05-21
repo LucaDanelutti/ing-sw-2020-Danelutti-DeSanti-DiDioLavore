@@ -14,6 +14,11 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -167,13 +172,7 @@ public class GUIEngine extends Application implements UserInterface {
     public void refreshView() {
         Platform.runLater(() -> {
             try {
-                if (isGameStarted) {
-                    ((MainSceneController) currentController).updateBoard();
-//                } else {
-//                    showMainSceneSynch();
-//                    isGameStarted = true;
-//                    ((MainSceneController) currentController).updateBoard();
-                }
+                if (isGameStarted) ((MainSceneController) currentController).updateBoard();
             } catch (Exception e) {
                 System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
             }
@@ -320,6 +319,18 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onGameEnded(String reason) {
+        showMessage(reason, AlertType.ERROR);
+    }
 
+    public void showMessage(String message, AlertType alertType) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(alertType);
+            alert.getButtonTypes().set(0, ButtonType.OK);
+            Text alertText = new Text(message);
+            alertText.setTextAlignment(TextAlignment.CENTER);
+            alertText.setWrappingWidth(alert.getDialogPane().getWidth());
+            alert.getDialogPane().setContent(alertText);
+            alert.show();
+        });
     }
 }

@@ -146,10 +146,7 @@ public class MainSceneController extends GUIController {
 
    //TODO: remove this method and the relative button. It is just for test
    public void updateBoardTest() {
-       ArrayList<Position> availablePositions = new ArrayList<>();
-       availablePositions.add(new Position(1,1));
-       availablePositions.add(new Position(1,2));
-       clientView.getUserInterface().onInitialPawnPositionRequest(availablePositions);
+       clientView.getUserInterface().onGameEnded("Game ended reason test.");
    }
 
    public void updateGameInfo() {
