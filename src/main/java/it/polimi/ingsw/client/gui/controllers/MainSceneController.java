@@ -351,7 +351,7 @@ public class MainSceneController extends GUIController {
             blockTypeImageView.setPreserveRatio(true);
             blockTypeImageView.setId(String.valueOf(blockType.getLevel()));
             blockTypeImageView.fitWidthProperty().bind(blockTypesHBox.widthProperty().divide(availableBlockTypes.size()));
-            blockTypeImageView.fitHeightProperty().bind(blockTypesHBox.heightProperty());
+            blockTypeImageView.fitHeightProperty().bind(blockTypesHBox.heightProperty().multiply(0.7));
             blockTypesHBox.getChildren().add(blockTypeImageView);
             blockTypeImageView.setOnMouseClicked(e -> {
                 Node source = (Node)e.getSource();
@@ -424,6 +424,7 @@ public class MainSceneController extends GUIController {
     }
 
     private void startUndoProcess() {
+       phaseLabel.setText("");
         Image timerImage = new Image("images/utility/timer_counter_5.png");
         timerImageView.setImage(timerImage);
 

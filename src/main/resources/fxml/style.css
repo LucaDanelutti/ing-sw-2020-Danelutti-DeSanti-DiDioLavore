@@ -71,3 +71,8 @@
     -fx-border-radius: 20;
     -fx-background-color: black;
 }
+
+.blockSelection {
+    -fx-background-color: rgb(61, 61, 61);
+    -fx-background-radius: 20;
+}

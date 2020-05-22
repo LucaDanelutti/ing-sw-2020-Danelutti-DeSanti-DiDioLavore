@@ -34,12 +34,12 @@
              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="275.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <Label fx:id="clientPlayerNameLabel" text="Player  name">
+               <Label fx:id="clientPlayerNameLabel" styleClass="regularText" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                   <GridPane.margin>
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </GridPane.margin>
                </Label>
-               <ImageView fx:id="clientPlayerCardImageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+               <ImageView fx:id="clientPlayerCardImageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             </children>
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -47,59 +47,28 @@
          </GridPane>
          <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
            <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.69427490234375" />
            </columnConstraints>
            <rowConstraints>
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="110.58718872070312" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="133.44906616210938" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="179.86871337890625" minHeight="10.0" prefHeight="25.371337890625" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="179.86871337890625" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="179.86871337890625" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <ImageView fx:id="enemy1PlayerCardImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <ImageView fx:id="enemy1PlayerCardImageView" fitHeight="65.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     <Insets bottom="20.0" left="20.0" right="30.0" top="20.0" />
                   </GridPane.margin>
                </ImageView>
-               <ImageView fx:id="enemy2PlayerCardImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+               <ImageView fx:id="enemy2PlayerCardImageView" fitHeight="90.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     <Insets bottom="20.0" left="20.0" right="30.0" top="20.0" />
                   </GridPane.margin>
                </ImageView>
-               <GridPane>
-                 <columnConstraints>
-                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                 </columnConstraints>
-                 <rowConstraints>
-                   <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                   <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                 </rowConstraints>
-                  <children>
-                     <Label fx:id="enemy1PlayerNameLabel" text="Enemy's name">
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </GridPane.margin>
-                     </Label>
-                  </children>
-                  <GridPane.margin>
-                     <Insets top="10.0" />
-                  </GridPane.margin>
-               </GridPane>
-               <GridPane GridPane.rowIndex="1">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                  <children>
-                     <Label fx:id="enemy2PlayerNameLabel" text="Enemy's name">
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </GridPane.margin>
-                     </Label>
-                  </children>
-               </GridPane>
+               <Label fx:id="enemy1PlayerNameLabel" styleClass="regularText" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               <Label fx:id="enemy2PlayerNameLabel" styleClass="regularText" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             </children>
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -128,48 +97,74 @@
                </GridPane>
             </children>
          </AnchorPane>
-         <Button mnemonicParsing="false" onAction="#updateBoardTest" text="Update" />
          <GridPane GridPane.columnIndex="1">
            <columnConstraints>
              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
            </columnConstraints>
            <rowConstraints>
-             <RowConstraints maxHeight="59.70424270629883" minHeight="10.0" prefHeight="38.28181838989258" vgrow="SOMETIMES" />
-             <RowConstraints maxHeight="87.71818161010742" minHeight="10.0" prefHeight="87.71818161010742" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="59.70424270629883" minHeight="10.0" prefHeight="48.5120849609375" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="87.71818161010742" minHeight="10.0" prefHeight="77.9879150390625" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <Label fx:id="phaseLabel" text="phase" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-               <HBox fx:id="blockTypesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="nicknameRequest" stylesheets="@style.css" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+               <Label fx:id="phaseLabel" styleClass="titleText" text="phase" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <GridPane.margin>
+                     <Insets top="15.0" />
+                  </GridPane.margin></Label>
+               <HBox fx:id="blockTypesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="blockSelection" stylesheets="@style.css" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                  <GridPane.margin>
+                     <Insets />
+                  </GridPane.margin></HBox>
                <GridPane GridPane.rowIndex="1">
                  <columnConstraints>
-                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.09420776367188" minWidth="10.0" prefWidth="178.13064575195312" />
-                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.86935424804688" minWidth="10.0" prefWidth="146.86935424804688" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="178.13064575195312" />
                  </columnConstraints>
                  <rowConstraints>
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <GridPane GridPane.columnIndex="1">
-                       <columnConstraints>
-                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
-                        <children>
-                           <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#confirmAction" text="Confirm Action" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                           <Button fx:id="undoActionButton" mnemonicParsing="false" onAction="#undoAction" text="Undo Action" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                           <Button fx:id="undoTurnButton" mnemonicParsing="false" onAction="#undoTurn" text="Undo Turn" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        </children>
-                     </GridPane>
-                     <ImageView fx:id="timerImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                     <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#confirmAction" prefWidth="116.0" styleClass="classicButton" stylesheets="@style.css" text="Confirm Action" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Button fx:id="undoActionButton" mnemonicParsing="false" onAction="#undoAction" styleClass="classicButton" stylesheets="@style.css" text="Undo Action" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Button fx:id="undoTurnButton" mnemonicParsing="false" onAction="#undoTurn" styleClass="classicButton" stylesheets="@style.css" text="Undo Turn" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </GridPane.margin>
+                     </Button>
                   </children>
                </GridPane>
+               <ImageView fx:id="timerImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                  <GridPane.margin>
+                     <Insets bottom="10.0" top="20.0" />
+                  </GridPane.margin>
+               </ImageView>
             </children>
          </GridPane>
-         <Button fx:id="skipButton" mnemonicParsing="false" onAction="#skipAction" text="Skip" GridPane.columnIndex="2" />
+         <GridPane GridPane.columnIndex="2">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints maxHeight="72.35923767089844" minHeight="10.0" prefHeight="55.065635681152344" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="50.934364318847656" minHeight="10.0" prefHeight="50.934364318847656" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <GridPane.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </GridPane.margin>
+            <children>
+               <Button fx:id="skipButton" mnemonicParsing="false" onAction="#skipAction" styleClass="classicButton" stylesheets="@style.css" text="Skip" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <GridPane.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </GridPane.margin>
+               </Button>
+            </children>
+         </GridPane>
       </children>
    </GridPane>
 </Scene>

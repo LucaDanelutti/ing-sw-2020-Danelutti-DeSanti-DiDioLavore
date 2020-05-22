@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//TODO: scrivere una funzione parametrica private da chiamare tutte le volte che definisco minWidth/h e width/h di stage quando carico le scene
 public class GUIEngine extends Application implements UserInterface {
 
     private Stage stage;
@@ -145,7 +146,7 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void refreshView(CardView cardView) {
-        refreshView();
+        refreshViewOnlyGameInfo();
     }
 
     @Override
@@ -186,8 +187,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void showMainScene() {
         Platform.runLater(() -> {
             showScene("/fxml/mainScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
             ((MainSceneController)currentController).buildMainScene();
             isGameStarted = true;
         });
@@ -270,7 +273,7 @@ public class GUIEngine extends Application implements UserInterface {
     public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
             try {
-                showMainSceneSynch();
+//                showMainSceneSynch();
                 ((MainSceneController)currentController).placeInitialPawns(availablePositions);
             } catch (Exception e) {
                 System.out.println("Problem while executing onInitialPawnPositionRequest():" + e.toString());
@@ -280,8 +283,10 @@ public class GUIEngine extends Application implements UserInterface {
 
     private void showMainSceneSynch() {
         showScene("/fxml/mainScene.fxml");
-        stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/2);
-        stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2);
+        stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+        stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
+        stage.setWidth(Screen.getPrimary().getBounds().getWidth()/1.5);
+        stage.setHeight(Screen.getPrimary().getBounds().getHeight()/1.5);
         ((MainSceneController)currentController).buildMainScene();
     }
 
