@@ -7,10 +7,15 @@ import it.polimi.ingsw.view.modelview.ModelView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
 public class FirstPlayerRequestSceneController extends GUIController {
+
+    final static private double GOD_PAIN_RATIO = 6;
 
     @FXML
     private Button buttonPlayer1;
@@ -19,12 +24,29 @@ public class FirstPlayerRequestSceneController extends GUIController {
     @FXML
     private Button buttonPlayer3;
 
+    @FXML
+    private ImageView player1ImageView;
+    @FXML
+    private ImageView player2ImageView;
+    @FXML
+    private ImageView player3ImageView;
+
+    @FXML
+    private GridPane mainGridPane;
+
 
     ArrayList<String> playersList = new ArrayList<>();
     String firstPlayerSelected;
 
     @FXML
     public void initialize() {
+
+        player1ImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(GOD_PAIN_RATIO));
+        player1ImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(GOD_PAIN_RATIO));
+        player2ImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(GOD_PAIN_RATIO));
+        player2ImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(GOD_PAIN_RATIO));
+        player3ImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(GOD_PAIN_RATIO));
+        player3ImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(GOD_PAIN_RATIO));
 
     }
 
@@ -33,11 +55,19 @@ public class FirstPlayerRequestSceneController extends GUIController {
         playersList.add(clientView.getName());
         playersList.addAll(modelView.getEnemiesNames(clientView.getName()));
         buttonPlayer1.setText(playersList.get(0));
+        Image player1Image = new Image("images/gods/god_" + modelView.getClientPlayerCard(clientView.getName()).getId() + ".png");
+        player1ImageView.setImage(player1Image);
+
         buttonPlayer2.setText(playersList.get(1));
+        Image player2Image = new Image("images/gods/god_" + modelView.getEnemiesCards(clientView.getName()).get(0).getId() + ".png");
+        player2ImageView.setImage(player2Image);
+
         if (playersList.size() < 3)  {
             buttonPlayer3.setVisible(false);
         } else {
             buttonPlayer3.setText(playersList.get(2));
+            Image player3Image = new Image("images/gods/god_" + modelView.getEnemiesCards(clientView.getName()).get(1).getId() + ".png");
+            player3ImageView.setImage(player3Image);
         }
         selectPlayer1();
     }

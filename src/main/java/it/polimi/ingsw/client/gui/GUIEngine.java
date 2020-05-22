@@ -250,9 +250,9 @@ public class GUIEngine extends Application implements UserInterface {
         Platform.runLater(() -> {
             showScene("/fxml/firstPlayerRequestScene.fxml");
             stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/2.5);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/2.5);
             ((FirstPlayerRequestSceneController)currentController).loadPlayers();
         });
     }

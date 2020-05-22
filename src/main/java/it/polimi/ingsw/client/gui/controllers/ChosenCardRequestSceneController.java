@@ -6,6 +6,7 @@ import it.polimi.ingsw.utility.messages.sets.ChosenCardSetMessage;
 import it.polimi.ingsw.view.modelview.CardView;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +25,8 @@ public class ChosenCardRequestSceneController extends GUIController {
     private HBox cardsHBox;
     @FXML
     private Label cardDescriptionLabel;
+    @FXML
+    private Button confirmButton;
 
 
     /* ===== Variables ===== */
@@ -32,7 +35,9 @@ public class ChosenCardRequestSceneController extends GUIController {
 
     public void initialize() {
         cardsHBox.spacingProperty().bind(cardsHBox.widthProperty().divide(10));
+
     }
+
 
     /**
      * It loads the ImageViews of the CardViews contained within availableCards.
@@ -53,9 +58,15 @@ public class ChosenCardRequestSceneController extends GUIController {
                 int cardId = Integer.parseInt(source.getId());
                 System.out.printf("cardId: %d %n", cardId);
                 updateDescriptionLabel(cardId);
+                updateConfirmButtonText(cardId);
                 chosenCardId = cardId;
             });
         }
+
+        //picks the first card available
+        chosenCardId = availableCards.get(0).getId();
+        updateDescriptionLabel(chosenCardId);
+        updateConfirmButtonText(chosenCardId);
     }
 
     /**
@@ -66,6 +77,14 @@ public class ChosenCardRequestSceneController extends GUIController {
         for (CardView card: availableCards) {
             if (card.getId() == cardId) {
                 cardDescriptionLabel.setText(card.getDescription());
+            }
+        }
+    }
+
+    private void updateConfirmButtonText(int cardId) {
+        for (CardView card: availableCards) {
+            if (card.getId() == cardId) {
+                confirmButton.setText("Pick " + card.getName() + "!");
             }
         }
     }

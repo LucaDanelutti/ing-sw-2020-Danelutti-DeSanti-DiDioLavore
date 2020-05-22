@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.NicknameRequestSceneController">
-   <GridPane alignment="CENTER" styleClass="nicknameRequest" stylesheets="@style.css">
+   <GridPane alignment="CENTER" stylesheets="@style.css">
 
       <Label styleClass="regularText" stylesheets="@style.css" text="Pick your nickname" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <GridPane.margin>
@@ -23,7 +23,7 @@
          <GridPane.margin>
             <Insets bottom="5.0" right="10.0" top="3.0" />
          </GridPane.margin></TextField>
-      <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#confirm" styleClass="classicButton" stylesheets="@style.css" text="Go!" textAlignment="CENTER" GridPane.rowIndex="7">
+      <Button alignment="CENTER" contentDisplay="TOP" defaultButton="true" mnemonicParsing="false" onAction="#confirm" styleClass="classicButton" stylesheets="@style.css" text="Go!" textAlignment="CENTER" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets bottom="5.0" right="5.0" top="15.0" />
          </GridPane.margin>
