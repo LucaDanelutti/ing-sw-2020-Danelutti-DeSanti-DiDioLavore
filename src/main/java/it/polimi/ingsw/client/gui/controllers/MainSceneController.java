@@ -207,10 +207,17 @@ public class MainSceneController extends GUIController {
    public void updatePlayersName() {
        ModelView modelView = clientView.getModelView();
        clientPlayerNameLabel.setText(clientView.getName());
+       clientPlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(clientView.getName()) + "LabelBackground");
        ArrayList<String> enemiesNames = modelView.getEnemiesNames(clientView.getName());
        if (enemiesNames != null) {
-           if (enemiesNames.size() >= 1) enemy1PlayerNameLabel.setText(enemiesNames.get(0));
-           if (enemiesNames.size() == 2) enemy2PlayerNameLabel.setText(enemiesNames.get(1));
+           if (enemiesNames.size() >= 1)  {
+               enemy1PlayerNameLabel.setText(enemiesNames.get(0));
+               enemy1PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(0)) + "LabelBackground");
+           }
+           if (enemiesNames.size() == 2) {
+               enemy2PlayerNameLabel.setText(enemiesNames.get(1));
+               enemy2PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(1)) + "LabelBackground");
+           }
        }
    }
 
@@ -291,6 +298,14 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    private void removeRecognizerFromEnlightenedImageViews() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                enlightenedImageViewsArray[i][j].setOnMouseClicked(null);
+            }
+        }
+    }
+
     public void chooseMovePosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Move!");
        if (availablePositions.contains(null)) skipButton.setVisible(true);
@@ -316,6 +331,7 @@ public class MainSceneController extends GUIController {
 
                     chosenPosition.setX(rowIndex);
                     chosenPosition.setY(colIndex);
+                    skipButton.setVisible(false);
 
                     if (actionType.equals("move")) {
                         startUndoProcess();
@@ -425,6 +441,7 @@ public class MainSceneController extends GUIController {
 
     private void startUndoProcess() {
        phaseLabel.setText("");
+        removeRecognizerFromEnlightenedImageViews();
         Image timerImage = new Image("images/utility/timer_counter_5.png");
         timerImageView.setImage(timerImage);
 

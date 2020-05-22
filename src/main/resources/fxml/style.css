@@ -60,6 +60,12 @@
     -fx-font-family: 'Rubik-Regular';
 }
 
+.regularTextWhite {
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-font-family: 'Rubik-Regular';
+}
+
 .titleText {
     -fx-font-size: 16pt;
     -fx-text-fill: rgb(61, 61, 61);
@@ -74,5 +80,27 @@
 
 .blockSelection {
     -fx-background-color: rgb(61, 61, 61);
+    -fx-background-radius: 20;
+}
+
+.blueLabelBackground {
+    -fx-background-color: rgb(139, 208, 242);
+    -fx-background-radius: 20;
+}
+
+.greenLabelBackground {
+    -fx-background-color: rgb(109, 232, 138);
+    -fx-background-radius: 20;
+}
+
+.orangeLabelBackground {
+    -fx-padding: 20 ,40
+    -fx-background-padding: 10, 20;
+    -fx-background-color: rgb(226, 171, 111);
+    -fx-background-radius: 20;
+}
+
+.legendGridPane {
+    -fx-background-color: rgb(100, 100, 100);
     -fx-background-radius: 20;
 }
