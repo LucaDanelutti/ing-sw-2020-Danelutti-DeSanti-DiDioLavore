@@ -44,23 +44,32 @@ public class FirstPlayerRequestSceneController extends GUIController {
 
     public void selectPlayer1() {
         firstPlayerSelected = playersList.get(0);
-        buttonPlayer1.setStyle("-fx-background-color: #99ccff; ");
-        buttonPlayer2.setStyle("-fx-background-color: #ffffff; ");
-        buttonPlayer3.setStyle("-fx-background-color: #ffffff; ");
+        buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer1.getStyleClass().add("selectedDarkButton");
+        buttonPlayer2.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer2.getStyleClass().add("classicButton");
+        buttonPlayer3.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer3.getStyleClass().add("classicButton");
     }
 
     public void selectPlayer2() {
         firstPlayerSelected = playersList.get(1);
-        buttonPlayer1.setStyle("-fx-background-color: #ffffff; ");
-        buttonPlayer2.setStyle("-fx-background-color: #99ccff; ");
-        buttonPlayer3.setStyle("-fx-background-color: #ffffff; ");
+        buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer1.getStyleClass().add("classicButton");
+        buttonPlayer2.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer2.getStyleClass().add("selectedDarkButton");
+        buttonPlayer3.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer3.getStyleClass().add("classicButton");
     }
 
     public void selectPlayer3() {
         firstPlayerSelected = playersList.get(2);
-        buttonPlayer1.setStyle("-fx-background-color: #ffffff; ");
-        buttonPlayer2.setStyle("-fx-background-color: #ffffff; ");
-        buttonPlayer3.setStyle("-fx-background-color: #99ccff; ");
+        buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer1.getStyleClass().add("classicButton");
+        buttonPlayer2.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer2.getStyleClass().add("classicButton");
+        buttonPlayer3.getStyleClass().removeAll("selectedDarkButton", "classicButton");
+        buttonPlayer3.getStyleClass().add("selectedDarkButton");
     }
 
     public void confirm() {
