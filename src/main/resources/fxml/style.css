@@ -19,7 +19,8 @@
  }
 
  .mainGridPane {
-    -fx-background-image: url('../images/board/title_water.png');
+    -fx-background-image: url('../images/board/title_sky.png');
+   /*-fx-background-color: rgb(61, 61, 61);*/
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -94,13 +95,11 @@
 }
 
 .orangeLabelBackground {
-    -fx-padding: 20 ,40;
-    -fx-background-padding: 10, 20;
     -fx-background-color: rgb(226, 171, 111);
     -fx-background-radius: 20;
 }
 
 .legendGridPane {
-    -fx-background-color: rgb(100, 100, 100);
+    -fx-background-color: rgb(227, 227, 227);
     -fx-background-radius: 20;
 }
