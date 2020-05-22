@@ -39,20 +39,10 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
      * @param port
      * This method starts the connection to the server
      */
-    public void startServerConnection(String hostname, int port) {
-        ClientView clientView = this;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Client client = new Client(hostname, port);
-                serverConnection = client;
-                try{
-                    client.run(clientView);
-                }catch (IOException e){
-                    System.err.println(e.getMessage()); //TODO: logging
-                }
-            }
-        }).start();
+    public boolean startServerConnection(String hostname, int port) {
+        Client client = new Client(hostname, port);
+        serverConnection = client;
+        return client.run(this);
     }
 
     /**

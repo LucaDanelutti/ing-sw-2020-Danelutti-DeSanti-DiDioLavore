@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.NoSuchElementException;
 import java.util.Timer;
@@ -19,7 +20,7 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
     Socket socket;
     private String ip;
     private int port;
-    private ObjectOutputStream out;
+    private ObjectOutputStream socketOut;
 
     private int timerFrequency = 10;
 
@@ -53,9 +54,9 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
 
     private synchronized void send(Object message) {
         try {
-            out.reset();
-            out.writeObject(message);
-            out.flush();
+            socketOut.reset();
+            socketOut.writeObject(message);
+            socketOut.flush();
         } catch(IOException e){
             System.err.println(e.getMessage());
         }
@@ -107,34 +108,49 @@ public class Client extends RequestAndUpdateObservable implements ServerConnecti
         }
     }
 
-    public void run(ClientView clientView) throws IOException {
-        socket = new Socket(ip, port);
-        System.out.println("Connection established"); //TODO: logging
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        out = new ObjectOutputStream(socket.getOutputStream());
+    public boolean run(ClientView clientView) {
+        ObjectInputStream socketIn;
+        try {
+            socket = new Socket(ip, port);
+            System.out.println("Connection established"); //TODO: logging
+            socketIn = new ObjectInputStream(socket.getInputStream());
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            return false;
+        }
 
-        try{
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
-                        //System.out.println("No ping received!");
-                        closeConnection();
-                        timer.cancel();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
+                                //System.out.println("No ping received!");
+                                closeConnection();
+                                timer.cancel();
+                            }
+                        }
+                    }, 1000, timerFrequency * 1000);
+
+                    addListener(clientView);
+                    Thread t0 = asyncReadFromSocket(socketIn);
+                    t0.join();
+                } catch(InterruptedException e){
+                    System.out.println("Connection closed"); //TODO: logging
+                } finally {
+                    try {
+                        socketIn.close();
+                        socketOut.close();
+                        socket.close();
+                    } catch (IOException ignored) {
                     }
                 }
-            }, 1000, timerFrequency * 1000);
+            }
+        }).start();
 
-            addListener(clientView);
-            Thread t0 = asyncReadFromSocket(socketIn);
-            t0.join();
-        } catch(InterruptedException | NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
-        } finally {
-            socketIn.close();
-            out.close();
-            socket.close();
-        }
+        return true;
     }
 }

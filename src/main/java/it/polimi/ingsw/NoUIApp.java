@@ -8,10 +8,6 @@ import java.io.IOException;
 public class NoUIApp {
     public static void main(String[] args){
         Client client = new Client("127.0.0.1", 12345);
-        try{
-            client.run(new ClientView());
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-        }
+        client.run(new ClientView());
     }
 }

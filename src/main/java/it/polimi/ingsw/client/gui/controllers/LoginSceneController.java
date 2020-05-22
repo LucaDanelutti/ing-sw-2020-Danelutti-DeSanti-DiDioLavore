@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.gui.GUIEngine;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 public class LoginSceneController extends GUIController {
@@ -38,9 +39,11 @@ public class LoginSceneController extends GUIController {
         System.out.println(port.getValue());
 
         //TODO: check port type, it must be an int
-        clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()));
-
-        //opens the WaitingScene
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false);
+        if (clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()))) {
+            //opens the WaitingScene
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false);
+        } else {
+            ((GUIEngine)clientView.getUserInterface()).showMessage("Wrong hostname or port. Please try again!", Alert.AlertType.ERROR);
+        }
     }
 }

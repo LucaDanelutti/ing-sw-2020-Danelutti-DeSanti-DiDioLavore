@@ -40,16 +40,31 @@ public class CLIEngine implements UserInterface {
     @Override public void initialize() {
         clientView = new ClientView();
         clientView.setUserInterface(this);
+
+        String serverIP;
+        int serverPORT;
+        Scanner n= new Scanner(System.in);
+
         printWelcome();
         System.out.println("SERVER CONNECTION SETUP:");
-        Scanner n= new Scanner(System.in);
         System.out.print("Server IP (xxx.xxx.xxx.xxx): ");
-        String serverIP=n.nextLine();
+        serverIP=n.nextLine();
         System.out.print("Server PORT (0-65535): ");
-        int serverPORT=n.nextInt();
+        serverPORT=n.nextInt();
         System.out.println("CONNECTING...");
         //call function of ClientView
-        clientView.startServerConnection(serverIP, serverPORT);
+        if (!clientView.startServerConnection(serverIP, serverPORT)) {
+            do {
+                System.out.println("WRONG SERVER HOSTNAME OR PORT");
+                System.out.println("PLEASE TRY AGAIN:");
+                n.nextLine();
+                System.out.print("Server IP (xxx.xxx.xxx.xxx): ");
+                serverIP=n.nextLine();
+                System.out.print("Server PORT (0-65535): ");
+                serverPORT=n.nextInt();
+                System.out.println("CONNECTING...");
+            } while (!clientView.startServerConnection(serverIP, serverPORT));
+        }
     }
     /**
      * This function is called for a quick start of the connection to the server giving directly the port and the address
