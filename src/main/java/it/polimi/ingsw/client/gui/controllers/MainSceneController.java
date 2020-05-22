@@ -310,6 +310,7 @@ public class MainSceneController extends GUIController {
        phaseLabel.setText("Choose a position to Move!");
        if (availablePositions.contains(null)) skipButton.setVisible(true);
        enablePositionSelection(availablePositions, "move");
+       if (availablePositions.size()==0) resetTurn();
     }
 
     public void chooseConstructPosition(ArrayList<Position> availablePositions) {
@@ -503,6 +504,29 @@ public class MainSceneController extends GUIController {
        clientView.update(new UndoTurnSetMessage());
        chosenPosition = new Position(-1,-1);
        endUndoProcess();
+    }
+
+    private void resetTurn() {
+        phaseLabel.setText("Pawn blocked. Select another pawn!");
+
+        undoProcessTimer  = new Timer();
+        undoProcessTimer.schedule( new TimerTask() {
+            private int count = 3;
+            @Override
+            public void run() {
+                if (count > 0) {
+                    System.out.println("count: " + count);
+                    Platform.runLater(() -> {
+                        count--;
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        clientView.update(new UndoTurnSetMessage());
+                        undoProcessTimer.cancel();
+                    });
+                }
+            }
+        }, 0, 1000);
     }
 
 }
