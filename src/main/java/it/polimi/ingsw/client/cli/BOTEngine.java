@@ -256,10 +256,11 @@ public class BOTEngine implements UserInterface {
     @Override public void onNicknameRequest() {
         clearScreen();
         printWelcome();
-        byte[] array = new byte[7]; // length is bounded by 7
+        byte[] array = new byte[4]; // length is bounded by 4
         new Random().nextBytes(array);
         String generatedString = new String(array, StandardCharsets.US_ASCII);
-        clientView.update(new NicknameSetMessage(generatedString));
+        String playerName = "RandomPolicy" + generatedString;
+        clientView.update(new NicknameSetMessage(playerName));
     }
     /**
      * This function is called when  the user has to select the number of players in the game
