@@ -40,11 +40,12 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
-        setUpTest();
+//        setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
 //        showScene("/fxml/numberOfPlayersRequestScene.fxml");
         loadLoginScene();
+//        showMainScene();
     }
 
     //test function
