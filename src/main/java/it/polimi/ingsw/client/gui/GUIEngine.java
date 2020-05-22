@@ -40,7 +40,7 @@ public class GUIEngine extends Application implements UserInterface {
         clientView = new ClientView();
         clientView.setUserInterface(this);
 
-//        setUpTest();
+        setUpTest();
 
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
 //        showScene("/fxml/numberOfPlayersRequestScene.fxml");
@@ -323,8 +323,11 @@ public class GUIEngine extends Application implements UserInterface {
     public void onWin() {
         Platform.runLater(() -> {
             showScene("/fxml/winScene.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            ((WinSceneController)currentController).setUpScene();
         });
     }
 
@@ -332,8 +335,10 @@ public class GUIEngine extends Application implements UserInterface {
     public void onYouLostAndSomeOneWon(String winnerName) {
         Platform.runLater(() -> {
             showScene("/fxml/youLost.fxml");
-            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/5);
-            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/4);
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
             ((YouLostSceneController)currentController).loadData(winnerName);
         });
     }
