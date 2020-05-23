@@ -136,12 +136,15 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         System.out.println("GAME ENDED: "+reason);
     }
+    @Override public void onGameStartedAndYouAreNotSelected() {
+        clearScreen();
+        printEqualsRow();
+        System.out.println("There is already a game started on the server, try later!");
+        printEqualsRow();
+    }
 
 
-
-
-
-                                                    //TO BE CALLED WHEN A REQUEST ARRIVES
+    //TO BE CALLED WHEN A REQUEST ARRIVES
 
     /**
      * This function is called when the user has to select the blockType for a construct action

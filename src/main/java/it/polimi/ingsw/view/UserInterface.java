@@ -60,4 +60,5 @@ public interface UserInterface {
     void onWin();
     void onYouLostAndSomeOneWon(String winnerName);
     void onGameEnded(String reason);
+    void onGameStartedAndYouAreNotSelected();
 }

@@ -119,8 +119,10 @@ public class BOTEngine implements UserInterface {
         System.out.println("GAME ENDED: "+reason);
     }
 
+    @Override
+    public void onGameStartedAndYouAreNotSelected() {
 
-
+    }
 
 
     //TO BE CALLED WHEN A REQUEST ARRIVES

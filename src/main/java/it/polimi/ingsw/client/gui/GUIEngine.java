@@ -348,6 +348,11 @@ public class GUIEngine extends Application implements UserInterface {
         showMessage(reason, AlertType.ERROR);
     }
 
+    @Override
+    public void onGameStartedAndYouAreNotSelected() {
+
+    }
+
     public void showMessage(String message, AlertType alertType) {
         Platform.runLater(() -> {
             Alert alert = new Alert(alertType);
