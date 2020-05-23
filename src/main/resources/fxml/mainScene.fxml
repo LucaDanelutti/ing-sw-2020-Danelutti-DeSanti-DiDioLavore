@@ -133,24 +133,26 @@
                <GridPane GridPane.rowIndex="1">
                  <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="178.13064575195312" />
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="178.13064575195312" />
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="178.13064575195312" />
                  </columnConstraints>
                  <rowConstraints>
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#confirmAction" prefWidth="116.0" styleClass="classicButton" stylesheets="@style.css" text="Confirm Action" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                     <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#confirmAction" styleClass="classicButton" stylesheets="@style.css" text="Confirm Action" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                         <GridPane.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                         </GridPane.margin>
                      </Button>
-                     <Button fx:id="undoActionButton" mnemonicParsing="false" onAction="#undoAction" styleClass="classicButton" stylesheets="@style.css" text="Undo Action" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <Button fx:id="undoActionButton" mnemonicParsing="false" onAction="#undoAction" styleClass="classicButton" stylesheets="@style.css" text="Undo Action" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                         <GridPane.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                         </GridPane.margin>
                      </Button>
-                     <Button fx:id="undoTurnButton" mnemonicParsing="false" onAction="#undoTurn" styleClass="classicButton" stylesheets="@style.css" text="Undo Turn" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <Button fx:id="undoTurnButton" mnemonicParsing="false" onAction="#undoTurn" styleClass="classicButton" stylesheets="@style.css" text="Undo Turn" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                         <GridPane.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                         </GridPane.margin>
                      </Button>
                   </children>
