@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -24,7 +23,6 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     private ObjectOutputStream out;
     private Server server;
 
-    private int timerFrequency = 10;
     private boolean pong = true;
 
     private boolean active = true;
@@ -69,12 +67,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
 
     @Override
     public void asyncSend(final Object message) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+        new Thread(() -> send(message)).start();
     }
 
     private void handleMessage(Object inputObject) {
@@ -96,6 +89,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
+            int timerFrequency = 10;
             pingTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
