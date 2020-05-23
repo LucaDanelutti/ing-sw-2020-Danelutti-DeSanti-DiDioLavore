@@ -286,11 +286,13 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     public void update(YouWonMessage youWonMessage) {
         modelView.setWinner(name);
         userInterface.onWin();
+        serverConnection.closeConnection();
     }
 
     @Override
     public void update(GameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
-        //TODO
+        userInterface.onGameStartedAndYouAreNotSelected();
+        serverConnection.closeConnection();
     }
 
     /**
@@ -323,6 +325,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
         modelView.setWinner(youLostAndSomeoneWonMessage.getWinnerName());
         userInterface.onYouLostAndSomeOneWon(youLostAndSomeoneWonMessage.getWinnerName());
+        serverConnection.closeConnection();
     }
 
     /**
