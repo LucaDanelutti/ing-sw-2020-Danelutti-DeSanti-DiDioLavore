@@ -160,7 +160,7 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-    public void notifyListeners(gameStartedAndYouAreNotSelectedMessage m) {
+    public void notifyListeners(GameStartedAndYouAreNotSelectedMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
                 l.update(m);

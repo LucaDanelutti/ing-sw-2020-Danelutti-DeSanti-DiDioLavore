@@ -191,7 +191,7 @@ public class MockView implements RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(gameStartedAndYouAreNotSelectedMessage m) {
+    public void update(GameStartedAndYouAreNotSelectedMessage m) {
         if(!isThisMessageForMe(m)){
             return;
         }

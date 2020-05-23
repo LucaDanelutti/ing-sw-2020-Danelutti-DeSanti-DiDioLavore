@@ -148,6 +148,20 @@ public class CLIEngine implements UserInterface {
      * @param availableBlockTypes the available block types to chose from
      */
     @Override public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
+        if(availableBlockTypes.size()==0){
+            long startingTime=System.currentTimeMillis();
+            int secondsPassed;
+            int timeToPass=5;
+            do{
+                secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
+                if(secondsPassed<5){
+                    System.out.print("The pawn is not able to construct in the selected position -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s\r");
+                }
+            }while(secondsPassed<5);
+            clientView.update(new UndoTurnSetMessage());
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         clearScreen();
@@ -233,6 +247,20 @@ public class CLIEngine implements UserInterface {
      * @param availablePositions the positions to chose from
      */
     @Override public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
+        if(availablePositions.size()==0){
+            long startingTime=System.currentTimeMillis();
+            int secondsPassed;
+            int timeToPass=5;
+            do{
+                secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
+                if(secondsPassed<5){
+                    System.out.println("No available move positions for the selected pawn -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s");
+                }
+            }while(secondsPassed<5);
+            clientView.update(new UndoTurnSetMessage());
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         clearScreen();
@@ -274,6 +302,20 @@ public class CLIEngine implements UserInterface {
      * @param availablePositions the positions to chose from
      */
     @Override public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
+        if(availablePositions.size()==0){
+            long startingTime=System.currentTimeMillis();
+            int secondsPassed;
+            int timeToPass=5;
+            do{
+                secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
+                if(secondsPassed<5){
+                    System.out.print("No available construct positions  for the selected pawn -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s\r");
+                }
+            }while(secondsPassed<5);
+            clientView.update(new UndoTurnSetMessage());
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         clearScreen();

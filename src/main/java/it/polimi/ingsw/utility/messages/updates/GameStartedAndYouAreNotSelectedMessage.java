@@ -6,10 +6,10 @@ import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 import java.util.ArrayList;
 
 
-public class gameStartedAndYouAreNotSelectedMessage extends RequestAndUpdateMessage {
+public class GameStartedAndYouAreNotSelectedMessage extends RequestAndUpdateMessage {
     private static final long serialVersionUID = -7436329154575487370L;
 
-    public gameStartedAndYouAreNotSelectedMessage(ArrayList<String> recipients) {
+    public GameStartedAndYouAreNotSelectedMessage(ArrayList<String> recipients) {
         super(recipients);
     }
 

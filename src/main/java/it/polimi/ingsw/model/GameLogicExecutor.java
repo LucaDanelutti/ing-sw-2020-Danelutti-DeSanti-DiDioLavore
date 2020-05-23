@@ -269,13 +269,23 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     public Boolean addPlayerToLobby(String name){
         if(!getGameEnded()) {
             this.lobby.add(name);
-            if (this.lobby.size() == 1) {
-                notifyListeners(generateNumberOfPlayersRequest());
+            if(this.game.getPlayers().size()==0) {
+                //the game is not yet started
+                if (this.lobby.size() == 1) {
+                    notifyListeners(generateNumberOfPlayersRequest());
+                }
+                if (this.lobby.size() >= numberOfPlayers && numberOfPlayers > 1) {
+                    startGame();
+                }
+                return true;
             }
-            if (this.lobby.size() >= numberOfPlayers && numberOfPlayers > 1) {
-                startGame();
+            else{
+                //the game is already started -> disconnect yourself
+                ArrayList<String> recipients = new ArrayList<>();
+                recipients.add(name);
+                notifyListeners(new GameStartedAndYouAreNotSelectedMessage(recipients));
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -344,16 +354,22 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
                 }
             }
-            //the game is started, so we have to crash the connection for everyone
+            //the game is started
             else {
-                this.setGameEnded(true);
-                for (Player p : game.getPlayers()) {
-                    if (p.getName().equals(name)) {
-                        game.removePlayer(p);
-                        break;
+                if(game.getPlayer(name)!=null) {
+                    //the player is inside of the game -> crash connection for everyone
+                    this.setGameEnded(true);
+                    for (Player p : game.getPlayers()) {
+                        if (p.getName().equals(name)) {
+                            game.removePlayer(p);
+                            break;
+                        }
                     }
+                    notifyListeners(generateGameEnded("Player disconnection"));
                 }
-                notifyListeners(generateGameEnded("Player disconnection"));
+                else{
+                    lobby.remove(name);
+                }
             }
             return true;
         }
@@ -796,10 +812,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         //notify other players that the game is full
         ArrayList<String> notToBeAddedPlayers = new ArrayList<>();
-        for(int i=numberOfPlayers; i<lobby.size(); i++){
+        for(int i=(numberOfPlayers); i<lobby.size(); i++){
             notToBeAddedPlayers.add(lobby.get(i));
         }
-        notifyListeners(new gameStartedAndYouAreNotSelectedMessage(notToBeAddedPlayers));
+        notifyListeners(new GameStartedAndYouAreNotSelectedMessage(notToBeAddedPlayers));
     }
     /**
      * This function is used to create a playerView from a player inside of the model

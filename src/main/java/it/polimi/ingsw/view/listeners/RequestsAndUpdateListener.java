@@ -26,7 +26,7 @@ public interface RequestsAndUpdateListener{
     void update(YouLostMessage youLostMessage);
     void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage);
     void update(YouWonMessage youWonMessage);
-    void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage);
+    void update(GameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage);
 
     void update(GameEndedMessage gameEndedMessage);
 

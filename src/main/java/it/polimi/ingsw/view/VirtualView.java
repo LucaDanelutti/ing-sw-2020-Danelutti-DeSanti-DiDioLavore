@@ -455,7 +455,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      * player linked to this virtualView and then it forwards the request to the network handler
      */
     @Override
-    public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
+    public void update(GameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
         if (gameStartedAndYouAreNotSelectedMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(gameStartedAndYouAreNotSelectedMessage);
             MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": gameStartedAndYouAreNotSelectedMessage sent");

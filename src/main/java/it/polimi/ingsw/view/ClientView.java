@@ -10,8 +10,6 @@ import it.polimi.ingsw.view.listeners.SetsListener;
 import it.polimi.ingsw.view.modelview.ModelView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
-import java.io.IOException;
-
 /**
  * ClientView class: main client object. It contains the modelView that has the actual data,
  * the userInterface and the reference to the network handler.
@@ -291,7 +289,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     @Override
-    public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
+    public void update(GameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
         //TODO
     }
 
