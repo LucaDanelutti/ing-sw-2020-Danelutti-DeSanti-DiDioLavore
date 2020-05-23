@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.gui.GUIController;
 import it.polimi.ingsw.client.gui.GUIEngine;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -27,7 +29,19 @@ public class LoginSceneController extends GUIController {
         port = new SimpleStringProperty("");
         hostnameTextField.textProperty().bindBidirectional(serverHostname);
         portTextField.textProperty().bindBidirectional(port);
+
+        // makes portTextField numeric only
+        portTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    portTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
     }
+
+
 
     /**
      * It is activated when the player clicks on the connect button.
@@ -38,8 +52,7 @@ public class LoginSceneController extends GUIController {
         System.out.println(serverHostname.getValue());
         System.out.println(port.getValue());
 
-        //TODO: check port type, it must be an int
-        if (clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()))) {
+        if (port.getValue().length() > 0 && clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()))) {
             //opens the WaitingScene
             ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false);
         } else {
