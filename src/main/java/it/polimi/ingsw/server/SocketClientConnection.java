@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utility.MyLogger;
 import it.polimi.ingsw.utility.messages.PingMessage;
 import it.polimi.ingsw.utility.messages.PongMessage;
 import it.polimi.ingsw.utility.messages.SetMessage;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 public class SocketClientConnection extends SetObservable implements ClientConnection, Runnable {
 
@@ -42,7 +44,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
             out.writeObject(message);
             out.flush();
         } catch(IOException e){
-            System.err.println(e.getMessage());
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "send()",message.toString() + ": error sending message");
         }
 
     }
@@ -53,7 +55,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error when closing socket!");
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "closeConnection()",this.toString() + ": error closing socket");
         }
         active = false;
     }
@@ -61,9 +63,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     private void close() {
         if (active) {
             closeConnection();
-            System.out.print("Removing client... ");
             server.removeConnection(this);
-            System.out.println("done!");
         }
     }
 
@@ -109,10 +109,11 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                     }
                 }
             }, timerFrequency * 1000, timerFrequency * 1000);
-
+            MyLogger.log(Level.INFO, this.getClass().getName(), "run()",this.toString() + ": timer set");
             NicknameSetMessage nicknameSetMessage;
             do {
                 NicknameRequestMessage nicknameRequestMessage = new NicknameRequestMessage(new ArrayList<>());
+                MyLogger.log(Level.INFO, this.getClass().getName(), "run()",this.toString() + ": NicknameRequestMessage sent");
                 send(nicknameRequestMessage);
                 Object input;
                 do {
@@ -123,27 +124,28 @@ public class SocketClientConnection extends SetObservable implements ClientConne
                 } while (input instanceof PongMessage);
                 if (input instanceof NicknameSetMessage) {
                     nicknameSetMessage = (NicknameSetMessage) input;
+                    MyLogger.log(Level.INFO, this.getClass().getName(), "run()",this.toString() + ": NicknameSetMessage received");
                 } else {
                     throw new IllegalArgumentException();
                 }
             } while (!server.addConnection(this, nicknameSetMessage.getName()));
-
-            System.out.println(nicknameSetMessage.getName() + ": nickname set!");
             while(isActive()){
                 Object inputObject = in.readObject();
                 handleMessage(inputObject);
             }
         } catch (IOException e) {
-            System.err.println("IOException: " + e.getMessage());
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "run()",this.toString() + ": IOException " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.err.println("ClassNotFoundException: the server received an unknown sequence of bytes!");
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "run()",this.toString() + ": ClassNotFoundException, the server received an unknown sequence of bytes!");
         } catch (IllegalArgumentException e) {
-            System.err.println("IllegalArgumentException: the server received an unknown message!");
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "run()",this.toString() + ": IllegalArgumentException, the server received an unknown message!");
         } catch (Exception e) {
-            System.err.println("Connection closed due to a general server Exception!");
+            MyLogger.log(Level.WARNING, this.getClass().getName(), "run()",this.toString() + ": general server Exception!");
         } finally {
             pingTimer.cancel();
+            MyLogger.log(Level.INFO, this.getClass().getName(), "run()",this.toString() + ": timer cancelled");
             close();
+            MyLogger.log(Level.INFO, this.getClass().getName(), "run()",this.toString() + ": connection closed");
         }
     }
 }

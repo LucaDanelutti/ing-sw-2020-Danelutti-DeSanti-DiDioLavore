@@ -2,11 +2,14 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.SetObservable;
 import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.utility.MyLogger;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
 import it.polimi.ingsw.utility.messages.updates.*;
 import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 import it.polimi.ingsw.view.listeners.SetsListener;
+
+import java.util.logging.Level;
 
 /**
  * VirtualView class: each player has his own virtualView on the server.
@@ -23,6 +26,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(ChosenBlockTypeSetMessage chosenBlockTypeSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenBlockTypeSetMessage received");
         chosenBlockTypeSetMessage.setNameOfTheSender(name);
         notifyListeners(chosenBlockTypeSetMessage);
     }
@@ -34,6 +38,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(ChosenCardSetMessage chosenCardSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenCardSetMessage received");
         chosenCardSetMessage.setNameOfTheSender(name);
         notifyListeners(chosenCardSetMessage);
     }
@@ -45,6 +50,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(ChosenPositionSetMessage chosenPositionSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenPositionSetMessage received");
         chosenPositionSetMessage.setNameOfTheSender(name);
         notifyListeners(chosenPositionSetMessage);
     }
@@ -56,6 +62,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(FirstPlayerSetMessage firstPlayerSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": firstPlayerSetMessage received");
         firstPlayerSetMessage.setNameOfTheSender(name);
         notifyListeners(firstPlayerSetMessage);
     }
@@ -67,6 +74,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(InGameCardsSetMessage inGameCardsSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": inGameCardsSetMessage received");
         inGameCardsSetMessage.setNameOfTheSender(name);
         notifyListeners(inGameCardsSetMessage);
     }
@@ -78,6 +86,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(InitialPawnPositionSetMessage initialPawnPositionSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": initialPawnPositionSetMessage received");
         initialPawnPositionSetMessage.setNameOfTheSender(name);
         notifyListeners(initialPawnPositionSetMessage);
     }
@@ -89,6 +98,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(NicknameSetMessage nicknameSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": nicknameSetMessage received");
         nicknameSetMessage.setNameOfTheSender(name);
         notifyListeners(nicknameSetMessage);
     }
@@ -100,6 +110,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(NumberOfPlayersSetMessage numberOfPlayersSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": numberOfPlayersSetMessage received");
         numberOfPlayersSetMessage.setNameOfTheSender(name);
         notifyListeners(numberOfPlayersSetMessage);
     }
@@ -111,6 +122,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(SelectedPawnSetMessage selectedPawnSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": selectedPawnSetMessage received");
         selectedPawnSetMessage.setNameOfTheSender(name);
         notifyListeners(selectedPawnSetMessage);
     }
@@ -122,6 +134,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(UndoTurnSetMessage undoTurnSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": undoTurnSetMessage received");
         undoTurnSetMessage.setNameOfTheSender(name);
         notifyListeners(undoTurnSetMessage);
     }
@@ -133,6 +146,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
      */
     @Override
     public void update(UndoActionSetMessage undoActionSetMessage) {
+        MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": undoActionSetMessage received");
         undoActionSetMessage.setNameOfTheSender(name);
         notifyListeners(undoActionSetMessage);
     }
@@ -146,7 +160,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
         this.clientConnection = clientConnection;
         this.name = name;
         clientConnection.addListener(this);
-        System.out.println(name + ": virtualView created!");    //TODO: logging
+        MyLogger.log(Level.INFO, this.getClass().getName(), "constructor()",clientConnection.toString() + ": virtualView created");
     }
 
     /**
@@ -158,6 +172,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(NicknameRequestMessage nicknameRequestMessage) {
         if (nicknameRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(nicknameRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": nicknameRequestMessage sent");
         }
     }
 
@@ -170,6 +185,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenBlockTypeRequestMessage chosenBlockTypeRequestMessage) {
         if (chosenBlockTypeRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenBlockTypeRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenBlockTypeRequestMessage sent");
         }
     }
 
@@ -182,6 +198,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenCardRequestMessage chosenCardRequestMessage) {
         if (chosenCardRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenCardRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenCardRequestMessage sent");
         }
     }
 
@@ -194,6 +211,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage) {
         if (chosenPositionForMoveRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenPositionForMoveRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenPositionForMoveRequestMessage sent");
         }
     }
 
@@ -206,6 +224,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage) {
         if (chosenPositionForConstructRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenPositionForConstructRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenPositionForConstructRequestMessage sent");
         }
     }
 
@@ -218,6 +237,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(FirstPlayerRequestMessage firstPlayerRequestMessage) {
         if (firstPlayerRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(firstPlayerRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": firstPlayerRequestMessage sent");
         }
     }
 
@@ -230,6 +250,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(InGameCardsRequestMessage inGameCardsRequestMessage) {
         if (inGameCardsRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(inGameCardsRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": inGameCardsRequestMessage sent");
         }
     }
 
@@ -242,6 +263,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(InitialPawnPositionRequestMessage initialPawnPositionRequestMessage) {
         if (initialPawnPositionRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(initialPawnPositionRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": initialPawnPositionRequestMessage sent");
         }
     }
 
@@ -254,6 +276,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(NumberOfPlayersRequestMessage numberOfPlayersRequestMessage) {
         if (numberOfPlayersRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(numberOfPlayersRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": numberOfPlayersRequestMessage sent");
         }
     }
 
@@ -266,6 +289,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(SelectPawnRequestMessage selectPawnRequestMessage) {
         if (selectPawnRequestMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(selectPawnRequestMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": selectPawnRequestMessage sent");
         }
     }
 
@@ -278,6 +302,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(CellUpdateMessage cellUpdateMessage) {
         if (cellUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(cellUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": cellUpdateMessage sent");
         }
     }
 
@@ -290,6 +315,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
         if (chosenCardUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(chosenCardUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": chosenCardUpdateMessage sent");
         }
     }
 
@@ -302,6 +328,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage) {
         if (doublePawnPositionUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(doublePawnPositionUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": doublePawnPositionUpdateMessage sent");
         }
     }
 
@@ -314,6 +341,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage) {
         if (pawnPositionUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(pawnPositionUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": pawnPositionUpdateMessage sent");
         }
     }
 
@@ -326,6 +354,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(PawnRemoveUpdateMessage pawnRemoveUpdateMessage) {
         if (pawnRemoveUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(pawnRemoveUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": pawnRemoveUpdateMessage sent");
         }
     }
 
@@ -338,6 +367,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
         if (selectedPawnUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(selectedPawnUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": selectedPawnUpdateMessage sent");
         }
     }
 
@@ -350,6 +380,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(GameStartMessage gameStartMessage) {
         if (gameStartMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(gameStartMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": gameStartMessage sent");
         }
     }
 
@@ -362,6 +393,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(GameEndedMessage gameEndedMessage) {
         if (gameEndedMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(gameEndedMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": gameEndedMessage sent");
         }
     }
 
@@ -374,6 +406,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(TurnEndedMessage turnEndedMessage) {
         if (turnEndedMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(turnEndedMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": turnEndedMessage sent");
         }
     }
 
@@ -386,6 +419,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(YouLostMessage youLostMessage) {
         if (youLostMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(youLostMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": youLostMessage sent");
         }
     }
 
@@ -398,6 +432,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(YouLostAndSomeoneWonMessage youLostAndSomeoneWonMessage) {
         if (youLostAndSomeoneWonMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(youLostAndSomeoneWonMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": youLostAndSomeoneWonMessage sent");
         }
     }
 
@@ -410,6 +445,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(YouWonMessage youWonMessage) {
         if (youWonMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(youWonMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": youWonMessage sent");
         }
     }
 
@@ -422,6 +458,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(gameStartedAndYouAreNotSelectedMessage gameStartedAndYouAreNotSelectedMessage) {
         if (gameStartedAndYouAreNotSelectedMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(gameStartedAndYouAreNotSelectedMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": gameStartedAndYouAreNotSelectedMessage sent");
         }
     }
 
@@ -434,6 +471,7 @@ public class VirtualView extends SetObservable implements RequestsAndUpdateListe
     public void update(UndoUpdateMessage undoUpdateMessage) {
         if (undoUpdateMessage.getRecipients().contains(name)) {
             clientConnection.asyncSend(undoUpdateMessage);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "update()",clientConnection.toString() + ": undoUpdateMessage sent");
         }
     }
 }

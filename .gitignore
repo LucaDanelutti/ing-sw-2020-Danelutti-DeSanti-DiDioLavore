@@ -16,3 +16,6 @@ src/main/java/META-INF/
 
 # Docker
 Dockerfile
+
+#Logs
+serverLog.txt

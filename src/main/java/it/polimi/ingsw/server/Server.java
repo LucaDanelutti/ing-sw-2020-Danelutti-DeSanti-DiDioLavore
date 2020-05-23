@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.utility.MyLogger;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameLogicExecutor;
@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 public class Server {
     private final int port;
@@ -36,16 +36,20 @@ public class Server {
     }
 
     public synchronized void removeConnection(ClientConnection c) {
+        String name = playingConnection.get(c);
         gameLogicExecutor.removeListener(playingVirtualViews.get(c));
         gameLogicExecutor.removePlayer(playingConnection.get(c));
         playingConnection.remove(c);
+        MyLogger.log(Level.INFO, this.getClass().getName(), "removeConnection()",c.toString() + ": removed player " + name);
     }
 
     public synchronized boolean addConnection(ClientConnection c, String name) {
         if (playingConnection.isEmpty()) {
             newGame();
+            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()","New game created");
         }
         if (playingConnection.containsValue(name)) {
+            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",c.toString() + ": player already exists: " + name);
             return false;
         } else {
             playingConnection.put(c, name);
@@ -54,19 +58,21 @@ public class Server {
             playerView.addListener(controller);
             gameLogicExecutor.addListener(playerView);
             gameLogicExecutor.addPlayerToLobby(name);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",c.toString() + ": added user " + name);
             return true;
         }
     }
 
     public void run(){
+        MyLogger.log(Level.INFO, this.getClass().getName(), "run()","Server ready");
         while(true){
             try {
                 Socket newSocket = serverSocket.accept();
-                System.out.println("New client connected!");
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+                MyLogger.log(Level.INFO, this.getClass().getName(), "run()",socketConnection.toString() + ": new client connected");
                 executor.submit(socketConnection);
             } catch (IOException e) {
-                System.out.println("Connection Error!");
+                MyLogger.log(Level.SEVERE, this.getClass().getName(), "run()","Connection error");
             }
         }
     }
