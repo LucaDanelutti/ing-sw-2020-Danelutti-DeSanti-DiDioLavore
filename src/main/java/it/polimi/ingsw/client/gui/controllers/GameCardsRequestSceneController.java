@@ -147,7 +147,7 @@ public class GameCardsRequestSceneController extends GUIController {
      * It adds the card to the list of the selected card.
      */
     public void pickCard() {
-        cardsSelectedList.add(currentCardId);
+        if (!cardsSelectedList.contains(currentCardId)) cardsSelectedList.add(currentCardId);
         enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].toBack();
         enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(true);
     }
