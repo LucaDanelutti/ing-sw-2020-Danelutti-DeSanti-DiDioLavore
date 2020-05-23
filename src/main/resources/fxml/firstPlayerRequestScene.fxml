@@ -35,32 +35,32 @@
             <children>
                <Button fx:id="buttonPlayer1" mnemonicParsing="false" onAction="#selectPlayer1" styleClass="classicButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                   <GridPane.margin>
-                     <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+                     <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                   </GridPane.margin>
                </Button>
                <Button fx:id="buttonPlayer2" mnemonicParsing="false" onAction="#selectPlayer2" styleClass="classicButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                   <GridPane.margin>
-                     <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+                     <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                   </GridPane.margin>
                </Button>
                <Button fx:id="buttonPlayer3" mnemonicParsing="false" onAction="#selectPlayer3" styleClass="classicButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                   <GridPane.margin>
-                     <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+                     <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                   </GridPane.margin>
                </Button>
                <ImageView fx:id="player1ImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
-                     <Insets left="20.0" right="5.0" />
+                     <Insets left="20.0" />
                   </GridPane.margin>
                </ImageView>
                <ImageView fx:id="player2ImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
-                     <Insets left="20.0" right="5.0" />
+                     <Insets left="20.0" />
                   </GridPane.margin>
                </ImageView>
                <ImageView fx:id="player3ImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                   <GridPane.margin>
-                     <Insets left="20.0" right="5.0" />
+                     <Insets left="20.0" />
                   </GridPane.margin>
                </ImageView>
             </children>
