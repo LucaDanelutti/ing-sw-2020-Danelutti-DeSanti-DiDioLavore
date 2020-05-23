@@ -15,7 +15,7 @@ public class MyLogger {
         //instance the logger
         logger = Logger.getLogger(MyLogger.class.getName());
         //instance the file handler
-        fileHandler = new FileHandler("serverLog.txt", true);
+        fileHandler = new FileHandler("logs/serverLog.txt", true);
         //instance formatter, set formatting, and handler
         plainText = new SimpleFormatter();
         fileHandler.setFormatter(plainText);

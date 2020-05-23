@@ -19,3 +19,4 @@ Dockerfile
 
 #Logs
 serverLog.txt
+logs/
