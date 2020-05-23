@@ -36,15 +36,14 @@ import java.util.TimerTask;
 public class MainSceneController extends GUIController {
 
     /* ===== Constants ===== */
-    private static final double BOARD_PADDING_RATIO = 0.74;
-    private static final double BOARD_PADDING_PERCENTAGE = 0.13;
     private static final int BOARD_SIZE = 5;
     private static final double CLIENT_CARD_WIDTH_RATIO = 6;
     private static final double CLIENT_CARD_HEIGHT_RATIO = 2.5;
     private static final double ENEMY_CARD_WIDTH_RATIO = 12;
     private static final double ENEMY_CARD_HEIGHT_RATIO = 5;
     private static final double BOARD_PANE_RATIO = 0.5;
-    private static final int TIME_TO_WAIT = 5;
+    private static final double BOARD_BACKGROUND_RATIO = 1.36;
+    private static final double BLOCK_CELL_RATIO = 0.86;
 
 
     /* ===== FXML elements ===== */
@@ -89,11 +88,6 @@ public class MainSceneController extends GUIController {
     private Button undoTurnButton;
 
 
-
-    /* ===== FXML Properties ===== */
-    private DoubleProperty boardPaddingPercentage = new SimpleDoubleProperty(BOARD_PADDING_PERCENTAGE);
-    private DoubleProperty boardGridPaneWidth = new SimpleDoubleProperty();
-
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
     private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
@@ -117,8 +111,8 @@ public class MainSceneController extends GUIController {
 
        Image boardImage = new Image("images/board/board.png");
        boardImageView.setImage(boardImage);
-       boardImageView.fitWidthProperty().bind(boardGridPane.widthProperty().multiply(1.4));
-       boardImageView.fitHeightProperty().bind(boardGridPane.widthProperty().multiply(1.4));
+       boardImageView.fitWidthProperty().bind(boardGridPane.widthProperty().multiply(BOARD_BACKGROUND_RATIO));
+       boardImageView.fitHeightProperty().bind(boardGridPane.widthProperty().multiply(BOARD_BACKGROUND_RATIO));
 
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
@@ -178,8 +172,8 @@ public class MainSceneController extends GUIController {
                    Image blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
                    ImageView blockImageView = new ImageView(blockImage);
                    blockImageView.setPreserveRatio(true);
-                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
-                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
+                   blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
+                   blockImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
                    boardGridPane.add(blockImageView, j, i);
                }
            }
@@ -196,8 +190,8 @@ public class MainSceneController extends GUIController {
                Image pawnImage = new Image("images/board/pawn_" + pawn.getColor() + ".png");
                ImageView pawnImageView = new ImageView(pawnImage);
                pawnImageView.setPreserveRatio(true);
-               pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
-               pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
+               pawnImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
+               pawnImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
                boardGridPane.add(pawnImageView, pawn.getPawnPosition().getY(), pawn.getPawnPosition().getX());
            }
        }
@@ -256,8 +250,8 @@ public class MainSceneController extends GUIController {
                enlightenedImageView.setId("permanent");
                enlightenedImageView.setPreserveRatio(true);
                enlightenedImageView.setVisible(false);
-               enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE));
-               enlightenedImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE));
+               enlightenedImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
+               enlightenedImageView.fitHeightProperty().bind(boardGridPane.heightProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
                boardGridPane.add(enlightenedImageView, j, i);
            }
        }

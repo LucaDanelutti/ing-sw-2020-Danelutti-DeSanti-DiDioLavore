@@ -42,7 +42,7 @@ public class GameCardsRequestSceneController extends GUIController {
     private Label cardDescription;
 
     /* ===== Variables ===== */
-    private int currentCardId;
+    private Integer currentCardId;
     private Position currentCardPosition;
     private ArrayList<CardView> availableCards = new ArrayList<>();
     private int expectedNumberOfCards;
@@ -147,9 +147,11 @@ public class GameCardsRequestSceneController extends GUIController {
      * It adds the card to the list of the selected card.
      */
     public void pickCard() {
-        if (!cardsSelectedList.contains(currentCardId)) cardsSelectedList.add(currentCardId);
-        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].toBack();
-        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(true);
+        if (currentCardId != null) {
+            if (!cardsSelectedList.contains(currentCardId)) cardsSelectedList.add(currentCardId);
+            enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].toBack();
+            enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(true);
+        }
     }
 
     /**
@@ -157,8 +159,10 @@ public class GameCardsRequestSceneController extends GUIController {
      * It removes the card from the list of the selected cards.
      */
     public void unpickCard() {
-        cardsSelectedList.remove((Object)currentCardId);
-        enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(false);
+        if (currentCardId != null) {
+            cardsSelectedList.remove((Object) currentCardId);
+            enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(false);
+        }
     }
 
     /**
