@@ -977,6 +977,9 @@ class GameLogicExecutorTest {
 
                                                     // TESTS USING MOCKVIEWS TO EMULATE CLIENTS
 
+    /**
+     * This function tests adding 4 players and then setting the number of player to 3, the last player to join should receive a "game started and you are not selected"
+     */
     @Test void addMorePlayerThanNeeded(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -994,6 +997,9 @@ class GameLogicExecutorTest {
 
         assertTrue(mockViews.get(3).getLastReceivedMessage() instanceof GameStartedAndYouAreNotSelectedMessage);
     }
+    /**
+     * This function tests adding another player after the game starteed
+     */
     @Test void addPlayerAfterGameStarted(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1016,6 +1022,9 @@ class GameLogicExecutorTest {
 
         assertTrue(mockViews.get(3).getLastReceivedMessage() instanceof GameStartedAndYouAreNotSelectedMessage);
     }
+    /**
+     * This function tests that once a game started one player gets the inGameCardsRequest the others the game started message
+     */
     @Test void receiveGameStartedAndInGameCardsRequest(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1045,6 +1054,9 @@ class GameLogicExecutorTest {
             }
         }
     }
+    /**
+     * This function tests that all the players receives the chosenCardRequest
+     */
     @Test void everyOneReceiveChosenCardRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -1137,6 +1149,9 @@ class GameLogicExecutorTest {
             }
         }
     }
+    /**
+     * This function test that the initialPawnPositionRequest is received
+     */
     @Test void ReceiveInitialPawnsPositionsRequest(){
         gameLogicExecutor.addListener(mockViews.get(0));
         gameLogicExecutor.addPlayerToLobby("p1");
@@ -1232,6 +1247,9 @@ class GameLogicExecutorTest {
         //UNCOMMENT TO SEE THE BOARD SETUP
         //simpleBoardPrint();
     }
+    /**
+     * This function tests a complete turn of the first player
+     */
     @Test void CompleteTurnOfFirstPlayer(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1342,6 +1360,9 @@ class GameLogicExecutorTest {
 
 
     }
+    /**
+     * This function tests a complete game with three bots
+     */
     @Test void CompleteGameWithBots(){
         //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1462,6 +1483,9 @@ class GameLogicExecutorTest {
 
 
     }
+    /**
+     * This function tests random combinations of cards with three bots setting a limit to the maximum amount of turns
+     */
     @Test void loopTwoBotsGame(){
         //SETUP VARIABLES
         int counter=0;
@@ -1521,6 +1545,9 @@ class GameLogicExecutorTest {
         System.out.println("-----------------------------------------------------------------------------------------------------");
 
     }
+    /**
+     * This function tests random combinations of cards with two bots setting a limit to the maximum amount of turns
+     */
     @Test void loopThreeBotsGame(){
         //SETUP VARIABLES
         int counter=0;
@@ -1581,6 +1608,9 @@ class GameLogicExecutorTest {
 
 
     }
+    /**
+     * This function tests the removal of a player once the game is already started
+     */
     @Test void removePlayerGameAlreadyStarted(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1611,6 +1641,9 @@ class GameLogicExecutorTest {
 
 
     }
+    /**
+     * This function tests the removal of a player when the game is not already started
+     */
     @Test void removePlayerGameNotStarted(){
         //the first player is added to the lobby, so he should receive the request for the number of players in the game
         gameLogicExecutor.addListener(mockViews.get(0));
@@ -1638,12 +1671,154 @@ class GameLogicExecutorTest {
 
 
     }
+    /**
+     * This function test the undo of the current action
+     */
+    @Test void undoCurrentAction() {
+        //LOAD PLAYERS TO THE LOBBY AND ADD THE CORRESPONDING LISTENER (NO REAL VIRTUAL VIEW BUT USING MOCKS)
+        gameLogicExecutor.addListener(mockViews.get(0));
+        gameLogicExecutor.addPlayerToLobby("p1");
+        gameLogicExecutor.addListener(mockViews.get(1));
+        gameLogicExecutor.addPlayerToLobby("p2");
+        gameLogicExecutor.addListener(mockViews.get(2));
+        gameLogicExecutor.addPlayerToLobby("p3");
+
+        //SETUP THE NUMBER OF PLAYERS
+        gameLogicExecutor.setNumberOfPlayers(3);
+
+        //CHOOSE IN-GAME CARDS
+        ArrayList<Integer> inGameCards = new ArrayList<>();
+        inGameCards.add(1);
+        inGameCards.add(2);
+        inGameCards.add(3);
+        gameLogicExecutor.setInGameCards(inGameCards);
+
+        //SET THE CARDS FOR EACH PLAYER
+        gameLogicExecutor.setChosenCard(1);
+        gameLogicExecutor.setChosenCard(2);
+        gameLogicExecutor.setChosenCard(3);
+
+        //SET THE FIRST PLAYER
+        gameLogicExecutor.setStartPlayer("p1");
+
+        //SET THE INITIAL PAWN POSITIONS FOR ALL THE PLAYER (RANDOMLY)
+        InitialPawnPositionRequestMessage m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        ArrayList<Position> positions = new ArrayList<>();
+        int randomNum1 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        int randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        while (randomNum2 == randomNum1) {
+            randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+        m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        positions = new ArrayList<>();
+        randomNum1 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        while (randomNum2 == randomNum1) {
+            randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+        m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        positions = new ArrayList<>();
+        randomNum1 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        while (randomNum2 == randomNum1) {
+            randomNum2 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
+        }
+        positions.add(m.getAvailablePositions().get(randomNum1));
+        positions.add(m.getAvailablePositions().get(randomNum2));
+        gameLogicExecutor.setPawnsPositions(positions);
+
+
+        MockView currentP = getCurrentPlayerMockView();
+        SelectPawnRequestMessage selectPawnRequestMessage = (SelectPawnRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
+        randomNum1 = ThreadLocalRandom.current().nextInt(0, selectPawnRequestMessage.getAvailablePositions().size());
+        gameLogicExecutor.setSelectedPawn(selectPawnRequestMessage.getAvailablePositions().get(randomNum1));
+
+        ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
+        if (m.getAvailablePositions().size() < 1) {
+            System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
+            simpleCompleteBoardPrint();
+            return;
+        }
+        randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
+
+        gameLogicExecutor.undoCurrentAction();
+        assertTrue(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage);
+        assertTrue(currentP.getReceivedMessages().get(currentP.getReceivedMessages().size()-2) instanceof UndoUpdateMessage);
 
 
 
+    }
+    /**
+     * This function stress test the model with lots of games with medusa
+     */
+    @Test void medusaStressTest(){
+        //SETUP VARIABLES
+        int counter=0;
+        int numberOfCardsRandomCombinationSwitch=20;
+        int numberOfGamesToRunWithSameCards=100;
+        int maxTurns=200;
+
+        //COMMODITY VARIABLES
+        int blocked,winner,unknown,maxNumberOfTurns;
+        int totalBlocked=0, totalWinner=0,totalUnknown=0,totalMaxNumberOfTurns=0;
+        int res,numberOfGamesTriedWithSameCards=0,numberOfCardsRandomCombinationSwitchTried=0;
+        ArrayList<Integer> cardIds;
+
+        do {
+            blocked=0;
+            winner=0;
+            unknown=0;
+            maxNumberOfTurns=0;
+            numberOfGamesTriedWithSameCards=0;
+
+            do {
+                cardIds = randomCardsWithMedusa();
+                res = threeBotsGame(cardIds.get(0), cardIds.get(1), cardIds.get(2), maxTurns);
+                numberOfGamesTriedWithSameCards++;
+                counter++;
+                if (res == 0) {
+                    blocked++;
+                }
+                else if (res == -1) {
+                    maxNumberOfTurns++;
+                }
+                else if (res == 2) {
+                    unknown++;
+                }
+                else if (res == 1) {
+                    winner++;
+                }
+                else{
+                    System.out.println("==========================ERROR=================================");
+                }
+            } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
+
+            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+
+            totalBlocked+=blocked;
+            totalWinner+=winner;
+            totalMaxNumberOfTurns+=maxNumberOfTurns;
+            totalUnknown+=unknown;
+
+            numberOfCardsRandomCombinationSwitchTried++;
+        }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
+
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
+        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
+        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+    }
 
 
     //COMMODITY FUNCTIONS
+
     /**
      * This function creates a simple setup for a game of three players Ian, Luca, Riccardo.
      * The players play like a game with no gods, with one simple move and one simple create loaded in their actionList.
@@ -1709,6 +1884,9 @@ class GameLogicExecutorTest {
         game.board.setPawnPosition(p.getPawnList().get(1), p2);
         gameLogicExecutor.loadCards();
     }
+    /**
+     * This function prints the complete board
+     */
     private void simpleCompleteBoardPrint(){
         Cell[][] matrix=game.getBoard().getMatrixCopy();
         for(int i=0; i<matrix.length; i++){
@@ -1744,6 +1922,10 @@ class GameLogicExecutorTest {
         }
         System.out.println(" ");
     }
+    /**
+     * This function returns the not current players
+     * @return the not current players arraylist
+     */
     private ArrayList<Player> getNonCurrentPlayers(){
         ArrayList<Player> opponents = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1753,6 +1935,10 @@ class GameLogicExecutorTest {
         }
         return opponents;
     }
+    /**
+     * This function returns the not loser and not winner players
+     * @return the list of players
+     */
     private ArrayList<Player> getNonLoserOrWinnerPlayers(){
         ArrayList<Player> opponents = new ArrayList<>();
         for(Player p : game.getPlayers()){
@@ -1762,6 +1948,14 @@ class GameLogicExecutorTest {
         }
         return opponents;
     }
+    /**
+     * This function runs a bot game returning the status of the end
+     * @param indexCard1 card in game
+     * @param indexCard2 card in game
+     * @param indexCard3 card in game
+     * @param maxTurns maximum turns
+     * @return the end status of the game
+     */
     private int threeBotsGame(int indexCard1,int indexCard2,int indexCard3, int maxTurns){
         //create the mock views
         mockViews=new ArrayList<>();
@@ -1884,6 +2078,13 @@ class GameLogicExecutorTest {
         }
 
     }
+    /**
+     * This function runs a bot game returning the status of the end
+     * @param indexCard1 card in game
+     * @param indexCard2 card in game
+     * @param maxTurns maximum turns
+     * @return the end status of the game
+     */
     private int twoBotsGame(int indexCard1, int indexCard2, int maxTurns){
         //create the mock views
         mockViews=new ArrayList<>();
@@ -1993,6 +2194,10 @@ class GameLogicExecutorTest {
             return 2;
         }
     }
+    /**
+     * This function returns a random permutation of cards
+     * @return the random cards ids
+     */
     private ArrayList<Integer> randomCards(){
         ArrayList<Integer> cardIds = new ArrayList<>();
         //cardIds.add(11); //WE WANT MEDUSA
@@ -2006,6 +2211,10 @@ class GameLogicExecutorTest {
         }
         return cardIds;
     }
+    /**
+     * This function returns the current player mockview
+     * @return the mockview
+     */
     private MockView getCurrentPlayerMockView(){
         String currentPlayerName=gameLogicExecutor.getCurrentPlayerName();
         for(MockView mock : mockViews){
@@ -2015,31 +2224,10 @@ class GameLogicExecutorTest {
         }
         return null;
     }
-    private void simpleBoardPrintWithoutBlocks(){
-        Cell[][] matrix=game.getBoard().getMatrixCopy();
-        for(int i=0; i<matrix.length; i++){
-            if(i==0){
-                System.out.println("_____________________");
-            }
-            for(int j=0; j<matrix[0].length; j++){
-                Pawn p =matrix[i][j].getPawn();
-                if(j==0){
-                    System.out.print("|");
-                }
-                if(p==null) {
-                    System.out.print("   |");
-                }
-                else{
-                    System.out.print(" "+p.getId()+" |");
-                }
-                if(j==matrix[0].length-1){
-                    System.out.print("\n");
-                }
-            }
-            System.out.println("_____________________");
-        }
-
-    }
+    /**
+     * This function checks if someone won
+     * @return the result of the operation
+     */
     private boolean someOneWon(){
         for(MockView mockView : mockViews){
             for(RequestAndUpdateMessage m : mockView.getReceivedMessages()){
@@ -2050,35 +2238,23 @@ class GameLogicExecutorTest {
         }
         return false;
     }
-    private void printCurrentActionInfo(Game currentGame,Position chosen,BlockType blockType){
-        String playerName=currentGame.getCurrentPlayer().getName();
-        int selectedPawnId=currentGame.getCurrentAction().getSelectedPawn().getId();
-        int fromX=currentGame.getCurrentAction().getSelectedPawn().getPosition().getX();
-        int fromY=currentGame.getCurrentAction().getSelectedPawn().getPosition().getY();
-        int toX;
-        int toY;
-        if(chosen!=null) {
-            toX = chosen.getX();
-            toY = chosen.getY();
-            if(currentGame.getCurrentAction() instanceof MoveAction){
-                System.out.println("Player: "+playerName+" MOVE with: "+selectedPawnId+"from: "+fromX+","+fromY+" to: "+toX+","+toY);
-            }
-            else if(currentGame.getCurrentAction() instanceof ConstructAction){
-                if(((ConstructAction) currentGame.getCurrentAction()).getSelectedBlockType()!=null) {
-                    int level=blockType.getLevel();
-                    System.out.println("Player: " + playerName + " CONSTRUCT with: " + selectedPawnId +" lvl: "+level+ " from: " + fromX + "," + fromY + " to: " + toX + "," + toY);
-                }
-            }
-        }
-        else{
-            if(currentGame.getCurrentAction() instanceof MoveAction){
-                System.out.println("Player: "+playerName+" MOVE SKIPPED");
-            }
-            else if(currentGame.getCurrentAction() instanceof ConstructAction){
-                System.out.println("Player: " + playerName + " CONSTRUCT SKIPPED");
-            }
-        }
 
+    /**
+     * This function returns random cards with medusa in it
+     * @return three cards ids
+     */
+    private ArrayList<Integer> randomCardsWithMedusa() {
+        ArrayList<Integer> cardIds = new ArrayList<>();
+        cardIds.add(11); //WE WANT MEDUSA
+        int randomId;
+        while(cardIds.size()<3){
+            randomId=ThreadLocalRandom.current().nextInt(0,14);
+            if(!cardIds.contains(randomId)){
+                cardIds.add(randomId);
+            }
+        }
+        return cardIds;
     }
+
 
 }
