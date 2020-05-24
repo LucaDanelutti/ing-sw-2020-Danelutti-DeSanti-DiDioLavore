@@ -164,7 +164,7 @@ public class MainSceneController extends GUIController {
        for(int i = 0; i < modelView.getMatrix().length; i++){
            for(int  j = 0; j < modelView.getMatrix()[0].length; j++){
                if (modelView.getMatrix()[i][j].getPeek() != BlockType.TERRAIN) {
-                   System.out.println("blockType: " + modelView.getMatrix()[i][j].getPeek().getLevel());
+//                   System.out.println("blockType: " + modelView.getMatrix()[i][j].getPeek().getLevel());
                    Image blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
                    ImageView blockImageView = new ImageView(blockImage);
                    blockImageView.setPreserveRatio(true);
@@ -257,7 +257,6 @@ public class MainSceneController extends GUIController {
    public void enablePawnSelection(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Select one of your pawns!");
        for (Position position : availablePositions) {
-           System.out.println("X:" +  position.getX() + ", Y:" +  position.getY());
            //makes the ImageViews visible
            enlightenedImageViewsArray[position.getX()][position.getY()].setVisible(true);
            enlightenedImageViewsArray[position.getX()][position.getY()].toFront();
@@ -424,6 +423,8 @@ public class MainSceneController extends GUIController {
     }
 
     public void skipAction() {
+       System.out.println("skipAction - chosenBlockType: " + chosenBlockType);
+
         phaseLabel.setText("");
         skipButton.setVisible(false);
         chosenPosition = null;
@@ -487,12 +488,14 @@ public class MainSceneController extends GUIController {
     public void undoAction() {
        clientView.update(new UndoActionSetMessage());
        chosenPosition = new Position(-1,-1);
+       chosenBlockType = null;
        endUndoProcess();
     }
 
     public void undoTurn() {
        clientView.update(new UndoTurnSetMessage());
        chosenPosition = new Position(-1,-1);
+       chosenBlockType = null;
        endUndoProcess();
     }
 
