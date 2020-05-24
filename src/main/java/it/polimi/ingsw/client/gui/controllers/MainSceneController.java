@@ -362,11 +362,11 @@ public class MainSceneController extends GUIController {
             blockTypeImageView.setOnMouseClicked(e -> {
                 Node source = (Node)e.getSource();
                 int blockTypeLevel = Integer.parseInt(source.getId());
-                System.out.printf("blockType: %d %n", blockTypeLevel);
+                System.out.printf("selected blockType: %d %n", blockTypeLevel);
 
                 chosenBlockType = BlockType.LEVEL1;
                 for(BlockType blockTypeElement : availableBlockTypes) {
-                    if (blockType.getLevel() == blockTypeLevel) chosenBlockType = blockTypeElement;
+                    if (blockTypeElement.getLevel() == blockTypeLevel) chosenBlockType = blockTypeElement;
                 }
 
                 blockTypesHBox.getChildren().clear();
