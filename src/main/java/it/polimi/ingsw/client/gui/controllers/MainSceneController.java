@@ -37,8 +37,8 @@ public class MainSceneController extends GUIController {
 
     /* ===== Constants ===== */
     private static final int BOARD_SIZE = 5;
-    private static final double CLIENT_CARD_WIDTH_RATIO = 6;
-    private static final double CLIENT_CARD_HEIGHT_RATIO = 2.5;
+    private static final double CLIENT_CARD_WIDTH_RATIO = 6.5;
+    private static final double CLIENT_CARD_HEIGHT_RATIO = 3;
     private static final double ENEMY_CARD_WIDTH_RATIO = 12;
     private static final double ENEMY_CARD_HEIGHT_RATIO = 5;
     private static final double BOARD_PANE_RATIO = 0.5;

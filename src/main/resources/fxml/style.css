@@ -87,16 +87,19 @@
 .blueLabelBackground {
     -fx-background-color: rgb(139, 208, 242);
     -fx-background-radius: 20;
+    -fx-font-size: 11pt;
 }
 
 .greenLabelBackground {
     -fx-background-color: rgb(109, 232, 138);
     -fx-background-radius: 20;
+    -fx-font-size: 11pt;
 }
 
 .orangeLabelBackground {
     -fx-background-color: rgb(226, 171, 111);
     -fx-background-radius: 20;
+    -fx-font-size: 11pt;
 }
 
 .legendGridPane {

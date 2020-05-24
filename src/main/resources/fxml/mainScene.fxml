@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <Scene stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.MainSceneController">
    <GridPane fx:id="mainGridPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="450.0" minWidth="750.0" styleClass="mainGridPane">
@@ -34,19 +35,25 @@
              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
            </columnConstraints>
            <rowConstraints>
-             <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
-             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="275.0" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="63.088043212890625" minHeight="10.0" prefHeight="63.088043212890625" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="241.41195678710938" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <Label fx:id="clientPlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <Label fx:id="clientPlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                   <GridPane.margin>
                      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                   </GridPane.margin>
                   <padding>
-                     <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     <Insets bottom="7.0" left="13.0" right="13.0" top="7.0" />
                   </padding>
+                  <font>
+                     <Font size="11.0" />
+                  </font>
                </Label>
-               <ImageView fx:id="clientPlayerCardImageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+               <ImageView fx:id="clientPlayerCardImageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                  <GridPane.margin>
+                     <Insets bottom="15.0" left="15.0" right="15.0" top="10.0" />
+                  </GridPane.margin></ImageView>
             </children>
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,23 +81,29 @@
                      <Insets bottom="20.0" left="20.0" right="30.0" top="20.0" />
                   </GridPane.margin>
                </ImageView>
-               <Label fx:id="enemy1PlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <Label fx:id="enemy1PlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                   <GridPane.margin>
                      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                   </GridPane.margin>
                   <padding>
-                     <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                  </padding></Label>
-               <Label fx:id="enemy2PlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <Insets bottom="7.0" left="13.0" right="13.0" top="7.0" />
+                  </padding>
+                  <font>
+                     <Font size="11.0" />
+                  </font></Label>
+               <Label fx:id="enemy2PlayerNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="regularText" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                   <GridPane.margin>
                      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                   </GridPane.margin>
                   <padding>
-                     <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                  </padding></Label>
+                     <Insets bottom="7.0" left="13.0" right="13.0" top="7.0" />
+                  </padding>
+                  <font>
+                     <Font size="11.0" />
+                  </font></Label>
             </children>
             <GridPane.margin>
-               <Insets bottom="-30.0" right="10.0" top="-15.0" />
+               <Insets bottom="-15.0" right="10.0" top="-25.0" />
             </GridPane.margin>
          </GridPane>
          <AnchorPane fx:id="boardAnchorPane" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
