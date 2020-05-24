@@ -45,7 +45,6 @@ public class GUIEngine extends Application implements UserInterface {
         //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
 //        showScene("/fxml/numberOfPlayersRequestScene.fxml");
         loadLoginScene();
-//        showMainScene();
     }
 
     //test function
@@ -346,12 +345,26 @@ public class GUIEngine extends Application implements UserInterface {
 
     @Override
     public void onGameEnded(String reason) {
-        showMessage(reason, AlertType.ERROR);
+        Platform.runLater(() -> {
+            showScene("/fxml/gameClosingScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            ((GameClosingSceneController)currentController).loadMessage(reason);
+        });
     }
 
     @Override
     public void onGameStartedAndYouAreNotSelected() {
-
+        Platform.runLater(() -> {
+            showScene("/fxml/gameClosingScene.fxml");
+            stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            stage.setWidth(Screen.getPrimary().getBounds().getWidth()/4);
+            stage.setHeight(Screen.getPrimary().getBounds().getHeight()/3);
+            ((GameClosingSceneController)currentController).loadMessage("Unfortunately the game has started and you haven't been selected.");
+        });
     }
 
     public void showMessage(String message, AlertType alertType) {
