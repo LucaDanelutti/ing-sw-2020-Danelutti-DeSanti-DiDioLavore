@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -22,7 +23,10 @@
          <children>
             <Label fx:id="youLostLabel" styleClass="titleText" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <ImageView fx:id="looseImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#closeStage" styleClass="classicButton" text="Ok!" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#closeStage" styleClass="classicButton" text="Ok!" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin></Button>
          </children>
       </GridPane>
    </root>

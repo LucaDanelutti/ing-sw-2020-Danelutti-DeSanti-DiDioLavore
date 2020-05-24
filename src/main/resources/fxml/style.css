@@ -103,6 +103,9 @@
 }
 
 .legendGridPane {
-    -fx-background-color: rgb(227, 227, 227);
+    -fx-background-color: rgb(100, 100, 100);
     -fx-background-radius: 20;
+    -fx-border-color: rgb(200, 200, 200);
+    -fx-border-radius: 18;
+    -fx-border-width: 3;
 }
