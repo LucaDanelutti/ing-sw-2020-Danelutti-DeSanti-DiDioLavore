@@ -88,6 +88,7 @@ public class MainSceneController extends GUIController {
     private Button undoTurnButton;
 
 
+
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
     private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
@@ -128,13 +129,8 @@ public class MainSceneController extends GUIController {
        boardAnchorPane.maxWidthProperty().bind(mainGridPane.heightProperty().multiply(BOARD_PANE_RATIO));
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
 
-       //TODO: improve padding management
-//       boardGridPane.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE).doubleValue()), boardGridPane.widthProperty().multiply(BOARD_PADDING_PERCENTAGE))));
-
-       //binds HBox (used for BlockType selection) padding and internal spacing
        blockTypesHBox.spacingProperty().bind(blockTypesHBox.widthProperty().divide(10));
-       //TODO: add padding to the blockType selection HBox
-//       blockTypesHBox.paddingProperty().bind((Bindings.createObjectBinding(() -> new Insets(blockTypesHBox.widthProperty().divide(10).doubleValue()), blockTypesHBox.widthProperty().divide(10))));
+
    }
 
 
