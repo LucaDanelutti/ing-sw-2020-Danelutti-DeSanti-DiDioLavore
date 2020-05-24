@@ -209,13 +209,6 @@ public class Game {
         return board;
     }
 
-    /**
-     * This is the setter for the variable board
-     * @param board the board to be set
-     */
-    void setBoard(Board board) {
-        this.board = board;
-    }
 
     /**
      * This is the getter for the variable inGamePlayer

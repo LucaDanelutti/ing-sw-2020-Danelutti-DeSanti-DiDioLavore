@@ -326,8 +326,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      */
     public Boolean removePlayer(String name){
         if(!getGameEnded()) {
-            //the game is not yet started
             if (game.getPlayers().size() == 0) {
+                //the game is not yet started
                 //let's find the index of the player to be removed
                 int indexToBeRemoved = -1;
                 for (int i = 0; i < this.lobby.size(); i++) {
@@ -354,8 +354,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
                 }
             }
-            //the game is started
             else {
+                //the game is started
                 if(game.getPlayer(name)!=null) {
                     //the player is inside of the game -> crash connection for everyone
                     this.setGameEnded(true);
@@ -368,6 +368,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     notifyListeners(generateGameEnded("Player disconnection"));
                 }
                 else{
+                    //the player is not in the game, just in the lobby!
                     lobby.remove(name);
                 }
             }
@@ -712,6 +713,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         if (nextPlayer == null) {
             //every other player is in loser state, you are the winner
             game.getCurrentPlayer().setWinner(true);
+            for(Player player : game.getPlayers()){
+                if(!player.getName().equals(game.getCurrentPlayer().getName())){
+                    player.setLoser(true);
+                }
+            }
             notifyListeners(generateYouWon());
             notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
         }
@@ -741,6 +747,12 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                             notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                             notifyListeners(generateYouWon());
                         }
+                    else if (unableToPerformFirstNonOptionalMove(nextPlayer)) {
+                        nextPlayer.setLoser(true);
+                        game.getCurrentPlayer().setWinner(true);
+                        notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
+                        notifyListeners(generateYouWon());
+                    }
                     else {
                         //the third player can be putted in ActionState
                         game.getCurrentPlayer().getCurrentCard().resetCurrentActionList();
@@ -759,6 +771,56 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     }
                 }
             }
+        else if(unableToPerformFirstNonOptionalMove(nextPlayer)){
+            //if the next player cannot perform the first non optional action he lost!
+            nextPlayer.setLoser(true);
+            if(game.getPlayers().size()==2){
+                //se siamo in due io ho automaticamente vinto!
+                game.getCurrentPlayer().setWinner(true);
+                notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
+                notifyListeners(generateYouWon());
+            }
+            else if(game.getPlayers().size()==3){
+                //se siamo in tre devo controllare anche l'altro giocatore
+                Player tempLoser=nextPlayer;
+                nextPlayer = game.getNextNonLoserPlayer();
+                if (nextPlayer == null){
+                    //se non ci sono altri giocatori -> tutti in loser -> ho vinto
+                    game.getCurrentPlayer().setWinner(true);
+                    notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
+                    notifyListeners(generateYouWon());
+                }
+                else if (nextPlayer.getPawnList().size() == 0) {
+                    //se anche l'altro avversario c'è , ma ha finito i pawn -> lui ha perso e io ho vinto
+                    nextPlayer.setLoser(true);
+                    game.getCurrentPlayer().setWinner(true);
+                    notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
+                    notifyListeners(generateYouWon());
+                }
+                else if (unableToPerformFirstNonOptionalMove(nextPlayer)) {
+                    nextPlayer.setLoser(true);
+                    game.getCurrentPlayer().setWinner(true);
+                    notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
+                    notifyListeners(generateYouWon());
+                }
+                else {
+                    //the third player can be putted in ActionState
+                    game.getCurrentPlayer().getCurrentCard().resetCurrentActionList();
+
+                    //remove the pawn for the tempLoser player, send the removePawnUpdate and send the youLost message
+                    for(Pawn p : tempLoser.getPawnList()){
+                        notifyListeners(generatePawnRemoveUpdate(p.getId()));
+                    }
+                    this.game.removePlayerPawns(tempLoser.getName());
+                    notifyListeners(generateYouLost(tempLoser.getName()));
+
+
+                    notifyListeners(generateTurnEnded());//this will send turn ended to the currentUser before setting a new one
+                    game.setCurrentPlayer(nextPlayer);
+                    notifyListeners(generateSelectPawnRequest());
+                }
+            }
+        }
         else {
             //the next player can play normally, normal case
             game.getCurrentPlayer().getCurrentCard().resetCurrentActionList();
@@ -767,6 +829,53 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             notifyListeners(generateSelectPawnRequest());
         }
 
+    }
+    /**
+     * This function checks if the selected player can perform it's first non optional action
+     * @param player the selected player
+     * @return the result of the operation
+     */
+    private boolean unableToPerformFirstNonOptionalMove(Player player){
+        //let's get the first non optional action for the given user
+        Action firstNonOpt = getFirstNonOptionalAction(player);
+
+
+        if(firstNonOpt!=null) {
+            if(player.getPawnList().size()==2) {
+                //let's compute the available cells for the first pawn
+                firstNonOpt.setSelectedPawn(player.getPawnList().get(0));
+                firstNonOpt.setNotSelectedPawn(player.getPawnList().get(1));
+                ArrayList<Position> availablePositionsForFirstPawn = firstNonOpt.availableCells(game.getBoard().getMatrixCopy());
+
+                //let's compute the available cells for the second pawn
+                firstNonOpt.setSelectedPawn(player.getPawnList().get(1));
+                firstNonOpt.setNotSelectedPawn(player.getPawnList().get(0));
+                ArrayList<Position> availablePositionsForSecondPawn = firstNonOpt.availableCells(game.getBoard().getMatrixCopy());
+                return availablePositionsForFirstPawn.size() == 0 && availablePositionsForSecondPawn.size() == 0;
+            }
+            else if(player.getPawnList().size()==1) {
+                //let's compute the available cells for the only pawn
+                firstNonOpt.setSelectedPawn(player.getPawnList().get(0));
+                firstNonOpt.setNotSelectedPawn(null);
+                ArrayList<Position> availablePositionsForTheOnlyPawn = firstNonOpt.availableCells(game.getBoard().getMatrixCopy());
+                return availablePositionsForTheOnlyPawn.size() == 0;
+            }
+        }
+        return false;
+
+    }
+    /**
+     * This function returns the first non optional action for the given player
+     * @param player the player to scan
+     * @return the first non optional action
+     */
+    private Action getFirstNonOptionalAction(Player player){
+        for(int i=0; i<player.getCurrentCard().getCurrentActionList().size(); i++){
+            if(!player.getCurrentCard().getCurrentActionList().get(i).getIsOptional()){
+                return player.getCurrentCard().getCurrentActionList().get(i);
+            }
+        }
+        return null;
     }
     /**
      * This function is called when after an execution of a MoveAction the checkWin function (for that specific action) return true.
@@ -883,7 +992,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the value of the operation
      */
     private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
-        return game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(), game.getBoard().getMatrixCopy()).contains(blockType);
+            return game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(), game.getBoard().getMatrixCopy()).contains(blockType);
     }
     /**
      * This function checks that the position of the selected pawn is a valid position for the current player
