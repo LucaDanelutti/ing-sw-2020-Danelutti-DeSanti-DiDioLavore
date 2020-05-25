@@ -10,14 +10,20 @@ import java.awt.*;
 
 public class WinSceneController extends GUIController {
 
+    /* ===== FXML elements ===== */
     @FXML
     private ImageView winImageView;
 
+
+    /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
 
     }
 
+    /**
+     * Sets up the scene loading the ImageView.
+     */
     public void setUpScene() {
         ModelView modelView = clientView.getModelView();
         String playerColor = modelView.getPlayerColor(clientView.getName());
@@ -27,6 +33,10 @@ public class WinSceneController extends GUIController {
         winImageView.setPreserveRatio(true);
     }
 
+    /**
+     * It is activated when the player clicks on the close button.
+     * It closes the current stage.
+     */
     public void closeStage() {
         stage.close();
     }

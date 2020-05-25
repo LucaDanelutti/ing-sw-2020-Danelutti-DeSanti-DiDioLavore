@@ -20,7 +20,6 @@ import javafx.scene.control.Alert.AlertType;
 import java.awt.*;
 import java.util.ArrayList;
 
-//TODO: add graphic effect on the ImageViews of the cards within cardsSelectedList
 public class GameCardsRequestSceneController extends GUIController {
 
     /* ===== Constants ===== */
@@ -30,6 +29,7 @@ public class GameCardsRequestSceneController extends GUIController {
     private static final double CARD_GRIDPANE_VGAP = 10;
     private static final int CARD_GRID_ROWS = 2;
     private static final int CARD_GRID_COL = 7;
+
 
     /* ===== FXML elements ===== */
     @FXML
@@ -41,6 +41,7 @@ public class GameCardsRequestSceneController extends GUIController {
     @FXML
     private Label cardDescription;
 
+
     /* ===== Variables ===== */
     private Integer currentCardId;
     private Position currentCardPosition;
@@ -49,17 +50,26 @@ public class GameCardsRequestSceneController extends GUIController {
     private ArrayList<Integer>  cardsSelectedList = new ArrayList<>();
     private ImageView[][] enlightenedImageViewsArray = new ImageView[CARD_GRID_ROWS][CARD_GRID_COL];
 
+
     /* ===== FXML Set Up and Bindings ===== */
     public void initialize() {
         cardsGridPane.setHgap(CARD_GRIDPANE_HGAP);
         cardsGridPane.setVgap(CARD_GRIDPANE_VGAP);
     }
 
+
+    /**
+     * Sets up the scene loading the cards Image Views.
+     * @param availableCards is the list of the cards that have to be shown to the player.
+     */
     public void setUpScene(ArrayList<CardView> availableCards) {
         loadCards(availableCards);
         loadEnlightenedImageViews();
     }
 
+    /**
+     * Loads the the Image Views used as background of the clicked card.
+     */
     private void loadEnlightenedImageViews() {
         //loads the panes that will be used to enlighten the board cells
         for (int i = 0; i < cardsGridPane.getRowCount(); i++) {
@@ -69,6 +79,7 @@ public class GameCardsRequestSceneController extends GUIController {
                 enlightenedImageView.setOpacity(0.7);
                 enlightenedImageViewsArray[i][j] = enlightenedImageView;
                 enlightenedImageView.toBack();
+                //TODO: add corner radius style
 //                enlightenedImageView.getStyleClass().removeAll();
 //                enlightenedImageView.getStyleClass().add("roundedImageView");
                 enlightenedImageView.setVisible(false);

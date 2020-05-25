@@ -23,11 +23,14 @@ public class NicknameRequestSceneController extends GUIController {
     @FXML
     private TextField nicknameTextField;
 
+
     /* ===== FXML Properties ===== */
     private StringProperty nickname;
     final private StringProperty initialTitle = new SimpleStringProperty("Hi ");
     final private StringProperty endTitle = new SimpleStringProperty("!");
 
+
+    /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
         nickname = new SimpleStringProperty("");

@@ -21,9 +21,9 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
     private ImageView players3ImageView;
 
 
-
     /* ===== FXML Properties ===== */
     private int selectedNumberOfPlayers = 2;
+
 
     /* ===== FXML Set Up and Bindings ===== */
     @FXML

@@ -15,8 +15,11 @@ import java.util.ArrayList;
 
 public class FirstPlayerRequestSceneController extends GUIController {
 
+    /* ===== Constants ===== */
     final static private double GOD_PAIN_RATIO = 6;
 
+
+    /* ===== FXML elements ===== */
     @FXML
     private Button buttonPlayer1;
     @FXML
@@ -35,9 +38,12 @@ public class FirstPlayerRequestSceneController extends GUIController {
     private GridPane mainGridPane;
 
 
+    /* ===== Variables ===== */
     ArrayList<String> playersList = new ArrayList<>();
     String firstPlayerSelected;
 
+
+    /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
 
@@ -50,6 +56,9 @@ public class FirstPlayerRequestSceneController extends GUIController {
 
     }
 
+    /**
+     * Loads the names and gods images into the scene.
+     */
     public void loadPlayers() {
         ModelView modelView = clientView.getModelView();
         playersList.add(clientView.getName());
@@ -72,6 +81,10 @@ public class FirstPlayerRequestSceneController extends GUIController {
         selectPlayer1();
     }
 
+    /**
+     * It is activated when the user clicks on a player's name button.
+     * It updates the style of the UI so as to give a feedback of the selection and sets the firstPlayerSelected.
+     */
     public void selectPlayer1() {
         firstPlayerSelected = playersList.get(0);
         buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
@@ -82,6 +95,10 @@ public class FirstPlayerRequestSceneController extends GUIController {
         buttonPlayer3.getStyleClass().add("classicButton");
     }
 
+    /**
+     * It is activated when the user clicks on a player's name button.
+     * It updates the style of the UI so as to give a feedback of the selection and sets the firstPlayerSelected.
+     */
     public void selectPlayer2() {
         firstPlayerSelected = playersList.get(1);
         buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
@@ -92,6 +109,10 @@ public class FirstPlayerRequestSceneController extends GUIController {
         buttonPlayer3.getStyleClass().add("classicButton");
     }
 
+    /**
+     * It is activated when the user clicks on a player's name button.
+     * It updates the style of the UI so as to give a feedback of the selection and sets the firstPlayerSelected.
+     */
     public void selectPlayer3() {
         firstPlayerSelected = playersList.get(2);
         buttonPlayer1.getStyleClass().removeAll("selectedDarkButton", "classicButton");
@@ -102,6 +123,10 @@ public class FirstPlayerRequestSceneController extends GUIController {
         buttonPlayer3.getStyleClass().add("selectedDarkButton");
     }
 
+    /**
+     * It is activated when the user clicks on the confirm button.
+     * It forwards the name of the player selected as firstPlayerSelected to the ClientView.
+     */
     public void confirm() {
         System.out.println("firstPlayerSelected: " + firstPlayerSelected);
         clientView.update(new FirstPlayerSetMessage(firstPlayerSelected));

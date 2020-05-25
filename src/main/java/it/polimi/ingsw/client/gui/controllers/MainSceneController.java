@@ -88,7 +88,6 @@ public class MainSceneController extends GUIController {
     private Button undoTurnButton;
 
 
-
     /* ===== Variables ===== */
     private ImageView[][] enlightenedImageViewsArray = new ImageView[BOARD_SIZE][BOARD_SIZE];
     private ArrayList<Position> initialPawnPositionsList = new ArrayList<>();
@@ -96,9 +95,11 @@ public class MainSceneController extends GUIController {
     private BlockType chosenBlockType = null;
     private Timer undoProcessTimer;
 
+
     /* ===== FXML Set Up and Bindings ===== */
    @FXML
     public void initialize() {
+       //graphical elements initialization
        phaseLabel.setText("");
        clientPlayerNameLabel.setText("");
        enemy1PlayerNameLabel.setText("");
@@ -110,6 +111,7 @@ public class MainSceneController extends GUIController {
        undoActionButton.setVisible(false);
        undoTurnButton.setVisible(false);
 
+        //board background image settings
        Image boardImage = new Image("images/board/board.png");
        boardImageView.setImage(boardImage);
        boardImageView.fitWidthProperty().bind(boardGridPane.widthProperty().multiply(BOARD_BACKGROUND_RATIO));
@@ -130,10 +132,11 @@ public class MainSceneController extends GUIController {
        boardAnchorPane.maxHeightProperty().bind(boardAnchorPane.widthProperty());
 
        blockTypesHBox.spacingProperty().bind(blockTypesHBox.widthProperty().divide(10));
-
    }
 
-
+    /**
+     * Sets up the main scene loading the elements from the ModelView.
+     */
    public void buildMainScene() {
        updatePlayersName();
        updatePlayersCard();
@@ -141,12 +144,9 @@ public class MainSceneController extends GUIController {
        loadEnlightenedImageViews();
    }
 
-   //TODO: remove this method and the relative button. It is just for test
-   public void updateBoardTest() {
-       ((GUIEngine)clientView.getUserInterface()).updateModelView();
-       ((GUIEngine)clientView.getUserInterface()).showMainScene();
-   }
-
+    /**
+     * Updates the data regarding with the cards and players names rendered.
+     */
    public void updateGameInfo() {
        updatePlayersName();
        updatePlayersCard();
@@ -178,6 +178,9 @@ public class MainSceneController extends GUIController {
        loadEnlightenedImageViews();
    }
 
+    /**
+     * Updates the presence and position of the pawns images within the board.
+     */
    private void updatePawns() {
        ModelView modelView = clientView.getModelView();
        ArrayList<PawnView> pawnsList = modelView.getPawns();
@@ -194,6 +197,9 @@ public class MainSceneController extends GUIController {
 
    }
 
+    /**
+     * Updates the texts of the labels showing the players names.
+     */
    public void updatePlayersName() {
        ModelView modelView = clientView.getModelView();
        clientPlayerNameLabel.setText(clientView.getName());
@@ -211,6 +217,9 @@ public class MainSceneController extends GUIController {
        }
    }
 
+    /**
+     * Updates the ImageViews showing the players cards.
+     */
    public void updatePlayersCard() {
        ModelView modelView = clientView.getModelView();
 
@@ -233,6 +242,9 @@ public class MainSceneController extends GUIController {
        }
    }
 
+    /**
+     * Loads the ImageViews used to show the available/clickable cells of the board to the player.
+     */
    private void loadEnlightenedImageViews() {
        ModelView modelView = clientView.getModelView();
        String playerColor = modelView.getPlayerColor(clientView.getName());
@@ -253,7 +265,10 @@ public class MainSceneController extends GUIController {
        }
    }
 
-
+    /**
+     * Enlightens and makes clickable the cells containing the player pawns.
+     * @param availablePositions
+     */
    public void enablePawnSelection(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Select one of your pawns!");
        for (Position position : availablePositions) {
@@ -271,6 +286,10 @@ public class MainSceneController extends GUIController {
        }
    }
 
+    /**
+     * It is activated when the player clicks on a proposed cell containing one of his pawns so as to select it.
+     * @param chosenPawnPosition is the position of the chosen pawn.
+     */
    private void chosenPawn(Position chosenPawnPosition) {
        phaseLabel.setText("");
        System.out.println("chosenPawnPosition:" + chosenPawnPosition.getX() + " " + chosenPawnPosition.getY());
@@ -278,6 +297,9 @@ public class MainSceneController extends GUIController {
        clearEnlightenedImageViews();
    }
 
+    /**
+     * Makes invisible the available cells on the board and makes them unclickable.
+     */
     private void clearEnlightenedImageViews() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -287,6 +309,9 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    /**
+     * Makes unclickable the available cells on the board while keeping them visible.
+     */
     private void removeRecognizerFromEnlightenedImageViews() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -295,6 +320,10 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    /**
+     * Lets the player know that he has to select a position so as to move his pawn.
+     * @param availablePositions is the list of the positions from which the player can choose.
+     */
     public void chooseMovePosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Move!");
        if (availablePositions.contains(null)) skipButton.setVisible(true);
@@ -302,12 +331,21 @@ public class MainSceneController extends GUIController {
        if (availablePositions.size()==0) resetTurn();
     }
 
+    /**
+     * Lets the player know that he has to select a position so as to build a block.
+     * @param availablePositions is the list of the positions from which the player can choose.
+     */
     public void chooseConstructPosition(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Choose a position to Build!");
        if (availablePositions.contains(null)) skipButton.setVisible(true);
        enablePositionSelection(availablePositions, "construct");
     }
 
+    /**
+     * Shows the available cells enlightening them and making them clickable.
+     * @param availablePositions is the list of the cells that can be clicked by the player.
+     * @param actionType is the type of action. It can be "move" or "construct".
+     */
     public void enablePositionSelection(ArrayList<Position> availablePositions, String actionType) {
         for (Position position : availablePositions) {
             if (position != null) {
@@ -333,6 +371,9 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    /**
+     * Sends to the ClientView the position chosen by the player.
+     */
     private void setPosition() {
         phaseLabel.setText("");
         if (chosenPosition != null) {
@@ -348,6 +389,10 @@ public class MainSceneController extends GUIController {
         skipButton.setVisible(false);
     }
 
+    /**
+     * Lets the player know that he has to select a block type and shows a list of the available ones.
+     * @param availableBlockTypes is the list of the available block types that have to be shown to the player.
+     */
     public void chooseBlockType(ArrayList<BlockType> availableBlockTypes) {
         phaseLabel.setText("Choose a Block Type!");
         blockTypesHBox.toFront();
@@ -380,6 +425,9 @@ public class MainSceneController extends GUIController {
         blockTypesHBox.setVisible(true);
     }
 
+    /**
+     * Sends to the ClientView the block type chosen by the player.
+     */
     private void setBlockType() {
        phaseLabel.setText("");
 
@@ -388,6 +436,11 @@ public class MainSceneController extends GUIController {
        chosenBlockType = null;
     }
 
+    /**
+     * Lets the player know that he has to place both his pawns at the beginning to the game.
+     * It enlightens and makes visible a list of the cells that can be clicked by the player.
+     * @param availablePositions
+     */
     public void placeInitialPawns(ArrayList<Position> availablePositions) {
         phaseLabel.setText("Place your 2 pawns!");
         //TODO: questa parte di codice è condivisa con enablePositionSelection. Potrei scrivere un metodo a cui si passa la funzione da attivare con l'action.
@@ -405,6 +458,10 @@ public class MainSceneController extends GUIController {
         }
     }
 
+    /**
+     * Sends to the ClientView a position chosen by the player to place his pawn at the beginning of the match.
+     * @param position is a position chosen by the place to place one of his pawns.
+     */
     private void selectInitialPawnPosition(Position position) {
        ModelView modelView = clientView.getModelView();
        ArrayList<Integer> pawnsId = modelView.getPlayerPawnsId(clientView.getName());
@@ -423,6 +480,9 @@ public class MainSceneController extends GUIController {
        }
     }
 
+    /**
+     * Shows a button that, if clicked, lets the player skip the current optional action.
+     */
     public void skipAction() {
        System.out.println("skipAction - chosenBlockType: " + chosenBlockType);
 
@@ -432,6 +492,11 @@ public class MainSceneController extends GUIController {
         startUndoProcess();
     }
 
+    /**
+     * Manages a timer which controls the undo operation.
+     * At the end of a 5 seconds countdown the action previously selected by the player is confirmed.
+     * During these seconds some buttons that let him undo the action or the turn are shown to the player
+     */
     private void startUndoProcess() {
        phaseLabel.setText("");
         removeRecognizerFromEnlightenedImageViews();
@@ -467,6 +532,9 @@ public class MainSceneController extends GUIController {
         }, 0, 1000);
     }
 
+    /**
+     * Deletes the times that manages the undo process and makes invisible the relative buttons.
+     */
     private void endUndoProcess() {
         undoProcessTimer.cancel();
         timerImageView.setVisible(false);
@@ -475,7 +543,9 @@ public class MainSceneController extends GUIController {
         undoTurnButton.setVisible(false);
     }
 
-
+    /**
+     * Confirm the action previously selected and ends the undo process.
+     */
     public void confirmAction() {
        System.out.println("confirmAction - chosenBlockType:" + chosenBlockType);
        if (chosenBlockType != null) {
@@ -489,6 +559,9 @@ public class MainSceneController extends GUIController {
         endUndoProcess();
     }
 
+    /**
+     * Sends to the ClientView a UndoActionSetMessage thus making the player repeat his last action.
+     */
     public void undoAction() {
        clientView.update(new UndoActionSetMessage());
        chosenPosition = new Position(-1,-1);
@@ -496,6 +569,9 @@ public class MainSceneController extends GUIController {
        endUndoProcess();
     }
 
+    /**
+     * Sends to the ClientView a UndoTurnSetMessage thus making the player repeat his last turn.
+     */
     public void undoTurn() {
        clientView.update(new UndoTurnSetMessage());
        chosenPosition = new Position(-1,-1);
@@ -503,6 +579,10 @@ public class MainSceneController extends GUIController {
        endUndoProcess();
     }
 
+    /**
+     * Lets the player know that he has to repeat his turn and after 3 seconds
+     * sends to the ClientView a UndoTurnSetMessage thus making the player repeat his last turn.
+     */
     private void resetTurn() {
         phaseLabel.setText("Pawn blocked. Select another pawn!");
 

@@ -10,16 +10,23 @@ import javafx.scene.image.ImageView;
 import java.awt.*;
 
 public class YouLostSceneController extends GUIController {
+
+    /* ===== FXML elements ===== */
     @FXML
     private ImageView looseImageView;
     @FXML
     private Label youLostLabel;
 
+    /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
 
     }
 
+    /**
+     * Sets up the scene setting the text of the youLostLabel and loading the correct looseImageView image.
+     * @param winnerName
+     */
     public void loadData(String winnerName) {
         youLostLabel.setText("You lost. The winner is " + winnerName);
 
@@ -30,6 +37,10 @@ public class YouLostSceneController extends GUIController {
         looseImageView.setPreserveRatio(true);
     }
 
+    /**
+     * It is activated when the player clicks on the close button.
+     * It closes the current stage.
+     */
     public void closeStage() {
         stage.close();
     }

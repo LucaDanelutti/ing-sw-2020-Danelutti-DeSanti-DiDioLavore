@@ -18,9 +18,11 @@ public class LoginSceneController extends GUIController {
     @FXML
     private TextField portTextField;
 
+
     /* ===== FXML Properties ===== */
     private StringProperty serverHostname;
     private StringProperty port;
+
 
     /* ===== FXML Set Up and Bindings ===== */
     @FXML
@@ -40,7 +42,6 @@ public class LoginSceneController extends GUIController {
             }
         });
     }
-
 
 
     /**

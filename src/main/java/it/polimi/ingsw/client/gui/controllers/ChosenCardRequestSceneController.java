@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
-//TODO: make HBox grow vertically
 public class ChosenCardRequestSceneController extends GUIController {
 
     /* ===== FXML elements ===== */
@@ -81,6 +80,10 @@ public class ChosenCardRequestSceneController extends GUIController {
         }
     }
 
+    /**
+     * It is activated when the user clicks on a card. Updates the title of the confirm button.
+     * @param cardId is the id of the clicked card.
+     */
     private void updateConfirmButtonText(int cardId) {
         for (CardView card: availableCards) {
             if (card.getId() == cardId) {

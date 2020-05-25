@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TODO: scrivere una funzione parametrica private da chiamare tutte le volte che definisco minWidth/h e width/h di stage quando carico le scene
 public class GUIEngine extends Application implements UserInterface {
 
     private Stage stage;
@@ -42,8 +41,6 @@ public class GUIEngine extends Application implements UserInterface {
 
 //        setUpTest();
 
-        //TODO: ("/fxml/loginScene.fxml", false) should be passed below, other scenes are passed as a test
-//        showScene("/fxml/numberOfPlayersRequestScene.fxml");
         loadLoginScene();
     }
 
@@ -131,7 +128,6 @@ public class GUIEngine extends Application implements UserInterface {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            //TODO: manage exception properly
             System.out.println("Exception while loading fxml resource.");
             System.out.println(e.toString());
             System.out.println(e.getCause().toString());
@@ -139,6 +135,11 @@ public class GUIEngine extends Application implements UserInterface {
 
     }
 
+    /**
+     * Updates the minimum and current size of the stage.
+     * @param widthRation is the width fraction of the screen size.
+     * @param heightRatio is the height fraction of the screen size.
+     */
     private void updateStageSize(double widthRation, double heightRatio) {
         stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/widthRation);
         stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/heightRatio);
@@ -266,18 +267,11 @@ public class GUIEngine extends Application implements UserInterface {
     public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
             try {
-//                showMainSceneSynch();
                 ((MainSceneController)currentController).placeInitialPawns(availablePositions);
             } catch (Exception e) {
                 System.out.println("Problem while executing onInitialPawnPositionRequest():" + e.toString());
             }
         });
-    }
-
-    private void showMainSceneSynch() {
-        showScene("/fxml/mainScene.fxml");
-        updateStageSize(1.5, 1.5);
-        ((MainSceneController)currentController).buildMainScene();
     }
 
     @Override
@@ -339,6 +333,11 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Shows a pop-up message above the current stage.
+     * @param message is the message that has to be rendered within the pop-up.
+     * @param alertType is the type of the Alert according to the enum AlertType.
+     */
     public void showMessage(String message, AlertType alertType) {
         Platform.runLater(() -> {
             Alert alert = new Alert(alertType);
@@ -351,6 +350,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the login controller and fxml scene
+     */
     private void loadLoginScene() {
         Platform.runLater(() -> {
             showScene("/fxml/loginScene.fxml");
