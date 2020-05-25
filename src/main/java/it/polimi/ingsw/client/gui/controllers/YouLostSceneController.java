@@ -25,7 +25,7 @@ public class YouLostSceneController extends GUIController {
 
     /**
      * Sets up the scene setting the text of the youLostLabel and loading the correct looseImageView image.
-     * @param winnerName
+     * @param winnerName is the name of the winner.
      */
     public void loadData(String winnerName) {
         youLostLabel.setText("You lost. The winner is " + winnerName);

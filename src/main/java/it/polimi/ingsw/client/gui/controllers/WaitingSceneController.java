@@ -17,14 +17,11 @@ public class WaitingSceneController extends GUIController {
     private Label waitLabel;
 
 
-    /* ===== FXML Properties ===== */
-    private StringProperty waitString;
-
-
     /* ===== FXML Set Up and Bindings ===== */
     @FXML
     public void initialize() {
-        waitString = new SimpleStringProperty("Lobby");
+        /* ===== FXML Properties ===== */
+        StringProperty waitString = new SimpleStringProperty("Lobby");
         waitLabel.textProperty().bind(waitString);
     }
 }

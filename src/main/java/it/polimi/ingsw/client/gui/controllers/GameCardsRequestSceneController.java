@@ -23,8 +23,6 @@ import java.util.ArrayList;
 public class GameCardsRequestSceneController extends GUIController {
 
     /* ===== Constants ===== */
-    private static final int NUM_ROWS = 2;
-    private static final int NUM_COLUMNS = 7;
     private static final double CARD_GRIDPANE_HGAP = 10;
     private static final double CARD_GRIDPANE_VGAP = 10;
     private static final int CARD_GRID_ROWS = 2;
@@ -125,7 +123,7 @@ public class GameCardsRequestSceneController extends GUIController {
         cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_VGAP).divide(CARD_GRID_ROWS));
         cardImageView.setOnMouseClicked(e -> {
             Node source = (Node)e.getSource();
-            System.out.printf("Mouse enetered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));
+            System.out.printf("Mouse entered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));
             int colIndex = GridPane.getColumnIndex(source);
             int rowIndex = GridPane.getRowIndex(source);
             currentCardPosition = new Position(rowIndex, colIndex);

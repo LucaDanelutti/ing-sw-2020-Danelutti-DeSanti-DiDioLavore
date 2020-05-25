@@ -267,7 +267,7 @@ public class MainSceneController extends GUIController {
 
     /**
      * Enlightens and makes clickable the cells containing the player pawns.
-     * @param availablePositions
+     * @param availablePositions is the list of the clickable positions.
      */
    public void enablePawnSelection(ArrayList<Position> availablePositions) {
        phaseLabel.setText("Select one of your pawns!");
@@ -439,7 +439,7 @@ public class MainSceneController extends GUIController {
     /**
      * Lets the player know that he has to place both his pawns at the beginning to the game.
      * It enlightens and makes visible a list of the cells that can be clicked by the player.
-     * @param availablePositions
+     * @param availablePositions is the list of the positions in which the player can place a pawn.
      */
     public void placeInitialPawns(ArrayList<Position> availablePositions) {
         phaseLabel.setText("Place your 2 pawns!");
