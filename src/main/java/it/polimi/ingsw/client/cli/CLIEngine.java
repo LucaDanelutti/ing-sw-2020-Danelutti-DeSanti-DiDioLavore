@@ -196,7 +196,12 @@ public class CLIEngine implements UserInterface {
 
         int input;
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -237,7 +242,12 @@ public class CLIEngine implements UserInterface {
 
         int input;
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -282,7 +292,12 @@ public class CLIEngine implements UserInterface {
 
         int input;
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -337,7 +352,12 @@ public class CLIEngine implements UserInterface {
 
         int input;
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -370,7 +390,12 @@ public class CLIEngine implements UserInterface {
 
         int input;
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -407,9 +432,13 @@ public class CLIEngine implements UserInterface {
             chosenOptions = new ArrayList<>();
             for (int i = 0; i < clientView.getModelView().getPlayerList().size(); i++) {
                 System.out.print("Card " + (i + 1) + " of " + clientView.getModelView().getPlayerList().size() + " | Choice (0->" + (availableCards.size() - 1) + "): ");
-                input=scanner.nextInt();
+                String string = scanner.nextLine();
+                try {
+                    input = Integer.parseInt(string);
+                } catch (NumberFormatException e) {
+                    input = -i-1;
+                }
                 chosenOptions.add(input);
-                chosenCards.add(availableCards.get(input).getId());
             }
             if(areThereAnyDuplicates(chosenOptions)){
                 System.out.println("No duplicates allowed, retry: ");
@@ -418,7 +447,9 @@ public class CLIEngine implements UserInterface {
                 System.out.println("Not a valid sequence, retry: ");
             }
         }while (areThereAnyDuplicates(chosenOptions)|| areTheOptionsNotValid(options, chosenOptions));
-
+        for (int i : chosenOptions) {
+            chosenCards.add(availableCards.get(i).getId());
+        }
         clientView.update(new InGameCardsSetMessage(chosenCards));
     }
     /**
@@ -449,9 +480,19 @@ public class CLIEngine implements UserInterface {
         do {
             pawnsPositions = new ArrayList<>();
             System.out.print("First pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
-            choice1=scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                choice1 = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                choice1 = -1;
+            }
             System.out.print("Second pawn position choice (0->" + (availablePositions.size() - 1) + "): ");
-            choice2=scanner.nextInt();
+            string = scanner.nextLine();
+            try {
+                choice2 = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                choice2 = -1;
+            }
             if(isTheOptionNotValid(options, choice1) || isTheOptionNotValid(options, choice2) || choice1==choice2){
                 System.out.println("Not valid options, retry: ");
             }
@@ -494,7 +535,12 @@ public class CLIEngine implements UserInterface {
         System.out.print("Select the number of players in the game (2 or 3): ");
         int number;
         do {
-            number = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                number = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                number = -1;
+            }
             if(number!=3 && number!=2){
                 System.out.print("Not a valid option, retry: ");
             }
@@ -539,7 +585,12 @@ public class CLIEngine implements UserInterface {
         }
 
         do {
-            input = scanner.nextInt();
+            String string = scanner.nextLine();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
             if(isTheOptionNotValid(options, input)){
                 System.out.print("Not a valid option, retry: ");
             }
