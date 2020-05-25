@@ -64,10 +64,12 @@ class Player {
         this.isLoser=false;
         this.isWinner=false;
         //this.state = state;
-        pawnList = new ArrayList<Pawn>();
+        pawnList = new ArrayList<>();
     }
 
     Player(Player toBeCopied){
+        this.unselectedPawnPosition=toBeCopied.unselectedPawnPosition;
+        this.selectedPawnPosition=toBeCopied.selectedPawnPosition;
         this.name=toBeCopied.name;
         this.pawnList=new ArrayList<>();
         for(Pawn p: toBeCopied.pawnList){
