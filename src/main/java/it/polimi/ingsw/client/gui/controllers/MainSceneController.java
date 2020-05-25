@@ -340,6 +340,7 @@ public class MainSceneController extends GUIController {
         } else {
             System.out.println("Action Skipped");
         }
+        System.out.println("setPosition - chosenPosition:" + chosenPosition);
         clientView.update(new ChosenPositionSetMessage(chosenPosition));
         chosenPosition = new Position(-1,-1);
         clearEnlightenedImageViews();
@@ -476,9 +477,12 @@ public class MainSceneController extends GUIController {
 
 
     public void confirmAction() {
+       System.out.println("confirmAction - chosenBlockType:" + chosenBlockType);
        if (chosenBlockType != null) {
+           System.out.println("setBlock");
            setBlockType();
        } else {
+           System.out.println("setPos");
            setPosition();
        }
         clearEnlightenedImageViews();
