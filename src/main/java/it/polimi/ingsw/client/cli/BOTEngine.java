@@ -260,8 +260,8 @@ public class BOTEngine implements UserInterface {
         printWelcome();
         byte[] array = new byte[4]; // length is bounded by 4
         new Random().nextBytes(array);
-        String generatedString = new String(array, StandardCharsets.US_ASCII);
-        String playerName = "RandomPolicy" + generatedString;
+        String generatedString = Integer.toString((int)(Math.random()*(10000000))+10000000);
+        String playerName = "Agent" + generatedString;
         clientView.update(new NicknameSetMessage(playerName));
     }
     /**
