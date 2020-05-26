@@ -273,7 +273,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
      */
     @Override
     public void update(YouLostMessage youLostMessage) {
-        modelView.setLooser(name);
+        modelView.setLooser(youLostMessage.getLoserName());
         userInterface.refreshView();
     }
 
