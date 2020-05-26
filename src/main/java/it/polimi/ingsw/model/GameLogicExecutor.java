@@ -324,57 +324,55 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param name the name of the player to be removed
      * @return the result of the operation
      */
-    public Boolean removePlayer(String name){
-        if(!getGameEnded()) {
-            if (game.getPlayers().size() == 0) {
-                //the game is not yet started
-                //let's find the index of the player to be removed
-                int indexToBeRemoved = -1;
-                for (int i = 0; i < this.lobby.size(); i++) {
-                    if (lobby.get(i).equals(name)) {
-                        indexToBeRemoved = i;
-                    }
-                }
-                switch (indexToBeRemoved) {
-                    case -1:
-                        return false;
-                    case 0: {
-                        this.lobby.remove(name);
-                        if (lobby.size() > 0) {
-                            //let's send a new number of player request to the new first player
-                            this.numberOfPlayers = -1;
-                            notifyListeners(generateNumberOfPlayersRequest());
-                        }
-                    }
-                    default: {
-                        //no other action is needed, just remove the player from the lobby
-                        this.lobby.remove(name);
-                    }
-
-
+    public Boolean removePlayer(String name) {
+        if (game.getPlayers().size() == 0) {
+            //the game is not yet started
+            //let's find the index of the player to be removed
+            int indexToBeRemoved = -1;
+            for (int i = 0; i < this.lobby.size(); i++) {
+                if (lobby.get(i).equals(name)) {
+                    indexToBeRemoved = i;
                 }
             }
-            else {
-                //the game is started
-                if(game.getPlayer(name)!=null) {
-                    //the player is inside of the game -> crash connection for everyone
-                    this.setGameEnded(true);
-                    for (Player p : game.getPlayers()) {
-                        if (p.getName().equals(name)) {
-                            game.removePlayer(p);
-                            break;
-                        }
+            switch (indexToBeRemoved) {
+                case -1:
+                    return false;
+                case 0: {
+                    this.lobby.remove(name);
+                    if (lobby.size() > 0) {
+                        //let's send a new number of player request to the new first player
+                        this.numberOfPlayers = -1;
+                        notifyListeners(generateNumberOfPlayersRequest());
                     }
+                }
+                default: {
+                    //no other action is needed, just remove the player from the lobby
+                    this.lobby.remove(name);
+                }
+
+
+            }
+        } else {
+            //the game is started
+            if (game.getPlayer(name) != null) {
+                //the player is inside of the game -> crash connection for everyone
+                for (Player p : game.getPlayers()) {
+                    if (p.getName().equals(name)) {
+                        game.removePlayer(p);
+                        break;
+                    }
+                }
+                if (!getGameEnded() & noWinnerInTheGame()) {
                     notifyListeners(generateGameEnded("Player disconnection"));
                 }
-                else{
-                    //the player is not in the game, just in the lobby!
-                    lobby.remove(name);
-                }
+                this.setGameEnded(true);
             }
-            return true;
+            else {
+                //the player is not in the game, just in the lobby!
+                lobby.remove(name);
+            }
         }
-        return false;
+        return true;
     }
     /**
      * This function is used to undo the current action and restore the game to the status before the action, it also generates the new request to the current player
@@ -1136,6 +1134,14 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         game.setLoadedCardsCopy(updatedCardList);
 
+        return true;
+    }
+    private boolean noWinnerInTheGame(){
+        for(Player p : game.getPlayers()){
+            if(p.getWinner()){
+                return false;
+            }
+        }
         return true;
     }
 
