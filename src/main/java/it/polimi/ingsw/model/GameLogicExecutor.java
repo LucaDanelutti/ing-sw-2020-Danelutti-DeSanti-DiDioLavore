@@ -990,7 +990,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @return the value of the operation
      */
     private Boolean isThisBlockTypeInTheAvailableBlockTypes(BlockType blockType){
+        if(blockType!=null) {
             return game.getCurrentAction().availableBlockTypes(game.getCurrentAction().getChosenPosition(), game.getBoard().getMatrixCopy()).contains(blockType);
+        }
+        return false;
     }
     /**
      * This function checks that the position of the selected pawn is a valid position for the current player
