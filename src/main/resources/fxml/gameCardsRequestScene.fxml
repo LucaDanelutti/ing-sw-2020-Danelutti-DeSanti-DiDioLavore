@@ -15,9 +15,9 @@
        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
      </columnConstraints>
      <rowConstraints>
-       <RowConstraints maxHeight="143.0" minHeight="0.0" prefHeight="89.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="166.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="285.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="143.0" minHeight="0.0" prefHeight="77.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="204.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="259.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
          <GridPane fx:id="cardsGridPane" hgap="10.0" prefWidth="658.0" vgap="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -51,7 +51,7 @@
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <ImageView fx:id="bigCardImageView" fitHeight="217.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <ImageView fx:id="bigCardImageView" fitHeight="217.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                   <GridPane.margin>
                      <Insets left="30.0" right="20.0" />
                   </GridPane.margin></ImageView>

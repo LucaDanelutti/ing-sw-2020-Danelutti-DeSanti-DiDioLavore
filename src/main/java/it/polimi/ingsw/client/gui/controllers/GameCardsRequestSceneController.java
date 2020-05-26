@@ -120,7 +120,7 @@ public class GameCardsRequestSceneController extends GUIController {
         cardImageView.setPreserveRatio(true);
         cardImageView.setId(String.valueOf(cardId));
         cardImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL));
-        cardImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_VGAP).divide(CARD_GRID_ROWS));
+        cardImageView.fitHeightProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL));
         cardImageView.setOnMouseClicked(e -> {
             Node source = (Node)e.getSource();
             System.out.printf("Mouse entered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));
