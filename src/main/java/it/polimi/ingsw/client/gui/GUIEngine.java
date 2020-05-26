@@ -258,7 +258,7 @@ public class GUIEngine extends Application implements UserInterface {
     public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
             showScene("/fxml/gameCardsRequestScene.fxml");
-            updateStageSize(1.5, 1.5);
+            updateStageSize(1.5, 1.3);
             ((GameCardsRequestSceneController)currentController).setUpScene(availableCards);
         });
     }
