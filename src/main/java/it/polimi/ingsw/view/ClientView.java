@@ -185,7 +185,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(CellUpdateMessage cellUpdateMessage) {
         modelView.onCellUpdate(cellUpdateMessage.getPosition(), cellUpdateMessage.getBlockType());
-        userInterface.refreshView(modelView.getMatrix()[cellUpdateMessage.getPosition().getX()][cellUpdateMessage.getPosition().getY()]);
+        userInterface.refreshView();
     }
 
     /**
@@ -196,7 +196,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(ChosenCardUpdateMessage chosenCardUpdateMessage) {
         modelView.onChosenCardUpdate(chosenCardUpdateMessage.getChosenCard(), chosenCardUpdateMessage.getName());
-        userInterface.refreshView(chosenCardUpdateMessage.getChosenCard());
+        userInterface.refreshViewOnlyGameInfo();
     }
 
     /**
@@ -207,8 +207,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(DoublePawnPositionUpdateMessage doublePawnPositionUpdateMessage) {
         modelView.onDoublePawnPositionUpdate(doublePawnPositionUpdateMessage.getWorkerId1(), doublePawnPositionUpdateMessage.getWorkerPos1(), doublePawnPositionUpdateMessage.getWorkerId2(), doublePawnPositionUpdateMessage.getWorkerPos2());
-        userInterface.refreshView(modelView.getPawn(doublePawnPositionUpdateMessage.getWorkerId1()));
-        userInterface.refreshView(modelView.getPawn(doublePawnPositionUpdateMessage.getWorkerId2()));
+        userInterface.refreshView();
     }
 
     /**
@@ -219,7 +218,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(PawnPositionUpdateMessage pawnPositionUpdateMessage) {
         modelView.onPawnPositionUpdate(pawnPositionUpdateMessage.getWorkerId(), pawnPositionUpdateMessage.getWorkerPos());
-        userInterface.refreshView(modelView.getPawn(pawnPositionUpdateMessage.getWorkerId()));
+        userInterface.refreshView();
     }
 
     /**
@@ -241,7 +240,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     @Override
     public void update(SelectedPawnUpdateMessage selectedPawnUpdateMessage) {
         modelView.onSelectPawnUpdate(selectedPawnUpdateMessage.getWorkerId());
-        userInterface.refreshView(modelView.getPawn(selectedPawnUpdateMessage.getWorkerId()));
+        userInterface.refreshView();
     }
 
     /**
@@ -254,7 +253,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         for(PlayerView p : gameStartMessage.getInGamePlayers()){
             modelView.onPlayerUpdate(p.getName(), p.getPawnList().get(0).getColor(), p.getPawnList().get(0).getId(), p.getPawnList().get(1).getId());
         }
-        userInterface.refreshView();
+        userInterface.refreshViewOnlyGameInfo();
     }
 
     /**
