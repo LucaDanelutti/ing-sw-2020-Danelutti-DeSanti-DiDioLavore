@@ -142,6 +142,12 @@ public class CLIEngine implements UserInterface {
         System.out.println("There is already a game started on the server, try later!");
         printEqualsRow();
     }
+    public void onServerDisconnection(){
+        clearScreen();
+        printEqualsRow();
+        System.out.println("Server disconnected, please restart the server!");
+        printEqualsRow();
+    }
 
 
     //TO BE CALLED WHEN A REQUEST ARRIVES
