@@ -15,6 +15,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
+/**
+ * Server class: main server object. It contains the serverSocket, the controller and the model.
+ * There are two maps that contains a reference to the clientConnection linked the player name and to the reference of the player VirtualView
+ */
 public class Server {
     private final int port;
     private ServerSocket serverSocket;
@@ -24,45 +28,69 @@ public class Server {
     private GameLogicExecutor gameLogicExecutor;
     private Controller controller;
 
+    /**
+     * @param port
+     * Default constructor
+     * It creates a new server socket
+     */
     public Server(int port) throws IOException {
         this.port = port;
         this.serverSocket = new ServerSocket(port);
     }
 
+    /**
+     * This method creates an empty model and an empty controller
+     */
     private void newGame() {
         Game game = new Game();
         gameLogicExecutor = new GameLogicExecutor(game);
         controller = new Controller(gameLogicExecutor);
     }
 
-    public synchronized void removeConnection(ClientConnection c) {
-        String name = playingConnection.get(c);
-        gameLogicExecutor.removeListener(playingVirtualViews.get(c));
-        gameLogicExecutor.removePlayer(playingConnection.get(c));
-        playingConnection.remove(c);
-        MyLogger.log(Level.INFO, this.getClass().getName(), "removeConnection()",c.toString() + ": removed player " + name);
+    /**
+     * @param clientConnection
+     * This method removes a clientConnection from the server
+     * It also removes the player and the player VirtualView from the model
+     */
+    public synchronized void removeConnection(ClientConnection clientConnection) {
+        String name = playingConnection.get(clientConnection);
+        gameLogicExecutor.removeListener(playingVirtualViews.get(clientConnection));
+        gameLogicExecutor.removePlayer(playingConnection.get(clientConnection));
+        playingConnection.remove(clientConnection);
+        MyLogger.log(Level.INFO, this.getClass().getName(), "removeConnection()",clientConnection.toString() + ": removed player " + name);
     }
 
-    public synchronized boolean addConnection(ClientConnection c, String name) {
+    /**
+     * @param clientConnection
+     * @param name
+     * This method adds a clientConnection to the server
+     * It checks if a player already exists
+     * It creates a new virtualView and sets up the necessary observer/observable associations
+     */
+    public synchronized boolean addConnection(ClientConnection clientConnection, String name) {
         if (playingConnection.isEmpty()) {
             newGame();
             MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()","New game created");
         }
         if (playingConnection.containsValue(name)) {
-            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",c.toString() + ": player already exists: " + name);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",clientConnection.toString() + ": player already exists: " + name);
             return false;
         } else {
-            playingConnection.put(c, name);
-            VirtualView playerView = new VirtualView(c, name);
-            playingVirtualViews.put(c, playerView);
+            playingConnection.put(clientConnection, name);
+            VirtualView playerView = new VirtualView(clientConnection, name);
+            playingVirtualViews.put(clientConnection, playerView);
             playerView.addListener(controller);
             gameLogicExecutor.addListener(playerView);
             gameLogicExecutor.addPlayerToLobby(name);
-            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",c.toString() + ": added user " + name);
+            MyLogger.log(Level.INFO, this.getClass().getName(), "addConnection()",clientConnection.toString() + ": added user " + name);
             return true;
         }
     }
 
+    /**
+     * Main method called by ServerApp
+     * This method waits for new connections
+     */
     public void run(){
         MyLogger.log(Level.INFO, this.getClass().getName(), "run()","Server ready");
         while(true){

@@ -17,6 +17,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 
+/**
+ * SocketClientConnection class: it handles the network communications on the server side
+ * It notifies the VirtualView for SetMessages arrived from the network connection
+ * It handles a timer to detect a dead network connection
+ */
 public class SocketClientConnection extends SetObservable implements ClientConnection, Runnable {
 
     private Socket socket;
@@ -27,15 +32,26 @@ public class SocketClientConnection extends SetObservable implements ClientConne
 
     private boolean active = true;
 
+    /**
+     * @param server
+     * @param socket
+     * Default constructor
+     */
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
 
+    /**
+     * Private utility get method
+     */
     private synchronized boolean isActive(){
         return active;
     }
 
+    /**
+     * Private utility function to send a message over the network
+     */
     private synchronized void send(Object message) {
         try {
             out.reset();
@@ -47,9 +63,11 @@ public class SocketClientConnection extends SetObservable implements ClientConne
 
     }
 
+    /**
+     * This function closes the socket
+     */
     @Override
     public synchronized void closeConnection() {
-        //send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
@@ -58,6 +76,9 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         active = false;
     }
 
+    /**
+     * This function closes the socket and removes the connection from the server
+     */
     private void close() {
         if (active) {
             closeConnection();
@@ -65,11 +86,19 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         }
     }
 
+    /**
+     * @param message
+     * This function sends the provided message over the network in a new thread
+     */
     @Override
     public void asyncSend(final Object message) {
         new Thread(() -> send(message)).start();
     }
 
+    /**
+     * @param inputObject
+     * Private utility function to recognise a SetMessage from a PongMessage
+     */
     private void handleMessage(Object inputObject) {
         if (inputObject instanceof SetMessage) {
             SetMessage message = (SetMessage) inputObject;
@@ -81,6 +110,12 @@ public class SocketClientConnection extends SetObservable implements ClientConne
         }
     }
 
+    /**
+     * Main connection function
+     * It handles the nickname request, the server addConnection and the timer initialization, it then listens the socket connection for new messages
+     * Finally it closes the network socket
+     * If any exception occurs it closes the network connection
+     */
     @Override
     public void run() {
         ObjectInputStream in;
