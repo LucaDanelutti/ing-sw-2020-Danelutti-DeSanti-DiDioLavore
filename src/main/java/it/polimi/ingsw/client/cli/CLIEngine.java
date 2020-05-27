@@ -166,6 +166,11 @@ public class CLIEngine implements UserInterface {
         }
 
         Scanner scanner = new Scanner(System.in);
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
 
         clearScreen();
         printCompleteGameStatus();
@@ -224,7 +229,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onChosenCardRequest(ArrayList<CardView> availableCards) {
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printPlayersWith_Cards_WinnerStatus_PawnsIds();
         printSingleScoreRow();
@@ -275,7 +284,11 @@ public class CLIEngine implements UserInterface {
         }
 
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
@@ -335,7 +348,11 @@ public class CLIEngine implements UserInterface {
         }
 
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
@@ -370,7 +387,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onFirstPlayerRequest() {
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
 
         printSingleScoreRow();
@@ -409,7 +430,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
@@ -458,7 +483,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printCompleteGameStatus();
 
@@ -523,6 +552,11 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         printWelcome();
         Scanner scanner = new Scanner(System.in);
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         System.out.print("Select your nickname: ");
         String name;
         do{
@@ -542,6 +576,12 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onNumberOfPlayersRequest() {
         Scanner scanner = new Scanner(System.in);
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
+
         System.out.print("Select the number of players in the game (2 or 3): ");
         int number;
         do {
@@ -564,7 +604,11 @@ public class CLIEngine implements UserInterface {
      */
     @Override public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
         Scanner scanner = new Scanner(System.in);
-
+        try {
+            System.in.read(new byte[System.in.available()]);
+        }
+        catch (IOException ignored){
+        }
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
@@ -585,8 +629,12 @@ public class CLIEngine implements UserInterface {
         }
         printSingleScoreRow();
 
-        //TODO: place the number of the pawn not the number of the option
-        System.out.print("Choice (0->"+(availablePositions.size()-1)+"): ");
+        if(pawnViews.size()==2) {
+            System.out.print("Choice ("+pawnViews.get(0).getId()+" or "+ pawnViews.get(1).getId() + "): ");
+        }
+        else if(pawnViews.size()==1){
+            System.out.print("Choice ("+pawnViews.get(0).getId()+"): ");
+        }
 
         ArrayList<Integer> options = new ArrayList<>();
         int input;
