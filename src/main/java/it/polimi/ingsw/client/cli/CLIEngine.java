@@ -245,7 +245,7 @@ public class CLIEngine implements UserInterface {
         printSingleScoreRow();
         System.out.println("Select your card from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
-            System.out.println(String.format("%-4s",i+")")+String.format("%-10s",availableCards.get(i).getName()) + " | "+availableCards.get(i).getDescription());
+            System.out.println(String.format("%-5s",i+")")+String.format("%-10s",availableCards.get(i).getName()) + " | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
         System.out.print("Choice (0->"+(availableCards.size()-1)+"): ");
@@ -446,7 +446,7 @@ public class CLIEngine implements UserInterface {
         printSingleScoreRow();
         System.out.println("Select "+clientView.getModelView().getPlayerList().size()+" cards from the ones below:");
         for(int i=0; i<availableCards.size(); i++){
-            System.out.println(String.format("%-4s",i+")")+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
+            System.out.println(String.format("%-5s",i+")")+String.format("%-10s",availableCards.get(i).getName()) +" | "+availableCards.get(i).getDescription());
         }
         printSingleScoreRow();
 
