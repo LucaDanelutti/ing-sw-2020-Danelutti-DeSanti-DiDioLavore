@@ -61,8 +61,8 @@ public class Server {
     }
 
     /**
-     * @param clientConnection
-     * @param name
+     * @param clientConnection clientConnection
+     * @param name Player name
      * This method adds a clientConnection to the server
      * It checks if a player already exists
      * It creates a new virtualView and sets up the necessary observer/observable associations
@@ -92,7 +92,7 @@ public class Server {
      * This method waits for new connections
      */
     public void run(){
-        MyLogger.log(Level.INFO, this.getClass().getName(), "run()","Server ready");
+        MyLogger.log(Level.INFO, this.getClass().getName(), "run()","Server ready on port " + port);
         while(true){
             try {
                 Socket newSocket = serverSocket.accept();

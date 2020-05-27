@@ -33,8 +33,8 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     private boolean active = true;
 
     /**
-     * @param server
-     * @param socket
+     * @param server server reference
+     * @param socket network socket
      * Default constructor
      */
     public SocketClientConnection(Socket socket, Server server) {

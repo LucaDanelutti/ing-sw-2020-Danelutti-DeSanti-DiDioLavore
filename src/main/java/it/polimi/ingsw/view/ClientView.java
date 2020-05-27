@@ -33,8 +33,8 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     /**
-     * @param hostname
-     * @param port
+     * @param hostname server hostname
+     * @param port server port
      * This method starts the connection to the server
      */
     public boolean startServerConnection(String hostname, int port) {
