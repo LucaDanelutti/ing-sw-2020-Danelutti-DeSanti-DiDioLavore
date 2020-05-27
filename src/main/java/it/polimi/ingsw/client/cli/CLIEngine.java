@@ -524,7 +524,17 @@ public class CLIEngine implements UserInterface {
         printWelcome();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select your nickname: ");
-        String name = scanner.nextLine();
+        String name;
+        do{
+             name = scanner.nextLine();
+             if(name.length()<1){
+                 System.out.print("Empty nickname is not allowed, please retry: ");
+             }
+            else if(name.length()>10){
+                System.out.print("Nickname too long (max is 10 characters), please retry: ");
+            }
+        }while(name.length()<1 || name.length()>10);
+
         clientView.update(new NicknameSetMessage(name));
     }
     /**
@@ -957,9 +967,15 @@ public class CLIEngine implements UserInterface {
      * This function prints the welcome screen for Santorini
      */
     private void printWelcome(){
-        System.out.println("==============================================================");
-        System.out.println("                         SANTORINI                            ");
-        System.out.println("==============================================================");
+        System.out.println( "========================================================================");
+        System.out.println( "  ███████╗ █████╗ ███╗   ██╗████████╗ ██████╗ ██████╗ ██╗███╗   ██╗██╗");
+        System.out.println( "  ██╔════╝██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗██╔══██╗██║████╗  ██║██║");
+        System.out.println( "  ███████╗███████║██╔██╗ ██║   ██║   ██║   ██║██████╔╝██║██╔██╗ ██║██║");
+        System.out.println( "  ╚════██║██╔══██║██║╚██╗██║   ██║   ██║   ██║██╔══██╗██║██║╚██╗██║██║");
+        System.out.println( "  ███████║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║  ██║██║██║ ╚████║██║");
+        System.out.println( "  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝");
+        System.out.println( "========================================================================");
+        System.out.println( "");
     }
 
 
