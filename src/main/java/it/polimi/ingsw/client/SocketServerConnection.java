@@ -30,12 +30,12 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
     private Timestamp lastPing;
 
     /**
-     * @param ip
-     * @param port
+     * @param hostname server hostname
+     * @param port server port
      * Default constructor
      */
-    public SocketServerConnection(String ip, int port){
-        this.ip = ip;
+    public SocketServerConnection(String hostname, int port){
+        this.ip = hostname;
         this.port = port;
         lastPing = new Timestamp(System.currentTimeMillis());
     }
@@ -50,8 +50,8 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
     /**
      * Private utility set method
      */
-    private synchronized void setActive(boolean active){
-        this.active = active;
+    private synchronized void setActiveToFalse(){
+        this.active = false;
     }
 
     /**
@@ -78,7 +78,6 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
         } catch(IOException e){
             System.err.println(e.getMessage());
         }
-
     }
 
     /**
@@ -86,33 +85,7 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
      * This function sends the provided message over the network in a new thread
      */
     public void asyncSend(final Object message) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
-    }
-
-    /**
-     * This function launches a new thread that will listen the socket connection for new messages
-     */
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        Object inputObject = socketIn.readObject();
-                        handleMessage(inputObject);
-                    }
-                } catch (Exception e){
-                    setActive(false);
-                }
-            }
-        });
-        t.start();
-        return t;
+        new Thread(() -> send(message)).start();
     }
 
     /**
@@ -124,12 +97,7 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
         if (inputObject instanceof RequestAndUpdateMessage) {
             RequestAndUpdateMessage message = (RequestAndUpdateMessage) inputObject;
             RequestAndUpdateObservable visitor = this;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    message.accept(visitor);
-                }
-            }).start();
+            new Thread(() -> message.accept(visitor)).start();
         } else if (inputObject instanceof PingMessage) {
             lastPing = new Timestamp(System.currentTimeMillis());
             asyncSend(new PongMessage());
@@ -140,7 +108,7 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
 
     /**
      * Main connection function
-     * It handles the socket connection and the timer initialization
+     * It handles the socket connection and the timer initialization, it then listens the socket connection for new messages
      * Finally it closes the network socket
      */
     public boolean run(ClientView clientView) {
@@ -154,38 +122,38 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
             return false;
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
-                                //System.out.println("No ping received!");
-                                closeConnection();
-                                timer.cancel();
-                            }
+        new Thread(() -> {
+            try {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
+                            System.out.println("No ping received!"); //TODO: logging
+                            closeConnection();
+                            timer.cancel();
                         }
-                    }, 1000, timerFrequency * 1000);
-
-                    addListener(clientView);
-                    Thread t0 = asyncReadFromSocket(socketIn);
-                    t0.join();
-                } catch(InterruptedException e){
-                    System.out.println("Connection closed"); //TODO: logging
-                } finally {
-                    try {
-                        socketIn.close();
-                        socketOut.close();
-                        socket.close();
-                    } catch (IOException ignored) {
                     }
+                }, 1000, timerFrequency * 1000);
+
+                addListener(clientView);
+                while (isActive()) {
+                    Object inputObject = socketIn.readObject();
+                    handleMessage(inputObject);
+                }
+            }
+            catch (Exception e){
+                setActiveToFalse();
+            }
+            finally {
+                try {
+                    socketIn.close();
+                    socketOut.close();
+                    socket.close();
+                } catch (IOException ignored) {
                 }
             }
         }).start();
-
         return true;
     }
 }
