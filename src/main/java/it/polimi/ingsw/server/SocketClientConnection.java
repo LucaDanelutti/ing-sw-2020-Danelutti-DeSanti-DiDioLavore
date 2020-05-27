@@ -98,6 +98,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     /**
      * @param inputObject
      * Private utility function to recognise a SetMessage from a PongMessage
+     * To distinguish between SetMessage types a visitor pattern has been implemented
      */
     private void handleMessage(Object inputObject) {
         if (inputObject instanceof SetMessage) {

@@ -1,11 +1,17 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
-
+/**
+ * ServerConnection interface implemented by SocketServerConnection
+ */
 public interface ServerConnection {
+    /**
+     * This method closes the connection to the server
+     */
     void closeConnection();
 
-    void addListener(RequestsAndUpdateListener listener);
-
+    /**
+     * @param message
+     * This method sends the provided message through the network
+     */
     void asyncSend(Object message);
 }

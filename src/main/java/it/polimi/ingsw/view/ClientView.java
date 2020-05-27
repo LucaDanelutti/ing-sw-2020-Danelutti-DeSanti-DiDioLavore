@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.SocketServerConnection;
 import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.sets.*;
@@ -38,9 +38,9 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
      * This method starts the connection to the server
      */
     public boolean startServerConnection(String hostname, int port) {
-        Client client = new Client(hostname, port);
-        serverConnection = client;
-        return client.run(this);
+        SocketServerConnection socketServerConnection = new SocketServerConnection(hostname, port);
+        serverConnection = socketServerConnection;
+        return socketServerConnection.run(this);
     }
 
     /**
