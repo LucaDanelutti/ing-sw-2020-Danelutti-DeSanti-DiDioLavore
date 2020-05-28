@@ -147,25 +147,7 @@ public class GUIEngine extends Application implements UserInterface {
         stage.setHeight(Screen.getPrimary().getBounds().getHeight()/heightRatio);
     }
 
-    @Override
-    public void refreshView(PawnView pawnView) {
-        refreshView();
-    }
 
-    @Override
-    public void refreshView(CardView cardView) {
-        refreshViewOnlyGameInfo();
-    }
-
-    @Override
-    public void refreshView(PlayerView playerView) {
-        refreshView();
-    }
-
-    @Override
-    public void refreshView(CellView cellView) {
-        refreshView();
-    }
 
     @Override
     public void refreshViewOnlyGameInfo() {

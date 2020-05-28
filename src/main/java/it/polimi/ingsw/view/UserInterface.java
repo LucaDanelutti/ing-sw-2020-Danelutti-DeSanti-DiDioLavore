@@ -16,34 +16,12 @@ public interface UserInterface {
      */
     void initialize();
     void quickInitialize(String hostname, int port);
-    /**
-     * Refreshes the user interface after an update within the ModelView instance.
-     * @param pawnView is the updated object.
-     */
-    void refreshView(PawnView pawnView);
 
-    /**
-     * Refreshes the user interface after an update within the ModelView instance.
-     * @param cardView is the updated object.
-     */
-    void refreshView(CardView cardView);
-
-    /**
-     * Refreshes the user interface after an update within the ModelView instance.
-     * @param playerView is the updated object.
-     */
-    void refreshView(PlayerView playerView);
 
     /**
      * Refreshes the user interface after an update within the ModelView instance.
      */
     void refreshView();
-
-    /**
-     * Refreshes the user interface after an update within the ModelView instance.
-     * @param cellView is the updated object.
-     */
-    void refreshView(CellView cellView);
 
     void refreshViewOnlyGameInfo();
 

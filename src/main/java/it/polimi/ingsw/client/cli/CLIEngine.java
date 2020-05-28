@@ -1034,51 +1034,7 @@ public class CLIEngine implements UserInterface {
 
 
 
-                                            //DEPRECATED, TO BE REMOVED
-    @Override public void refreshView(PawnView pawnView) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        if(noWinnerInModel() && haveILost()){
-            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
-            printSingleScoreRow();
-            System.out.println();
-        }
-        printCompleteGameStatus();
-    }
-    @Override public void refreshView(CardView cardView) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        if(noWinnerInModel() && haveILost()){
-            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
-            printSingleScoreRow();
-            System.out.println();
-        }
-        printPlayersWith_Cards_WinnerStatus_PawnsIds();
-    }
-    @Override public void refreshView(PlayerView playerView) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        if(noWinnerInModel() && haveILost()){
-            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
-            printSingleScoreRow();
-            System.out.println();
-        }
-        if(isThereAnyPawnOnTheBoard()){
-            printCompleteGameStatus();
-        }else{
-            printPlayersWith_Cards_WinnerStatus_PawnsIds();
-        }
-    }
-    @Override public void refreshView(CellView cellView) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        if(noWinnerInModel() && haveILost()){
-            System.out.println("YOU HAVE LOST, JUST WATCH THE GAME TILL THE END!");
-            printSingleScoreRow();
-            System.out.println();
-        }
-        printCompleteGameStatus();
-    }
+
 
 }
 
