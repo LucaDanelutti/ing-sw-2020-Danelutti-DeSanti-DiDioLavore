@@ -15,7 +15,11 @@ public class ClientApp
         String port = args.length > 2 ? args[2] : null;
 
         UserInterface userInterface;
-        if (selectedUserInterface != null && selectedUserInterface.equals("gui")) {
+
+        if(selectedUserInterface==null){
+            userInterface = new GUIEngine();
+        }
+        else if (selectedUserInterface.equals("gui")) {
             userInterface = new GUIEngine();
         } else {
             userInterface = new CLIEngine();
