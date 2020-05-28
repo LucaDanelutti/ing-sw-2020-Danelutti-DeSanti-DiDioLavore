@@ -78,7 +78,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 notifyListeners(generateSelectedPawnUpdate(selectedPawnPosition));
 
                 //process the action, aka. ask the user for the chosen position for the selected pawn
-                game.getCurrentAction().acceptForProcess(); //this will generate the requestMessage for the chosen position
+                game.getCurrentAction().acceptForProcess(this); //this will generate the requestMessage for the chosen position
 
                 return true;
             } else {
@@ -105,19 +105,19 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             if (game.getCurrentAction().getIsOptional()) {
                 if (chosenPos == null) {
                     game.getCurrentAction().setChosenPosition(null);
-                    game.currentAction.accept(this); //to be executed(skipped) directly this will call the executeAction
+                    game.currentAction.acceptForExecution(this); //to be executed(skipped) directly this will call the executeAction
                 } else if (isThisPositionInTheAvailableCells(chosenPos)) {
                     game.getCurrentAction().setChosenPosition(chosenPos);
-                    game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
+                    game.getCurrentAction().acceptForProcess(this); //this will either ask for something else or execute the action
                 } else {
-                    game.getCurrentAction().acceptForProcess();
+                    game.getCurrentAction().acceptForProcess(this);
                 }
             } else {
                 if (isThisPositionInTheAvailableCells(chosenPos)) {
                     game.getCurrentAction().setChosenPosition(chosenPos);
-                    game.getCurrentAction().acceptForProcess(); //this will either ask for something else or execute the action
+                    game.getCurrentAction().acceptForProcess(this); //this will either ask for something else or execute the action
                 } else {
-                    game.getCurrentAction().acceptForProcess();
+                    game.getCurrentAction().acceptForProcess(this);
                 }
 
             }
@@ -136,9 +136,9 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         if(!getGameEnded()) {
             if (isThisBlockTypeInTheAvailableBlockTypes(blockType)) {
                 game.getCurrentAction().blockSelected(blockType);
-                game.getCurrentAction().acceptForProcess();
+                game.getCurrentAction().acceptForProcess(this);
             } else {
-                game.getCurrentAction().acceptForProcess();
+                game.getCurrentAction().acceptForProcess(this);
                 return false;
             }
             return true;
@@ -386,7 +386,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             notifyListeners(generateUndoUpdate(this.game));
 
             //let's ask again the currentPlayer for the ChosenPosition
-            game.getCurrentAction().acceptForProcess();
+            game.getCurrentAction().acceptForProcess(this);
 
             return true;
         }
@@ -467,7 +467,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         if(! (constructAction.getIsOptional() && constructAction.getChosenPosition()==null)) {
             game.getBoard().pawnConstruct(constructAction.getSelectedPawn().getPosition(), constructAction.getChosenPosition(), constructAction.getSelectedBlockType());
             //special case for prometheus
-            if (constructAction.getdisableMoveUp()) {
+            if (constructAction.getDisableMoveUp()) {
                 disableMoveUpForCurrentPlayer();
             }
 
@@ -697,7 +697,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             passTurnToNextPlayer();
         }
         else{
-            game.getCurrentAction().acceptForProcess();
+            game.getCurrentAction().acceptForProcess(this);
         }
     }
     /**
@@ -1121,20 +1121,15 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         Type cardListType = new TypeToken<ArrayList<Card>>(){}.getType();
         ArrayList<Card> cardList = gson.fromJson(json, cardListType);
 
-        //Adds the observers to the Actions within cardList
         ArrayList<Card> updatedCardList = new ArrayList<>();
         for(Card card: cardList) {
-            ArrayList<Action> updatedActionList = new ArrayList<>();
-            for(Action updatedAction: card.getDefaultActionListCopy()) {
-                updatedAction.addVisitor(this);
-                updatedActionList.add(updatedAction);
-            }
+            ArrayList<Action> updatedActionList = new ArrayList<>(card.getDefaultActionListCopy());
+            //The call to the constructor is needed to load the currentActionList in the card from the default action list
             Card updatedCard = new Card(card.getName(), card.getId(), updatedActionList);
             updatedCard.setDescription(card.getDescription());
             updatedCardList.add(updatedCard);
 
         }
-
         game.setLoadedCardsCopy(updatedCardList);
 
         return true;

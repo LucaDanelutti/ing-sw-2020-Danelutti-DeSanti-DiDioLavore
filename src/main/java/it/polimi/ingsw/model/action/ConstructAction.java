@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.action;
 
-import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -16,8 +15,20 @@ public class ConstructAction extends Action {
     private Boolean disableMoveUp;
     private Boolean notBuildOnLastBuilt;
 
+
+
+    public void acceptForExecution(ActionVisitor actionVisitor){
+        actionVisitor.executeAction(this);
+    }
+    public void acceptForProcess(ActionVisitor actionVisitor){
+        actionVisitor.processAction(this);
+    }
+
+
+
+
     public ConstructAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean buildBelowEnable, ArrayList<BlockType> alwaysAvailableBlockType, Boolean constructOnLastBuilt, Boolean disableMoveUp, Boolean notBuildOnLastBuilt){
-        super(isOptional,notAvailableCell,ActionType.CONSTRUCT);
+        super(isOptional,notAvailableCell);
         this.constructOnLastBuilt=constructOnLastBuilt;
         this.buildBelowEnable=buildBelowEnable;
         this.alwaysAvailableBlockType=alwaysAvailableBlockType;
@@ -26,7 +37,7 @@ public class ConstructAction extends Action {
     }
 
     ConstructAction(ConstructAction toBeCopied) {
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.CONSTRUCT, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn);
         this.constructOnLastBuilt = toBeCopied.constructOnLastBuilt;
         this.buildBelowEnable = toBeCopied.buildBelowEnable;
         if(toBeCopied.alwaysAvailableBlockType!=null){
@@ -60,14 +71,7 @@ public class ConstructAction extends Action {
         return Objects.hash(selectedBlockType, constructOnLastBuilt, buildBelowEnable, alwaysAvailableBlockType, disableMoveUp);
     }
 
-    public void accept(ActionVisitor actionVisitor){
-        actionVisitor.executeAction(this);
-    }
-    public void acceptForProcess(){
-        for(ActionVisitor visitor : actionVisitors) {
-            visitor.processAction(this);
-        }
-    }
+
 
     public Boolean getConstructOnLastBuilt() {
         return constructOnLastBuilt;
@@ -78,7 +82,7 @@ public class ConstructAction extends Action {
     public ArrayList<BlockType> getAlwaysAvailableBlockType() {
         return alwaysAvailableBlockType;
     }
-    public Boolean getdisableMoveUp() {
+    public Boolean getDisableMoveUp() {
         return disableMoveUp;
     }
 
@@ -96,22 +100,7 @@ public class ConstructAction extends Action {
         return selectedBlockType;
     }
 
-    /**
-     * we are in a Construct Action, so once chosenPosition and blockType are set, an update should be thrown
-     * to the GameLogic
-     * @param selectedBlockType the selected blocktype returned by avaiableBlockTypes
-     */
-    /*public void setSelectedBlockType(BlockType selectedBlockType) {
-        this.selectedBlockType = selectedBlockType;
-        for(ActionVisitor actionVisitor: this.actionVisitors){
-            ((GameLogicExecutor)actionVisitor).executeAction(this);
-        }
-    }*/
 
-    /**
-     * Removes from availableCells the positions present within notAvailableCell
-     * @param availableCells is the current list of cells where the selectedPawn can construct
-     */
     private void checkNotAvailableCells(ArrayList<Position> availableCells) {
         for (Position position : notAvailableCell) {
             if (availableCells.contains(position)) availableCells.remove(position);

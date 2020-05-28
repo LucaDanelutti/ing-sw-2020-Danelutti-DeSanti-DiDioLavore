@@ -83,9 +83,7 @@ class GameLogicExecutorTest {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(athenaMove);
         actions.add(basicConstruct.duplicate());
-        for (Action a : actions) {
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -126,9 +124,7 @@ class GameLogicExecutorTest {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(tritonMove);
         actions.add(basicConstruct.duplicate());
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -163,9 +159,7 @@ class GameLogicExecutorTest {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(swapMove);
         actions.add(basicConstruct.duplicate());
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -192,9 +186,6 @@ class GameLogicExecutorTest {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(swapMove);
         actions.add(basicConstruct.duplicate());
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -281,9 +272,7 @@ class GameLogicExecutorTest {
         prometheusActionList.add(optionalConstruct);
         prometheusActionList.add(prometheusMove);
         prometheusActionList.add(basicConstruct.duplicate());
-        for(Action a : prometheusActionList){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         game.getCurrentPlayer().setCurrentCard(new Card("prometheus",10,prometheusActionList));
 
@@ -312,9 +301,6 @@ class GameLogicExecutorTest {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(optionalConstruct);
         actions.add(basicMove.duplicate());
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
 
         currentPlayer.setCurrentCard(new Card("optionalConstruct",33, actions));
 
@@ -348,9 +334,7 @@ class GameLogicExecutorTest {
         actions.add(basicMove.duplicate());
         actions.add(basicConstruct.duplicate());
         actions.add(medusaAction);
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -384,9 +368,7 @@ class GameLogicExecutorTest {
         actions.add(basicMove.duplicate());
         actions.add(basicConstruct.duplicate());
         actions.add(medusaAction);
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -423,9 +405,7 @@ class GameLogicExecutorTest {
         actions.add(heraAction);
         actions.add(basicMove.duplicate());
         actions.add(basicConstruct.duplicate());
-        for(Action a : actions){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         Card card=new Card("test",55,actions);
         currentPlayer.setCurrentCard(card);
@@ -842,7 +822,7 @@ class GameLogicExecutorTest {
     @Test void loadCards() {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
 
-        ArrayList<Position> expectedList = new ArrayList<Position>() {{
+        ArrayList<Position> expectedList = new ArrayList<>() {{
             add(new Position(0,0));
             add(new Position(0,1));
             add(new Position(0,2));
@@ -1491,7 +1471,7 @@ class GameLogicExecutorTest {
         int counter=0;
         int numberOfCardsRandomCombinationSwitch=20;
         int numberOfGamesToRunWithSameCards=20;
-        int maxTurns=200;
+        int maxTurns=100;
 
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
@@ -1553,7 +1533,7 @@ class GameLogicExecutorTest {
         int counter=0;
         int numberOfCardsRandomCombinationSwitch=20;
         int numberOfGamesToRunWithSameCards=20;
-        int maxTurns=200;
+        int maxTurns=100;
 
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
@@ -1761,8 +1741,8 @@ class GameLogicExecutorTest {
         //SETUP VARIABLES
         int counter=0;
         int numberOfCardsRandomCombinationSwitch=20;
-        int numberOfGamesToRunWithSameCards=100;
-        int maxTurns=200;
+        int numberOfGamesToRunWithSameCards=20;
+        int maxTurns=100;
 
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
@@ -1841,15 +1821,7 @@ class GameLogicExecutorTest {
         basicActionList2.add(basicConstruct.duplicate());
         basicActionList3.add(basicMove.duplicate());
         basicActionList3.add(basicConstruct.duplicate());
-        for(Action a : basicActionList1){
-            a.addVisitor(gameLogicExecutor);
-        }
-        for(Action a : basicActionList2){
-            a.addVisitor(gameLogicExecutor);
-        }
-        for(Action a : basicActionList3){
-            a.addVisitor(gameLogicExecutor);
-        }
+
 
         p = new Player("ian");
         currentPlayer=p;

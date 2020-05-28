@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.action;
 
-import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -12,13 +11,25 @@ public class GeneralAction extends Action{
     private Boolean enableNoWinIfOnPerimeter;
     private Boolean destroyPawnAndBuildEnable;
 
+
+
+    public void acceptForExecution(ActionVisitor visitor){
+        visitor.executeAction(this);
+    }
+    public void acceptForProcess(ActionVisitor actionVisitor){
+        actionVisitor.processAction(this);
+    }
+
+
+
+
     public GeneralAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean enableNoWinIfOnPerimeter, Boolean destroyPawnAndBuildEnable){
-        super(isOptional,notAvailableCell,ActionType.GENERAL);
+        super(isOptional,notAvailableCell);
         this.destroyPawnAndBuildEnable=destroyPawnAndBuildEnable;
         this.enableNoWinIfOnPerimeter = enableNoWinIfOnPerimeter;
     }
     GeneralAction(GeneralAction toBeCopied){
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.GENERAL, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn);
         this.destroyPawnAndBuildEnable = toBeCopied.destroyPawnAndBuildEnable;
         this.enableNoWinIfOnPerimeter = toBeCopied.enableNoWinIfOnPerimeter;
     }
@@ -41,14 +52,7 @@ public class GeneralAction extends Action{
         return new GeneralAction(this);
     }
 
-    public void accept(ActionVisitor visitor){
-        visitor.executeAction(this);
-    }
-    public void acceptForProcess(){
-        for(ActionVisitor visitor : actionVisitors) {
-            visitor.processAction(this);
-        }
-    }
+
 
     /**
      * Computes the list of cells where a pawn can move

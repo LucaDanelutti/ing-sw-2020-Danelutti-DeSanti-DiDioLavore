@@ -15,8 +15,7 @@
       "winDownEnable": false,
       "addMoveIfOn": [],
       "denyMoveBack": false,
-      "noWinIfOnPerimeter": false,
-      "actionVisitors": []
+      "noWinIfOnPerimeter": false
     },
     {
       "isOptional": false,
@@ -26,8 +25,7 @@
       "alwaysAvailableBlockType": [],
       "constructOnLastBuilt": false,
       "disableMoveUp": false,
-      "notBuildOnLastBuilt": false,
-      "actionVisitors": []
+      "notBuildOnLastBuilt": false
     }
   ]
 },
@@ -48,8 +46,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": true,
@@ -63,8 +60,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": true,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -74,8 +70,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -96,8 +91,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -107,8 +101,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -129,8 +122,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -140,8 +132,7 @@
         "alwaysAvailableBlockType": ["DOME"],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -162,8 +153,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -173,8 +163,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": true,
@@ -184,8 +173,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": true,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": true
       }
     ]
   },
@@ -206,8 +194,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -217,8 +204,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": true,
@@ -228,8 +214,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": true,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -250,8 +235,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -261,8 +245,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -283,8 +266,7 @@
         "winDownEnable": true,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -294,8 +276,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -312,8 +293,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": true,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": false,
@@ -327,8 +307,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -338,8 +317,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -360,8 +338,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -371,16 +348,14 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": false,
         "actionType": "GENERAL",
         "notAvailableCell": [],
         "enableNoWinIfOnPerimeter": true,
-        "destroyPawnAndBuildEnable": false,
-        "actionVisitors": []
+        "destroyPawnAndBuildEnable": false
       }
 
     ]
@@ -402,8 +377,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -413,8 +387,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": true,
@@ -441,8 +414,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -463,8 +435,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -474,16 +445,14 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       },
       {
         "isOptional": false,
         "actionType": "GENERAL",
         "notAvailableCell": [],
         "enableNoWinIfOnPerimeter": false,
-        "destroyPawnAndBuildEnable": true,
-        "actionVisitors": []
+        "destroyPawnAndBuildEnable": true
       }
     ]
   },
@@ -521,8 +490,7 @@
           {"x": 4, "y": 4}
         ],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -532,8 +500,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   },
@@ -554,8 +521,7 @@
         "winDownEnable": false,
         "addMoveIfOn": [],
         "denyMoveBack": false,
-        "noWinIfOnPerimeter": false,
-        "actionVisitors": []
+        "noWinIfOnPerimeter": false
       },
       {
         "isOptional": false,
@@ -565,8 +531,7 @@
         "alwaysAvailableBlockType": [],
         "constructOnLastBuilt": false,
         "disableMoveUp": false,
-        "notBuildOnLastBuilt": false,
-        "actionVisitors": []
+        "notBuildOnLastBuilt": false
       }
     ]
   }

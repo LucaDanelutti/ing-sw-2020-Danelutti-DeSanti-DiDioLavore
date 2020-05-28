@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.action;
 
 import java.lang.Math;
 
-import it.polimi.ingsw.model.GameLogicExecutor;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -22,11 +21,24 @@ public class MoveAction extends Action {
     private Boolean denyMoveBack;
     private Boolean noWinIfOnPerimeter;
 
+
+
+    public void acceptForExecution(ActionVisitor visitor){
+        visitor.executeAction(this);
+    }
+    public void acceptForProcess(ActionVisitor actionVisitor){
+        actionVisitor.processAction(this);
+    }
+
+
+
+
+
     /**
      Constructor of MoveAction: calls the constructor of the superclass and sets the other parameters
      */
     public MoveAction(Boolean isOptional, ArrayList<Position> notAvailableCell, Boolean moveUpEnable, Boolean swapEnable, Boolean moveOnOpponentEnable, Boolean pushEnable, Boolean denyMoveUpEnable, Boolean winDownEnable, ArrayList<Position> addMoveIfOn, Boolean denyMoveBack, Boolean noWinIfOnPerimeter) {
-        super(isOptional, notAvailableCell, ActionType.MOVE);
+        super(isOptional, notAvailableCell);
         this.moveUpEnable = moveUpEnable;
         this.swapEnable = swapEnable;
         this.moveOnOpponentEnable = moveOnOpponentEnable;
@@ -47,7 +59,7 @@ public class MoveAction extends Action {
      * By using this method, there is no need to implement Clonable
      */
     MoveAction(MoveAction toBeCopied) {
-        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, ActionType.MOVE, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn, toBeCopied.actionVisitors);
+        super(toBeCopied.isOptional, toBeCopied.notAvailableCell, toBeCopied.selectedPawn, toBeCopied.notSelectedPawn);
         this.moveUpEnable = toBeCopied.moveUpEnable;
         this.swapEnable = toBeCopied.swapEnable;
         this.moveOnOpponentEnable = toBeCopied.moveOnOpponentEnable;
@@ -87,15 +99,7 @@ public class MoveAction extends Action {
         return Objects.hash(moveUpEnable, swapEnable, moveOnOpponentEnable, pushEnable, denyMoveUpEnable, winDownEnable, addMoveIfOn, denyMoveBack, noWinIfOnPerimeter);
     }
 
-    public void accept(ActionVisitor visitor){
-        visitor.executeAction(this);
-    }
 
-    public void acceptForProcess(){
-        for(ActionVisitor visitor : actionVisitors) {
-            visitor.processAction(this);
-        }
-    }
 
     public void setChosenPosition(Position chosenPosition) {
         if(chosenPosition==null && !this.isOptional){

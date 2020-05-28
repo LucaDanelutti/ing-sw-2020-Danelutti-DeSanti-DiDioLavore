@@ -8,6 +8,4 @@ public interface ActionVisitor {
     void processAction(MoveAction moveAction);
     void processAction(ConstructAction constructAction);
     void processAction(GeneralAction generalAction);
-
-
 }
