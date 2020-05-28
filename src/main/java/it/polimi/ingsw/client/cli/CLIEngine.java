@@ -576,11 +576,16 @@ public class CLIEngine implements UserInterface {
         }while(name.length()<1 || name.length()>10);
 
         clientView.update(new NicknameSetMessage(name));
+        clearScreen();
+        printEqualsRow();
+        System.out.println("            Waiting for the game to start...");
+        printEqualsRow();
     }
     /**
      * This function is called when  the user has to select the number of players in the game
      */
     @Override public void onNumberOfPlayersRequest() {
+        clearScreen();
         Scanner scanner = new Scanner(System.in);
         try {
             System.in.read(new byte[System.in.available()]);
@@ -603,6 +608,10 @@ public class CLIEngine implements UserInterface {
         }while (number!=3 && number!=2);
 
         clientView.update(new NumberOfPlayersSetMessage(number));
+        clearScreen();
+        printEqualsRow();
+        System.out.println("            Waiting for players to join...");
+        printEqualsRow();
     }
     /**
      * This function is called when the user has to select the pawn for the current turn
