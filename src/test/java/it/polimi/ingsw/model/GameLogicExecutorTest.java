@@ -794,20 +794,23 @@ class GameLogicExecutorTest {
         assertTrue(testGameLogicExecutor.setChosenCard(3));
         assertTrue(testGameLogicExecutor.setStartPlayer("testPlayer1"));
 
+        Player p = testGame.getPlayer(testGameLogicExecutor.getCurrentPlayerName());
         ArrayList<Position> testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(0, 0));
         testPositionArray.add(new Position(0, 1));
-        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+        testGameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),testPositionArray.get(0),p.getPawnList().get(1).getId(),testPositionArray.get(1));
 
+        p = testGame.getPlayer(testGameLogicExecutor.getCurrentPlayerName());
         testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(1, 0));
         testPositionArray.add(new Position(1, 1));
-        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+        testGameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),testPositionArray.get(0),p.getPawnList().get(1).getId(),testPositionArray.get(1));
 
+        p = testGame.getPlayer(testGameLogicExecutor.getCurrentPlayerName());
         testPositionArray = new ArrayList<>();
         testPositionArray.add(new Position(2, 0));
         testPositionArray.add(new Position(2, 1));
-        testGameLogicExecutor.setPawnsPositions(testPositionArray);
+        testGameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),testPositionArray.get(0),p.getPawnList().get(1).getId(),testPositionArray.get(1));
 
 
         assertEquals(testCard1, testPlayer.getCurrentCard());
@@ -889,9 +892,16 @@ class GameLogicExecutorTest {
 
         game.setCurrentPlayer(game.getPlayers().get(0));
 
-        gameLogicExecutor.setPawnsPositions(positions1);
-        gameLogicExecutor.setPawnsPositions(positions2);
-        gameLogicExecutor.setPawnsPositions(positions3);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),positions1.get(0),p.getPawnList().get(1).getId(),positions1.get(1));
+
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),positions2.get(0),p.getPawnList().get(1).getId(),positions2.get(1));
+
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(),positions3.get(0),p.getPawnList().get(1).getId(),positions3.get(1));
+
+
 
         gameLogicExecutor.setStartPlayer("Player1");
 
@@ -1166,7 +1176,11 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
+
+
         //at this point all the mock views should have received an double pawn position update, and one player should have received an Initial pawn position
         for(MockView mockView : mockViews){
             if(mockView.getName().equals(getCurrentPlayerMockView().getName())){
@@ -1186,9 +1200,12 @@ class GameLogicExecutorTest {
         while(randomNum2==randomNum1){
             randomNum2=ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
         }
+
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
+
         //at this point all the mock views should have received an double pawn position update, and one player should have received an Initial pawn position
         for(MockView mockView : mockViews){
             if(mockView.getName().equals(getCurrentPlayerMockView().getName())){
@@ -1211,7 +1228,10 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
+
         //at this point all the mock views should have received an double pawn position update, and one player should have received an Initial pawn position
         for(MockView mockView : mockViews){
             if(mockView.getName().equals(getCurrentPlayerMockView().getName())){
@@ -1267,7 +1287,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1277,7 +1298,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1287,7 +1309,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
         int maxTurns=10;
         int numberOfTurns=0;
@@ -1380,7 +1403,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1390,7 +1414,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1400,7 +1425,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
         int maxTurns=200;
         int numberOfTurns=0;
@@ -1691,7 +1717,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
@@ -1701,7 +1728,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1 = ThreadLocalRandom.current().nextInt(0, m.getAvailablePositions().size());
@@ -1711,7 +1739,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
 
         MockView currentP = getCurrentPlayerMockView();
@@ -1978,7 +2007,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1988,7 +2018,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
         randomNum1= ThreadLocalRandom.current().nextInt(0,m.getAvailablePositions().size());
@@ -1998,7 +2029,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
         int numberOfTurns=0;
         while (!someOneWon() && numberOfTurns!=maxTurns){
@@ -2103,7 +2135,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+        Player p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
         m = (InitialPawnPositionRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
         positions = new ArrayList<>();
@@ -2114,7 +2147,8 @@ class GameLogicExecutorTest {
         }
         positions.add(m.getAvailablePositions().get(randomNum1));
         positions.add(m.getAvailablePositions().get(randomNum2));
-        gameLogicExecutor.setPawnsPositions(positions);
+         p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
+        gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
 
         int numberOfTurns=0;

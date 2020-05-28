@@ -1427,31 +1427,4 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         return new GameEndedMessage(recipients,reason);
     }
-
-
-                                                    //DEPRECATED SHOULD BE AVOIDED!
-    //TODO: remove those functions
-    public Boolean setPawnsPositions(ArrayList<Position> positions){
-        if (isThisALegalPosition(positions.get(0))&&isThisALegalPosition(positions.get(1))&& isThisPositionInTheAvailableOnesForInitialPawnPositioning(positions.get(0))&& isThisPositionInTheAvailableOnesForInitialPawnPositioning(positions.get(1))) {
-            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(0), positions.get(0));
-            game.getBoard().setPawnPosition(game.getCurrentPlayer().getPawnList().get(1), positions.get(1));
-            notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(0).getId(),game.getCurrentPlayer().getPawnList().get(1).getId(),positions.get(0),positions.get(1)));
-            Player nextPlayer = game.getNextPlayer();
-            if (nextPlayer.getPawnList().get(0).getPosition() != null && nextPlayer.getPawnList().get(1).getPosition() != null) {
-                //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
-                game.setCurrentPlayer(nextPlayer);
-                notifyListeners(generateSelectPawnRequest());
-
-            } else {
-                //otherwise i have to ask the next player to set its initial pawn positions
-                //this function will also set CurrentAction to null
-                game.setCurrentPlayer(nextPlayer);
-                notifyListeners(generateInitialPawnPositionRequest());
-            }
-            return true;
-        }
-        return false;
-    }
-
-
 }
