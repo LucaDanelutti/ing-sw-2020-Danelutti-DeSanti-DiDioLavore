@@ -419,11 +419,11 @@ public class BOTEngine implements UserInterface {
 
             for(int j=0; j<matrix[0].length; j++){
                 //let's get the pawn (or null) in the current position to be printed
-                p = isThereAPawnHere(j,i);
-                level= matrix[j][i].getPeek().getLevel();
+                p = isThereAPawnHere(i,j);
+                level= matrix[i][j].getPeek().getLevel();
                 StringBuilder a = new StringBuilder();
                 if(j==0){
-                    a.append("y:").append(i).append("  #|");
+                    a.append("r:").append(i).append("  #|");
                 }
                 if(level==4){
                     a.append("   X   |");

@@ -298,7 +298,7 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
-        System.out.println("MOVE -> Select the position [x,y] from the ones below:");
+        System.out.println("MOVE -> Select the position [r,c] from the ones below:");
         printListOfPositions(availablePositions);
         System.out.println();
         printSingleScoreRow();
@@ -362,7 +362,7 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         printCompleteGameStatus();
         printSingleScoreRow();
-        System.out.println("CONSTRUCT -> Select the position [x,y] from the ones below:");
+        System.out.println("CONSTRUCT -> Select the position [r,c] from the ones below:");
         printListOfPositions(availablePositions);
         System.out.println();
         printSingleScoreRow();
@@ -497,7 +497,7 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         printCompleteGameStatus();
 
-        System.out.println("Select the positions [x,y] for your pawns from the ones below:");
+        System.out.println("Select the positions [r,c] for your pawns from the ones below:");
         printListOfPositions(availablePositions);
         System.out.println();
         printSingleScoreRow();
@@ -875,7 +875,7 @@ public class CLIEngine implements UserInterface {
      * This function prints the horizontal coordinates
      */
     private void printHorizontalCoordinates(){
-        System.out.println("         x:0     x:1     x:2     x:3     x:4   ");
+        System.out.println("         c:0     c:1     c:2     c:3     c:4   ");
     }
     /**
      * This function prints a row of equals signs
@@ -909,11 +909,11 @@ public class CLIEngine implements UserInterface {
 
             for(int j=0; j<matrix[0].length; j++){
                 //let's get the pawn (or null) in the current position to be printed
-                p = isThereAPawnHere(j,i);
-                level= matrix[j][i].getPeek().getLevel();
+                p = isThereAPawnHere(i,j);
+                level= matrix[i][j].getPeek().getLevel();
                 StringBuilder a = new StringBuilder();
                 if(j==0){
-                    a.append("y:").append(i).append("  #|");
+                    a.append("r:").append(i).append("  #|");
                 }
                 if(level==4){
                     a.append("   X   |");
