@@ -154,6 +154,24 @@ public class MainSceneController extends GUIController {
 
 
     /**
+     * Checks if a player has lost or if is without any pawn.
+     * @param playerName is the name of the player
+     * @return if the condition described hereabove is true or false
+     */
+   private boolean playerIsStillPlaying(String playerName) {
+       boolean stillPlaying = true;
+       ModelView modelView = clientView.getModelView();
+       if (modelView.hasPlayerLost(playerName)) return false;
+       for (PlayerView player : modelView.getPlayerList()) {
+           if (player.getName().equals(playerName)) {
+               if (player.getPawnList().isEmpty()) return false;
+           }
+       }
+       return stillPlaying;
+   }
+
+
+    /**
      * clears the boardGridPane and renders the updated board from the modelView loading first the block types imageViews
      * and then the pawns imageViews
      */
@@ -175,7 +193,7 @@ public class MainSceneController extends GUIController {
        }
        updatePawns();
        //If the players is still in game it load the EnlightenedImageViews
-       if (!modelView.hasPlayerLost(clientView.getName())) {
+       if (playerIsStillPlaying(clientView.getName())) {
            loadEnlightenedImageViews();
        }
    }
@@ -206,7 +224,7 @@ public class MainSceneController extends GUIController {
        ModelView modelView = clientView.getModelView();
 
        //if the player has lost hides the label
-       if (modelView.hasPlayerLost(clientView.getName())) {
+       if (!playerIsStillPlaying(clientView.getName())) {
            clientPlayerNameLabel.setVisible(false);
        } else {
            clientPlayerNameLabel.setText(clientView.getName());
@@ -216,7 +234,7 @@ public class MainSceneController extends GUIController {
        ArrayList<String> enemiesNames = modelView.getEnemiesNames(clientView.getName());
        if (enemiesNames != null) {
            if (enemiesNames.size() >= 1)  {
-               if (modelView.hasPlayerLost(enemiesNames.get(0))) {
+               if (!playerIsStillPlaying(enemiesNames.get(0))) {
                    enemy1PlayerNameLabel.setVisible(false);
                } else {
                    enemy1PlayerNameLabel.setText(enemiesNames.get(0));
@@ -224,7 +242,7 @@ public class MainSceneController extends GUIController {
                }
            }
            if (enemiesNames.size() == 2) {
-               if (modelView.hasPlayerLost(enemiesNames.get(1))) {
+               if (!playerIsStillPlaying(enemiesNames.get(1))) {
                    enemy2PlayerNameLabel.setVisible(false);
                } else {
                    enemy2PlayerNameLabel.setText(enemiesNames.get(1));
@@ -243,7 +261,7 @@ public class MainSceneController extends GUIController {
        //gets the Card of the client player from the modelView and renders the proper Image, Name and Description
        CardView clientPlayerCard = modelView.getClientPlayerCard(clientView.getName());
        if (clientPlayerCard != null) {
-           if (modelView.hasPlayerLost(clientView.getName())) {
+           if (!playerIsStillPlaying(clientView.getName())) {
                clientPlayerCardImageView.setVisible(false);
            } else {
                Image clientPlayerCardImage = new Image("images/cards/card_" + clientPlayerCard.getId() + ".png");
@@ -255,7 +273,7 @@ public class MainSceneController extends GUIController {
        ArrayList<CardView> enemiesCards = modelView.getEnemiesCards(clientView.getName());
        if (enemiesCards != null) {
            if (enemiesCards.size() >= 1 && enemiesCards.get(0) != null)  {
-               if (modelView.hasPlayerLost(enemiesNames.get(0))) {
+               if (!playerIsStillPlaying(enemiesNames.get(0))) {
                    enemy1PlayerCardImageView.setVisible(false);
                } else {
                    Image enemy1CardImage = new Image("images/cards/card_" + enemiesCards.get(0).getId() + ".png");
@@ -263,7 +281,7 @@ public class MainSceneController extends GUIController {
                }
            }
            if (enemiesCards.size() == 2 && enemiesCards.get(0) != null && enemiesCards.get(1) != null) {
-               if (modelView.hasPlayerLost(enemiesNames.get(1))) {
+               if (!playerIsStillPlaying(enemiesNames.get(1))) {
                    enemy2PlayerCardImageView.setVisible(false);
                } else {
                    Image enemy2CardImage = new Image("images/cards/card_" + enemiesCards.get(1).getId() + ".png");

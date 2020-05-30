@@ -50,7 +50,6 @@ public class ModelView implements Serializable {
             for (int i=0; i<player.getPawnList().size();i++) {
                 if (player.getPawnList().get(i).getId()==pawnId) {
                     player.getPawnList().remove(i);
-                    if (player.getPawnList().isEmpty()) player.setLoser(true);
                     return;
                 }
             }
