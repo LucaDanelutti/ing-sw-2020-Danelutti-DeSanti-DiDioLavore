@@ -65,6 +65,10 @@ public class BOTEngine implements UserInterface {
 
     //TO BE CALLED WHEN AN UPDATE ARRIVES
 
+    @Override public void onLost(String playerName) {
+
+    }
+
     /**
      * This function refreshes all the screen with the information about the board and the user table
      */

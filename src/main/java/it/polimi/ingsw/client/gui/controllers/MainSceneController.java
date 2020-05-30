@@ -158,7 +158,6 @@ public class MainSceneController extends GUIController {
      * and then the pawns imageViews
      */
    public void updateBoard() {
-       //TODO: there may be a way to avoid re-loading the ImageViews within enlightenedImageViewsArray
        boardGridPane.getChildren().clear();
        ModelView modelView = clientView.getModelView();
        for(int i = 0; i < modelView.getMatrix().length; i++){
@@ -175,7 +174,10 @@ public class MainSceneController extends GUIController {
            }
        }
        updatePawns();
-       loadEnlightenedImageViews();
+       //If the players is still in game it load the EnlightenedImageViews
+       if (!modelView.hasPlayerLost(clientView.getName())) {
+           loadEnlightenedImageViews();
+       }
    }
 
     /**
@@ -202,17 +204,32 @@ public class MainSceneController extends GUIController {
      */
    public void updatePlayersName() {
        ModelView modelView = clientView.getModelView();
-       clientPlayerNameLabel.setText(clientView.getName());
-       clientPlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(clientView.getName()) + "LabelBackground");
+
+       //if the player has lost hides the label
+       if (modelView.hasPlayerLost(clientView.getName())) {
+           clientPlayerNameLabel.setVisible(false);
+       } else {
+           clientPlayerNameLabel.setText(clientView.getName());
+           clientPlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(clientView.getName()) + "LabelBackground");
+       }
+
        ArrayList<String> enemiesNames = modelView.getEnemiesNames(clientView.getName());
        if (enemiesNames != null) {
            if (enemiesNames.size() >= 1)  {
-               enemy1PlayerNameLabel.setText(enemiesNames.get(0));
-               enemy1PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(0)) + "LabelBackground");
+               if (modelView.hasPlayerLost(enemiesNames.get(0))) {
+                   enemy1PlayerNameLabel.setVisible(false);
+               } else {
+                   enemy1PlayerNameLabel.setText(enemiesNames.get(0));
+                   enemy1PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(0)) + "LabelBackground");
+               }
            }
            if (enemiesNames.size() == 2) {
-               enemy2PlayerNameLabel.setText(enemiesNames.get(1));
-               enemy2PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(1)) + "LabelBackground");
+               if (modelView.hasPlayerLost(enemiesNames.get(1))) {
+                   enemy2PlayerNameLabel.setVisible(false);
+               } else {
+                   enemy2PlayerNameLabel.setText(enemiesNames.get(1));
+                   enemy2PlayerNameLabel.getStyleClass().add(modelView.getPlayerColor(enemiesNames.get(1)) + "LabelBackground");
+               }
            }
        }
    }
@@ -226,18 +243,32 @@ public class MainSceneController extends GUIController {
        //gets the Card of the client player from the modelView and renders the proper Image, Name and Description
        CardView clientPlayerCard = modelView.getClientPlayerCard(clientView.getName());
        if (clientPlayerCard != null) {
-           Image clientPlayerCardImage = new Image("images/cards/card_" + clientPlayerCard.getId() + ".png");
-           clientPlayerCardImageView.setImage(clientPlayerCardImage);
+           if (modelView.hasPlayerLost(clientView.getName())) {
+               clientPlayerCardImageView.setVisible(false);
+           } else {
+               Image clientPlayerCardImage = new Image("images/cards/card_" + clientPlayerCard.getId() + ".png");
+               clientPlayerCardImageView.setImage(clientPlayerCardImage);
+           }
        }
+
+       ArrayList<String> enemiesNames = modelView.getEnemiesNames(clientView.getName());
        ArrayList<CardView> enemiesCards = modelView.getEnemiesCards(clientView.getName());
        if (enemiesCards != null) {
            if (enemiesCards.size() >= 1 && enemiesCards.get(0) != null)  {
-               Image enemy1CardImage = new Image("images/cards/card_" + enemiesCards.get(0).getId() + ".png");
-               enemy1PlayerCardImageView.setImage(enemy1CardImage); //enemiesCards.get(0)
+               if (modelView.hasPlayerLost(enemiesNames.get(0))) {
+                   enemy1PlayerCardImageView.setVisible(false);
+               } else {
+                   Image enemy1CardImage = new Image("images/cards/card_" + enemiesCards.get(0).getId() + ".png");
+                   enemy1PlayerCardImageView.setImage(enemy1CardImage);
+               }
            }
            if (enemiesCards.size() == 2 && enemiesCards.get(0) != null && enemiesCards.get(1) != null) {
-               Image enemy2CardImage = new Image("images/cards/card_" + enemiesCards.get(1).getId() + ".png");
-               enemy2PlayerCardImageView.setImage(enemy2CardImage);
+               if (modelView.hasPlayerLost(enemiesNames.get(1))) {
+                   enemy2PlayerCardImageView.setVisible(false);
+               } else {
+                   Image enemy2CardImage = new Image("images/cards/card_" + enemiesCards.get(1).getId() + ".png");
+                   enemy2PlayerCardImageView.setImage(enemy2CardImage);
+               }
            }
        }
    }
@@ -484,8 +515,6 @@ public class MainSceneController extends GUIController {
      * Shows a button that, if clicked, lets the player skip the current optional action.
      */
     public void skipAction() {
-       System.out.println("skipAction - chosenBlockType: " + chosenBlockType);
-
         phaseLabel.setText("");
         skipButton.setVisible(false);
         chosenPosition = null;
@@ -515,7 +544,6 @@ public class MainSceneController extends GUIController {
             @Override
             public void run() {
                 if (count > 0) {
-                    System.out.println("count: " + count);
                     Platform.runLater(() -> {
 
                         Image updatedTimerImage =  new Image("images/utility/timer_counter_" + count + ".png");
@@ -547,12 +575,9 @@ public class MainSceneController extends GUIController {
      * Confirm the action previously selected and ends the undo process.
      */
     public void confirmAction() {
-       System.out.println("confirmAction - chosenBlockType:" + chosenBlockType);
        if (chosenBlockType != null) {
-           System.out.println("setBlock");
            setBlockType();
        } else {
-           System.out.println("setPos");
            setPosition();
        }
         clearEnlightenedImageViews();
@@ -604,6 +629,10 @@ public class MainSceneController extends GUIController {
                 }
             }
         }, 0, 1000);
+    }
+
+    public void updateLostPhaseLabel() {
+        phaseLabel.setText("You Lost, but you can still watch!");
     }
 
 }

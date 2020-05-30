@@ -30,10 +30,8 @@ public class YouLostSceneController extends GUIController {
     public void loadData(String winnerName) {
         youLostLabel.setText("You lost. The winner is " + winnerName);
 
-        ModelView modelView = clientView.getModelView();
-        String playerColor = modelView.getPlayerColor(clientView.getName());
-        Image winImage = new Image("images/utility/loose_" + playerColor + ".png");
-        looseImageView.setImage(winImage);
+        Image looseImage = new Image("images/utility/loose.png");
+        looseImageView.setImage(looseImage);
         looseImageView.setPreserveRatio(true);
     }
 

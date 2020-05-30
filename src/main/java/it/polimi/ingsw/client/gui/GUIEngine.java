@@ -164,9 +164,14 @@ public class GUIEngine extends Application implements UserInterface {
     public void refreshView() {
         Platform.runLater(() -> {
             try {
-                if (isGameStarted) ((MainSceneController) currentController).updateBoard();
+                if (isGameStarted)  {
+                    ((MainSceneController) currentController).updateBoard();
+                    ((MainSceneController) currentController).updateGameInfo();
+                }
             } catch (Exception e) {
                 System.out.println("Problem while refreshView(): MainSceneController may not be the currentController");
+                System.out.println(e.toString());
+                System.out.println(e.getCause().toString());
             }
         });
     }
@@ -285,6 +290,15 @@ public class GUIEngine extends Application implements UserInterface {
             showScene("/fxml/winScene.fxml");
             updateStageSize(4, 3);
             ((WinSceneController)currentController).setUpScene();
+        });
+    }
+
+    @Override
+    public void onLost(String playerName) {
+        Platform.runLater(() -> {
+            if (playerName.equals(clientView.getName())) {
+                ((MainSceneController) currentController).updateLostPhaseLabel();
+            }
         });
     }
 

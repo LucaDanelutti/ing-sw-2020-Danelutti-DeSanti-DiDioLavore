@@ -50,6 +50,7 @@ public class ModelView implements Serializable {
             for (int i=0; i<player.getPawnList().size();i++) {
                 if (player.getPawnList().get(i).getId()==pawnId) {
                     player.getPawnList().remove(i);
+                    if (player.getPawnList().isEmpty()) player.setLoser(true);
                     return;
                 }
             }
@@ -184,6 +185,16 @@ public class ModelView implements Serializable {
             }
         }
         return pawnsIdList;
+    }
+
+    public Boolean hasPlayerLost(String playerName) {
+        Boolean hasLost = false;
+        for (PlayerView player : playerList) {
+            if (player.getName().equals(playerName)) {
+                hasLost = player.getLoser();
+            }
+        }
+        return hasLost;
     }
 
 }
