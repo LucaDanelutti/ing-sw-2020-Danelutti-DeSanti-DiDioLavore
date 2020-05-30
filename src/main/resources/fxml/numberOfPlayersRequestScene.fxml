@@ -30,7 +30,7 @@
            </rowConstraints>
             <children>
                <Button fx:id="button2Players" mnemonicParsing="false" onAction="#choose2Players" styleClass="classicButton" stylesheets="@style.css" text="2 players" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-               <Button fx:id="button3Players" mnemonicParsing="false" onAction="#choose3Players" prefHeight="40.0" styleClass="classicButton" stylesheets="@style.css" text="3 playerd" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+               <Button fx:id="button3Players" mnemonicParsing="false" onAction="#choose3Players" prefHeight="40.0" styleClass="classicButton" stylesheets="@style.css" text="3 players" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                <ImageView fx:id="players2ImageView" fitHeight="97.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                <ImageView fx:id="players3ImageView" fitHeight="97.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             </children>
