@@ -286,7 +286,7 @@ public class MoveAction extends Action {
     public Boolean checkWin(Cell[][] matrixCopy) {
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
         if (noWinIfOnPerimeter && isOnPerimeter()) return false;
-        if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3) return true;
+        if (matrixCopy[selectedPawnPosition.getX()][selectedPawnPosition.getY()].peekBlock() == BlockType.LEVEL3 && selectedPawn.getDeltaHeight() > 0) return true;
         return winDownEnable && selectedPawn.getDeltaHeight() <= -2;
     }
 
