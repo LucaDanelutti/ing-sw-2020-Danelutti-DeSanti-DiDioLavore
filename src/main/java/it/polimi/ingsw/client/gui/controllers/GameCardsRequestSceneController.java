@@ -63,6 +63,10 @@ public class GameCardsRequestSceneController extends GUIController {
     public void setUpScene(ArrayList<CardView> availableCards) {
         loadCards(availableCards);
         loadEnlightenedImageViews();
+
+        //shows a default insight of the first card
+        currentCardPosition = new Position(0, 0);
+        showInsight(1);
     }
 
     /**
@@ -103,7 +107,7 @@ public class GameCardsRequestSceneController extends GUIController {
         this.availableCards.addAll(availableCards);
         for (int i = 0; i < cardsGridPane.getRowCount(); i++) {
             for (int j = 0; j < cardsGridPane.getColumnCount(); j++) {
-                addImageView(i, j, availableCards.get(j + 6 * i).getId());
+                addImageView(i, j, availableCards.get(j + 7 * i).getId());
             }
         }
     }
@@ -115,6 +119,7 @@ public class GameCardsRequestSceneController extends GUIController {
      * @param cardId is the id of the CardView that is rendered
      */
     private void addImageView(int i, int j, int cardId) {
+        System.out.println(cardId);
         Image cardImage = new Image("images/cards/card_" + cardId + ".png");
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setPreserveRatio(true);
