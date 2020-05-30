@@ -119,7 +119,6 @@ public class GameCardsRequestSceneController extends GUIController {
      * @param cardId is the id of the CardView that is rendered
      */
     private void addImageView(int i, int j, int cardId) {
-        System.out.println(cardId);
         Image cardImage = new Image("images/cards/card_" + cardId + ".png");
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setPreserveRatio(true);
