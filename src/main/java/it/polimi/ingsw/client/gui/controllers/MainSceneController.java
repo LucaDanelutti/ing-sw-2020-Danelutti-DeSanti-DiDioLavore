@@ -182,7 +182,13 @@ public class MainSceneController extends GUIController {
            for(int  j = 0; j < modelView.getMatrix()[0].length; j++){
                if (modelView.getMatrix()[i][j].getPeek() != BlockType.TERRAIN) {
 //                   System.out.println("blockType: " + modelView.getMatrix()[i][j].getPeek().getLevel());
-                   Image blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
+                   Image blockImage;
+                   if (modelView.getMatrix()[i][j].getPeek().getLevel() == 4 && modelView.getMatrix()[i][j].getSize() == 2) {
+                       //in this case there is a dome on the terrain
+                       blockImage = new Image("images/board/block_lv_4terrain.png");
+                   } else {
+                       blockImage = new Image("images/board/block_lv_" + modelView.getMatrix()[i][j].getPeek().getLevel() +".png");
+                   }
                    ImageView blockImageView = new ImageView(blockImage);
                    blockImageView.setPreserveRatio(true);
                    blockImageView.fitWidthProperty().bind(boardGridPane.widthProperty().divide(BOARD_SIZE).multiply(BLOCK_CELL_RATIO));
@@ -447,7 +453,12 @@ public class MainSceneController extends GUIController {
         blockTypesHBox.toFront();
 
         for (BlockType blockType : availableBlockTypes) {
-            Image blockTypeImage = new Image("images/board/block_lv_" + blockType.getLevel() + ".png");
+            Image blockTypeImage;
+            if (blockType.getLevel() == 4)  {
+                blockTypeImage = new Image("images/board/block_lv_4terrain.png");
+            } else {
+                blockTypeImage = new Image("images/board/block_lv_" + blockType.getLevel() + ".png");
+            }
             ImageView blockTypeImageView = new ImageView(blockTypeImage);
             blockTypeImageView.setPreserveRatio(true);
             blockTypeImageView.setId(String.valueOf(blockType.getLevel()));
