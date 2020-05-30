@@ -141,10 +141,14 @@ public class GUIEngine extends Application implements UserInterface {
      * @param heightRatio is the height fraction of the screen size.
      */
     private void updateStageSize(double widthRation, double heightRatio) {
-        stage.setMinWidth(Screen.getPrimary().getBounds().getWidth()/widthRation);
-        stage.setMinHeight(Screen.getPrimary().getBounds().getHeight()/heightRatio);
-        stage.setWidth(Screen.getPrimary().getBounds().getWidth()/widthRation);
-        stage.setHeight(Screen.getPrimary().getBounds().getHeight()/heightRatio);
+        double newWidth = Screen.getPrimary().getBounds().getWidth()/widthRation;
+        double newHeight = Screen.getPrimary().getBounds().getHeight()/heightRatio;
+        stage.setX(stage.getX() - (newWidth - stage.getWidth())/2);
+        stage.setY(stage.getY() - (newHeight - stage.getHeight())/2);
+        stage.setMinWidth(newWidth);
+        stage.setMinHeight(newHeight);
+        stage.setWidth(newWidth);
+        stage.setHeight(newHeight);
     }
 
 
