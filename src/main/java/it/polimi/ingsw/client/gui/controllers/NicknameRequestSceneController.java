@@ -8,10 +8,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -44,8 +42,12 @@ public class NicknameRequestSceneController extends GUIController {
      */
     public void confirm() {
         System.out.println("nickname:" + nickname.getValue());
-        clientView.update(new NicknameSetMessage(nickname.getValue()));
-        //loads the WaitingScene
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
+        if (nickname.get().length() > 10) {
+            ((GUIEngine)clientView.getUserInterface()).showMessage("The Nickname cannot be longer than 10 characters", AlertType.INFORMATION);
+        } else {
+            clientView.update(new NicknameSetMessage(nickname.getValue()));
+            //loads the WaitingScene
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
+        }
     }
 }
