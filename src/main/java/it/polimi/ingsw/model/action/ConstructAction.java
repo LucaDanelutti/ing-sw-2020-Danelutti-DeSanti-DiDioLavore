@@ -132,7 +132,7 @@ public class ConstructAction extends Action {
             for (int j = 0; j < matrixCopy[0].length; j++) {
                 if (availableCells.contains(new Position(i, j))) {
                     if (matrixCopy[i][j].getPawn() != null) {
-                        if (!matrixCopy[i][j].getPawn().getPosition().equals(selectedPawn.getPosition()) || !buildBelowEnable) availableCells.remove(new Position(i, j));
+                        if (!matrixCopy[i][j].getPawn().getPosition().equals(selectedPawn.getPosition()) || !buildBelowEnable || !(matrixCopy[i][j].getSize() < 4)) availableCells.remove(new Position(i, j));
                     }
                 }
             }
