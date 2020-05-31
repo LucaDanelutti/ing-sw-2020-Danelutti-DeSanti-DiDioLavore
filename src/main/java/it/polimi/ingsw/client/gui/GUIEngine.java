@@ -1,30 +1,22 @@
 package it.polimi.ingsw.client.gui;
 
-import com.sun.tools.javac.Main;
-import it.polimi.ingsw.ClientApp;
 import it.polimi.ingsw.client.gui.controllers.*;
 import it.polimi.ingsw.model.Position;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.view.ClientView;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.modelview.CardView;
-import it.polimi.ingsw.view.modelview.CellView;
-import it.polimi.ingsw.view.modelview.PawnView;
-import it.polimi.ingsw.view.modelview.PlayerView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -133,6 +125,7 @@ public class GUIEngine extends Application implements UserInterface {
 
             stage.setOnCloseRequest( event -> {
                 System.out.println("Closing Stage");
+                clientView.stopServerConnection();
             } );
 
             stage.setScene(scene);

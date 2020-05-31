@@ -24,10 +24,12 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
     private String ip;
     private int port;
     private ObjectOutputStream socketOut;
+    private ObjectInputStream socketIn;
     private boolean active = true;
 
     private int timerFrequency = 10;
     private Timestamp lastPing;
+    private Timer pingTimer = new Timer();
 
     /**
      * @param hostname server hostname
@@ -61,6 +63,9 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
     public synchronized void closeConnection() {
         try {
             socket.close();
+            socketIn.close();
+            socketOut.close();
+            pingTimer.cancel();
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
         }
@@ -112,7 +117,6 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
      * Finally it closes the network socket
      */
     public boolean run(ClientView clientView) {
-        ObjectInputStream socketIn;
         try {
             socket = new Socket(ip, port);
             System.out.println("Connection established"); //TODO: logging
@@ -124,14 +128,13 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
 
         new Thread(() -> {
             try {
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
+                pingTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
                             System.out.println("No ping received!"); //TODO: logging
                             closeConnection();
-                            timer.cancel();
+                            pingTimer.cancel();
                         }
                     }
                 }, 1000, timerFrequency * 1000);
@@ -146,12 +149,7 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
                 setActiveToFalse();
             }
             finally {
-                try {
-                    socketIn.close();
-                    socketOut.close();
-                    socket.close();
-                } catch (IOException ignored) {
-                }
+                closeConnection();
             }
         }).start();
         return true;

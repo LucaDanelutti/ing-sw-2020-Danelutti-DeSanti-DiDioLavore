@@ -43,6 +43,10 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         return socketServerConnection.run(this);
     }
 
+    public void stopServerConnection() {
+        serverConnection.closeConnection();
+    }
+
     /**
      * @return userInterface
      * Default get method for userInterface
