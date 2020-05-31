@@ -38,6 +38,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
      * This method starts the connection to the server
      */
     public boolean startServerConnection(String hostname, int port) {
+        if (port < 1 || port > 65535) return false;
         SocketServerConnection socketServerConnection = new SocketServerConnection(hostname, port);
         serverConnection = socketServerConnection;
         return socketServerConnection.run(this);
