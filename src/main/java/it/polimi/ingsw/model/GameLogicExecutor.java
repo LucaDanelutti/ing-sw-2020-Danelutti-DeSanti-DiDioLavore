@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.controller.MockGameLogic;
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -22,7 +23,7 @@ import static java.lang.Math.abs;
  * pass from calls to this class. This class is also responsible of the execution of actions and the generation of the requests
  * to the clients
  */
-public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor {
+public class GameLogicExecutor extends RequestAndUpdateObservable implements ActionVisitor, ModelInterface {
     private Game game;
     private final ArrayList<String> lobby;
     private int numberOfPlayers; //set to -1 by constructor
@@ -55,6 +56,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param selectedPawnPosition the selectedPawn
      * @return the success of the operation
      */
+    @Override
     public Boolean setSelectedPawn(Position selectedPawnPosition){
         if(!getGameEnded()) {
             if (isThisSelectedPawnValid(selectedPawnPosition)) {
@@ -99,6 +101,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param chosenPos the chosen position
      * @return the success of the operation
      */
+    @Override
     public Boolean setChosenPosition(Position chosenPos){
         if(!getGameEnded()) {
             //this call activates the execution of the moveAction but for the constructAction we have to ask the user for the selectedBlockType
@@ -132,6 +135,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param blockType the block type
      * @return the success of the operation
      */
+    @Override
     public Boolean setChosenBlockType(BlockType blockType){
         if(!getGameEnded()) {
             if (isThisBlockTypeInTheAvailableBlockTypes(blockType)) {
@@ -148,6 +152,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /**
      * Setup method setFirstPlayer to set the first player that will start to play the game
      */
+    @Override
     public Boolean setStartPlayer(String player){
         if(!getGameEnded()) {
             if (isThisAPlayer(player)) {
@@ -166,6 +171,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * Setup method setInGameCards to set the cards that will be available to players
      * Players will choose a card in ChooseCardState
      */
+    @Override
     public Boolean setInGameCards(ArrayList<Integer> cards){
         if(!getGameEnded()) {
             if (areThoseCardIdsDifferent(cards) && areThoseCardsIdsLegal(cards) && cards.size() == game.getPlayers().size()) {
@@ -188,6 +194,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /**
      * Setup method setChosenCard to set the chosen card in the player
      */
+    @Override
     public Boolean setChosenCard(int cardID){
         if(!getGameEnded()) {
             Card card = game.getInGameCardCopy(cardID);
@@ -223,6 +230,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param workerPos2 second pawn pos
      * @return the result of the operation
      */
+    @Override
     public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
         if(!getGameEnded()) {
             if (isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos1) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos2)) {
@@ -294,6 +302,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param numberOfPlayers the number
      * @return the result of the operation
      */
+    @Override
     public Boolean setNumberOfPlayers(int numberOfPlayers){
         if(!getGameEnded()) {
             if (numberOfPlayers <= 1 || numberOfPlayers > 3) {
@@ -313,6 +322,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function returns the name of the current player
      * @return the name of the current player
      */
+    @Override
     public String getCurrentPlayerName(){
         if(game.getCurrentPlayer()==null)
             return null;
@@ -378,6 +388,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function is used to undo the current action and restore the game to the status before the action, it also generates the new request to the current player
      * @return the result of the operation
      */
+    @Override
     public Boolean undoCurrentAction(){
         if(!getGameEnded()) {
             this.game = beginningOfCurrentAction;
@@ -396,6 +407,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function is used to undo the whole turn, and restart from the selectedPawn message
      * @return the result of the operation
      */
+    @Override
     public Boolean undoTurn(){
         if(!getGameEnded()) {
             this.game = beginningOfCurrentPlayerTurn;
