@@ -45,7 +45,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     }
 
     public void stopServerConnection() {
-        serverConnection.closeConnection();
+        if (serverConnection != null) serverConnection.closeConnection();
     }
 
     /**
