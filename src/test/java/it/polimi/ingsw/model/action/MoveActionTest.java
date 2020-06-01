@@ -569,7 +569,7 @@ class MoveActionTest {
     }
 
     /**
-     * This test checks whether the checkwin() function works properly when the moved pawn has reached a level 3 cell
+     * This test checks whether the checkwin() function works properly when the moved pawn has reached a level 3 cell from another level 3 cell.
      */
     @Test
     void checkwinReachedLevel3() {
@@ -577,6 +577,25 @@ class MoveActionTest {
         Board boardTester = new Board();
         Pawn selectedPawnTester = new Pawn("white",0);
         selectedPawnTester.setPosition(new Position(1,2));
+
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL1);
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL2);
+        boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL3);
+        moveActionTester.setSelectedPawn(selectedPawnTester);
+
+        assertEquals(false, moveActionTester.checkWin(boardTester.getMatrixCopy()), "Internal values should be the equals");
+    }
+
+    /**
+     * This test checks whether the checkwin() function works properly when the moved pawn has reached a level 3 cell from a level 2 cell.
+     */
+    @Test
+    void checkwinReachedLevel3FromLevel2() {
+        MoveAction moveActionTester = new MoveAction(true, null, false, false, true, true, true, true, null, false, false);
+        Board boardTester = new Board();
+        Pawn selectedPawnTester = new Pawn("white",0);
+        selectedPawnTester.setPosition(new Position(1,2));
+        selectedPawnTester.setDeltaHeight(1);
 
         boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL1);
         boardTester.pawnConstruct(null,new Position(1,2), BlockType.LEVEL2);
