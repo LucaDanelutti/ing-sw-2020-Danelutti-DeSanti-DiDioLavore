@@ -907,8 +907,8 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         game.shufflePlayers();
         game.getPlayers().get(0).addPawn(new Pawn("blue",0));
         game.getPlayers().get(0).addPawn(new Pawn("blue",1));
-        game.getPlayers().get(1).addPawn(new Pawn("green",2));
-        game.getPlayers().get(1).addPawn(new Pawn("green",3));
+        game.getPlayers().get(1).addPawn(new Pawn("violet",2));
+        game.getPlayers().get(1).addPawn(new Pawn("violet",3));
         if (game.getPlayers().size() == 3) {
             game.getPlayers().get(2).addPawn(new Pawn("orange",4));
             game.getPlayers().get(2).addPawn(new Pawn("orange",5));

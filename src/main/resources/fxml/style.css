@@ -90,8 +90,8 @@
     -fx-font-size: 11pt;
 }
 
-.greenLabelBackground {
-    -fx-background-color: rgb(109, 232, 138);
+.violetLabelBackground {
+    -fx-background-color: rgb(154, 107, 214);
     -fx-background-radius: 20;
     -fx-font-size: 11pt;
 }
