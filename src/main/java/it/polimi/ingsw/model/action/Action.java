@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
-
 import java.util.ArrayList;
-import java.util.List;
 
 
 
@@ -76,10 +74,14 @@ public abstract class Action {
                                                             //VISITOR PATTERN FUNCTIONS
 
     /**
-     * This is the function needed to implement the visitor pattern for GameLogicExecutor
+     * This is the function needed to implement the visitor pattern for GameLogicExecutor and execute the current action without knowing the class type
      * @param actionVisitor the visitor
      */
     public abstract  void acceptForExecution(ActionVisitor actionVisitor);
+    /**
+     * This is the function needed to implement the visitor pattern for GameLogicExecutor and process the current action without knowing the class type
+     * @param actionVisitor the visitor
+     */
     public abstract  void acceptForProcess(ActionVisitor actionVisitor);
 
 

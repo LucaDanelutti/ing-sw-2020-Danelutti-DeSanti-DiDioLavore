@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Position;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 public class Board{
     private Cell[][] matrix;
 
+                                                    //CONSTRUCTOR
     /**
      * This is the constructor for this class;
      */
@@ -26,31 +26,9 @@ public class Board{
         }
     }
 
-    /**
-     * This is the getter for the matrix
-     * @return the variable matrix
-     */
-    public Cell[][] getMatrixCopy(){
-        Cell[][] clonedMatrix=new Cell[5][5];
-        for (int i=0; i<clonedMatrix.length; i++){
-            for(int j=0; j<clonedMatrix[0].length; j++){
-                clonedMatrix[i][j]=new Cell(this.matrix[i][j]);
-            }
-        }
-        return clonedMatrix;
-    }
 
-    public Board getBoardCopyWithoutPawns(){
-        Board copy=new Board();
-        Cell[][] clonedMatrix=new Cell[5][5];
-        for (int i=0; i<clonedMatrix.length; i++){
-            for(int j=0; j<clonedMatrix[0].length; j++){
-                clonedMatrix[i][j]=this.matrix[i][j].getCellCopyWithoutPawn();
-            }
-        }
-        copy.matrix=clonedMatrix;
-        return copy;
-    }
+
+                                                //SPECIFIC FUNCTIONS
 
     /**
      * This function updates the position of the pawn inside of the board, and also updates the inside variables of the
@@ -66,7 +44,6 @@ public class Board{
         newCell.getPawn().setPosition(newPosition);
         newCell.getPawn().setDeltaHeight(newCell.getSize()-prevCell.getSize());
     }
-
     /**
      * this function updates the position of the pawn on the board, and it is used when in the newPosition an opponent pawn is present
      * the opponent pawn will be placed in the opponentPawnNewPos
@@ -96,7 +73,6 @@ public class Board{
         //by postponing this set, if prevPos and opponentPawnNewPos are the same, no problem occurs.
         opponentPawnCell.setPawn(opponentPawn);
     }
-
     /**
      * This function is used during the ChoosePawnPosition State of the game to set the initial position of a pawn in the Board
      * @param pawn the pawn to be set
@@ -107,10 +83,14 @@ public class Board{
         pawn.setDeltaHeight(0);
         matrix[position.getX()][position.getY()].setPawn(pawn);
     }
+    /**
+     * This function is used to place a pawn in the specific position
+     * @param pawn the pawn to position
+     * @param position the specific position
+     */
     public void placePawn(Pawn pawn,Position position){
         matrix[position.getX()][position.getY()].setPawn(pawn);
     }
-
     /**
      * This function is used to remove a pawn from the game by removing it from the board
      * @param pawn The pawn to be removed
@@ -118,7 +98,6 @@ public class Board{
     public void removePawnFromGame(Pawn pawn){
         matrix[pawn.getPosition().getX()][pawn.getPosition().getY()].setPawn(null);
     }
-
     /**
      * This function is used when an construct action is run on the board, it pushes a new legal block on top
      * @param constructPosition the position where the block will be constructed
@@ -129,7 +108,54 @@ public class Board{
         if(selectedPawnPos!=null)
             matrix[selectedPawnPos.getX()][selectedPawnPos.getY()].getPawn().setLastBuildPosition(constructPosition);
     }
+    /**
+     * This function returns the initial available positions for pawn placements
+     * @return an arrayList containing the positions
+     */
+    public ArrayList<Position> availablePositionsForPawnInitialPlacement(){
+        ArrayList<Position> availablePositions = new ArrayList<>();
+        for(int row=0; row<matrix.length;row++){
+            for(int column=0; column<matrix[0].length;column++){
+                if(matrix[row][column].getPawn()==null){
+                    availablePositions.add(new Position(row,column));
+                }
+            }
+        }
+        return availablePositions;
+    }
 
+
+
+                                                    //GETTERS
+
+    /**
+     * This is the getter for the matrix
+     * @return the variable matrix
+     */
+    public Cell[][] getMatrixCopy(){
+        Cell[][] clonedMatrix=new Cell[5][5];
+        for (int i=0; i<clonedMatrix.length; i++){
+            for(int j=0; j<clonedMatrix[0].length; j++){
+                clonedMatrix[i][j]=new Cell(this.matrix[i][j]);
+            }
+        }
+        return clonedMatrix;
+    }
+    /**
+     * This function returns a board copy without pawns in it
+     * @return the board copy without pawns
+     */
+    public Board getBoardCopyWithoutPawns(){
+        Board copy=new Board();
+        Cell[][] clonedMatrix=new Cell[5][5];
+        for (int i=0; i<clonedMatrix.length; i++){
+            for(int j=0; j<clonedMatrix[0].length; j++){
+                clonedMatrix[i][j]=this.matrix[i][j].getCellCopyWithoutPawn();
+            }
+        }
+        copy.matrix=clonedMatrix;
+        return copy;
+    }
     /**
      * This function returns a copy of the pawn in the provided position
      * @param pawnPosition the position where to retrieve the pawn
@@ -147,16 +173,7 @@ public class Board{
         return new Pawn(matrix[pawnPosition.getX()][pawnPosition.getY()].getPawn());
     }
 
-    public ArrayList<Position> availablePositionsForPawnInitialPlacement(){
-        ArrayList<Position> availablePositions = new ArrayList<>();
-        for(int row=0; row<matrix.length;row++){
-            for(int column=0; column<matrix[0].length;column++){
-                if(matrix[row][column].getPawn()==null){
-                    availablePositions.add(new Position(row,column));
-                }
-            }
-        }
-        return availablePositions;
-    }
+
+
 }
 

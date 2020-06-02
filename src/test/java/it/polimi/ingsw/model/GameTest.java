@@ -80,8 +80,8 @@ class GameTest {
      */
     @Test
     void getNextPlayer_NoNextPlayer_ActionState() {
-        testPlayer1.setLoser(true);
-        testPlayer2.setLoser(true);
+        testPlayer1.setLoser();
+        testPlayer2.setLoser();
         assertFalse(testGame.areThereAnyNonLoserPlayersLeft());
     }
 

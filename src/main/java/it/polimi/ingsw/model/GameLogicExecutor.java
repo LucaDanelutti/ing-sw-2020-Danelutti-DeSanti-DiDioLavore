@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.controller.MockGameLogic;
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
 import it.polimi.ingsw.model.board.Cell;
@@ -47,6 +46,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
 
 
+
                                         //FUNCTIONS EXPOSED TO THE CONTROLLER
 
     /**
@@ -56,8 +56,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param selectedPawnPosition the selectedPawn
      * @return the success of the operation
      */
-    @Override
-    public Boolean setSelectedPawn(Position selectedPawnPosition){
+    @Override public Boolean setSelectedPawn(Position selectedPawnPosition){
         if(!getGameEnded()) {
             if (isThisSelectedPawnValid(selectedPawnPosition)) {
                 //load the first action to be executed
@@ -101,8 +100,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param chosenPos the chosen position
      * @return the success of the operation
      */
-    @Override
-    public Boolean setChosenPosition(Position chosenPos){
+    @Override public Boolean setChosenPosition(Position chosenPos){
         if(!getGameEnded()) {
             //this call activates the execution of the moveAction but for the constructAction we have to ask the user for the selectedBlockType
             if (game.getCurrentAction().getIsOptional()) {
@@ -115,11 +113,13 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 } else {
                     game.getCurrentAction().acceptForProcess(this);
                 }
-            } else {
+            }
+            else {
                 if (isThisPositionInTheAvailableCells(chosenPos)) {
                     game.getCurrentAction().setChosenPosition(chosenPos);
                     game.getCurrentAction().acceptForProcess(this); //this will either ask for something else or execute the action
-                } else {
+                }
+                else {
                     game.getCurrentAction().acceptForProcess(this);
                 }
 
@@ -135,8 +135,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param blockType the block type
      * @return the success of the operation
      */
-    @Override
-    public Boolean setChosenBlockType(BlockType blockType){
+    @Override public Boolean setChosenBlockType(BlockType blockType){
         if(!getGameEnded()) {
             if (isThisBlockTypeInTheAvailableBlockTypes(blockType)) {
                 game.getCurrentAction().blockSelected(blockType);
@@ -152,8 +151,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /**
      * Setup method setFirstPlayer to set the first player that will start to play the game
      */
-    @Override
-    public Boolean setStartPlayer(String player){
+    @Override public Boolean setStartPlayer(String player){
         if(!getGameEnded()) {
             if (isThisAPlayer(player)) {
                 //this also sets current action to null
@@ -171,8 +169,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * Setup method setInGameCards to set the cards that will be available to players
      * Players will choose a card in ChooseCardState
      */
-    @Override
-    public Boolean setInGameCards(ArrayList<Integer> cards){
+    @Override public Boolean setInGameCards(ArrayList<Integer> cards){
         if(!getGameEnded()) {
             if (areThoseCardIdsDifferent(cards) && areThoseCardsIdsLegal(cards) && cards.size() == game.getPlayers().size()) {
                 ArrayList<Card> inGameCards = new ArrayList<>();
@@ -194,8 +191,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
     /**
      * Setup method setChosenCard to set the chosen card in the player
      */
-    @Override
-    public Boolean setChosenCard(int cardID){
+    @Override public Boolean setChosenCard(int cardID){
         if(!getGameEnded()) {
             Card card = game.getInGameCardCopy(cardID);
             if (game.getAvailableCards().contains(card)) {
@@ -230,8 +226,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param workerPos2 second pawn pos
      * @return the result of the operation
      */
-    @Override
-    public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
+    @Override public Boolean setPawnsPositions(int idWorker1, Position workerPos1, int idWorker2, Position workerPos2){
         if(!getGameEnded()) {
             if (isThisALegalPosition(workerPos1) && isThisALegalPosition(workerPos2) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos1) && isThisPositionInTheAvailableOnesForInitialPawnPositioning(workerPos2)) {
                 int indexWorker1 = 0;
@@ -302,8 +297,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param numberOfPlayers the number
      * @return the result of the operation
      */
-    @Override
-    public Boolean setNumberOfPlayers(int numberOfPlayers){
+    @Override public Boolean setNumberOfPlayers(int numberOfPlayers){
         if(!getGameEnded()) {
             if (numberOfPlayers <= 1 || numberOfPlayers > 3) {
                 notifyListeners(generateNumberOfPlayersRequest());
@@ -322,8 +316,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function returns the name of the current player
      * @return the name of the current player
      */
-    @Override
-    public String getCurrentPlayerName(){
+    @Override public String getCurrentPlayerName(){
         if(game.getCurrentPlayer()==null)
             return null;
         return game.getCurrentPlayer().getName();
@@ -388,8 +381,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function is used to undo the current action and restore the game to the status before the action, it also generates the new request to the current player
      * @return the result of the operation
      */
-    @Override
-    public Boolean undoCurrentAction(){
+    @Override public Boolean undoCurrentAction(){
         if(!getGameEnded()) {
             this.game = beginningOfCurrentAction;
 
@@ -407,8 +399,7 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * This function is used to undo the whole turn, and restart from the selectedPawn message
      * @return the result of the operation
      */
-    @Override
-    public Boolean undoTurn(){
+    @Override public Boolean undoTurn(){
         if(!getGameEnded()) {
             this.game = beginningOfCurrentPlayerTurn;
 
@@ -722,10 +713,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
         if (nextPlayer == null) {
             //every other player is in loser state, you are the winner
-            game.getCurrentPlayer().setWinner(true);
+            game.getCurrentPlayer().setWinner();
             for(Player player : game.getPlayers()){
                 if(!player.getName().equals(game.getCurrentPlayer().getName())){
-                    player.setLoser(true);
+                    player.setLoser();
                 }
             }
             notifyListeners(generateYouWon());
@@ -733,10 +724,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
         }
         else if (nextPlayer.getPawnList().size() == 0) {
                 //se il next player non ha più pawn allora ha perso!
-                nextPlayer.setLoser(true);
+                nextPlayer.setLoser();
                 if(game.getPlayers().size()==2){
                     //se siamo in due io ho automaticamente vinto!
-                    game.getCurrentPlayer().setWinner(true);
+                    game.getCurrentPlayer().setWinner();
                     notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                     notifyListeners(generateYouWon());
                 }
@@ -746,20 +737,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                     nextPlayer = game.getNextNonLoserPlayer();
                     if (nextPlayer == null){
                         //se non ci sono altri giocatori -> tutti in loser -> ho vinto
-                        game.getCurrentPlayer().setWinner(true);
+                        game.getCurrentPlayer().setWinner();
                         notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                         notifyListeners(generateYouWon());
                     }
                     else if (nextPlayer.getPawnList().size() == 0) {
                             //se anche l'altro avversario c'è , ma ha finito i pawn -> lui ha perso e io ho vinto
-                            nextPlayer.setLoser(true);
-                            game.getCurrentPlayer().setWinner(true);
+                            nextPlayer.setLoser();
+                            game.getCurrentPlayer().setWinner();
                             notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                             notifyListeners(generateYouWon());
                         }
                     else if (unableToPerformFirstNonOptionalMove(nextPlayer)) {
-                        nextPlayer.setLoser(true);
-                        game.getCurrentPlayer().setWinner(true);
+                        nextPlayer.setLoser();
+                        game.getCurrentPlayer().setWinner();
                         notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                         notifyListeners(generateYouWon());
                     }
@@ -783,10 +774,10 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
             }
         else if(unableToPerformFirstNonOptionalMove(nextPlayer)){
             //if the next player cannot perform the first non optional action he lost!
-            nextPlayer.setLoser(true);
+            nextPlayer.setLoser();
             if(game.getPlayers().size()==2){
                 //se siamo in due io ho automaticamente vinto!
-                game.getCurrentPlayer().setWinner(true);
+                game.getCurrentPlayer().setWinner();
                 notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                 notifyListeners(generateYouWon());
             }
@@ -796,20 +787,20 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 nextPlayer = game.getNextNonLoserPlayer();
                 if (nextPlayer == null){
                     //se non ci sono altri giocatori -> tutti in loser -> ho vinto
-                    game.getCurrentPlayer().setWinner(true);
+                    game.getCurrentPlayer().setWinner();
                     notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                     notifyListeners(generateYouWon());
                 }
                 else if (nextPlayer.getPawnList().size() == 0) {
                     //se anche l'altro avversario c'è , ma ha finito i pawn -> lui ha perso e io ho vinto
-                    nextPlayer.setLoser(true);
-                    game.getCurrentPlayer().setWinner(true);
+                    nextPlayer.setLoser();
+                    game.getCurrentPlayer().setWinner();
                     notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                     notifyListeners(generateYouWon());
                 }
                 else if (unableToPerformFirstNonOptionalMove(nextPlayer)) {
-                    nextPlayer.setLoser(true);
-                    game.getCurrentPlayer().setWinner(true);
+                    nextPlayer.setLoser();
+                    game.getCurrentPlayer().setWinner();
                     notifyListeners(generateYouLostAndSomeOneWon(game.getCurrentPlayer().getName()));
                     notifyListeners(generateYouWon());
                 }
@@ -893,11 +884,11 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
      * @param winner the player who won
      */
     private void someoneWon(Player winner){
-        winner.setWinner(true);
+        winner.setWinner();
         notifyListeners(generateYouWon());
         for(Player loser : game.getPlayers()){
             if(!loser.getName().equals(winner.getName())) {
-                loser.setLoser(true);
+                loser.setLoser();
             }
         }
         notifyListeners(generateYouLostAndSomeOneWon(winner.getName()));

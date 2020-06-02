@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * The Position class is used as a Type to
@@ -60,17 +59,15 @@ public class Position implements Serializable {
         this.y = y;
     }
 
-    @Override
-    public boolean equals(Object o) {
+
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
         return x == position.x &&
                 y == position.y;
     }
-
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return 0;
     }
 }

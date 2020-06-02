@@ -6,6 +6,9 @@ import it.polimi.ingsw.view.listeners.RequestsAndUpdateListener;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles sending out the messages from the model its listeners
+ */
 public class RequestAndUpdateObservable {
     final ArrayList<RequestsAndUpdateListener> listeners = new ArrayList<>();
     public void addListener(RequestsAndUpdateListener listener){
@@ -16,9 +19,9 @@ public class RequestAndUpdateObservable {
     }
 
 
-    /* ------------------------------------------------------------------------------------------------------------------------------------ */
-    //IMPLEMENTATION OF REQUEST_AND_UPDATE_MESSAGE_VISITOR
-    /* ------------------------------------------------------------------------------------------------------------------------------------ */
+
+                                    //NOTIFY FOR REQUEST MESSAGES
+
     public void notifyListeners(ChosenBlockTypeRequestMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
@@ -82,6 +85,18 @@ public class RequestAndUpdateObservable {
             }
         }
     }
+    public void notifyListeners(ChosenPositionForConstructRequestMessage m) {
+        synchronized (listeners) {
+            for(RequestsAndUpdateListener l : this.listeners){
+                l.update(m);
+            }
+        }
+    }
+
+
+
+                                    //NOTIFY FOR UPDATE MESSAGES
+
     public void notifyListeners(CellUpdateMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
@@ -117,7 +132,6 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-
     public void notifyListeners(SelectedPawnUpdateMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
@@ -167,7 +181,6 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-
     public void notifyListeners(GameEndedMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
@@ -175,7 +188,6 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-
     public void notifyListeners(UndoUpdateMessage m) {
         synchronized (listeners) {
             for(RequestsAndUpdateListener l : this.listeners){
@@ -183,17 +195,6 @@ public class RequestAndUpdateObservable {
             }
         }
     }
-
-    public void notifyListeners(ChosenPositionForConstructRequestMessage m) {
-        synchronized (listeners) {
-            for(RequestsAndUpdateListener l : this.listeners){
-                l.update(m);
-            }
-        }
-    }
-
-    /* ------------------------------------------------------------------------------------------------------------------------------------ */
-
 
 
 }

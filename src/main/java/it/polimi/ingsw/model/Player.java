@@ -12,48 +12,10 @@ class Player {
     Card currentCard;
     Boolean isLoser;
     Boolean isWinner;
-    //PlayerState state;
-
-    //===================================================
-    //NEW THINGS
     Position selectedPawnPosition;
     Position unselectedPawnPosition;
 
-    public Pawn getSelectedPawn(){
-        for(Pawn p : pawnList){
-            if(p.getPosition().equals(selectedPawnPosition)){
-                return p;
-            }
-        }
-        return null;
-    }
-    public Pawn getUnselectedPawn(){
-        for(Pawn p : pawnList){
-            if(p.getPosition().equals(unselectedPawnPosition)){
-                return p;
-            }
-        }
-        return null;
-    }
-    public void setUnselectedPawnPosition(Pawn p){
-        if(p==null) {
-            unselectedPawnPosition = null;
-        }
-        else {
-            unselectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
-        }
-    }
-    public void setSelectedPawnPosition(Pawn p){
-        if(p==null){
-            selectedPawnPosition=null;
-        }
-        else {
-            selectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
-        }
-    }
-
-
-    //======================================================
+                                            //CONSTRUCTORS
 
     /**
      * Constructor of this class
@@ -63,10 +25,12 @@ class Player {
         this.name = name;
         this.isLoser=false;
         this.isWinner=false;
-        //this.state = state;
         pawnList = new ArrayList<>();
     }
-
+    /**
+     * This is the copy constructor for the player class
+     * @param toBeCopied the player to be copied
+     */
     Player(Player toBeCopied){
         this.unselectedPawnPosition=toBeCopied.unselectedPawnPosition;
         this.selectedPawnPosition=toBeCopied.selectedPawnPosition;
@@ -80,13 +44,10 @@ class Player {
         this.currentCard=new Card(toBeCopied.currentCard);
     }
 
-    String getName() {
-        return name;
-    }
 
-    ArrayList<Pawn> getPawnList() {
-        return pawnList;
-    }
+
+
+                                            //SPECIFIC FUNCTIONS
 
     /**
      * addPawn method to add the provided Pawn to the pawnList
@@ -95,7 +56,6 @@ class Player {
     void addPawn(Pawn pawn) {
         this.pawnList.add(pawn);
     }
-
     /**
      * removePawn method to remove the provided Pawn from the pawnList
      * @param pawn is the pawn to remove
@@ -106,32 +66,78 @@ class Player {
         }
         this.pawnList.remove(pawn);
     }
+    /**
+     * This function will remove all the pawns for the selected user
+     */
     void removeAllPawns(){
         this.pawnList=new ArrayList<>();
     }
 
-    Card getCurrentCard() {
-        return currentCard;
-    }
 
+
+
+                                        //SETTERS
+
+    void setUnselectedPawnPosition(Pawn p){
+        if(p==null) {
+            unselectedPawnPosition = null;
+        }
+        else {
+            unselectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
+        }
+    }
+    void setSelectedPawnPosition(Pawn p){
+        if(p==null){
+            selectedPawnPosition=null;
+        }
+        else {
+            selectedPawnPosition = new Position(p.getPosition().getX(), p.getPosition().getY());
+        }
+    }
     void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
     }
+    void setLoser() {
+        isLoser = true;
+    }
+    void setWinner() {
+        isWinner = true;
+    }
 
-    public Boolean getLoser() {
+
+
+
+                                        //GETTERS
+    Pawn getSelectedPawn(){
+        for(Pawn p : pawnList){
+            if(p.getPosition().equals(selectedPawnPosition)){
+                return p;
+            }
+        }
+        return null;
+    }
+    Pawn getUnselectedPawn(){
+        for(Pawn p : pawnList){
+            if(p.getPosition().equals(unselectedPawnPosition)){
+                return p;
+            }
+        }
+        return null;
+    }
+    Boolean getLoser() {
         return isLoser;
     }
-
-    public void setLoser(Boolean loser) {
-        isLoser = loser;
-    }
-
-    public Boolean getWinner() {
+    Boolean getWinner() {
         return isWinner;
     }
-
-    public void setWinner(Boolean winner) {
-        isWinner = winner;
+    String getName() {
+        return name;
+    }
+    ArrayList<Pawn> getPawnList() {
+        return pawnList;
+    }
+    Card getCurrentCard() {
+        return currentCard;
     }
 
 }

@@ -11,8 +11,10 @@ import java.util.Stack;
  * If a pawn is present on a Cell its reference is stored on the variable pawn.
  */
 public class Cell{
-    private Stack<BlockType> blockStack;
+    private final Stack<BlockType> blockStack;
     private Pawn pawn;
+
+                                                //CONSTRUCTORS
 
     /**
      * This is the default constructor for the class Cell.
@@ -23,7 +25,6 @@ public class Cell{
         this.blockStack.push(BlockType.TERRAIN);
         pawn = null;
     }
-
     /**
      * This function is the copy constructor for the class Cell.
      * By using this method, there is no need to implement Clonable.
@@ -39,16 +40,10 @@ public class Cell{
             this.blockStack.push((BlockType)i);
         }
     }
-
-    public CellView cell_to_cellView(){
-        CellView copy=new CellView();
-        Object[] temp= this.blockStack.toArray();
-        for (int i=1; i<temp.length; i++){
-            copy.addBlock((BlockType)temp[i]);
-        }
-        return copy;
-    }
-
+    /**
+     * This function is used to return a cell copy but without pawns in it
+     * @return the copied cell without pawns
+     */
     public Cell getCellCopyWithoutPawn(){
         Cell copy=new Cell();
         Object[] temp= this.blockStack.toArray();
@@ -58,6 +53,28 @@ public class Cell{
         return copy;
     }
 
+
+
+
+                                            //SPECIFIC FUNCTIONS
+
+    /**
+     * This function creates cellView from the current cell
+     * @return the cellView
+     */
+    public CellView cell_to_cellView(){
+        CellView copy=new CellView();
+        Object[] temp= this.blockStack.toArray();
+        for (int i=1; i<temp.length; i++){
+            copy.addBlock((BlockType)temp[i]);
+        }
+        return copy;
+    }
+
+
+
+                                            //BLOCKSTACK SPECIFIC FUNCTIONS
+
     /**
      * This provides access to the Stack push function.
      * @param type The block to be pushed into the Stack
@@ -65,7 +82,6 @@ public class Cell{
     public void pushBlock(BlockType type){
         blockStack.push(type);
     }
-
     /**
      * This provides access to the Stack peek function.
      * @return It returns the peek of the Stack
@@ -73,7 +89,6 @@ public class Cell{
     public BlockType peekBlock(){
         return blockStack.peek();
     }
-
     /**
      * This provides access to the Stack pop function.
      * @return It returns the peek of the Stack and removes it from the stack
@@ -81,7 +96,6 @@ public class Cell{
     public BlockType popBlock(){
         return blockStack.pop();
     }
-
     /**
      * This provides access to the Stack size function.
      * @return It returns the size of the stack
@@ -89,7 +103,6 @@ public class Cell{
     public int getSize(){
         return this.blockStack.size();
     }
-
     /**
      * This provides access to the Stack isEmpty function.
      * @return It returns a boolean as a response to the "isEmpty" query on the stack
@@ -98,6 +111,8 @@ public class Cell{
         return blockStack.isEmpty();
     }
 
+                                            //GETTERS AND SETTERS FOR THE PAWN
+
     /**
      * This is the getter for the variable pawn
      * @return the variable pawn
@@ -105,7 +120,6 @@ public class Cell{
     public Pawn getPawn(){
         return pawn;
     }
-
     /**
      * This is the setter for the variable pawn
      * @param pawn the variable to assign to pawn
@@ -114,8 +128,8 @@ public class Cell{
         this.pawn=pawn;
     }
 
-    @Override
-    public boolean equals(Object o) {
+
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
@@ -132,9 +146,7 @@ public class Cell{
         }
         return true;
     }
-
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hash(blockStack, pawn);
     }
 }
