@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LoginSceneController">
-    <GridPane alignment="CENTER">
+<Scene stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LoginSceneController">
+    <GridPane alignment="CENTER" styleClass="loginSceneGridPane">
 
         <Label styleClass="regularText" stylesheets="@style.css" text="Enter Server Hostname" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <GridPane.margin>

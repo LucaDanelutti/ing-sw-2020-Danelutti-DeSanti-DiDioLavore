@@ -55,7 +55,7 @@ public class LoginSceneController extends GUIController {
 
         if (port.getValue().length() > 0 && clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()))) {
             //opens the WaitingScene
-            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false);
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false, "Just wait...");
         } else {
             ((GUIEngine)clientView.getUserInterface()).showMessage("Wrong hostname or port. Please try again!", Alert.AlertType.ERROR);
         }

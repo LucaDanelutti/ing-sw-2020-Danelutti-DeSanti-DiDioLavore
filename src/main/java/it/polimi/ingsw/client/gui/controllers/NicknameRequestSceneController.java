@@ -47,7 +47,7 @@ public class NicknameRequestSceneController extends GUIController {
         } else {
             clientView.update(new NicknameSetMessage(nickname.getValue()));
             //loads the WaitingScene
-            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true, "Waiting for other players...");
         }
     }
 }

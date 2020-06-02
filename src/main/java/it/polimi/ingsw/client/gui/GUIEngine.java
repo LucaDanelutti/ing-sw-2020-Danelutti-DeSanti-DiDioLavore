@@ -198,9 +198,10 @@ public class GUIEngine extends Application implements UserInterface {
     /**
      * Loads the waiting scene controller and fxml scene
      */
-    public void showWaitingScene(Boolean setMinDim) {
+    public void showWaitingScene(Boolean setMinDim, String title) {
         Platform.runLater(() -> {
             showScene("/fxml/waitingScene.fxml");
+            ((WaitingSceneController)currentController).setTitle(title);
             if (setMinDim) {
                 updateStageSize(2, 2);
             } else {
@@ -220,7 +221,7 @@ public class GUIEngine extends Application implements UserInterface {
     public void onChosenCardRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
             showScene("/fxml/chosenCardRequestScene.fxml");
-            updateStageSize(2,2);
+            updateStageSize(2,1.7);
             ((ChosenCardRequestSceneController)currentController).loadCards(availableCards);
         });
     }

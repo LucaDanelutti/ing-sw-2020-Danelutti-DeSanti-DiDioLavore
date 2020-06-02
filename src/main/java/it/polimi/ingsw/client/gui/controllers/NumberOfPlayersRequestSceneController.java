@@ -69,7 +69,7 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
         System.out.println("selectedNumberOfPlayers:" + selectedNumberOfPlayers);
         clientView.update(new NumberOfPlayersSetMessage(selectedNumberOfPlayers));
 
-        ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
+        ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true, "Waiting for other players...");
     }
 
 

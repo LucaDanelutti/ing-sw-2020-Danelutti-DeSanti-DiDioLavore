@@ -18,10 +18,14 @@ public class WaitingSceneController extends GUIController {
 
 
     /* ===== FXML Set Up and Bindings ===== */
+    StringProperty waitString = new SimpleStringProperty("");
     @FXML
     public void initialize() {
         /* ===== FXML Properties ===== */
-        StringProperty waitString = new SimpleStringProperty("Lobby");
         waitLabel.textProperty().bind(waitString);
+    }
+
+    public void setTitle(String title) {
+        waitString.set(title);
     }
 }

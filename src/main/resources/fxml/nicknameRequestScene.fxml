@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.NicknameRequestSceneController">
-   <GridPane alignment="CENTER" stylesheets="@style.css">
+<Scene stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.NicknameRequestSceneController">
+   <GridPane alignment="CENTER" styleClass="nicknameRequestSceneGridPane" stylesheets="@style.css">
 
       <Label styleClass="regularText" stylesheets="@style.css" text="Pick your nickname" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <GridPane.margin>

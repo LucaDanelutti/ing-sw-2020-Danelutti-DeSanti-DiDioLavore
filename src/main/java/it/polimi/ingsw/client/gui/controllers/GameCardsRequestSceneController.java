@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.modelview.ModelView;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,8 @@ public class GameCardsRequestSceneController extends GUIController {
     private ImageView bigCardImageView;
     @FXML
     private Label cardDescription;
+    @FXML
+    private Button goButton;
 
 
     /* ===== Variables ===== */
@@ -164,6 +167,18 @@ public class GameCardsRequestSceneController extends GUIController {
             if (!cardsSelectedList.contains(currentCardId)) cardsSelectedList.add(currentCardId);
             enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].toBack();
             enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(true);
+            updateGoButton();
+        }
+    }
+
+    /**
+     * Updates the goButton visibility property, making it visible only when the user has selected the proper number of cards.
+     */
+    private void updateGoButton() {
+        if (cardsSelectedList.size() == expectedNumberOfCards) {
+            goButton.setVisible(true);
+        } else {
+            goButton.setVisible(false);
         }
     }
 
@@ -176,6 +191,7 @@ public class GameCardsRequestSceneController extends GUIController {
             cardsSelectedList.remove((Object) currentCardId);
             enlightenedImageViewsArray[currentCardPosition.getX()][currentCardPosition.getY()].setVisible(false);
         }
+        updateGoButton();
     }
 
     /**
@@ -185,7 +201,7 @@ public class GameCardsRequestSceneController extends GUIController {
     public void confirm() {
         if (cardsSelectedList.size() == expectedNumberOfCards) {
             clientView.update(new InGameCardsSetMessage(cardsSelectedList));
-            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true);
+            ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true, "The match is about to start...");
             System.out.println("The number of Cards is correct.");
         }
         else {
