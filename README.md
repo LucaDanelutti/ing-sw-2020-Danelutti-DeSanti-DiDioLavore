@@ -11,13 +11,13 @@ Java implementation of the table game Santorini by Cranio Creations
 |:-----------------------|:------------------------------------:|
 | Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Socket | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
-| GUI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
-| CLI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Multiple games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Advanced Gods | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Undo | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| Undo | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 
 >[![RED](https://placehold.it/15/f03c15/f03c15)](#) = not implemented <br>
 [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) = work in progress <br>
