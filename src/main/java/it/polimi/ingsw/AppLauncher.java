@@ -27,6 +27,8 @@ public class AppLauncher {
                 server = true;
             } else if (arg.equals("-cli")) {
                 cli = true;
+            } else if (arg.equals("-help")){
+                error = true;
             }
 
             else if (arg.equals("-hostname")) {
