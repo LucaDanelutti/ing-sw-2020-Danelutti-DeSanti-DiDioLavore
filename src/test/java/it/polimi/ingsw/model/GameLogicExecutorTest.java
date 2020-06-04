@@ -1534,7 +1534,7 @@ class GameLogicExecutorTest {
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
-            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+            //System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1544,11 +1544,11 @@ class GameLogicExecutorTest {
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
 
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        //System.out.println("-----------------------------------------------------------------------------------------------------");
         int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
-        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        //System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
+        //System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
+        //System.out.println("-----------------------------------------------------------------------------------------------------");
 
     }
     /**
@@ -1596,7 +1596,9 @@ class GameLogicExecutorTest {
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
+/*
             System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+*/
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1606,11 +1608,11 @@ class GameLogicExecutorTest {
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
 
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        //System.out.println("-----------------------------------------------------------------------------------------------------");
         int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
-        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        /*System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);*/
+        /*System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);*/
+        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
 
 
     }
@@ -1808,7 +1810,9 @@ class GameLogicExecutorTest {
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
+/*
             System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
+*/
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1818,11 +1822,39 @@ class GameLogicExecutorTest {
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
 
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
         int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
-        System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        /*System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);*/
+        /*System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);*/
+        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
+    }
+    /**
+     * This function tests a three player game with bots, testing all the cards (and more)
+     */
+    @Test void loopThreeBotsGameSequentiallyExtractionsOfCards(){
+        int maxTurns=200;
+        for(int firstCard=0; firstCard<14; firstCard++){
+            for(int secondCard=firstCard+1; secondCard<14; secondCard++){
+                for(int thirdCard=secondCard+1; thirdCard<14; thirdCard++){
+                    if(firstCard!=secondCard && secondCard!=thirdCard && thirdCard!=firstCard) {
+                        threeBotsGame(firstCard, secondCard, thirdCard, maxTurns);
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * This function tests a two player game with bots testing all the cards (and more)
+     */
+    @Test void loopTwoBotsGameSequentiallyExtractionsOfCards(){
+        int maxTurns=200;
+        for(int firstCard=0; firstCard<14; firstCard++){
+            for(int secondCard=firstCard+1; secondCard<14; secondCard++){
+                    if(firstCard!=secondCard) {
+                        twoBotsGame(firstCard, secondCard, maxTurns);
+                    }
+            }
+        }
     }
 
 
@@ -2244,7 +2276,6 @@ class GameLogicExecutorTest {
         }
         return false;
     }
-
     /**
      * This function returns random cards with medusa in it
      * @return three cards ids
