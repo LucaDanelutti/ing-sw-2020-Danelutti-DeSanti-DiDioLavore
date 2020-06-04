@@ -117,6 +117,30 @@ class ConstructActionTest {
     }
 
     /**
+     * This test checks whether the availableCells() function checks correctly that if constructOnLastBuilt=true the pawn can't build only on the position
+     * defined in pawn.lastBuildPosition if there is a dome
+     */
+    @Test
+    void availableCellsTestCheckConstructOnLastBuiltWithDome() {
+        ConstructAction constructActionTester = new ConstructAction(true, notAvailableCellsTester, false, null, true, false, false);
+
+        constructActionTester.setSelectedPawn(selectedPawnTester);
+        constructActionTester.setNotSelectedPawn(notSelectedPawnTester);
+        selectedPawnTester.setLastBuildPosition(new Position(0,1));
+
+        Board boardTester = new Board();
+        boardTester.setPawnPosition(selectedPawnTester, new Position(1,1));
+        boardTester.setPawnPosition(notSelectedPawnTester, new Position(3,3));
+        boardTester.pawnConstruct(selectedPawnTester.getPosition(),new Position(0,1), BlockType.DOME);
+
+        ArrayList<Position> availableCellsTester = constructActionTester.availableCells(boardTester.getMatrixCopy());
+
+        ArrayList<Position> expectedList = new ArrayList<Position>() {{
+        }};
+        assertTrue(availableCellsTester.containsAll(expectedList) && expectedList.containsAll(availableCellsTester));
+    }
+
+    /**
      * This test checks whether the availableCells() function checks correctly that a pawn cannot build on cells contained within the notAvailableCells list
      */
     @Test

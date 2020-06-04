@@ -89,6 +89,7 @@ public class ConstructAction extends Action {
         Position selectedPawnPosition = new Position(selectedPawn.getPosition().getX(), selectedPawn.getPosition().getY());
         if (constructOnLastBuilt) {
             availableCells.add(selectedPawn.getLastBuildPosition());
+            checkDomePresence(availableCells, matrixCopy);
             return availableCells;
         }
 
