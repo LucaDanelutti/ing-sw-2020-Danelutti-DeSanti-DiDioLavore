@@ -127,7 +127,7 @@
         <configuration>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>it.polimi.ingsw.ClientApp</mainClass>
+              <mainClass>it.polimi.ingsw.AppLauncher</mainClass>
             </transformer>
           </transformers>
           <shadedArtifactAttached>true</shadedArtifactAttached>
@@ -145,7 +145,7 @@
               <outputFile>shade\${project.artifactId}.jar</outputFile>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>it.polimi.ingsw.ClientApp</mainClass>
+                  <mainClass>it.polimi.ingsw.AppLauncher</mainClass>
                 </transformer>
               </transformers>
             </configuration>
