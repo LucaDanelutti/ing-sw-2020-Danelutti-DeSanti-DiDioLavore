@@ -9,7 +9,7 @@ public interface ClientConnection {
     /**
      * This method closes the connection to the client
      */
-    void closeConnection();
+    void close();
 
     /**
      * Observable method

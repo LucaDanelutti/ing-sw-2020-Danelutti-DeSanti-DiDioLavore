@@ -66,8 +66,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     /**
      * This function closes the socket
      */
-    @Override
-    public synchronized void closeConnection() {
+    private synchronized void closeConnection() {
         try {
             socket.close();
         } catch (IOException e) {
@@ -79,7 +78,8 @@ public class SocketClientConnection extends SetObservable implements ClientConne
     /**
      * This function closes the socket and removes the connection from the server
      */
-    private void close() {
+    @Override
+    public void close() {
         if (active) {
             closeConnection();
             server.removeConnection(this);
