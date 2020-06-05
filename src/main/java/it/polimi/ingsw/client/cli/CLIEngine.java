@@ -30,8 +30,6 @@ public class CLIEngine implements UserInterface {
     public CLIEngine() {
     }
 
-
-
                                                 //SETUP FUNCTIONS
 
     /**
@@ -87,7 +85,7 @@ public class CLIEngine implements UserInterface {
     @Override public void onLost(String playerName) {
 
     }
-
+    
     /**
      * This function refreshes all the screen with the information about the board and the user table
      */
@@ -141,6 +139,9 @@ public class CLIEngine implements UserInterface {
         clearScreen();
         System.out.println("GAME ENDED: "+reason);
     }
+    /**
+     * This function is called when you are in the lobby waiting and when the game starts you are not selected to play
+     */
     @Override public void onGameStartedAndYouAreNotSelected() {
         clearScreen();
         printEqualsRow();
@@ -166,10 +167,13 @@ public class CLIEngine implements UserInterface {
             long startingTime=System.currentTimeMillis();
             int secondsPassed;
             int timeToPass=5;
+            int lastSecondPrinted=-1;
             do{
                 secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
-                if(secondsPassed<5){
-                    System.out.print("The pawn is not able to construct in the selected position -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s\r");
+                if(secondsPassed<5 & timeToPass-secondsPassed!=lastSecondPrinted){
+                    clearScreen();
+                    System.out.println("The selected pawn is not able to construct here -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s");
+                    lastSecondPrinted=timeToPass-secondsPassed;
                 }
             }while(secondsPassed<5);
             clientView.update(new UndoTurnSetMessage());
@@ -284,10 +288,13 @@ public class CLIEngine implements UserInterface {
             long startingTime=System.currentTimeMillis();
             int secondsPassed;
             int timeToPass=5;
+            int lastSecondPrinted=-1;
             do{
                 secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
-                if(secondsPassed<5){
+                if(secondsPassed<5 & timeToPass-secondsPassed!=lastSecondPrinted){
+                    clearScreen();
                     System.out.println("No available move positions for the selected pawn -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s");
+                    lastSecondPrinted=timeToPass-secondsPassed;
                 }
             }while(secondsPassed<5);
             clientView.update(new UndoTurnSetMessage());
@@ -348,10 +355,13 @@ public class CLIEngine implements UserInterface {
             long startingTime=System.currentTimeMillis();
             int secondsPassed;
             int timeToPass=5;
+            int lastSecondPrinted=-1;
             do{
                 secondsPassed=(int)(System.currentTimeMillis()-startingTime)/1000;
-                if(secondsPassed<5){
-                    System.out.print("No available construct positions  for the selected pawn -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s\r");
+                if(secondsPassed<5 & timeToPass-secondsPassed!=lastSecondPrinted){
+                    clearScreen();
+                    System.out.println("No available construct positions for the selected pawn -> RESTARTING TURN in "+(timeToPass-secondsPassed)+"s");
+                    lastSecondPrinted=timeToPass-secondsPassed;
                 }
             }while(secondsPassed<5);
             clientView.update(new UndoTurnSetMessage());
