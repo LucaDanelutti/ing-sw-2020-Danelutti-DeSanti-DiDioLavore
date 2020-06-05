@@ -35,7 +35,7 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
     /**
      * @param hostname server hostname
      * @param port server port
-     * This method starts the connection to the server
+     * This method starts the connection with the server
      */
     public boolean startServerConnection(String hostname, int port) {
         if (port < 1 || port > 65535) return false;
@@ -44,8 +44,18 @@ public class ClientView implements SetsListener, RequestsAndUpdateListener {
         return socketServerConnection.run(this);
     }
 
+    /**
+     * This method stops the connection with the server
+     */
     public void stopServerConnection() {
         if (serverConnection != null) serverConnection.closeConnection();
+    }
+
+    /**
+     * This method closes the gui/cli
+     */
+    public void closeClient(String reason) {
+        userInterface.onGameEnded(reason);
     }
 
     /**

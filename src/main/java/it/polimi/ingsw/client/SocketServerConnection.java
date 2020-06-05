@@ -134,6 +134,7 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
                         if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
                             System.out.println("No ping received!"); //TODO: logging
                             closeConnection();
+                            clientView.closeClient("You lost connection with the server!");
                             pingTimer.cancel();
                         }
                     }
