@@ -119,7 +119,6 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
     public boolean run(ClientView clientView) {
         try {
             socket = new Socket(ip, port);
-            System.out.println("Connection established"); //TODO: logging
             socketIn = new ObjectInputStream(socket.getInputStream());
             socketOut = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -132,7 +131,6 @@ public class SocketServerConnection extends RequestAndUpdateObservable implement
                     @Override
                     public void run() {
                         if (System.currentTimeMillis() - lastPing.getTime() > timerFrequency * 1.5 * 1000) {
-                            System.out.println("No ping received!"); //TODO: logging
                             closeConnection();
                             clientView.closeClient("You lost connection with the server!");
                             pingTimer.cancel();
