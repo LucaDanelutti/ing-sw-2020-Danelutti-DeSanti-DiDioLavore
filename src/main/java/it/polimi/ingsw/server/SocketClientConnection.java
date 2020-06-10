@@ -26,6 +26,7 @@ public class SocketClientConnection extends SetObservable implements ClientConne
 
     private Socket socket;
     private ObjectOutputStream out;
+    private ObjectInputStream in;
     private Server server;
 
     private boolean pong = true;
@@ -68,6 +69,8 @@ public class SocketClientConnection extends SetObservable implements ClientConne
      */
     private synchronized void closeConnection() {
         try {
+            in.close();
+            out.close();
             socket.close();
         } catch (IOException e) {
             MyLogger.log(Level.WARNING, this.getClass().getName(), "closeConnection()",this.toString() + ": error closing socket");
@@ -119,7 +122,6 @@ public class SocketClientConnection extends SetObservable implements ClientConne
      */
     @Override
     public void run() {
-        ObjectInputStream in;
         Timer pingTimer = new Timer();
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
