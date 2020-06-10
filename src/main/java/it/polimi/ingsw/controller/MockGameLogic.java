@@ -7,6 +7,10 @@ import it.polimi.ingsw.model.board.BlockType;
 
 import java.util.ArrayList;
 
+/**
+ * This class is merely used to act as a simulated GameLogic for test purpose
+ * This class implements the ModelInterface listener and each time a call arrives from the Controller the value of lastCall is set to the name of the called method
+ */
 public class MockGameLogic implements ModelInterface {
     private String lastCall = "";
     private String currentPlayer;
