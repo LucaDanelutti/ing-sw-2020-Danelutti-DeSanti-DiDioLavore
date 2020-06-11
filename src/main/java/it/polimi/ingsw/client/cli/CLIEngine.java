@@ -153,12 +153,6 @@ public class CLIEngine implements UserInterface {
         System.out.println("There is already a game started on the server, try later!");
         printEqualsRow();
     }
-    public void onServerDisconnection(){
-        clearScreen();
-        printEqualsRow();
-        System.out.println("Server disconnected, please restart the server!");
-        printEqualsRow();
-    }
 
 
     //TO BE CALLED WHEN A REQUEST ARRIVES
@@ -184,8 +178,6 @@ public class CLIEngine implements UserInterface {
             clientView.update(new UndoTurnSetMessage());
             return;
         }
-
-        Scanner scanner = new Scanner(System.in);
         try {
             System.in.read(new byte[System.in.available()]);
         }
@@ -219,22 +211,9 @@ public class CLIEngine implements UserInterface {
             options.add(i);
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            }while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
 
             int undoChoice = undoOrConfirmHandler(5);
             if(undoChoice==0){
@@ -275,22 +254,9 @@ public class CLIEngine implements UserInterface {
             options.add(i);
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            } while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
             clientView.update(new ChosenCardSetMessage(availableCards.get(input).getId()));
         }
         catch (InterruptedException | ExecutionException | CancellationException ignored) {
@@ -337,22 +303,9 @@ public class CLIEngine implements UserInterface {
             options.add(i);
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            }while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
 
             int undoChoice = undoOrConfirmHandler(5);
             if(undoChoice==0){
@@ -410,22 +363,9 @@ public class CLIEngine implements UserInterface {
             options.add(i);
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            }while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
 
             clientView.update(new ChosenPositionSetMessage(availablePositions.get(input)));
             }
@@ -458,22 +398,9 @@ public class CLIEngine implements UserInterface {
             options.add(j);
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            }while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
 
             clientView.update(new FirstPlayerSetMessage(clientView.getModelView().getPlayerList().get(input).getName()));
         }
@@ -729,22 +656,9 @@ public class CLIEngine implements UserInterface {
             options.add(view.getId());
         }
 
-        int input;
-        String string;
         ConsoleInputReadTask inputHandler = new ConsoleInputReadTask();
         try {
-            do {
-                inputHandlerTask = executorService.submit(inputHandler);
-                string = inputHandlerTask.get();
-                try {
-                    input = Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    input = -1;
-                }
-                if(isTheOptionNotValid(options, input)){
-                    System.out.print("Not a valid option, retry: ");
-                }
-            }while (isTheOptionNotValid(options, input));
+            int input = getInput(options, inputHandler);
 
             Position selectedPawnPosition=null;
             for(PawnView pawnView : pawnViews){
@@ -766,6 +680,29 @@ public class CLIEngine implements UserInterface {
 
                                                             //COMMODITY FUNCTIONS
 
+    /**
+     * This function is used to run the scanner and get the input from the user
+     * @param options available options
+     * @param inputHandler
+     * @return the numeric input
+     */
+    private int getInput(ArrayList<Integer> options, ConsoleInputReadTask inputHandler) throws InterruptedException, ExecutionException {
+        String string;
+        int input;
+        do {
+            inputHandlerTask = executorService.submit(inputHandler);
+            string = inputHandlerTask.get();
+            try {
+                input = Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                input = -1;
+            }
+            if(isTheOptionNotValid(options, input)){
+                System.out.print("Not a valid option, retry: ");
+            }
+        } while (isTheOptionNotValid(options, input));
+        return input;
+    }
     /**
      * This function is used to check if there are any pawns on the board
      * @return the boolean response
@@ -1118,7 +1055,7 @@ public class CLIEngine implements UserInterface {
         System.out.println( "  ███████║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║  ██║██║██║ ╚████║██║");
         System.out.println( "  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝");
         System.out.println( "========================================================================");
-        System.out.println( "");
+        System.out.println();
     }
 
 
