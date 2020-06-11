@@ -774,8 +774,6 @@ public class CLIEngine implements UserInterface {
     public int undoOrConfirmHandler(int timeToWait) {
         int input;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-
         ConsoleInputReadTimedTask inputHandler = new ConsoleInputReadTimedTask();
         Future<String> future = executorService.submit(inputHandler);
         String in = "0";
@@ -812,7 +810,6 @@ public class CLIEngine implements UserInterface {
 
         timer.cancel();
         input = Integer.parseInt(in);
-        executorService.shutdown();
         return input;
     }
     /**
