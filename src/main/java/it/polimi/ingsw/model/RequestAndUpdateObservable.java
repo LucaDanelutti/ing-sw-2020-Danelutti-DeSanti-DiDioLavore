@@ -182,10 +182,8 @@ public class RequestAndUpdateObservable {
         }
     }
     public void notifyListeners(GameEndedMessage m) {
-        synchronized (listeners) {
-            for(RequestsAndUpdateListener l : this.listeners){
-                l.update(m);
-            }
+        for(RequestsAndUpdateListener l : this.listeners){
+            l.update(m);
         }
     }
     public void notifyListeners(UndoUpdateMessage m) {
