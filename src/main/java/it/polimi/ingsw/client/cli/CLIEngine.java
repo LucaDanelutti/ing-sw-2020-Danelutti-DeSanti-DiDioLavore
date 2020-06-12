@@ -216,13 +216,13 @@ public class CLIEngine implements UserInterface {
             int input = getInput(options, inputHandler);
 
             int undoChoice = undoOrConfirmHandler(5);
-            if(undoChoice==0){
+            if(undoChoice==0) {
                 clientView.update(new ChosenBlockTypeSetMessage(availableBlockTypes.get(input)));
             }
-            else if(undoChoice==1){
+            else if(undoChoice==1) {
                 clientView.update(new UndoActionSetMessage());
             }
-            else{
+            else if(undoChoice==2){
                 clientView.update(new UndoTurnSetMessage());
             }
         }
@@ -314,7 +314,7 @@ public class CLIEngine implements UserInterface {
             else if(undoChoice==1){
                 clientView.update(new UndoActionSetMessage());
             }
-            else{
+            else if(undoChoice==2){
                 clientView.update(new UndoTurnSetMessage());
             }
         }
@@ -772,11 +772,10 @@ public class CLIEngine implements UserInterface {
      * @return the result of the operation
      */
     public int undoOrConfirmHandler(int timeToWait) {
-        int input;
-
         ConsoleInputReadTimedTask inputHandler = new ConsoleInputReadTimedTask();
-        Future<String> future = executorService.submit(inputHandler);
+        inputHandlerTask = executorService.submit(inputHandler);
         String in = "0";
+        int input;
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -800,12 +799,12 @@ public class CLIEngine implements UserInterface {
         }, 0,  1000);
 
         try {
-            in = future.get(timeToWait, TimeUnit.SECONDS);
+            in = inputHandlerTask.get(timeToWait, TimeUnit.SECONDS);
         }
-        catch (InterruptedException | ExecutionException ignored) {
+        catch (InterruptedException | ExecutionException | CancellationException e) {
+            in = "-1";
         } catch (TimeoutException e) {
-            future.cancel(true);
-            timer.cancel();
+            inputHandlerTask.cancel(true);
         }
 
         timer.cancel();
