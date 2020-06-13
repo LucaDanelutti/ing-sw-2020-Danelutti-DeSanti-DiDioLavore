@@ -117,6 +117,10 @@ public class MainSceneController extends GUIController {
        boardImageView.fitWidthProperty().bind(boardGridPane.widthProperty().multiply(BOARD_BACKGROUND_RATIO));
        boardImageView.fitHeightProperty().bind(boardGridPane.widthProperty().multiply(BOARD_BACKGROUND_RATIO));
 
+       //boardImageView position bindings
+//       boardImageView.xProperty().bind(mainGridPane.widthProperty().subtract(boardImageView.fitWidthProperty()).divide(2));
+//       boardImageView.yProperty().bind(mainGridPane.heightProperty().subtract(boardImageView.fitHeightProperty()).divide(2));
+
        //player cards dimensions bindings
        clientPlayerCardImageView.fitWidthProperty().bind(mainGridPane.widthProperty().divide(CLIENT_CARD_WIDTH_RATIO));
        clientPlayerCardImageView.fitHeightProperty().bind(mainGridPane.heightProperty().divide(CLIENT_CARD_HEIGHT_RATIO));
@@ -181,7 +185,6 @@ public class MainSceneController extends GUIController {
        for(int i = 0; i < modelView.getMatrix().length; i++){
            for(int  j = 0; j < modelView.getMatrix()[0].length; j++){
                if (modelView.getMatrix()[i][j].getPeek() != BlockType.TERRAIN) {
-//                   System.out.println("blockType: " + modelView.getMatrix()[i][j].getPeek().getLevel());
                    Image blockImage;
                    if (modelView.getMatrix()[i][j].getPeek().getLevel() == 4 && modelView.getMatrix()[i][j].getSize() == 2) {
                        //in this case there is a dome on the terrain
@@ -347,7 +350,6 @@ public class MainSceneController extends GUIController {
      */
    private void chosenPawn(Position chosenPawnPosition) {
        phaseLabel.setText("");
-       System.out.println("chosenPawnPosition:" + chosenPawnPosition.getX() + " " + chosenPawnPosition.getY());
        clientView.update(new SelectedPawnSetMessage(chosenPawnPosition));
        clearEnlightenedImageViews();
    }
@@ -431,12 +433,6 @@ public class MainSceneController extends GUIController {
      */
     private void setPosition() {
         phaseLabel.setText("");
-        if (chosenPosition != null) {
-            System.out.println("chosenPosition:" + chosenPosition.getX() + " " + chosenPosition.getY());
-        } else {
-            System.out.println("Action Skipped");
-        }
-        System.out.println("setPosition - chosenPosition:" + chosenPosition);
         clientView.update(new ChosenPositionSetMessage(chosenPosition));
         chosenPosition = new Position(-1,-1);
         clearEnlightenedImageViews();
@@ -468,7 +464,6 @@ public class MainSceneController extends GUIController {
             blockTypeImageView.setOnMouseClicked(e -> {
                 Node source = (Node)e.getSource();
                 int blockTypeLevel = Integer.parseInt(source.getId());
-                System.out.printf("selected blockType: %d %n", blockTypeLevel);
 
                 chosenBlockType = BlockType.LEVEL1;
                 for(BlockType blockTypeElement : availableBlockTypes) {
@@ -491,13 +486,12 @@ public class MainSceneController extends GUIController {
     private void setBlockType() {
        phaseLabel.setText("");
 
-       System.out.println("chosenBlockType.getLevel(): " + chosenBlockType.getLevel());
        clientView.update(new ChosenBlockTypeSetMessage(chosenBlockType));
        chosenBlockType = null;
     }
 
     /**
-     * Lets the player know that he has to place both his pawns at the beginning to the game.
+     * Lets the player know that he has to place both his pawns at the beginning to the game.123
      * It enlightens and makes visible a list of the cells that can be clicked by the player.
      * @param availablePositions is the list of the positions in which the player can place a pawn.
      */
@@ -530,8 +524,6 @@ public class MainSceneController extends GUIController {
        if (initialPawnPositionsList.size() == 2) {
            phaseLabel.setText("");
            clearEnlightenedImageViews();
-           System.out.println("firstPawnPosition1:" + initialPawnPositionsList.get(0).getX() + " " + initialPawnPositionsList.get(0).getY());
-           System.out.println("firstPawnPosition2:" + initialPawnPositionsList.get(1).getX() + " " + initialPawnPositionsList.get(1).getY());
            clientView.update(new InitialPawnPositionSetMessage(pawnsId.get(0), pawnsId.get(1), initialPawnPositionsList.get(0), initialPawnPositionsList.get(1)));
        } else {
            phaseLabel.setText("Place the pawn left!");
@@ -646,7 +638,6 @@ public class MainSceneController extends GUIController {
             @Override
             public void run() {
                 if (count > 0) {
-                    System.out.println("count: " + count);
                     Platform.runLater(() -> {
                         count--;
                     });

@@ -49,10 +49,6 @@ public class LoginSceneController extends GUIController {
      * It calls a method within ClientView which sets up the connection.
      */
     public void connect() {
-        System.out.println("clicked connect");
-        System.out.println(serverHostname.getValue());
-        System.out.println(port.getValue());
-
         if (port.getValue().length() > 0 && clientView.startServerConnection(serverHostname.getValue(), Integer.parseInt(port.getValue()))) {
             //opens the WaitingScene
             ((GUIEngine)clientView.getUserInterface()).showWaitingScene(false, "Just wait...");

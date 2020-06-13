@@ -128,7 +128,6 @@ public class FirstPlayerRequestSceneController extends GUIController {
      * It forwards the name of the player selected as firstPlayerSelected to the ClientView.
      */
     public void confirm() {
-        System.out.println("firstPlayerSelected: " + firstPlayerSelected);
         clientView.update(new FirstPlayerSetMessage(firstPlayerSelected));
         ((GUIEngine)clientView.getUserInterface()).showMainScene();
     }

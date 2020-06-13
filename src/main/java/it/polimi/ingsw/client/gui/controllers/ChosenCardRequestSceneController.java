@@ -55,7 +55,6 @@ public class ChosenCardRequestSceneController extends GUIController {
             cardImageView.setOnMouseClicked(e -> {
                 Node source = (Node)e.getSource();
                 int cardId = Integer.parseInt(source.getId());
-                System.out.printf("cardId: %d %n", cardId);
                 updateDescriptionLabel(cardId);
                 updateConfirmButtonText(cardId);
                 chosenCardId = cardId;
@@ -97,7 +96,6 @@ public class ChosenCardRequestSceneController extends GUIController {
      * It forwards the chosen card to the ClientView.
      */
     public void confirm() {
-        System.out.println("chosenCardId:" + chosenCardId);
         clientView.update(new ChosenCardSetMessage(chosenCardId));
 
         ((GUIEngine)clientView.getUserInterface()).showMainScene();

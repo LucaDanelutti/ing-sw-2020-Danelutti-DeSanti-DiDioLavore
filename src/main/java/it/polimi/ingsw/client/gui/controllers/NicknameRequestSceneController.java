@@ -41,7 +41,6 @@ public class NicknameRequestSceneController extends GUIController {
      * It forwards the selected nickname to the ClientView
      */
     public void confirm() {
-        System.out.println("nickname:" + nickname.getValue());
         if (nickname.get().length() > 10 || nickname.get().length() < 1) {
             ((GUIEngine)clientView.getUserInterface()).showMessage("The Nickname cannot be longer than 10 characters or shorter then 1 character.", AlertType.INFORMATION);
         } else {

@@ -66,7 +66,6 @@ public class NumberOfPlayersRequestSceneController extends GUIController {
      * It forwards the selected number of players to the ClientView
      */
     public void confirm() {
-        System.out.println("selectedNumberOfPlayers:" + selectedNumberOfPlayers);
         clientView.update(new NumberOfPlayersSetMessage(selectedNumberOfPlayers));
 
         ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true, "Waiting for other players...");

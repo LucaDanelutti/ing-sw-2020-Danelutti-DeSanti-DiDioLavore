@@ -88,8 +88,8 @@ public class GameCardsRequestSceneController extends GUIController {
 //                enlightenedImageView.getStyleClass().removeAll();
 //                enlightenedImageView.getStyleClass().add("roundedImageView");
                 enlightenedImageView.setVisible(false);
-                enlightenedImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL).add(10));
-                enlightenedImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_HGAP).divide(CARD_GRID_ROWS).add(10));
+                enlightenedImageView.fitWidthProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL));
+                enlightenedImageView.fitHeightProperty().bind(cardsGridPane.heightProperty().subtract(3*CARD_GRIDPANE_HGAP).divide(CARD_GRID_ROWS));
                 cardsGridPane.add(enlightenedImageView, j, i);
             }
         }
@@ -103,7 +103,6 @@ public class GameCardsRequestSceneController extends GUIController {
         //sets the expectedNumberOfCards
         ModelView modelView = clientView.getModelView();
         expectedNumberOfCards = modelView.getPlayerList().size();
-        System.out.println("expectedNumberOfCards:" + expectedNumberOfCards);
         titleLabel.setText("Pick " + expectedNumberOfCards + " Cards!");
 
         //loads the availableCards within this.availableCards and renders the images
@@ -130,7 +129,6 @@ public class GameCardsRequestSceneController extends GUIController {
         cardImageView.fitHeightProperty().bind(cardsGridPane.widthProperty().subtract(8*CARD_GRIDPANE_VGAP).divide(CARD_GRID_COL));
         cardImageView.setOnMouseClicked(e -> {
             Node source = (Node)e.getSource();
-            System.out.printf("Mouse entered cell [%d, %d, cardId: %d]%n", i, j, Integer.parseInt(source.getId()));
             int colIndex = GridPane.getColumnIndex(source);
             int rowIndex = GridPane.getRowIndex(source);
             currentCardPosition = new Position(rowIndex, colIndex);
@@ -202,11 +200,9 @@ public class GameCardsRequestSceneController extends GUIController {
         if (cardsSelectedList.size() == expectedNumberOfCards) {
             clientView.update(new InGameCardsSetMessage(cardsSelectedList));
             ((GUIEngine)clientView.getUserInterface()).showWaitingScene(true, "The match is about to start...");
-            System.out.println("The number of Cards is correct.");
         }
         else {
             ((GUIEngine)clientView.getUserInterface()).showMessage("The number of Cards is wrong.", AlertType.INFORMATION);
-            System.out.println("The number of Cards is wrong.");
         }
     }
 
