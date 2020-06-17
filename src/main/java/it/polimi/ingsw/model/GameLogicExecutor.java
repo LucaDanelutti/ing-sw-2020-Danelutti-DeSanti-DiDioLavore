@@ -246,9 +246,26 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
                 notifyListeners(generateDoublePawnPositionUpdate(game.getCurrentPlayer().getPawnList().get(indexWorker1).getId(), game.getCurrentPlayer().getPawnList().get(indexWorker2).getId(), workerPos1, workerPos2));
                 Player nextPlayer = game.getNextPlayer();
                 if (nextPlayer.getPawnList().get(0).getPosition() != null && nextPlayer.getPawnList().get(1).getPosition() != null) {
-                    //so all players have set their pawns initial position, gameLogic will ask the user to send its selectedPawn
+                    //so all players have set their pawns initial position
                     game.setCurrentPlayer(nextPlayer);
-                    notifyListeners(generateSelectPawnRequest());
+
+                    if(unableToPerformFirstNonOptionalMove(game.getCurrentPlayer())){
+                        //the next player is unable to play, the other two players locked him up
+                        game.getCurrentPlayer().setLoser();
+
+                        //remove the pawn for the current player, send the removePawnUpdate and send the youLost message
+                        for(Pawn p : game.getCurrentPlayer().getPawnList()){
+                            notifyListeners(generatePawnRemoveUpdate(p.getId()));
+                        }
+                        this.game.removePlayerPawns(game.getCurrentPlayer().getName());
+                        notifyListeners(generateYouLost(game.getCurrentPlayer().getName()));
+
+                        passTurnToNextPlayer();
+                    }
+                    else {
+                        //the next player is able to play, gameLogic will ask the user to send its selectedPawn
+                        notifyListeners(generateSelectPawnRequest());
+                    }
                 } else {
                     //otherwise i have to ask the next player to set its initial pawn positions
                     //this function will also set CurrentAction to null
@@ -656,7 +673,6 @@ public class GameLogicExecutor extends RequestAndUpdateObservable implements Act
 
 
                                             //PRIVATE COMMODITY FUNCTIONS
-
     /**
      * This function is called to turn to true the parameter NoWinIfOnPerimeter on each opponent moveAction.
      * It is called when a generalAction with enableNoWinIfOnPerimeter is executed
