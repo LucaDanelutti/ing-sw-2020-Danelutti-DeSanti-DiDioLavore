@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.modelview.PawnView;
 import it.polimi.ingsw.view.modelview.PlayerView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -881,8 +882,10 @@ public class CLIEngine implements UserInterface {
      * This function is called to clear the screen
      */
     private void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        if(!(File.separatorChar == '\\')) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
     }
     /**
      * This function prints the horizontal coordinates
