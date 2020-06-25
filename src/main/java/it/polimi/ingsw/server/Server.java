@@ -88,7 +88,7 @@ public class Server {
     }
 
     /**
-     * Main method called by ServerApp
+     * Main method called by AppLauncher
      * This method waits for new connections
      */
     public void run(){
