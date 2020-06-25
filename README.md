@@ -54,9 +54,10 @@ java -jar AM01.jar -hostname 192.168.0.4 -port 12345
 ```
 ### Run a Server
 - To start a server, type: 
-    ```bash
-    java -jar AM01.jar -server [-port number]
+```bash
+java -jar AM01.jar -server [-port number]
 
-    example:
-    java -jar AM01.jar -server -port 12345 
-    ```
+example:
+java -jar AM01.jar -server -port 12345 
+```
+If port parameter is ommited the server will start listening on default port 12345
