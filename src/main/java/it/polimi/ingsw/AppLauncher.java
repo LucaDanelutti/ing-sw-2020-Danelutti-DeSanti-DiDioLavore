@@ -16,6 +16,7 @@ public class AppLauncher {
         String arg;
         boolean error = false;
         boolean server = false;
+        boolean gui = false;
         boolean cli = false;
         String hostname = "";
         int port = 0;
@@ -29,6 +30,8 @@ public class AppLauncher {
                 cli = true;
             } else if (arg.equals("-help")){
                 error = true;
+            } else if (arg.equals("-gui")){
+                gui = true;
             }
 
             else if (arg.equals("-hostname")) {
@@ -56,11 +59,14 @@ public class AppLauncher {
                     System.err.println("-port requires an integer");
                     error = true;
                 }
+            } else {
+                System.err.println("Unknown option \"" + arg + "\"");
+                error = true;
             }
 
         }
-        if (error) {
-            System.err.println("Usage: java -jar santorini.jar [-server|cli] [-hostname hostnameString] [-port portNumber]");
+        if (error || (cli && server) || (cli && gui) || (server && gui)) {
+            System.err.println("Usage: java -jar santorini.jar [-server|cli|gui] [-hostname address] [-port number]");
         } else {
             if (server) {
                 Server serverApp;
@@ -69,24 +75,25 @@ public class AppLauncher {
                     serverApp = new Server(port);
                     serverApp.run();
                 } catch (IOException e) {
-                    MyLogger.log(Level.INFO, "AppLauncher", "main()", "Unable to initialize the server " + e.getMessage());
-                }
-            }
-
-            UserInterface userInterface;
-
-            if (cli) {
-                userInterface = new CLIEngine();
-                if (hostname != "" && port != 0) {
-                    userInterface.quickInitialize(hostname, port);
-                } else  if (hostname == "" && port == 0) {
-                    userInterface.initialize();
-                } else {
-                    System.err.println("You must specify both server hostname and port!");
+                    MyLogger.log(Level.INFO, "AppLauncher", "main()", "Unable to initialize the server: " + e.getMessage());
                 }
             } else {
-                userInterface = new GUIEngine();
-                userInterface.initialize();
+
+                UserInterface userInterface;
+
+                if (cli) {
+                    userInterface = new CLIEngine();
+                    if (hostname != "" && port != 0) {
+                        userInterface.quickInitialize(hostname, port);
+                    } else if (hostname == "" && port == 0) {
+                        userInterface.initialize();
+                    } else {
+                        System.err.println("You must specify both server hostname and port!");
+                    }
+                } else {
+                    userInterface = new GUIEngine();
+                    userInterface.initialize();
+                }
             }
         }
     }
