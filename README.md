@@ -36,28 +36,27 @@ A new folder will appear in the directory of the project called "shade", inside 
 
 
 ## Usage
- The .jar can be executed into three different mode by using the proper parameters
+The .jar can be executed into three different mode by using the proper parameters
  
-  ### Run a Client 
- - To start a GUI client you should be able to double-click on it, in other cases just type: 
-     ```bash
-     java -jar AM01.jar
-     ```
-  - To start a CLI client, type: 
-       ```bash
-      //NOTE: if optional parameters are omitted it will prompt to insert them
-      
-    java -jar AM01.jar -cli [-hostname address] [-port number]
-        
-      example: 
-    java -jar AM01.jar -hostname 192.168.0.4 -port 12345
-       ```
+### Run a Client 
+- To start a GUI client you should be able to double-click on it, in other cases just type: 
+```bash
+java -jar AM01.jar
+```
+- To start a CLI client, type: 
+```bash
+//NOTE: if optional parameters are omitted it will prompt to insert them
 
-  ### Run a Server
- - To start a server, type: 
-      ```bash
-      java -jar AM01.jar -server [-port number]
-    
-      example:
-      java -jar AM01.jar -server -port 12345 
-       ```
+java -jar AM01.jar -cli [-hostname address] [-port number]
+
+example: 
+java -jar AM01.jar -hostname 192.168.0.4 -port 12345
+```
+### Run a Server
+- To start a server, type: 
+    ```bash
+    java -jar AM01.jar -server [-port number]
+
+    example:
+    java -jar AM01.jar -server -port 12345 
+    ```
