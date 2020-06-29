@@ -1335,8 +1335,8 @@ class GameLogicExecutorTest {
             if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
                 ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                 if(m.getAvailablePositions().size()<1){
-                    System.out.println("BOT INCASTRATO player:"+currentP.getName()+"selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
-                    simpleCompleteBoardPrint();
+                    //System.out.println("BOT INCASTRATO player:"+currentP.getName()+"selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
+                    //simpleCompleteBoardPrint();
                     return;
                 }
                 randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
@@ -1345,8 +1345,8 @@ class GameLogicExecutorTest {
             else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage) {
                 ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
                 if (m.getAvailablePositions().size() < 1) {
-                    System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
-                    simpleCompleteBoardPrint();
+                    //System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
+                    //simpleCompleteBoardPrint();
                     return;
                 }
                 randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
@@ -1463,7 +1463,7 @@ class GameLogicExecutorTest {
 /*
                         System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
 */
-                        simpleCompleteBoardPrint();
+                        //simpleCompleteBoardPrint();
                         return;
                     }
                     randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
@@ -1530,7 +1530,7 @@ class GameLogicExecutorTest {
                     winner++;
                 }
                 else{
-                    System.out.println("==========================ERROR=================================");
+                    //System.out.println("==========================ERROR=================================");
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
@@ -1592,7 +1592,7 @@ class GameLogicExecutorTest {
                     winner++;
                 }
                 else{
-                    System.out.println("==========================ERROR=================================");
+                    //System.out.println("==========================ERROR=================================");
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
@@ -1752,8 +1752,8 @@ class GameLogicExecutorTest {
 
         ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
         if (m.getAvailablePositions().size() < 1) {
-            System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
-            simpleCompleteBoardPrint();
+            //.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
+            //simpleCompleteBoardPrint();
             return;
         }
         randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
@@ -1806,7 +1806,7 @@ class GameLogicExecutorTest {
                     winner++;
                 }
                 else{
-                    System.out.println("==========================ERROR=================================");
+                    //System.out.println("==========================ERROR=================================");
                 }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
 
