@@ -2,13 +2,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.action.*;
 import it.polimi.ingsw.model.board.BlockType;
-import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.utility.messages.RequestAndUpdateMessage;
 import it.polimi.ingsw.utility.messages.requests.*;
 import it.polimi.ingsw.utility.messages.updates.*;
-import it.polimi.ingsw.view.modelview.ModelView;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,8 +53,6 @@ class GameLogicExecutorTest {
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
-        Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
-        Position notSelectedPawnPos= notSelected.getPosition();
         gameLogicExecutor.setSelectedPawn(selectedPawnPos);
 
         //let's find out the positions available for the selected pawn
@@ -193,8 +188,7 @@ class GameLogicExecutorTest {
         //in 1,1 we have the selected pawn, in 1,2 we have an opponent pawn that we can push in 1,3
         gameLogicExecutor.setSelectedPawn(currentPlayer.getPawnList().get(0).getPosition());
         game.board.updatePawnPosition(new Position(1,3), new Position(1,4));
-        //simpleCompleteBoardPrint();
-        //ArrayList<Position> availablePos=game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
+
         gameLogicExecutor.setChosenPosition(new Position(1,2));
 
         assertEquals(new Position(1,3),game.getPlayer("luca").getPawnList().get(0).getPosition());
@@ -240,8 +234,6 @@ class GameLogicExecutorTest {
         //set selectedPawn for current user
         Pawn selectedPawn=game.getPlayer("ian").getPawnList().get(0);
         Position selectedPawnPos= selectedPawn.getPosition();
-        Pawn notSelected = game.getPlayer("ian").getPawnList().get(1);
-        Position notSelectedPawnPos= notSelected.getPosition();
 
         gameLogicExecutor.setSelectedPawn(selectedPawnPos);
 
@@ -326,7 +318,6 @@ class GameLogicExecutorTest {
      */
     @Test void generalActionWithDestroyPawnAndBuildEnable(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        ArrayList<Position> addIfOnThis = new ArrayList<>();
         GeneralAction medusaAction = new GeneralAction(false,new ArrayList<>(),false,true);
         basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
         basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
@@ -360,7 +351,6 @@ class GameLogicExecutorTest {
      */
     @Test void generalActionThatRemovesAllPawnOfAnOpponent(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        ArrayList<Position> addIfOnThis = new ArrayList<>();
         GeneralAction medusaAction = new GeneralAction(false,new ArrayList<>(),false,true);
         basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
         basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
@@ -397,7 +387,6 @@ class GameLogicExecutorTest {
      */
     @Test void generalActionEnableNoWinIfOnPerimeterForOtherPlayers(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
-        ArrayList<Position> addIfOnThis = new ArrayList<>();
         GeneralAction heraAction = new GeneralAction(false,new ArrayList<>(),true,false);
         basicMove= new MoveAction(false, new ArrayList<>(),true, false, false, false,false, false, new ArrayList<>(), false, false);
         basicConstruct= new ConstructAction(false,new ArrayList<>(),false,new ArrayList<>(),false,false,false);
@@ -437,7 +426,6 @@ class GameLogicExecutorTest {
     @Test void setSelectedPawnTest(){
         simpleGameSetupWith3PlayersOneInActionStateOthersInIdle();
         Position selectedPawn= game.getPlayer("ian").getPawnList().get(0).getPosition();
-        Position notSelectedPawn= game.getPlayer("ian").getPawnList().get(1).getPosition();
 
         //once we call this function the first action will be loaded from actionList and pawn values will be updated
         gameLogicExecutor.setSelectedPawn(selectedPawn);
@@ -560,12 +548,11 @@ class GameLogicExecutorTest {
         Player testPlayer1 = new Player("testPlayer1");
         testGame.addPlayer(testPlayer1);
 
-        Card testCard1 = new Card("testCard1", 1, new ArrayList<Action>());
+        Card testCard1 = new Card("testCard1", 1, new ArrayList<>());
         ArrayList<Card> testCardList = new ArrayList<>();
         testCardList.add(testCard1);
 
         testGame.setInGameCardsCopy(testCardList);
-        Card testCard2 = new Card("testCard2", 2, new ArrayList<>());
         testGame.setCurrentPlayer(testPlayer1);
         assertFalse(testGameLogicExecutor.setChosenCard(2));
         assertNull(testPlayer1.getCurrentCard());
@@ -944,14 +931,11 @@ class GameLogicExecutorTest {
 
         //Player1 Turn3 Apollo
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player1").getPawnList().get(0).getPosition());
-        ArrayList<Position> a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(3,0)); //move
-        a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(4,0)); //construct
         gameLogicExecutor.setChosenBlockType(BlockType.LEVEL1);
         //Player2 Turn3 Arthemis
         gameLogicExecutor.setSelectedPawn(game.getPlayer("Player2").getPawnList().get(0).getPosition());
-        a =game.getCurrentAction().availableCells(game.getBoard().getMatrixCopy());
         gameLogicExecutor.setChosenPosition(new Position(2,2)); //move
 
 
@@ -1005,7 +989,6 @@ class GameLogicExecutorTest {
         gameLogicExecutor.setNumberOfPlayers(3);
 
         //at this point the startGame function is called and one player will receive the message to set the cards
-        String currentPlayerName=gameLogicExecutor.getCurrentPlayerName();
         mockViews.add(new MockView("p4"));
         gameLogicExecutor.addListener(mockViews.get(3));
         gameLogicExecutor.addPlayerToLobby("p4");
@@ -1312,8 +1295,6 @@ class GameLogicExecutorTest {
          p = game.getPlayer(gameLogicExecutor.getCurrentPlayerName());
         gameLogicExecutor.setPawnsPositions(p.getPawnList().get(0).getId(), positions.get(0), p.getPawnList().get(1).getId(), positions.get(1));
 
-        int maxTurns=10;
-        int numberOfTurns=0;
 
         MockView currentP=getCurrentPlayerMockView();
         SelectPawnRequestMessage selectPawnRequestMessage = (SelectPawnRequestMessage) getCurrentPlayerMockView().getLastReceivedMessage();
@@ -1335,8 +1316,6 @@ class GameLogicExecutorTest {
             if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
                 ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                 if(m.getAvailablePositions().size()<1){
-                    //System.out.println("BOT INCASTRATO player:"+currentP.getName()+"selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
-                    //simpleCompleteBoardPrint();
                     return;
                 }
                 randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
@@ -1345,8 +1324,6 @@ class GameLogicExecutorTest {
             else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage) {
                 ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
                 if (m.getAvailablePositions().size() < 1) {
-                    //System.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
-                    //simpleCompleteBoardPrint();
                     return;
                 }
                 randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
@@ -1436,22 +1413,11 @@ class GameLogicExecutorTest {
             randomNum1= ThreadLocalRandom.current().nextInt(0,selectPawnRequestMessage.getAvailablePositions().size());
             gameLogicExecutor.setSelectedPawn(selectPawnRequestMessage.getAvailablePositions().get(randomNum1));
 
-/*            System.out.println("----------------------------------------------------------------------------");
-            System.out.println("---- PLAYER: "+currentP.getName()+" Pawn: "+game.getSelectedPawnCopy().getId()+" GOD: "+game.getPlayer(currentP.getName()).getCurrentCard().getName()+" ----");
-            System.out.println("BEFORE TURN:");
-            simpleCompleteBoardPrint();*/
-
             while(!(currentP.getLastReceivedMessage() instanceof TurnEndedMessage) && !someOneWon()){
 
                 if(currentP.getLastReceivedMessage() instanceof ChosenPositionForMoveRequestMessage){
                     ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
                     if(chosenPositionForMoveRequestMessage.getAvailablePositions().size()==0){
-/*
-                        System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
-*/
-/*
-                        simpleCompleteBoardPrint();
-*/
                         return;
                     }
                     randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
@@ -1460,10 +1426,6 @@ class GameLogicExecutorTest {
                 else if(currentP.getLastReceivedMessage() instanceof ChosenPositionForConstructRequestMessage){
                     ChosenPositionForConstructRequestMessage chosenPositionForConstructRequestMessage = (ChosenPositionForConstructRequestMessage) currentP.getLastReceivedMessage();
                     if(chosenPositionForConstructRequestMessage.getAvailablePositions().size()==0){
-/*
-                        System.out.println("BOT INCASTRATO player:"+currentP.getName()+" Card:"+game.getCurrentPlayer().getCurrentCard().getName()+" selectedPawn:"+game.getCurrentAction().getSelectedPawn().getId());
-*/
-                        //simpleCompleteBoardPrint();
                         return;
                     }
                     randomNum1= ThreadLocalRandom.current().nextInt(0, chosenPositionForConstructRequestMessage.getAvailablePositions().size());
@@ -1478,16 +1440,7 @@ class GameLogicExecutorTest {
 
             }
             numberOfTurns++;
-            /*System.out.println("AFTER TURN");
-            simpleCompleteBoardPrint();
-            System.out.println("----------------------------------------------------------------------------");*/
-
         }
-/*
-        System.out.println("VINCITAAA");
-*/
-
-
     }
     /**
      * This function tests random combinations of cards with three bots setting a limit to the maximum amount of turns
@@ -1502,7 +1455,7 @@ class GameLogicExecutorTest {
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
         int totalBlocked=0, totalWinner=0,totalUnknown=0,totalMaxNumberOfTurns=0;
-        int res,numberOfGamesTriedWithSameCards=0,numberOfCardsRandomCombinationSwitchTried=0;
+        int res,numberOfGamesTriedWithSameCards,numberOfCardsRandomCombinationSwitchTried=0;
         ArrayList<Integer> cardIds;
 
         do {
@@ -1529,12 +1482,7 @@ class GameLogicExecutorTest {
                 else if (res == 1) {
                     winner++;
                 }
-                else{
-                    //System.out.println("==========================ERROR=================================");
-                }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
-
-            //System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1543,12 +1491,6 @@ class GameLogicExecutorTest {
 
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
-
-        //System.out.println("-----------------------------------------------------------------------------------------------------");
-        int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        //System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);
-        //System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);
-        //System.out.println("-----------------------------------------------------------------------------------------------------");
 
     }
     /**
@@ -1564,7 +1506,7 @@ class GameLogicExecutorTest {
         //COMMODITY VARIABLES
         int blocked,winner,unknown,maxNumberOfTurns;
         int totalBlocked=0, totalWinner=0,totalUnknown=0,totalMaxNumberOfTurns=0;
-        int res,numberOfGamesTriedWithSameCards=0,numberOfCardsRandomCombinationSwitchTried=0;
+        int res,numberOfGamesTriedWithSameCards,numberOfCardsRandomCombinationSwitchTried=0;
         ArrayList<Integer> cardIds;
 
         do {
@@ -1591,14 +1533,7 @@ class GameLogicExecutorTest {
                 else if (res == 1) {
                     winner++;
                 }
-                else{
-                    //System.out.println("==========================ERROR=================================");
-                }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
-
-/*
-            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
-*/
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1607,13 +1542,6 @@ class GameLogicExecutorTest {
 
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
-
-        //System.out.println("-----------------------------------------------------------------------------------------------------");
-        int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        /*System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);*/
-        /*System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);*/
-        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
-
 
     }
     /**
@@ -1752,8 +1680,6 @@ class GameLogicExecutorTest {
 
         ChosenPositionForMoveRequestMessage chosenPositionForMoveRequestMessage = (ChosenPositionForMoveRequestMessage) currentP.getLastReceivedMessage();
         if (m.getAvailablePositions().size() < 1) {
-            //.out.println("BOT INCASTRATO player:" + currentP.getName() + "selectedPawn:" + game.getCurrentAction().getSelectedPawn().getId());
-            //simpleCompleteBoardPrint();
             return;
         }
         randomNum1 = ThreadLocalRandom.current().nextInt(0, chosenPositionForMoveRequestMessage.getAvailablePositions().size());
@@ -1805,14 +1731,7 @@ class GameLogicExecutorTest {
                 else if (res == 1) {
                     winner++;
                 }
-                else{
-                    //System.out.println("==========================ERROR=================================");
-                }
             } while (numberOfGamesTriedWithSameCards < numberOfGamesToRunWithSameCards);
-
-/*
-            System.out.println(String.format("%-18s","CARDS: " + cardIds.get(0) + ", " + cardIds.get(1) + ", " + cardIds.get(2)) + " === NUMBER OF GAMES RUNNED: " + numberOfGamesTriedWithSameCards + " RESULTS -> winner:" + winner + " | blocked: " + blocked + " | maxNumberOfTurns: " + maxNumberOfTurns + " | unknown: " + unknown);
-*/
 
             totalBlocked+=blocked;
             totalWinner+=winner;
@@ -1822,11 +1741,7 @@ class GameLogicExecutorTest {
             numberOfCardsRandomCombinationSwitchTried++;
         }while(numberOfCardsRandomCombinationSwitchTried<numberOfCardsRandomCombinationSwitch);
 
-        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
         int tot=totalBlocked+totalMaxNumberOfTurns+totalUnknown+totalWinner;
-        /*System.out.println("CURRENT SETTINGS -> numberOfPermutations: "+numberOfCardsRandomCombinationSwitch+" numberOfGamesWithThatPermutation: "+numberOfGamesToRunWithSameCards+" maxGameTurns: "+maxTurns);*/
-        /*System.out.println("TOTAL("+counter+")"+" -> winner: "+totalWinner+ " maxNumberOfTurns: "+totalMaxNumberOfTurns+" blocked:"+totalBlocked+ " unknown: "+totalUnknown);*/
-        /*System.out.println("-----------------------------------------------------------------------------------------------------");*/
     }
     /**
      * This function tests a three player game with bots, testing all the cards (and more)
@@ -2017,7 +1932,6 @@ class GameLogicExecutorTest {
         inGameCards.add(game.getLoadedCards().get(indexCard1).getId());
         inGameCards.add(game.getLoadedCards().get(indexCard2).getId());
         inGameCards.add(game.getLoadedCards().get(indexCard3).getId());
-        //System.out.println("Cards: "+inGameCards.get(0)+", "+inGameCards.get(1)+", "+inGameCards.get(2));
         gameLogicExecutor.setInGameCards(inGameCards);
 
         //SET THE CARDS FOR EACH PLAYER
@@ -2238,8 +2152,6 @@ class GameLogicExecutorTest {
      */
     private ArrayList<Integer> randomCards(){
         ArrayList<Integer> cardIds = new ArrayList<>();
-        //cardIds.add(11); //WE WANT MEDUSA
-        //cardIds.add(12); //WE WANT TRITON
         int randomId;
         while(cardIds.size()<3){
             randomId=ThreadLocalRandom.current().nextInt(0,14);
