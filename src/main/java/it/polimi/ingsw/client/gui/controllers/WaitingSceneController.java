@@ -25,6 +25,10 @@ public class WaitingSceneController extends GUIController {
         waitLabel.textProperty().bind(waitString);
     }
 
+    /**
+     * Sets a passed title to waitLabel
+     * @param title is the text that has to be set to waitLabel
+     */
     public void setTitle(String title) {
         waitString.set(title);
     }

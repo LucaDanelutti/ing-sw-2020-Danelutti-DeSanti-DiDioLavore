@@ -29,12 +29,15 @@ public class GUIEngine extends Application implements UserInterface {
     private static final String SANTORINI_STAGE_TITLE = "Santorini";
     private boolean isGameStarted = false;
 
+    /**
+     * Launches the javafx application
+     * @param primaryStage is the initial input stage
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         stage = primaryStage;
         clientView = new ClientView();
         clientView.setUserInterface(this);
-        //TODO: debuggare caricamento icona app
 //        stage.getIcons().add(new Image(getClass().getResourceAsStream("images/utility/santorini_logo.png")));
 
         loadLoginScene();
@@ -110,7 +113,9 @@ public class GUIEngine extends Application implements UserInterface {
     }
 
 
-
+    /**
+     * Refreshes the players details within the main scene.
+     */
     @Override
     public void refreshViewOnlyGameInfo() {
         Platform.runLater(() -> {
@@ -122,6 +127,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Refreshes the main scene.
+     */
     @Override
     public void refreshView() {
         Platform.runLater(() -> {
@@ -165,6 +173,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the availableBlockTypes through the proper controller
+     * @param availableBlockTypes is the list of availableBlockTypes
+     */
     @Override
     public void onChosenBlockTypeRequest(ArrayList<BlockType> availableBlockTypes) {
         Platform.runLater(() -> {
@@ -172,6 +184,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the availableCards through the proper controller
+     * @param availableCards is the list of available cards.
+     */
     @Override
     public void onChosenCardRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
@@ -181,6 +197,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the availablePositions for a move action through the proper controller.
+     * @param availablePositions is the list of available positions for a move action.
+     */
     @Override
     public void onChosenPositionForMoveRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
@@ -188,6 +208,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the availablePositions for a construct action through the proper controller.
+     * @param availablePositions is the list of available positions for a construct action.
+     */
     @Override
     public void onChosenPositionForConstructRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
@@ -195,6 +219,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the scene which lets the user select the first player of the match.
+     */
     @Override
     public void onFirstPlayerRequest() {
         Platform.runLater(() -> {
@@ -204,6 +231,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the scene which lets the user select the cards available within the  current match.
+     * @param availableCards is the list of cards available.
+     */
     @Override
     public void onInGameCardsRequest(ArrayList<CardView> availableCards) {
         Platform.runLater(() -> {
@@ -213,6 +244,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Asks the user to select the initial positions of its pawns.
+     * @param availablePositions is the list of available positions.
+     */
     @Override
     public void onInitialPawnPositionRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
@@ -224,6 +259,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the scene which lets the user select his nickname.
+     */
     @Override
     public void onNicknameRequest() {
         Platform.runLater(() -> {
@@ -232,6 +270,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the scene which lets the user select the number of players for the current match.
+     */
     @Override
     public void onNumberOfPlayersRequest() {
         Platform.runLater(() -> {
@@ -240,6 +281,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Asks the user to select a pawn among the available ones on the board.
+     * @param availablePositions is the list of pawns available on the board for the current user.
+     */
     @Override
     public void onSelectPawnRequest(ArrayList<Position> availablePositions) {
         Platform.runLater(() -> {
@@ -247,6 +292,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the winner scene.
+     */
     @Override
     public void onWin() {
         Platform.runLater(() -> {
@@ -256,6 +304,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads the looser scene.
+     */
     @Override
     public void onLost(String playerName) {
         Platform.runLater(() -> {
@@ -265,6 +316,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads an end game scene which lets the user know that someone else has won.
+     */
     @Override
     public void onYouLostAndSomeOneWon(String winnerName) {
         Platform.runLater(() -> {
@@ -274,6 +328,10 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Loads an end game message.
+     * @param reason is the reason why the game ended.
+     */
     @Override
     public void onGameEnded(String reason) {
         Platform.runLater(() -> {
@@ -283,6 +341,9 @@ public class GUIEngine extends Application implements UserInterface {
         });
     }
 
+    /**
+     * Lets the user know that he hasn't been selected for the current match.
+     */
     @Override
     public void onGameStartedAndYouAreNotSelected() {
         Platform.runLater(() -> {

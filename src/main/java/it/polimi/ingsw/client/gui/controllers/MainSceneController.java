@@ -651,6 +651,9 @@ public class MainSceneController extends GUIController {
         }, 0, 1000);
     }
 
+    /**
+     * Updates the phaseLabel with a lost message.
+     */
     public void updateLostPhaseLabel() {
         phaseLabel.setText("You Lost, but you can still watch!");
     }
