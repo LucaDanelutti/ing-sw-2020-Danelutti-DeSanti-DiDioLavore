@@ -1,5 +1,5 @@
 # Santorini (Softeng Project 2020)
-Java implementation of the table game Santorini by Cranio Creations
+Java implementation of the table game Santorini by Cranio Creations as part of the Bachelor thesis. The highest possible grade has been assigned to this project. 
 
 ## Team AM01 - Prof. Margara
 -    10604455     Luca Danelutti ([@LucaDanelutti](https://github.com/LucaDanelutti)) <br> luca.danelutti@mail.polimi.it
