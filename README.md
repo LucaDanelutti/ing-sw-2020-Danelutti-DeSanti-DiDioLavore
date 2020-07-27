@@ -1,4 +1,4 @@
-# Santorini (Softeng Project 2020)
+# Santorini (Software Engineering Project 2020)
 Java implementation of the table game Santorini by Cranio Creations as part of the Bachelor thesis. The highest possible grade has been assigned to this project. 
 
 ## Team AM01 - Prof. Margara
